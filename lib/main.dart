@@ -1,5 +1,10 @@
+import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/home/home_navigation_bar/home_navigation_bar.dart';
+import 'package:flatter/home/library_screen/library_screen_ViewModel.dart';
+import 'package:flatter/home/player_screen/player_screen_ViewModel.dart';
 import 'package:flutter/material.dart';
+
+QueueRepository queueRepository = QueueRepository();
 
 void main() {
   runApp(const MyApp());

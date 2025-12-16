@@ -4,7 +4,7 @@ class MyPlayer {
   final player = AudioPlayer();
 
   Future<void> setSource(source) async {
-    await player.setSourceUrl("https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3");
+    await player.setSource(DeviceFileSource(source));
   }
 
   Future<void> play() async {

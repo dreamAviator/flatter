@@ -1,9 +1,11 @@
+import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/home/library_screen/library_screen.dart';
 import 'package:flatter/home/library_screen/library_screen_ViewModel.dart';
 import 'package:flatter/home/player_screen/player_screen.dart';
 import 'package:flatter/home/player_screen/player_screen_ViewModel.dart';
 import 'package:flatter/home/queue_screen/queue_screen.dart';
 import 'package:flatter/home/queue_screen/queue_screen_ViewModel.dart';
+import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +17,7 @@ class HomeNavigationBar extends StatefulWidget {
 
 class _HomeNavigationBarState extends State<HomeNavigationBar> {
   int currentPageIndex = 1;
-  final PlayerScreenViewModel playerScreenViewModel = PlayerScreenViewModel();
+  final PlayerScreenViewModel playerScreenViewModel = PlayerScreenViewModel(queueRepository: queueRepository);
   final LibraryScreenViewModel libraryScreenViewModel = LibraryScreenViewModel();
   final QueueScreenViewModel queueScreenViewModel = QueueScreenViewModel();
   @override

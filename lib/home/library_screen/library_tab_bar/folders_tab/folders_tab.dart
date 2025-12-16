@@ -31,15 +31,13 @@ class FoldersTab extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
-                  onTap: () => viewModel.goIntoFolder(viewModel.toDisplay[index]),
+                  onTap: () => viewModel.openEntry(viewModel.toDisplay[index][0]),
                   child: Column(
                     children: [
                       ListTile(
-                        title: Text(viewModel.toDisplay[index]),
-                        trailing: IconButton(
-                          onPressed: () => viewModel.removeFolder(viewModel.toDisplay[index]),
-                          icon: Icon(CupertinoIcons.trash_fill),
-                        ),
+                        leading: viewModel.toDisplay[index][1],
+                        title: Text(viewModel.toDisplay[index][0]),
+                        subtitle: Text(viewModel.toDisplay[index][0]),
                       )
                     ],
                   ),
