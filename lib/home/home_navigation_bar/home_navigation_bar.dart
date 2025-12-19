@@ -17,7 +17,7 @@ class HomeNavigationBar extends StatefulWidget {
 
 class _HomeNavigationBarState extends State<HomeNavigationBar> {
   int currentPageIndex = 1;
-  final PlayerScreenViewModel playerScreenViewModel = PlayerScreenViewModel(queueRepository: queueRepository);
+  final PlayerScreenViewModel playerScreenViewModel = PlayerScreenViewModel();
   final LibraryScreenViewModel libraryScreenViewModel = LibraryScreenViewModel();
   final QueueScreenViewModel queueScreenViewModel = QueueScreenViewModel();
   @override

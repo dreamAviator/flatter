@@ -2,17 +2,17 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flatter/Repositories/queue_repository.dart';
+import 'package:flatter/main.dart';
+import 'package:flatter/player/player_controls.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FoldersTabViewModel extends ChangeNotifier {
-  FoldersTabViewModel({required QueueRepository queueRepository}) : _queueRepository = queueRepository;
   String title = "Folders";
   String directoryString = "no directory selected";
   List<String> folders = [];//mwegen berechtigungen soll man einfach mehrere ordner hinzufügen, auf alle unterordner hat die app dann zugriff; man hat also eine liste mit den hinzugefügten ordnern.
   List<List<dynamic>> toDisplay = [];
   List<String> history = [];
-  final QueueRepository _queueRepository;
 
   Future<void> updateList(List<String> whattodisplay) async {
     toDisplay.clear();
@@ -59,7 +59,7 @@ class FoldersTabViewModel extends ChangeNotifier {
       openFolder(path);
     }
     else {
-      _queueRepository.addItem(path, -1);
+      playerControl.addItemAt(-1, path);
     }
   }
 

@@ -18,7 +18,7 @@ class LibraryTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FoldersTabViewModel foldersTabViewModel = FoldersTabViewModel(queueRepository: queueRepository);
+    final FoldersTabViewModel foldersTabViewModel = FoldersTabViewModel();
     final PlaylistsTabViewModel playlistsTabViewModel = PlaylistsTabViewModel();
     final SongsTabViewModel songsTabViewModel = SongsTabViewModel();
     final AlbumsTabViewModel albumsTabViewModel = AlbumsTabViewModel();
