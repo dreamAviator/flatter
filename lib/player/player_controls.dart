@@ -36,6 +36,14 @@ class PlayerControls {
     }
   }
 
+  bool isPlayerPlaying() {
+    if (checkPlayerState() == "playing") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void play() {
     if (queueRepository.getQueueLength() == 0) {
       return;
@@ -70,6 +78,10 @@ class PlayerControls {
   }
 
   //playlist controls
+  int getCurrentIndex() {
+    return _currentIndex;
+  }
+
   void playSpecificFromQueue(int index) {
     player.setSource(queueRepository.getItemAtPos(index)[0]);
   }

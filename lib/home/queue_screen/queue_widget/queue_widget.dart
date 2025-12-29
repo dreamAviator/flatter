@@ -10,6 +10,7 @@ class QueueWidget extends StatefulWidget {
 
 class _QueueWidgetState extends State<QueueWidget> {
   List<List<String>> _items = playerControl.getQueue();
+  int currentIndex = playerControl.getCurrentIndex();
 
   void updateQueue(int oldIndex,int newIndex) {
     playerControl.moveItem(oldIndex, newIndex);
@@ -20,17 +21,29 @@ class _QueueWidgetState extends State<QueueWidget> {
     return ReorderableListView(
       children: [
         for (int index = 0; index < _items.length; index += 1)
-          Card(
-            key: Key('$index'),
-            child: Column(
-              children: [
-                ListTile(
-                  title: Text(_items[index][1]),
-                  subtitle: Text(_items[index][0]),
+          if (index == currentIndex)
+            Card.filled(
+              key: Key('$index'),
+              child: Column(
+                children: [
+                  ListTile(
+                    title: Text(_items[index][1]),
+                    subtitle: Text(_items[index][0]),
+                  ),
+                ],
+              ),
+            ) else
+            Card(
+                key: Key('$index'),
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text(_items[index][1]),
+                      subtitle: Text(_items[index][0]),
+                    ),
+                  ],
                 ),
-              ],
             ),
-          ),
       ],
       onReorder: (int oldIndex, int newIndex) {
         setState(() {

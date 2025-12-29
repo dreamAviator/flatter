@@ -1,19 +1,17 @@
+import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
 class PlayButton extends StatefulWidget {
-  const PlayButton({super.key,required this.onChanged});
-
-  final ValueChanged<bool> onChanged;
 
   @override
   State<PlayButton> createState() => _PlayButtonState();
 }
 
 class _PlayButtonState extends State<PlayButton> {
-  bool playing = false;
+  bool playing = playerControl.isPlayerPlaying();
 
   void togglePlayPause() {
-    widget.onChanged(playing);
+    playerControl.togglePlayPause();
     if (playing == true) {
       setState(() {
         playing = false;
