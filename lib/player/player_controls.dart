@@ -5,12 +5,11 @@ class PlayerControls {
   final player = MyPlayer();
   final QueueRepository queueRepository = QueueRepository();
 
-  int _currentIndex = 0;
   bool playing = false;
 
   //player controls
-  void setSource(String source) {
-    player.setSource(source);
+  void setSource(int index) {
+    player.setSource(getQueue()[index][0]);//sets the source to item at index
   }
 
   void togglePlayPause() {
@@ -19,8 +18,7 @@ class PlayerControls {
     } else if (player.playerState().toString() == "PlayerState.paused") {
       play();
     } else if (player.playerState().toString() == "PlayerState.stopped") {
-      player.setSource(queueRepository.getItemAtPos(_currentIndex)[0]);
-      play();
+      setSource(getCurrentIndex());
     }
   }
 
@@ -49,7 +47,7 @@ class PlayerControls {
       return;
     }
     if (checkPlayerState() == "stopped") {
-      player.setSource(queueRepository.getItemAtPos(_currentIndex)[0]);
+      setSource(getCurrentIndex());
     }
     player.play();
   }
@@ -65,45 +63,64 @@ class PlayerControls {
   void rewind() async {
     //hier seek zum anfang des songs oder vorheriger song
     if (true) {
-      _currentIndex = _currentIndex - 1;
+      makeCurrent(getCurrentIndex() - 1);
     }
-    setSource(queueRepository.getItemAtPos(_currentIndex)[0]);
+    setSource(getCurrentIndex());
     play();
   }
 
   void skip() async {
-    _currentIndex = _currentIndex + 1;
-    setSource(queueRepository.getItemAtPos(_currentIndex)[0]);
+    makeCurrent(getCurrentIndex() + 1);
+    setSource(getCurrentIndex());
     play();
   }
 
   //playlist controls
   int getCurrentIndex() {
-    return _currentIndex;
+    List<List<dynamic>> queue = getQueue();
+    for (int index = 0; index <= getQueueLength(); index++) {
+      if (queue[index][2] == true) {
+        return index;
+      }
+    }
+    return -1;
   }
 
   void playSpecificFromQueue(int index) {
     player.setSource(queueRepository.getItemAtPos(index)[0]);
   }
 
-  void addItemAt(int position, String item) {
-    queueRepository.addItem(getMetadata(item), position);
+  void addItemAt(int position, String file) {
+    bool current = false;
+    if (getQueueLength() == 0) {
+      current = true;
+    }
+    List<dynamic> item = getMetadata(file);
+    item.add(current);
+    queueRepository.addItem(item, position);
   }
 
-  List<List<String>> getQueue() {
+  List<List<dynamic>> getQueue() {
     return queueRepository.getQueue();
   }
 
-  void moveItem(oldIndex,newIndex) {
-    final List<String> file = queueRepository.getItemAtPos(oldIndex);
-    queueRepository.removeItem(oldIndex);
-    queueRepository.addItem(file, newIndex);
+  int getQueueLength() {
+    return queueRepository.getQueueLength();
   }
 
+  void moveItem(int oldIndex,int newIndex) {
+    final List<dynamic> item = queueRepository.getItemAtPos(oldIndex);
+    queueRepository.removeItem(oldIndex);
+    queueRepository.addItem(item, newIndex);
+  }
+
+  void makeCurrent(int index) {
+    queueRepository.makeCurrent(index);
+  }
   //metadata
-  List<String> getMetadata(String path) {
+  List<dynamic> getMetadata(String path) {
     int lastSlash = path.lastIndexOf("/");
     String name = path.substring(lastSlash + 1);
-    return [path,name];
+    return [path,[name]];
   }
 }

@@ -9,7 +9,7 @@ class QueueWidget extends StatefulWidget {
 }
 
 class _QueueWidgetState extends State<QueueWidget> {
-  List<List<String>> _items = playerControl.getQueue();
+  List<List<dynamic>> _items = playerControl.getQueue();
   int currentIndex = playerControl.getCurrentIndex();
 
   void updateQueue(int oldIndex,int newIndex) {
@@ -27,7 +27,7 @@ class _QueueWidgetState extends State<QueueWidget> {
               child: Column(
                 children: [
                   ListTile(
-                    title: Text(_items[index][1]),
+                    title: Text(_items[index][1][0]),
                     subtitle: Text(_items[index][0]),
                   ),
                 ],
@@ -38,7 +38,7 @@ class _QueueWidgetState extends State<QueueWidget> {
                 child: Column(
                   children: [
                     ListTile(
-                      title: Text(_items[index][1]),
+                      title: Text(_items[index][1][0]),
                       subtitle: Text(_items[index][0]),
                     ),
                   ],
@@ -52,6 +52,7 @@ class _QueueWidgetState extends State<QueueWidget> {
           }
           updateQueue(oldIndex, newIndex);
           _items = playerControl.getQueue();
+          currentIndex = playerControl.getCurrentIndex();
         });
       },
     );
