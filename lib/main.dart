@@ -1,12 +1,17 @@
+import 'package:app_dirs/app_dirs.dart';
 import 'package:flatter/home/home_navigation_bar/home_navigation_bar.dart';
 import 'package:flatter/player/player_controls.dart';
-import 'package:flatter/storage/database/database.dart';
+import 'package:flatter/storage/database/database_controller.dart';
 import 'package:flutter/material.dart';
 
+var appDirs = getAppDirs(qualifier: 'me',organization: 'dreamaviator',application: 'flatter');
 PlayerControls playerControl = PlayerControls();
-AppDatabase database = AppDatabase();
+DatabaseController databaseControl = DatabaseController();
 
 void main() {
+  print(appDirs.data);
+  databaseControl.writesomething();
+  databaseControl.readsomething();
   runApp(const MyApp());
 }
 
