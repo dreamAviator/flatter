@@ -33,7 +33,8 @@ dependencies:
   audioplayers: 6.5.1
   file_picker: ^10.3.7
   sqlite3: ^3.1.2
-  app_dirs: ^0.2.0
+  path_provider: ^2.1.5
+  toml: ^0.18.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

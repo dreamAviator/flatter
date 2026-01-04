@@ -1,13 +1,11 @@
-import 'package:flatter/storage/database/database.dart';
+import 'package:flatter/storage/database/folders_database.dart';
+import 'package:flatter/storage/database/library_database.dart';
 
 class DatabaseController {
-  final db = AppDatabase();
+  final LibraryDatabase library_db = LibraryDatabase();
+  final FoldersDatabase folder_db = FoldersDatabase();
 
-  void readsomething() {
-    print(db.readsomething());
-  }
-
-  void writesomething() {
-    db.writesomething();
+  DatabaseController() {
+    print("boobies hehe");
   }
 }
