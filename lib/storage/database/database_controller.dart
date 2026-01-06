@@ -17,14 +17,14 @@ class DatabaseController {
   }
 
   List<List<dynamic>> getFolders() {
-    List<List<dynamic>> startFolders = [[]];
+    List<List<dynamic>> startFolders = [];
     ResultSet resultSet = _folder_db.getFolders();
     for (Row row in resultSet) {
       bool isFavorited = false;
       if (row['isFavorited'] == 1) {
         isFavorited = true;
       }
-      startFolders.add(["${row['path']}",["${row['name']}"],isFavorited]);
+      startFolders.add(["${row['path']}","${row['name']}",isFavorited]);
     }
     return startFolders;
   }

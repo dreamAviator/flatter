@@ -12,7 +12,12 @@ class FoldersTabViewModel extends ChangeNotifier {
   List<List<dynamic>> toDisplay = [];//[[path,name,icontodisplay]]
   List<String> pathway = ["startfolders"];//[startfolders,
 
+  FoldersTabViewModel() {
+    openDefaultFolders();
+  }
+
   void updateList() {
+    print("notifying ore smth");
     notifyListeners();
   }
 
@@ -42,6 +47,7 @@ class FoldersTabViewModel extends ChangeNotifier {
   }
 
   void openDefaultFolders() {
+    print("uh here lol");
     print(startFolders);
     toDisplay.clear();
     List<List<dynamic>> favoriteFolders = [];
@@ -53,15 +59,18 @@ class FoldersTabViewModel extends ChangeNotifier {
         normalFolders.add(folder);
       }
     }
-    favoriteFolders.sort();
-    normalFolders.sort();
+    favoriteFolders.sort((a,b) => a[0][1].compareTo(b[0][1]));
+    normalFolders.sort((a,b) => a[0][1].compareTo(b[0][1]));
     for (List<dynamic> folder in favoriteFolders) {
-      toDisplay.add([folder[0],folder[1],Iconify(Mdi.folder_favorite)]);
+      toDisplay.add([folder[0],folder[1],Icons.favorite]);
+    }
+    for (List<dynamic> folder in normalFolders) {
+      toDisplay.add([folder[0],folder[1],Icons.folder]);
     }
     updateList();
   }
 
-  void threePoint() {
+  void threePoint(String path) {
 
   }
   /*

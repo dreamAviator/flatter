@@ -38,12 +38,9 @@ class FoldersDatabase {
 
   void addFolder(String path, String name) {
     db.execute('''
-      IF NOT EXISTS (SELECT * FROM folder WHERE path = '$path')
-      BEGIN
-        INSERT INTO folder (path,name,isFavorited)
-        VALUES
-        ('$path','$name',0)
-      END
+      REPLACE INTO folder (path,name,isFavorited)
+      VALUES
+      ('$path','$name',0)
     ''');
   }
 

@@ -38,7 +38,7 @@ class FoldersTab extends StatelessWidget {
                         leading: Icon(viewModel.toDisplay[index][2]),
                         title: Text(viewModel.toDisplay[index][1]),
                         subtitle: Text(viewModel.toDisplay[index][0]),
-                        //trailing: IconButton(onPressed: () => viewModel.threePoint(viewModel.toDisplay[index][0]), icon: Icon(Icons.more_vert)),
+                        trailing: IconButton(onPressed: () => viewModel.threePoint(viewModel.toDisplay[index][0]), icon: Icon(Icons.more_vert)),
                       )
                     ],
                   ),
