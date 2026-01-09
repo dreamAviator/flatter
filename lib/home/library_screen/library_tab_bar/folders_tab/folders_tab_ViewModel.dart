@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter_plus/iconify_flutter_plus.dart';
+import 'package:iconify_flutter_plus/icons/ci.dart';
 import 'package:iconify_flutter_plus/icons/mdi.dart';
 
 class FoldersTabViewModel extends ChangeNotifier {
@@ -17,7 +18,6 @@ class FoldersTabViewModel extends ChangeNotifier {
   }
 
   void updateList() {
-    print("notifying ore smth");
     notifyListeners();
   }
 
@@ -33,10 +33,17 @@ class FoldersTabViewModel extends ChangeNotifier {
   }
 
   void leaveFolder() {
-    if (pathway.length > 1) {
+    print(pathway);
+    print(pathway.length);
+    if (pathway.length > 2) {
       pathway.removeLast();
+      print(pathway);
+    } else if (pathway.length == 2) {
+      pathway.removeLast();
+      openDefaultFolders();
+      return;
     }
-    openEntry(pathway.last);
+    openFolder(pathway.last);
   }
 
   Future<void> openEntry(String path) async {
