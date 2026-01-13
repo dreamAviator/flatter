@@ -71,7 +71,9 @@ class FoldersTabViewModel extends ChangeNotifier {
       if (await FileSystemEntity.isDirectory(entry)) {
         folders.add([entry,name,Icons.folder]);
       } else {
-        files.add([entry,name,Icons.audio_file]);
+        if (entry.endsWith(".mp3") || entry.endsWith(".m4a") || entry.endsWith(".wav") || entry.endsWith(".ogg") || entry.endsWith(".opus") || entry.endsWith(".aac")) {
+          files.add([entry, name, Icons.audio_file]);
+        }
       }
     }
     for (List<dynamic> item in folders) {
@@ -80,6 +82,7 @@ class FoldersTabViewModel extends ChangeNotifier {
     for (List<dynamic> item in files) {
       toDisplay.add(item);
     }
+    title = pathway.last;
     updateList();
   }
 
@@ -102,6 +105,7 @@ class FoldersTabViewModel extends ChangeNotifier {
     for (List<dynamic> folder in normalFolders) {
       toDisplay.add([folder[0],folder[1],Icons.folder]);
     }
+    title = "Folders";
     updateList();
   }
 

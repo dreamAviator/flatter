@@ -79,8 +79,10 @@ class PlayerControls {
   int getCurrentIndex() {
     List<List<dynamic>> queue = getQueue();
     for (int index = 0; index <= getQueueLength(); index++) {
-      if (queue[index][2] == true) {
-        return index;
+      if (queue.isNotEmpty) {
+        if (queue[index][2] == true) {
+          return index;
+        }
       }
     }
     return -1;

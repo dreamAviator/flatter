@@ -1,6 +1,5 @@
 import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/home/player_screen/player_screen_ViewModel.dart';
-import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
 class PlayerScreen extends StatelessWidget {
