@@ -3,6 +3,12 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:toml/toml.dart';
 
+extension on TomlDocument {
+  Future<void> save(String filename) {
+    return File(filename).writeAsString(toString());
+  }
+}
+
 class SettingsController {
   Map defaultSettingsMap = {};
   late Map settingsMap;
@@ -23,5 +29,13 @@ class SettingsController {
     settingsDocument = await TomlDocument.load(path);
     settingsMap = settingsDocument.toMap();
     print(settingsMap);
+  }
+
+  void saveSettings() async {
+    Directory dataDirectory = await getApplicationSupportDirectory();
+    String path = dataDirectory.path;
+    path = "${path}/flatter_settings.toml";
+    TomlDocument settingsDocument = TomlDocument.fromMap(settingsMap);
+    await settingsDocument.save(path);
   }
 }
