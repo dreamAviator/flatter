@@ -26,6 +26,9 @@ class LibraryTabBar extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Library"),
+          actions: [
+            //Sync Button
+          ],
           bottom: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.folder_copy),),

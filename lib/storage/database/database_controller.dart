@@ -3,11 +3,15 @@ import 'package:flatter/storage/database/library_database.dart';
 import 'package:sqlite3/common.dart';
 
 class DatabaseController {
-  final LibraryDatabase _library_db = LibraryDatabase();
-  final FoldersDatabase _folder_db = FoldersDatabase();
+  late LibraryDatabase _library_db;
+  late FoldersDatabase _folder_db;
 
-  DatabaseController() {
-    print("boobies hehe");
+  Future<void> initialize() async {
+    _library_db = LibraryDatabase();
+    _folder_db = FoldersDatabase();
+    await _library_db.initialize();
+    await _folder_db.initialize();
+    return;
   }
 
   void addFolder(String path) {

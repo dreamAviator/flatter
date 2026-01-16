@@ -6,11 +6,12 @@ import 'package:sqlite3/sqlite3.dart';
 class FoldersDatabase {
   late Database db;
 
-  FoldersDatabase() {
-    openDatabase();
+  Future<void> initialize() async {
+    await openDatabase();
+    return;
   }
 
-  void openDatabase() async {
+  Future<void> openDatabase() async {
     Directory dataDirectory = await getApplicationSupportDirectory();
     print(dataDirectory.path);
     String path = dataDirectory.path;
@@ -18,6 +19,7 @@ class FoldersDatabase {
     print(path);
     db = sqlite3.open(path);
     createTables();
+    return;
   }
 
   void closeDatabase() {

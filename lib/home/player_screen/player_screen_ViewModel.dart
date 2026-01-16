@@ -1,5 +1,8 @@
 import 'package:flatter/main.dart';
+import 'package:flatter/settings/settings_screen.dart';
+import 'package:flatter/settings/settings_screen_ViewModel.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class PlayerScreenViewModel extends ChangeNotifier {
 
