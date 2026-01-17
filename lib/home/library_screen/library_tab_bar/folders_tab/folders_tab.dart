@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flatter/home/library_screen/library_tab_bar/folders_tab/folders_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/library_tab_bar/folders_tab/three_dot_options/three_dot_options_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,8 @@ class FoldersTab extends StatelessWidget {
                         leading: Icon(viewModel.toDisplay[index][2]),
                         title: Text(viewModel.toDisplay[index][1]),
                         subtitle: Text(viewModel.toDisplay[index][0]),
-                        trailing: IconButton(onPressed: () => viewModel.threePoint(viewModel.toDisplay[index][0]), icon: Icon(Icons.more_vert)),
+                        trailing: SongOptionsButton(viewModel.toDisplay[index][0]),
+                        //trailing: IconButton(onPressed: () => viewModel.threePoint(viewModel.toDisplay[index][0]), icon: Icon(Icons.more_vert)),
                       )
                     ],
                   ),

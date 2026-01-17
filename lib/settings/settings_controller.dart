@@ -12,7 +12,10 @@ extension on TomlDocument {
 
 class SettingsController {
   Map defaultSettingsMap = {
-  };
+    'startTab':1,
+    'lastTab':1,
+    'startTabSetting':['dropdown',-1,[-1,0,1,2]]//[selection,type,[options]] (-1 = last)
+  };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
 
   Future<void> initialize() async {
@@ -26,7 +29,7 @@ class SettingsController {
     String path = dataDirectory.path;
     path = "${path}/flatter_settings.toml";
     if (await File(path).exists() == false) {
-      settingsDocument = TomlDocument.fromMap(defaultSettingsMap);
+      settingsDocument = TomlDocument.fromMap(settingsMap);
       File(path).writeAsString(settingsDocument.toString());
     }
     settingsDocument = await TomlDocument.load(path);
@@ -35,7 +38,10 @@ class SettingsController {
   }
 
   void changeSetting(String key,dynamic value) {
+    print(key);
+    print(value);
     settingsMap[key] = value;
+    print(settingsMap);
     saveSettings();
   }
 
@@ -51,12 +57,12 @@ class SettingsController {
     Directory dataDirectory = await getApplicationSupportDirectory();
     String path = dataDirectory.path;
     path = "${path}/flatter_settings.toml";
-    TomlDocument settingsDocument = TomlDocument.fromMap(defaultSettingsMap);
+    TomlDocument settingsDocument = TomlDocument.fromMap(settingsMap);
     await settingsDocument.save(path);
   }
 
   List<Widget> getSettingsOptions() {
-    //bruh ok das könnte komplizierter werden
+    //später implementieren
     return [];
   }
 }

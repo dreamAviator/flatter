@@ -4,6 +4,7 @@ import 'package:flatter/home/player_screen/player_screen.dart';
 import 'package:flatter/home/player_screen/player_screen_ViewModel.dart';
 import 'package:flatter/home/queue_screen/queue_screen.dart';
 import 'package:flatter/home/queue_screen/queue_screen_ViewModel.dart';
+import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
 class HomeNavigationBar extends StatefulWidget {
@@ -14,7 +15,7 @@ class HomeNavigationBar extends StatefulWidget {
 }
 
 class _HomeNavigationBarState extends State<HomeNavigationBar> {
-  int currentPageIndex = 1;
+  int currentPageIndex = settingsControl.loadSetting('startTab');
   final PlayerScreenViewModel playerScreenViewModel = PlayerScreenViewModel();
   final LibraryScreenViewModel libraryScreenViewModel = LibraryScreenViewModel();
   final QueueScreenViewModel queueScreenViewModel = QueueScreenViewModel();
@@ -25,6 +26,7 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
+            settingsControl.changeSetting('lastTab', index);
           });
         },
         selectedIndex: currentPageIndex,
