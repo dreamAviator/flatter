@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'flatter',
       theme: ThemeData(
-        colorScheme: settingsControl.loadSetting("colorScheme"),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
       ),
       home: const HomeNavigationBar(),
     );

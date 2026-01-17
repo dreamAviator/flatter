@@ -12,7 +12,6 @@ extension on TomlDocument {
 
 class SettingsController {
   Map defaultSettingsMap = {
-    'colorScheme': ColorScheme.fromSeed(seedColor: Colors.green),
   };
   late Map settingsMap;
 
@@ -52,7 +51,7 @@ class SettingsController {
     Directory dataDirectory = await getApplicationSupportDirectory();
     String path = dataDirectory.path;
     path = "${path}/flatter_settings.toml";
-    TomlDocument settingsDocument = TomlDocument.fromMap(settingsMap);
+    TomlDocument settingsDocument = TomlDocument.fromMap(defaultSettingsMap);
     await settingsDocument.save(path);
   }
 
