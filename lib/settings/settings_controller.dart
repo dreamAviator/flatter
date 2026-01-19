@@ -29,7 +29,7 @@ class SettingsController {
     String path = dataDirectory.path;
     path = "${path}/flatter_settings.toml";
     if (await File(path).exists() == false) {
-      settingsDocument = TomlDocument.fromMap(settingsMap);
+      settingsDocument = TomlDocument.fromMap(defaultSettingsMap);
       File(path).writeAsString(settingsDocument.toString());
     }
     settingsDocument = await TomlDocument.load(path);

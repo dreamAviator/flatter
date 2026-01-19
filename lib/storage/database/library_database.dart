@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flatter/main.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 
@@ -11,9 +12,7 @@ class LibraryDatabase {
   }
 
   Future<void> openDatabase() async {
-    Directory dataDirectory = await getApplicationSupportDirectory();
-    print(dataDirectory.path);
-    String path = dataDirectory.path;
+    String path = await pathProvider.getDataDir();
     path = "${path}/flatter_library.sqlite";
     print(path);
     db = sqlite3.open(path);

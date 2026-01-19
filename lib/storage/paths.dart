@@ -2,13 +2,26 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 
+
 class PathProvider {
-  PathProvider() {
-    print("hello");
+
+  Future<void> initialize() async {
+    await getDataDir();
+    return;
   }
 
   Future<String> getDataDir() async {
-    Directory dataDirectory = await getApplicationSupportDirectory();
-    return dataDirectory.path;
+    if (Platform.isAndroid == false) {
+      Directory dataDirectory = await getApplicationSupportDirectory();
+      return dataDirectory.path;
+    } else {
+      Directory? dataDirectory = await getExternalStorageDirectory();
+      if (dataDirectory != null) {
+        return dataDirectory.path;
+      } else {
+        Directory dataDirectory = await getApplicationSupportDirectory();
+        return dataDirectory.path;
+      }
+    }
   }
 }

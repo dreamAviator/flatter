@@ -2,19 +2,23 @@ import 'package:flatter/home/home_navigation_bar.dart';
 import 'package:flatter/player/player_controls.dart';
 import 'package:flatter/storage/database/database_controller.dart';
 import 'package:flatter/settings/settings_controller.dart';
+import 'package:flatter/storage/paths.dart';
 import 'package:flutter/material.dart';
 
 PlayerControls playerControl = PlayerControls();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
+late PathProvider pathProvider;
 
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  pathProvider = PathProvider();
   databaseControl = DatabaseController();
   settingsControl = SettingsController();
+  await pathProvider.initialize();
   await databaseControl.initialize();
   await settingsControl.initialize();
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

@@ -100,10 +100,10 @@ class FoldersTabViewModel extends ChangeNotifier {
     favoriteFolders.sort((a,b) => a[0][1].compareTo(b[0][1]));
     normalFolders.sort((a,b) => a[0][1].compareTo(b[0][1]));
     for (List<dynamic> folder in favoriteFolders) {
-      toDisplay.add([folder[0],folder[1],Icons.favorite,FolderOptionsButton(path: folder[0])]);
+      toDisplay.add([folder[0],folder[1],Icons.favorite,DefaultFolderOptionsButton(path: folder[0])]);
     }
     for (List<dynamic> folder in normalFolders) {
-      toDisplay.add([folder[0],folder[1],Icons.folder,FolderOptionsButton(path: folder[0])]);
+      toDisplay.add([folder[0],folder[1],Icons.folder,DefaultFolderOptionsButton(path: folder[0])]);
     }
     title = "Folders";
     updateList();
