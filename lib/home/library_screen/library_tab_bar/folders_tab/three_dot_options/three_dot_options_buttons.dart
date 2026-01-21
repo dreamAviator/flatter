@@ -102,6 +102,7 @@ class DefaultFolderOptionsButton extends StatelessWidget {
   }
 
   void changeName() {
+
     //hier dann ein dialog mit entry hin wo man einen namen eintragen kann
   }
 
@@ -126,8 +127,39 @@ class DefaultFolderOptionsButton extends StatelessWidget {
           child: Text("Add/Remove favorite"),
         ),
         PopupMenuItem(
-          onTap: addToFavorites,
-          child: Text("change Name"),
+          onTap: () => showDialog(
+            context: context,
+            builder: (BuildContext context) => Dialog(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        OutlinedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("Cancel"),
+                        ),
+                        OutlinedButton(
+                          onPressed: () {
+                            print("bleh >w<");
+                          },
+                          child: Text("Confirm"),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            )
+          ),
+          child: Text("Change Name"),
         ),
         PopupMenuItem(
           onTap: moreOptions,
