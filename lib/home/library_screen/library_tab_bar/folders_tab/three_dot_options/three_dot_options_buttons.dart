@@ -101,9 +101,8 @@ class DefaultFolderOptionsButton extends StatelessWidget {
     databaseControl.changeFolderFavouriteStatus(path);
   }
 
-  void changeName() {
-
-    //hier dann ein dialog mit entry hin wo man einen namen eintragen kann
+  void changeName(String name) {
+    databaseControl.changeFolderName(path, name);
   }
 
   void moreOptions() {
@@ -112,6 +111,7 @@ class DefaultFolderOptionsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
         PopupMenuItem(
@@ -136,6 +136,13 @@ class DefaultFolderOptionsButton extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    TextField(
+                      controller: controller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Name (leave empty to reset)",
+                      ),
+                    ),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -148,7 +155,8 @@ class DefaultFolderOptionsButton extends StatelessWidget {
                         ),
                         OutlinedButton(
                           onPressed: () {
-                            print("bleh >w<");
+                            changeName(controller.text);
+                            Navigator.pop(context);
                           },
                           child: Text("Confirm"),
                         )

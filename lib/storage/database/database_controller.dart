@@ -42,6 +42,10 @@ class DatabaseController {
   }
 
   void changeFolderName(String path, String name) {
+    if (name == "") {
+      int lastSlash = path.lastIndexOf("/");
+      name = path.substring(lastSlash + 1);
+    }
     _folder_db.changeName(path, name);
   }
 
