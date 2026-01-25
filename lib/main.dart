@@ -6,6 +6,7 @@ import 'package:flatter/storage/paths.dart';
 import 'package:flutter/material.dart';
 
 PlayerControls playerControl = PlayerControls();
+
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
 late PathProvider pathProvider;

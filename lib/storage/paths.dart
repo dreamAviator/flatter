@@ -25,3 +25,9 @@ class PathProvider {
     }
   }
 }
+
+class DirectoryManager {
+  Future<void> initialize() async {
+
+  }
+}

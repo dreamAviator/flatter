@@ -17,10 +17,6 @@ class SongOptionsButton extends StatelessWidget {
 
   }
 
-  void moreOptions() {
-
-  }
-
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
@@ -38,7 +34,19 @@ class SongOptionsButton extends StatelessWidget {
           child: Text("Artist"),
         ),
         PopupMenuItem(
-          onTap: moreOptions,
+          onTap: () {
+            showModalBottomSheet(
+                context: context,
+                showDragHandle: true,
+                builder: (BuildContext context) {
+                  return SizedBox(
+                    child: Center(
+                      child: Text("More options"),
+                    ),
+                  );
+                }
+            );
+          },
           child: Text("More options"),
         )
       ],
@@ -59,10 +67,6 @@ class FolderOptionsButton extends StatelessWidget {
     playerControl.addItem(path);
   }
 
-  void moreOptions() {
-
-  }
-
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
@@ -76,7 +80,19 @@ class FolderOptionsButton extends StatelessWidget {
           child: Text("Enqueue"),
         ),
         PopupMenuItem(
-          onTap: moreOptions,
+          onTap: () {
+            showModalBottomSheet(
+                context: context,
+                showDragHandle: true,
+                builder: (BuildContext context) {
+                  return SizedBox(
+                    child: Center(
+                      child: Text("More options"),
+                    ),
+                  );
+                }
+            );
+          },
           child: Text("More options"),
         )
       ],
@@ -103,10 +119,6 @@ class DefaultFolderOptionsButton extends StatelessWidget {
 
   void changeName(String name) {
     databaseControl.changeFolderName(path, name);
-  }
-
-  void moreOptions() {
-
   }
 
   @override
@@ -170,7 +182,19 @@ class DefaultFolderOptionsButton extends StatelessWidget {
           child: Text("Change Name"),
         ),
         PopupMenuItem(
-          onTap: moreOptions,
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              showDragHandle: true,
+              builder: (BuildContext context) {
+                return SizedBox(
+                  child: Center(
+                    child: Text("More options"),
+                  ),
+                );
+              }
+            );
+          },
           child: Text("More options"),
         )
       ],
