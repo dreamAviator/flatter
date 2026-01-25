@@ -69,4 +69,10 @@ class FoldersDatabase {
       UPDATE folder SET name = '$name' WHERE path = '$path'
     ''');
   }
+
+  void remove(String path) {
+    db.execute('''
+      DELETE FROM folder WHERE path = '$path'
+    ''');
+  }
 }

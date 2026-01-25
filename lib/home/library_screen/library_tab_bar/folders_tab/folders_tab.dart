@@ -32,7 +32,15 @@ class FoldersTab extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
-                  onTap: () => viewModel.openEntry(viewModel.toDisplay[index][0]),
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text("loading..."),
+                        duration: const Duration(microseconds: 2),
+                      ),
+                    );
+                    viewModel.openEntry(viewModel.toDisplay[index][0]);
+                  },
                   child: Column(
                     children: [
                       ListTile(

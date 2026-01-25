@@ -37,7 +37,7 @@ dependencies:
   toml: ^0.18.0
   iconify_flutter_plus: ^1.0.4
   dynamic_color: ^1.8.1
-  provider: ^6.1.5
+  saf_util: ^0.11.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

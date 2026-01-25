@@ -25,6 +25,7 @@ class SongOptionsButton extends StatelessWidget {
           onTap: addNext,
           child: Text("Add next"),
         ),
+        PopupMenuDivider(),
         PopupMenuItem(
           onTap: goToAlbum,
           child: Text("Album"),
@@ -33,6 +34,7 @@ class SongOptionsButton extends StatelessWidget {
           onTap: goToArtist,
           child: Text("Artist"),
         ),
+        PopupMenuDivider(),
         PopupMenuItem(
           onTap: () {
             showModalBottomSheet(
@@ -79,6 +81,7 @@ class FolderOptionsButton extends StatelessWidget {
           onTap: addNext,
           child: Text("Enqueue"),
         ),
+        PopupMenuDivider(),
         PopupMenuItem(
           onTap: () {
             showModalBottomSheet(
@@ -117,6 +120,10 @@ class DefaultFolderOptionsButton extends StatelessWidget {
     databaseControl.changeFolderFavouriteStatus(path);
   }
 
+  void remove() {
+    databaseControl.removeFolder(path);
+  }
+
   void changeName(String name) {
     databaseControl.changeFolderName(path, name);
   }
@@ -134,9 +141,14 @@ class DefaultFolderOptionsButton extends StatelessWidget {
           onTap: addNext,
           child: Text("Enqueue"),
         ),
+        PopupMenuDivider(),
         PopupMenuItem(
           onTap: addToFavorites,
           child: Text("Add/Remove favorite"),
+        ),
+        PopupMenuItem(
+          onTap: remove,
+          child: Text("Remove"),
         ),
         PopupMenuItem(
           onTap: () => showDialog(
@@ -179,8 +191,9 @@ class DefaultFolderOptionsButton extends StatelessWidget {
               ),
             )
           ),
-          child: Text("Change Name"),
+          child: Text("Rename"),
         ),
+        PopupMenuDivider(),
         PopupMenuItem(
           onTap: () {
             showModalBottomSheet(

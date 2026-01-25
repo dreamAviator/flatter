@@ -4,9 +4,11 @@ import 'package:flatter/storage/database/database_controller.dart';
 import 'package:flatter/settings/settings_controller.dart';
 import 'package:flatter/storage/paths.dart';
 import 'package:flutter/material.dart';
+import 'package:saf_util/saf_util.dart';
 
 PlayerControls playerControl = PlayerControls();
-
+DirectoryManager directoryControl = DirectoryManager();
+SafUtil safutil = SafUtil();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
 late PathProvider pathProvider;
