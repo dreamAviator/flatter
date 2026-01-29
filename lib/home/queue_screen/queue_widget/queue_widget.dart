@@ -19,6 +19,7 @@ class _QueueWidgetState extends State<QueueWidget> {
   @override
   Widget build(BuildContext context) {
     return ReorderableListView(
+      buildDefaultDragHandles: true,
       children: [
         for (int index = 0; index < _items.length; index += 1)
           if (index == currentIndex)

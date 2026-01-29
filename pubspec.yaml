@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # audioplayers: ^6.5.1 //not used after implementing
+  # audioplayers: ^6.5.1 //not used after implementing playing from uris
   file_picker: ^10.3.7
   sqlite3: ^3.1.2
   path_provider: ^2.1.5
@@ -40,6 +40,7 @@ dependencies:
   saf_util: ^0.11.0
   just_audio: ^0.10.5
   just_audio_media_kit: ^2.1.0
+  audiotags: ^1.4.5
 
   # Select the native media_kit libs based on your usage:
   # NOTE: if including video libs already, these audio libs aren't necessary.

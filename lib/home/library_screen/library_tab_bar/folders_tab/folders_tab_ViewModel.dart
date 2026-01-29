@@ -60,6 +60,8 @@ class FoldersTabViewModel extends ChangeNotifier {
     } else {
       if (Platform.isAndroid == true) {
         if (path.endsWith(".mp3") || path.endsWith(".m4a") || path.endsWith(".wav") || path.endsWith(".ogg") || path.endsWith(".opus") || path.endsWith(".aac")) {
+          //metadataControl.loadFile(path);
+          print(directoryControl.createTempFile(path));
           playerControl.addItem(path);
         } else {
           pathway.add(path);

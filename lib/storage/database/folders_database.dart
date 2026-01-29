@@ -13,7 +13,7 @@ class FoldersDatabase {
   }
 
   Future<void> openDatabase() async {
-    String path = await pathProvider.getDataDir();
+    String path = pathProvider.dataDirectory;
     path = "${path}/flatter_library_folders.sqlite";
     print(path);
     db = sqlite3.open(path);

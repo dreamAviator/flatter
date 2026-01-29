@@ -12,7 +12,7 @@ class LibraryDatabase {
   }
 
   Future<void> openDatabase() async {
-    String path = await pathProvider.getDataDir();
+    String path = pathProvider.dataDirectory;
     path = "${path}/flatter_library.sqlite";
     print(path);
     db = sqlite3.open(path);

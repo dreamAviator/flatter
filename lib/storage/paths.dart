@@ -4,30 +4,40 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:saf_util/saf_util.dart';
 import 'package:saf_util/saf_util_platform_interface.dart';
+import 'package:uri_to_file_new/uri_to_file.dart';
 
 import '../main.dart';
 
 
 class PathProvider {
+  late final String dataDirectory;
+  late final String tempDirectory;
 
   Future<void> initialize() async {
     await getDataDir();
+    await getTempDir();
     return;
   }
 
-  Future<String> getDataDir() async {
+  Future<void> getDataDir() async {
     if (Platform.isAndroid == false) {
-      Directory dataDirectory = await getApplicationSupportDirectory();
-      return dataDirectory.path;
+      Directory dataDirectoryDirectory = await getApplicationSupportDirectory();
+      dataDirectory = dataDirectoryDirectory.path;
     } else {
-      Directory? dataDirectory = await getExternalStorageDirectory();
-      if (dataDirectory != null) {
-        return dataDirectory.path;
+      Directory? dataDirectoryDirectory = await getExternalStorageDirectory();
+      if (dataDirectoryDirectory != null) {
+        dataDirectory = dataDirectoryDirectory.path;
       } else {
-        Directory dataDirectory = await getApplicationSupportDirectory();
-        return dataDirectory.path;
+        Directory dataDirectoryDirectory = await getApplicationSupportDirectory();
+        dataDirectory = dataDirectoryDirectory.path;
       }
     }
+  }
+
+  Future<void> getTempDir() async {
+    Directory tempDirectoryDirectory = await getTemporaryDirectory();
+    tempDirectory = tempDirectoryDirectory.path;
+    return;
   }
 }
 
@@ -59,5 +69,11 @@ class DirectoryManager {
 
   Future<SafDocumentFile?> getDocumentDirectoryFromUri(String path) async {
     return await safutil.documentFileFromUri(path, true);
+  }
+
+  Future<String> createTempFile(String uriPath) async {
+    //File file = await toFile(uriPath);
+    File.fromUri(getD);
+    //return file.path;
   }
 }
