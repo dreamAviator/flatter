@@ -6,7 +6,11 @@ class MetadataControl {
   late Tag? tags;
 
   Future<void> loadFile(String path) async {
-    //TODO: ich brauch eine datei oder zumindest den pfad maaaaan
     tags = await AudioTags.read(path);
+    print("hello");
+    print(tags?.title);
+    print(tags?.trackArtist);
+    print(tags?.album);
+    print("done lol");
   }
 }

@@ -61,7 +61,7 @@ class FoldersTabViewModel extends ChangeNotifier {
       if (Platform.isAndroid == true) {
         if (path.endsWith(".mp3") || path.endsWith(".m4a") || path.endsWith(".wav") || path.endsWith(".ogg") || path.endsWith(".opus") || path.endsWith(".aac")) {
           //metadataControl.loadFile(path);
-          print(directoryControl.createTempFile(path));
+          //print(directoryControl.getFilePathFromUri(path));
           playerControl.addItem(path);
         } else {
           pathway.add(path);
@@ -72,6 +72,9 @@ class FoldersTabViewModel extends ChangeNotifier {
           pathway.add(path);
           openFolder(path);
         } else {
+          print("here");
+          metadataControl.loadFile(path);
+          databaseControl.addSong(path);
           playerControl.addItem(path);
         }
       }
