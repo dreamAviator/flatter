@@ -1,3 +1,5 @@
+# **this branch is before switching this application to be a navidrome client. offline library functionality might be added later aagain**
+
 # flatter
 
 An offline music player and metadata editor
