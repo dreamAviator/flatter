@@ -1,6 +1,7 @@
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddServerPopup {
   static void showAddServerPopUp(BuildContext context) {
@@ -76,17 +77,21 @@ class AddServerPopup {
                       },
                     ),
                     Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            //process data
-                            //also einmal connection testen, dann aus dem speichern test save machen
-                            subsonicService.authenticate(serverURL, serverUsername, serverPassword);//gibt den status der authentifizierung
-                            databaseControl.addServer(serverName, serverURL, serverUsername,serverPassword);
-                            Navigator.of(context).pop();
-                          }
+                      child: Consumer(
+                        builder: (context,ref,child) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                //process data
+                                //also einmal connection testen, dann aus dem speichern test save machen
+                                subsonicService.authenticate(serverURL, serverUsername, serverPassword);//gibt den status der authentifizierung
+                                databaseControl.addServer(serverName, serverURL, serverUsername,serverPassword);
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            child: Text("Save"),
+                          );
                         },
-                        child: Text("Save"),
                       ),
                     )
                   ],

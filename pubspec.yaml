@@ -42,6 +42,7 @@ dependencies:
   just_audio_media_kit: ^2.1.0
   http: ^1.6.0
   crypto: ^3.0.7
+  flutter_riverpod: ^3.2.1
 
   # Select the native media_kit libs based on your usage:
   # NOTE: if including video libs already, these audio libs aren't necessary.

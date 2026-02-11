@@ -5,6 +5,7 @@ import 'package:flatter/storage/database/database_controller.dart';
 import 'package:flatter/settings/settings_controller.dart';
 import 'package:flatter/storage/paths.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:saf_util/saf_util.dart';
 
 PlayerControls playerControl = PlayerControls();
@@ -24,7 +25,11 @@ void main() async {
   await pathProvider.initialize();
   await databaseControl.initialize();
   await settingsControl.initialize();
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 void startApp() {
