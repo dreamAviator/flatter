@@ -1,3 +1,4 @@
+import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/home_navigation_bar.dart';
 import 'package:flatter/player/player_controls.dart';
 import 'package:flatter/storage/database/database_controller.dart';
@@ -9,6 +10,7 @@ import 'package:saf_util/saf_util.dart';
 PlayerControls playerControl = PlayerControls();
 DirectoryManager directoryControl = DirectoryManager();
 SafUtil safutil = SafUtil();
+SubsonicService subsonicService = SubsonicService();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
 late PathProvider pathProvider;

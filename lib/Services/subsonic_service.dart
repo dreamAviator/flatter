@@ -32,12 +32,21 @@ class SubsonicService {
     final String version = "1.16.1";//irgendwo anders herbekommen
     final String appName = "flatter";//irgendwo anders herbekommen
     final String token = md5.convert(utf8.encode(password + salt)).toString();
-    return ["https://$baseURL/rest/",".view?u=$username&t=$token&s=$salt&v=$version&c=$appName"];
+    return ["https://$baseURL/rest/",".view?u=$username&t=$token&s=$salt&v=$version&c=$appName&f=json"];
   }
 
   Future<bool> authenticate(String baseURL,String username,String password) async {
     List<String> url = getURL(baseURL, username, password);
     final uri = Uri.parse("${url[0]}ping${url[1]}");
     final data = await http.get(uri);
+    print(data.body);
+    final responseMap = jsonDecode(data.body);
+    print(responseMap);
+    print(responseMap["subsonic-response"]["status"]);
+    bool ok = false;
+    if (responseMap["subsonic-response"]["status"] == "ok") {
+      ok = true;
+    }
+    return ok;
   }
 }

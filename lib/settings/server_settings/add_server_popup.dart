@@ -81,6 +81,7 @@ class AddServerPopup {
                           if (_formKey.currentState!.validate()) {
                             //process data
                             //also einmal connection testen, dann aus dem speichern test save machen
+                            subsonicService.authenticate(serverURL, serverUsername, serverPassword);//gibt den status der authentifizierung
                             databaseControl.addServer(serverName, serverURL, serverUsername,serverPassword);
                             Navigator.of(context).pop();
                           }
