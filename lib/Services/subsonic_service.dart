@@ -38,15 +38,23 @@ class SubsonicService {
   Future<bool> authenticate(String baseURL,String username,String password) async {
     List<String> url = getURL(baseURL, username, password);
     final uri = Uri.parse("${url[0]}ping${url[1]}");
-    final data = await http.get(uri);
-    print(data.body);
-    final responseMap = jsonDecode(data.body);
-    print(responseMap);
-    print(responseMap["subsonic-response"]["status"]);
-    bool ok = false;
-    if (responseMap["subsonic-response"]["status"] == "ok") {
-      ok = true;
+    try {
+      final data = await http.get(uri);
+      print(data.body);
+      if (data.statusCode != 200) {
+        return false;
+      }
+      final responseMap = jsonDecode(data.body);
+      print(responseMap);
+      print(responseMap["subsonic-response"]["status"]);
+      bool ok = false;
+      if (responseMap["subsonic-response"]["status"] == "ok") {
+        ok = true;
+      }
+      return ok;
+    } catch(error) {
+      return false;
     }
-    return ok;
+
   }
 }

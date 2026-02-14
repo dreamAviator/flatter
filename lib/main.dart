@@ -1,3 +1,4 @@
+import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/home_navigation_bar.dart';
 import 'package:flatter/player/player_controls.dart';
@@ -12,6 +13,7 @@ PlayerControls playerControl = PlayerControls();
 DirectoryManager directoryControl = DirectoryManager();
 SafUtil safutil = SafUtil();
 SubsonicService subsonicService = SubsonicService();
+RiverpodManager riverpodManager = RiverpodManager();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
 late PathProvider pathProvider;

@@ -125,6 +125,7 @@ class DefaultFolderOptionsButton extends StatelessWidget {
   }
 
   void changeName(String name) {
+
     databaseControl.changeFolderName(path, name);
   }
 
