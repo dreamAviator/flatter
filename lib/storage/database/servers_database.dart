@@ -43,6 +43,18 @@ class ServersDatabase {
     ''');
   }
 
+  List<List> getServers() {
+    ResultSet serverInfosMap = db.select('''
+      SELECT id,name,url FROM servers
+    ''');
+    print(serverInfosMap);
+    List<List> returnList = [];
+    for (Map server in serverInfosMap) {
+      returnList.add([server['id'],server['name'],server['url']]);
+    }
+    return returnList;
+  }
+
   ResultSet getServerInfo(int id) {
     ResultSet result = db.select('''
       //hier credentials bekommen

@@ -1,4 +1,5 @@
 import 'package:flatter/settings/server_settings/add_server_popup.dart';
+import 'package:flatter/settings/server_settings/server_list.dart';
 import 'package:flatter/settings/settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,20 +19,24 @@ class ServerSettingsScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
         ),
       ),
-      body: Column(//hier irgendwie die server anzeigen, der view muss obviously aktualisiert werden
+      body: Column(
         children: [
-          ListView(
-            shrinkWrap: true,
-            children: [
-              ListTile(
-                leading: Icon(Icons.add),
-                title: Text("Add Server"),
-                onTap: () {
-                  AddServerPopup.showAddServerPopUp(context);
-                },
-              )
-            ],
-          )
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                ListTile(
+                  leading: Icon(Icons.add),
+                  title: Text("Add Server"),
+                  onTap: () {
+                    AddServerPopup.showAddServerPopUp(context);
+                  },
+                ),
+                Divider(),
+                ServerList(),
+              ],
+            ),
+          ),
         ],
       ),
     );
