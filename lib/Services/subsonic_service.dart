@@ -55,6 +55,22 @@ class SubsonicService {
     } catch(error) {
       return false;
     }
+  }
 
+  Future<void> getAlbums() async {
+    List<String> url = getURL(null, null, null);
+    final uri = Uri.parse("${url[0]}getAlbumList${url[1]}&type=random");
+    try {
+      final data = await http.get(uri);
+      print(data.body);
+      if (data.statusCode != 200) {
+        return;
+      }
+      final responseMap = jsonDecode(data.body);
+      print(responseMap);
+      return;
+    } catch(error) {
+      return;
+    }
   }
 }

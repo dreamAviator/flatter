@@ -33,6 +33,7 @@ class RiverpodManager {
           onTap: () {
             //select server
             //go to page smh
+            subsonicService.getAlbums();
           },
         )
       );
