@@ -9,6 +9,8 @@ class AlbumsTab extends StatelessWidget {
   final AlbumsTabViewModel viewModel;
 
   Widget buildListView(List<Map<String,dynamic>> items) {
+    print("buildListView gets executed");
+    print(items);
     List<Widget> widgetList = [];
     for (Map<String,dynamic> albumMap in items) {
       widgetList.add(
@@ -33,9 +35,10 @@ class AlbumsTab extends StatelessWidget {
         ),
       );
     }
-    return ListView(children: widgetList,);
+    return ListView(shrinkWrap: true,children: widgetList,);
   }
-
+  //später diese liste aus drop down menüs und den einstellungen kriegen und so
+  static const List<String> filterSortList = ["random","10","0"];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,10 +49,20 @@ class AlbumsTab extends StatelessWidget {
         ),
         Consumer(
           builder: (context,ref,child) {
-            final albumList = ref.watch(riverpodManager.albumListProvider(["random"]));
+            final albumList = ref.watch(riverpodManager.albumListProvider(filterSortList));
             return Center(
               child: switch (albumList) {
-                AsyncValue(:final value?) => buildListView(value),
+                AsyncValue(:final value?) => Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        ref.invalidate(riverpodManager.albumListProvider);
+                      },
+                      child: Text("invalidate"),
+                    ),
+                    buildListView(value),
+                  ],
+                ),
                 AsyncValue(error: != null) => const Text("Error"),
                 AsyncValue() => const CircularProgressIndicator(),
               },

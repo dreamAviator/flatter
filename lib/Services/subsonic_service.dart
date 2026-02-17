@@ -64,17 +64,18 @@ class SubsonicService {
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
-        return [{}];
+        return [];
       }
       final Map responseMap = jsonDecode(data.body);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
-        return [{}];
+        return [];
       }
+      print("got executed now (shouldn't have been an error there");
       print(subsonicResponse['albumList2']['album']);
       return subsonicResponse['albumList2']['album'];
     } catch(error) {
-      return [{}];
+      return [];
     }
   }
 }
