@@ -57,24 +57,28 @@ class SubsonicService {
     }
   }
 
-  Future<List<Map<String,dynamic>>> getAlbums(List<String> filterSortOptions) async {
+  Future<List<dynamic>> getAlbums(List<String> filterSortOptions) async {
     List<String> url = getURL(null, null, null);
     String offset = filterSortOptions[2];
     final uri = Uri.parse("${url[0]}getAlbumList2${url[1]}&type=${filterSortOptions[0]}&size=${filterSortOptions[1]}&offset=$offset");//from year, to year und genre filtered fehlt da noch
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
+        print("returned error 1");
         return [];
       }
       final Map responseMap = jsonDecode(data.body);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
+        print("returned error 2");
         return [];
       }
-      print("got executed now (shouldn't have been an error there");
-      print(subsonicResponse['albumList2']['album']);
+      print("returned normal");
+      print(subsonicResponse['albumList2']['album'].runtimeType);
       return subsonicResponse['albumList2']['album'];
     } catch(error) {
+      print("returned error 3");
+      print(error);
       return [];
     }
   }

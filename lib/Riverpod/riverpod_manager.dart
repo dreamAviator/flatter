@@ -70,10 +70,8 @@ class RiverpodManager {
     return returnList;
   });
 
-  final albumListProvider = FutureProvider.family<List<Map<String,dynamic>>,List<String>>((ref,List<String> filterSortOptions) async {
-    List<Map<String,dynamic>> albumMapList = await subsonicService.getAlbums(filterSortOptions);
-    print("proviuder got executed here");
-    print(albumMapList);
+  final albumListProvider = FutureProvider.family<List<dynamic>,List<String>>((ref,List<String> filterSortOptions) async {
+    List<dynamic> albumMapList = await subsonicService.getAlbums(filterSortOptions);
     return albumMapList;
   });
 }

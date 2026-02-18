@@ -8,12 +8,29 @@ class AlbumsTab extends StatelessWidget {
   const AlbumsTab({super.key,required this.viewModel});
   final AlbumsTabViewModel viewModel;
 
-  Widget buildListView(List<Map<String,dynamic>> items) {
-    print("buildListView gets executed");
-    print(items);
+  Widget buildListView(List<dynamic> items) {
     List<Widget> widgetList = [];
-    for (Map<String,dynamic> albumMap in items) {
+    for (int i = 0; i < widgetList.length; i++) {
       widgetList.add(
+        Row(
+          children: [
+            Card(
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                splashColor: Colors.blue.withAlpha(30),
+                onTap: () {
+                  debugPrint('Card tapped.');
+                },
+                child: Column(
+                  children: [
+                    Text(widgetList[i]['id']);
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+        /*
         Card(
           // clipBehavior is necessary because, without it, the InkWell's animation
           // will extend beyond the rounded edges of the [Card] (see https://github.com/flutter/flutter/issues/109776)
@@ -33,6 +50,8 @@ class AlbumsTab extends StatelessWidget {
             )
           ),
         ),
+
+         */
       );
     }
     return ListView(shrinkWrap: true,children: widgetList,);
