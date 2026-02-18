@@ -10,7 +10,11 @@ class AlbumsTab extends StatelessWidget {
 
   Widget buildListView(List<dynamic> items) {
     List<Widget> widgetList = [];
-    for (int i = 0; i < widgetList.length; i++) {
+    print(items.length);
+    int index = 0;
+    while (index < items.length) {
+      Map albumOne = items[index];
+      Map albumTwo = items[index + 1];
       widgetList.add(
         Row(
           children: [
@@ -23,11 +27,27 @@ class AlbumsTab extends StatelessWidget {
                 },
                 child: Column(
                   children: [
-                    Text(widgetList[i]['id']);
+                    Text(albumOne['id']),
+                    Text(albumOne['name']),
                   ],
                 ),
               ),
-            )
+            ),
+            Card(
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                splashColor: Colors.blue.withAlpha(30),
+                onTap: () {
+                  debugPrint('Card tapped.');
+                },
+                child: Column(
+                  children: [
+                    Text(albumTwo['id']),
+                    Text(albumTwo['name']),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
         /*
@@ -53,6 +73,7 @@ class AlbumsTab extends StatelessWidget {
 
          */
       );
+      index = index + 2;
     }
     return ListView(shrinkWrap: true,children: widgetList,);
   }

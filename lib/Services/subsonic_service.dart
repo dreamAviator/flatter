@@ -64,21 +64,15 @@ class SubsonicService {
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
-        print("returned error 1");
         return [];
       }
       final Map responseMap = jsonDecode(data.body);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
-        print("returned error 2");
         return [];
       }
-      print("returned normal");
-      print(subsonicResponse['albumList2']['album'].runtimeType);
       return subsonicResponse['albumList2']['album'];
     } catch(error) {
-      print("returned error 3");
-      print(error);
       return [];
     }
   }
