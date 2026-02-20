@@ -21,7 +21,7 @@ class SubsonicService {
   }
 
   List<String> getURL(String? baseURL,String? username,String? password) {//returns the part starting from .view? etc
-    //passwort und username und baseURL woanders herbekommen
+    //if everything is null, gets current server information
     if (baseURL == null || username == null || password == null) {
       final List<String> serverInfo = databaseControl.getCurrentServer();
       baseURL = serverInfo[0];
@@ -78,6 +78,26 @@ class SubsonicService {
   }
 
   Future<Map<dynamic,dynamic>> getAlbumDetails(String id) async {
-
+    List<String> url = getURL(null, null, null);
+    final uri = Uri.parse("${url[0]}getAlbum${url[1]}&id=$id");
+    try {
+      final data = await http.get(uri);
+      try {
+        final data = await http.get(uri);
+        if (data.statusCode != 200) {
+          return {};
+        }
+        final Map responseMap = jsonDecode(data.body);
+        Map subsonicResponse = responseMap['subsonic-response'];
+        if (subsonicResponse['status'] != "ok") {
+          return {};
+        }
+        return subsonicResponse['album'];
+      } catch(error) {
+        return {};
+      }
+    } catch(error) {
+      return {};
+    }
   }
 }

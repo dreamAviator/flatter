@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +10,7 @@ class AlbumsTab extends StatelessWidget {
   const AlbumsTab({super.key,required this.viewModel});
   final AlbumsTabViewModel viewModel;
 
-  Widget buildListView(List<dynamic> items) {
+  Widget buildListView(List<dynamic> items,BuildContext context) {
     List<Widget> widgetList = [];
     print(items.length);
     int index = 0;
@@ -24,11 +26,23 @@ class AlbumsTab extends StatelessWidget {
                 splashColor: Colors.blue.withAlpha(30),
                 onTap: () {
                   debugPrint('Card tapped.');
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumOne['id'])));
                 },
                 child: Column(
                   children: [
-                    Text(albumOne['id']),
+                    CachedNetworkImage(
+                      imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}&size=100",
+                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                          CircularProgressIndicator(value: downloadProgress.progress),
+                      errorWidget: (context, url, error) => IconButton(
+                        onPressed: () {
+                          //hier retry
+                        },
+                        icon: Icon(Icons.error),
+                      ),
+                    ),
                     Text(albumOne['name']),
+                    Text(albumOne['artist'])
                   ],
                 ),
               ),
@@ -39,46 +53,36 @@ class AlbumsTab extends StatelessWidget {
                 splashColor: Colors.blue.withAlpha(30),
                 onTap: () {
                   debugPrint('Card tapped.');
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumTwo['id'])));
                 },
                 child: Column(
                   children: [
-                    Text(albumTwo['id']),
+                    CachedNetworkImage(
+                      imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumTwo['coverArt']}&size=100",
+                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                          CircularProgressIndicator(value: downloadProgress.progress),
+                      errorWidget: (context, url, error) => IconButton(
+                        onPressed: () {
+                          //hier retry
+                        },
+                        icon: Icon(Icons.error),
+                      ),
+                    ),
                     Text(albumTwo['name']),
+                    Text(albumTwo['artist']),
                   ],
                 ),
               ),
             ),
           ],
         ),
-        /*
-        Card(
-          // clipBehavior is necessary because, without it, the InkWell's animation
-          // will extend beyond the rounded edges of the [Card] (see https://github.com/flutter/flutter/issues/109776)
-          // This comes with a small performance cost, and you should not set [clipBehavior]
-          // unless you need it.
-          clipBehavior: Clip.hardEdge,
-          child: InkWell(
-            splashColor: Colors.blue.withAlpha(30),
-            onTap: () {
-              debugPrint('Card tapped.');//hier album öffnen, wäre cool wenn du diese card wird größer animation hinbekommst
-            },
-            child: Column(
-              children: [
-                Text(albumMap['id']),
-                Text(albumMap['name']),
-              ],
-            )
-          ),
-        ),
-
-         */
       );
       index = index + 2;
     }
     return ListView(shrinkWrap: true,children: widgetList,);
   }
   //später diese liste aus drop down menüs und den einstellungen kriegen und so
-  static const List<String> filterSortList = ["random","50","0"];
+  static const List<String> filterSortList = ["random","10","0"];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -100,7 +104,7 @@ class AlbumsTab extends StatelessWidget {
                       },
                       child: Text("invalidate"),
                     ),
-                    buildListView(value),
+                    buildListView(value,context),
                   ],
                 ),
                 AsyncValue(error: != null) => const Text("Error"),
