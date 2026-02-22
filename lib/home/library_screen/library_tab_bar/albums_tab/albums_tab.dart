@@ -97,6 +97,7 @@ class AlbumsTab extends StatelessWidget {
             return Center(
               child: switch (albumList) {
                 AsyncValue(:final value?) => Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     ElevatedButton(
                       onPressed: () {
