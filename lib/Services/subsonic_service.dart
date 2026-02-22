@@ -100,4 +100,49 @@ class SubsonicService {
       return {};
     }
   }
+
+  Future<List<dynamic>> getArtists() async {
+    List<String> url = getURL(null, null, null);
+    final uri = Uri.parse(
+        "${url[0]}getArtists${url[1]}"); //from year, to year und genre filtered fehlt da noch
+    try {
+      final data = await http.get(uri);
+      if (data.statusCode != 200) {
+        return [];
+      }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        return [];
+      }
+      print(subsonicResponse);
+      return subsonicResponse['albumList2']['artists']['index'];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  Future<Map<dynamic,dynamic>> getArtistDetails(String id) async {
+    List<String> url = getURL(null, null, null);
+    final uri = Uri.parse("${url[0]}getArtist${url[1]}&id=$id");
+    try {
+      final data = await http.get(uri);
+      try {
+        final data = await http.get(uri);
+        if (data.statusCode != 200) {
+          return {};
+        }
+        final Map responseMap = jsonDecode(data.body);
+        Map subsonicResponse = responseMap['subsonic-response'];
+        if (subsonicResponse['status'] != "ok") {
+          return {};
+        }
+        return subsonicResponse['artist'];
+      } catch(error) {
+        return {};
+      }
+    } catch(error) {
+      return {};
+    }
+  }
 }
