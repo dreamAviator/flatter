@@ -35,80 +35,57 @@ class _AlbumsTabState extends State<AlbumsTab> {
     }
   }
 
-  Widget buildListView(List<dynamic> items,BuildContext context) {
+  Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
     List<Widget> widgetList = [];
     print(items.length);
     int index = 0;
     while (index < items.length) {
       Map albumOne = items[index];
-      Map albumTwo = items[index + 1];
       widgetList.add(
-        Row(
-          children: [
-            Card(
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                splashColor: Colors.blue.withAlpha(30),
-                onTap: () {
-                  debugPrint('Card tapped.');
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumOne['id'])));
-                },
-                child: Column(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}&size=100",
-                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                          CircularProgressIndicator(value: downloadProgress.progress),
-                      errorWidget: (context, url, error) => IconButton(
-                        onPressed: () {
-                          //hier retry
-                        },
-                        icon: Icon(Icons.error),
-                      ),
-                    ),
-                    Text(albumOne['name']),
-                    Text(albumOne['artist'])
-                  ],
+        Card(
+          clipBehavior: Clip.hardEdge,
+          child: InkWell(
+            splashColor: Colors.blue.withAlpha(30),
+            onTap: () {
+              debugPrint('Card tapped.');
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumOne['id'])));
+            },
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                CachedNetworkImage(
+                  imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      CircularProgressIndicator(value: downloadProgress.progress),
+                  errorWidget: (context, url, error) => IconButton(
+                    onPressed: () {
+                      //hier retry
+                    },
+                    icon: Icon(Icons.error),
+                  ),
                 ),
-              ),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    children: [
+                      Text(albumOne['name']),
+                      Text(albumOne['artist'])
+                    ],
+                  ),
+                )
+              ],
             ),
-            Card(
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                splashColor: Colors.blue.withAlpha(30),
-                onTap: () {
-                  debugPrint('Card tapped.');
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumTwo['id'])));
-                },
-                child: Column(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumTwo['coverArt']}&size=100",
-                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                          CircularProgressIndicator(value: downloadProgress.progress),
-                      errorWidget: (context, url, error) => IconButton(
-                        onPressed: () {
-                          //hier retry
-                        },
-                        icon: Icon(Icons.error),
-                      ),
-                    ),
-                    Text(albumTwo['name']),
-                    Text(albumTwo['artist']),
-                  ],
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       );
-      index = index + 2;
+      index = index + 1;
     }
-    return Flexible(fit: FlexFit.loose, child: ListView(shrinkWrap: true,children: widgetList,));
+    return Flexible(fit: FlexFit.loose, child: GridView.count(shrinkWrap: true,crossAxisCount: (screenWidth / 150).toInt(),children: widgetList,),);
   }
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.sizeOf(context);
     return Expanded(
       child: Consumer(
         builder: (context, ref, child) {
@@ -144,7 +121,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                         },
                         child: Text("invalidate"),
                       ),
-                      buildListView(value,context),
+                      buildListView(value,context,screenSize.width),
                     ],
                   ),
                   AsyncValue(error: != null) => Center(child: const Text("Error")),
