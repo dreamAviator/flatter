@@ -13,6 +13,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler{
 
   bool playing = false;
 
+
   //player controls
   void setSource(int index) {
     player.setSource(getQueue()[index][0]);//sets the source to item at index
