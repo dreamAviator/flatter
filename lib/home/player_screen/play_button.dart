@@ -9,7 +9,7 @@ class PlayButton extends StatefulWidget {
   State<PlayButton> createState() => _PlayButtonState();
 }
 
-class _PlayButtonState extends State<PlayButton> {
+class _PlayButtonState extends State<PlayButton> {//TODO:hier oder in der progress bar eine ladeanzeige einfügen
   bool playing = playerControl.isPlayerPlaying();
 
   void togglePlayPause() {

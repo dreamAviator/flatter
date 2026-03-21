@@ -1,4 +1,5 @@
 import 'package:flatter/main.dart';
+import 'package:flatter/settings/server_settings/server_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,12 +56,7 @@ class ServerList extends StatelessWidget {
                           leading: Icon(Icons.storage),
                           title: Text(value[index][1]),
                           subtitle: Text(value[index][2]),
-                          trailing: IconButton(
-                            onPressed: () {
-
-                            },
-                            icon: Icon(Icons.more_vert),
-                          ),
+                          trailing: ServerMenu(context).serverMenu(value[index][0]),
                           onTap: () {
                             databaseControl.selectServer(value[index][0]);
                             Navigator.of(context).pop();
