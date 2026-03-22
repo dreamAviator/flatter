@@ -1,3 +1,5 @@
+import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
+import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +32,7 @@ class ItemMenus {
   PopupMenuEntry goToAlbum(String id) {
     return PopupMenuItem(
       onTap: () {
-        //nothing here yet
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id)));
       },
       child: Text("Album"),
     );
@@ -39,7 +41,7 @@ class ItemMenus {
   PopupMenuEntry goToArtist(String id) {
     return PopupMenuItem(
       onTap: () {
-        //nothing here yet (und obvs context verwenden
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: id)));
       },
       child: Text("Artist"),
     );

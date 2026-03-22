@@ -38,13 +38,12 @@ class _ArtistsTabState extends State<ArtistsTab> {
 
   Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
     List<Widget> outerWidgetList = [];
-    List<Widget> widgetList = [];
+    List<Widget> innerWidgetList = [];
     print(items.length);
     int index = 0;
     while (index < items.length) {
       outerWidgetList.add(Text(items[index]['name']));
       outerWidgetList.add(Divider());
-      List<Widget> innerWidgetList = [];
       for (Map item in items[index]['artist']) {
         innerWidgetList.add(
           Card(
@@ -53,7 +52,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
               splashColor: Colors.blue.withAlpha(30),
               onTap: () {
                 debugPrint('Card tapped.');
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(albumID: item['id'])));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: item['id'])));
               },
               child: Column(
                 children: [
@@ -76,7 +75,10 @@ class _ArtistsTabState extends State<ArtistsTab> {
           ),
         );
       }
-      outerWidgetList.add(MasonryGrid(column: (screenWidth / 150).toInt(),children: widgetList,),);
+      print("inner widget list");
+      print(innerWidgetList);
+      outerWidgetList.add(MasonryGrid(column: (screenWidth / 150).toInt(),children: innerWidgetList,),);
+      innerWidgetList.clear();//irgendwie wird das masonry grid dadurch unsichtbar klein
       index = index + 1;
     }
     print(outerWidgetList);

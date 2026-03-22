@@ -7,38 +7,16 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ArtistScreen extends StatelessWidget {
-  const ArtistScreen({super.key,required this.albumID});
-  final String albumID;
+  const ArtistScreen({super.key,required this.artistID});
+  final String artistID;
 
-  Widget buildAlbumColumn(List<dynamic> songList) {
-    List<Widget> widgetList = [];
-    print(songList);
-    for (Map song in songList) {
-      widgetList.add(
-        ListTile(//evt noch cover hinzufügen oder so idk
-          leading: Text(song['track'].toString()),
-          title: Text(song['title']),
-          subtitle: Text(song['duration'].toString()),
-          trailing: IconButton(
-            onPressed: () {
-              //hier mehr menü
-            },
-            icon: Icon(Icons.more_vert),
-          ),
-          onTap: () {
-            playerControl.addItem(song['id']);
-          },
-        ),
-      );
-    }
-    return Column(children: widgetList,);
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context,ref,child) {
-        final albumDetails = ref.watch(riverpodManager.albumDetailsProvider(albumID));
+        final albumDetails = ref.watch(riverpodManager.artistDetailsProvider(artistID));
         return Scaffold(
           appBar: AppBar(
             title: switch (albumDetails) {
@@ -106,7 +84,7 @@ class ArtistScreen extends StatelessWidget {
                   ],
                 ),
                 switch (albumDetails) {
-                  AsyncValue(:final value?) => buildAlbumColumn(value['song']),
+                  AsyncValue(:final value?) => Text("artists smth here"),
                   AsyncValue(error: != null) => Text("Error"),
                   AsyncValue() => CircularProgressIndicator(),
                 },
