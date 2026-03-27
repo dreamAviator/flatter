@@ -11,8 +11,8 @@ class ItemMenus {
     return PopupMenuItem(
       onTap: () {
         playerControl.clearQueue();
-        for (String id in ids) {
-          playerControl.addItem(id);
+        for (Map song in ids) {
+          playerControl.addItem(song['id']);
         }
       },
       child: Text("Play now"),
