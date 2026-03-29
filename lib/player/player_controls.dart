@@ -110,6 +110,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
     List<dynamic> item = await getMetadata(file);
     item.add(current);
+    print("adding now");
+    print(position);
+    print(file);
     queueRepository.insertItem(item, position);
   }
 
