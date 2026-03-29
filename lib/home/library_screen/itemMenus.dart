@@ -62,9 +62,9 @@ class ItemMenus {
   Widget songMenu(String id,String artistID, String albumID) {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
-        playNow([id]),
-        addNext([id]),
-        enqueue([id]),
+        playNow([{'id': id}]),
+        addNext([{'id': id}]),
+        enqueue([{'id': id}]),
         PopupMenuDivider(),
         goToAlbum(albumID),
         goToArtist(artistID),
