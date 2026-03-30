@@ -32,7 +32,7 @@ class _QueueWidgetState extends State<QueueWidget> {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: id)));
     }
 
-    return ReorderableListView(
+    return ReorderableListView(//ich glaube hier wolltest du sowieso was anderes suchen
       buildDefaultDragHandles: true,
       children: [
         for (int index = 0; index < _items.length; index += 1)
