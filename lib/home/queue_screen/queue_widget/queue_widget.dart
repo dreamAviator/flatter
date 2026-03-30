@@ -1,3 +1,5 @@
+import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
+import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -19,6 +21,17 @@ class _QueueWidgetState extends State<QueueWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    void removeFromQueue(String id) {
+
+    }
+    void goToAlbum(BuildContext context, String id) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id)));
+    }
+    void goToArtist(BuildContext context, String id) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: id)));
+    }
+
     return ReorderableListView(
       buildDefaultDragHandles: true,
       children: [
@@ -33,20 +46,25 @@ class _QueueWidgetState extends State<QueueWidget> {
                       motion: DrawerMotion(),
                       children: [
                         SlidableAction(
-                          onPressed: (_) => ,
+                          onPressed: (_) => (removeFromQueue(_items[index][0])),
                           icon: Icons.delete,
                           label: 'Delete',
+                          backgroundColor: Colors.red,
                         ),
                       ],
                     ),
-                    endActionPane: ActionPane(//hier zu album und zu artist
+                    endActionPane: ActionPane(//farben überlegen
                       motion: DrawerMotion(),
                       children: [
                         SlidableAction(
-
+                          onPressed: (_) => (goToAlbum(context, "-1")),
+                          icon: Icons.album,
+                          label: 'Album',
                         ),
                         SlidableAction(
-
+                          onPressed: (_) => (goToArtist(context, "-1")),
+                          icon: Icons.person,
+                          label: 'Artist',
                         )
                       ],
                     ),

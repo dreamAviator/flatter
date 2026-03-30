@@ -193,6 +193,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   Future<List<dynamic>> getMetadata(String path) async {
     String name = "";
     String artist = "";
+    String artistID = "-1";
+    String album = "";
+    String albumID = "-1";
     if (true == false) {
       //halt checken, ob es eine lokale datei ist
       if (Platform.isAndroid == false) {
@@ -203,6 +206,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       Map<dynamic,dynamic> metadata = await subsonicService.getSongDetails(path);
       name = metadata['title'];
       artist = metadata['artist'];
+      artistID = metadata['artistId'].toString();
+      album = metadata['album'];
+      artistID = metadata['albumId'].toString();
     }
     return [path,[name,artist]];
   }
