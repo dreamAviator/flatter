@@ -159,9 +159,14 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       }
       return;
     } else {
+      /*
       if (path.endsWith(".mp3") || path.endsWith(".m4a") || path.endsWith(".wav") || path.endsWith(".ogg") || path.endsWith(".opus") || path.endsWith(".aac")) {
         insertItemAt(getCurrentIndex() + 1, path);
       }
+
+       */
+      insertItemAt(getCurrentIndex() + 1, path);
+
     }
     return;
   }

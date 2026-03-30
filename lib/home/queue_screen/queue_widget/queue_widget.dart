@@ -1,5 +1,6 @@
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class QueueWidget extends StatefulWidget {
   const QueueWidget({super.key});
@@ -27,10 +28,33 @@ class _QueueWidgetState extends State<QueueWidget> {
               key: Key('$index'),
               child: Column(
                 children: [
-                  ListTile(
-                    title: Text(_items[index][1][0]),
-                    subtitle: Text(_items[index][1][1]),
-                  ),
+                  Slidable(
+                    startActionPane: ActionPane(
+                      motion: DrawerMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (_) => ,
+                          icon: Icons.delete,
+                          label: 'Delete',
+                        ),
+                      ],
+                    ),
+                    endActionPane: ActionPane(//hier zu album und zu artist
+                      motion: DrawerMotion(),
+                      children: [
+                        SlidableAction(
+
+                        ),
+                        SlidableAction(
+
+                        )
+                      ],
+                    ),
+                    child: ListTile(
+                      title: Text(_items[index][1][0]),
+                      subtitle: Text(_items[index][1][1]),
+                    ),
+                  )
                 ],
               ),
             ) else

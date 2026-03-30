@@ -37,18 +37,18 @@ class ServerList extends StatelessWidget {
                       return Slidable(
                         startActionPane: ActionPane(
                           motion: DrawerMotion(),
-                            children: [
-                              SlidableAction(//farbe noch festlegen
-                                onPressed: (_) => (editServer(value[index][0])),
-                                icon: Icons.edit,
-                                label: 'Edit',
-                              ),
-                            ],
+                          children: [
+                            SlidableAction(//farbe noch festlegen
+                              onPressed: (_) => (editServer(value[index][0])),
+                              icon: Icons.edit,
+                              label: 'Edit',
+                            ),
+                          ],
                         ),
                         endActionPane: ActionPane(
                           motion: DrawerMotion(),
                           children: [
-                            SlidableAction(
+                            SlidableAction(//stattdessen vielleicht dismissible machen und nicht mit bestätigung. oder aber in den einstellungen festlegen lassen
                               onPressed: (_) => (deleteServer(value[index][0])),
                               icon: Icons.delete,
                               label: 'Delete',
