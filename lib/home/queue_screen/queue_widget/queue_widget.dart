@@ -26,12 +26,14 @@ class _QueueWidgetState extends State<QueueWidget> {
 
     }
     void goToAlbum(BuildContext context, String id) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id)));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id,)));
     }
     void goToArtist(BuildContext context, String id) {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: id)));
     }
 
+    print("items now");
+    print(_items);
     return ReorderableListView(//ich glaube hier wolltest du sowieso was anderes suchen
       buildDefaultDragHandles: true,
       children: [
@@ -57,12 +59,12 @@ class _QueueWidgetState extends State<QueueWidget> {
                       motion: DrawerMotion(),
                       children: [
                         SlidableAction(
-                          onPressed: (_) => (goToAlbum(context, "-1")),
+                          onPressed: (_) => (goToAlbum(context, _items[index][1][4])),
                           icon: Icons.album,
                           label: 'Album',
                         ),
                         SlidableAction(
-                          onPressed: (_) => (goToArtist(context, "-1")),
+                          onPressed: (_) => (goToArtist(context, _items[index][1][2])),
                           icon: Icons.person,
                           label: 'Artist',
                         )
@@ -72,7 +74,7 @@ class _QueueWidgetState extends State<QueueWidget> {
                       title: Text(_items[index][1][0]),
                       subtitle: Text(_items[index][1][1]),
                     ),
-                  )
+                  ),
                 ],
               ),
             ) else
@@ -80,9 +82,37 @@ class _QueueWidgetState extends State<QueueWidget> {
                 key: Key('$index'),
                 child: Column(
                   children: [
-                    ListTile(
-                      title: Text(_items[index][1][0]),
-                      subtitle: Text(_items[index][1][1]),
+                    Slidable(
+                      startActionPane: ActionPane(
+                        motion: DrawerMotion(),
+                        children: [
+                          SlidableAction(
+                            onPressed: (_) => (removeFromQueue(_items[index][0])),
+                            icon: Icons.delete,
+                            label: 'Delete',
+                            backgroundColor: Colors.red,
+                          ),
+                        ],
+                      ),
+                      endActionPane: ActionPane(//farben überlegen
+                        motion: DrawerMotion(),
+                        children: [
+                          SlidableAction(
+                            onPressed: (_) => (goToAlbum(context, _items[index][1][4])),
+                            icon: Icons.album,
+                            label: 'Album',
+                          ),
+                          SlidableAction(
+                            onPressed: (_) => (goToArtist(context, _items[index][1][2])),
+                            icon: Icons.person,
+                            label: 'Artist',
+                          )
+                        ],
+                      ),
+                      child: ListTile(
+                        title: Text(_items[index][1][0]),
+                        subtitle: Text(_items[index][1][1]),
+                      ),
                     ),
                   ],
                 ),

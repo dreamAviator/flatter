@@ -32,6 +32,9 @@ class RiverpodManager {
 
   final albumDetailsProvider = FutureProvider.family<Map<dynamic,dynamic>,String>((ref,String id) async {
     Map<dynamic,dynamic> albumDetails = await subsonicService.getAlbumDetails(id);
+    print(albumDetails);
+    print(id);
+    print("this was album details and id");
     return albumDetails;
   });
 

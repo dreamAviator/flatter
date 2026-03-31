@@ -208,8 +208,8 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       artist = metadata['artist'];
       artistID = metadata['artistId'].toString();
       album = metadata['album'];
-      artistID = metadata['albumId'].toString();
+      albumID = metadata['albumId'].toString();
     }
-    return [path,[name,artist]];
+    return [path,[name,artist,artistID,album,albumID]];
   }
 }
