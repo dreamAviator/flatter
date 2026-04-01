@@ -13,7 +13,7 @@ class QueueScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Queue"),
       ),
-      body: QueueWidget(),
+      body: QueueWidget(),//hier eine bottom bar hinzufügen, um playlist controls anzuzeigen
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
+import 'package:flatter/home/library_screen/itemMenus.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -73,6 +74,7 @@ class _QueueWidgetState extends State<QueueWidget> {
                     child: ListTile(
                       title: Text(_items[index][1][0]),
                       subtitle: Text(_items[index][1][1]),
+                      trailing: ItemMenus(context).songMenu(_items[index][0], _items[index][1][2], _items[index][1][4]),
                     ),
                   ),
                 ],
@@ -112,6 +114,7 @@ class _QueueWidgetState extends State<QueueWidget> {
                       child: ListTile(
                         title: Text(_items[index][1][0]),
                         subtitle: Text(_items[index][1][1]),
+                        trailing: ItemMenus(context).songMenu(_items[index][0], _items[index][1][2], _items[index][1][4]),//aus dem hier eine checkbox machen wenn man dinge selected
                       ),
                     ),
                   ],
