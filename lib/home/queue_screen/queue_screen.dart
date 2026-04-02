@@ -1,5 +1,6 @@
 import 'package:flatter/home/queue_screen/queue_screen_ViewModel.dart';
 import 'package:flatter/home/queue_screen/queue_widget/queue_widget.dart';
+import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -27,17 +28,11 @@ class QueueScreen extends StatelessWidget {
                   onPressed: () {
 
                   },
-                  icon: Icon(Icons.check_box_outline_blank),//das wenn man selected in eine volle checkbox einteile, oder das hier einfach generell eine checkbox machen
-                ),
-                IconButton(
-                  onPressed: () {
-
-                  },
                   icon: Icon(Icons.playlist_add),
                 ),
                 IconButton(
                   onPressed: () {
-
+                    playerControl.shuffleQueue();
                   },
                   icon: Icon(Icons.shuffle),
                 ),
@@ -51,13 +46,13 @@ class QueueScreen extends StatelessWidget {
                   onPressed: () {
 
                   },
-                  icon: Icon(Icons.search),
+                  icon: Icon(Icons.search),//search und evt animation selbst bauen qwq
                 ),
               ],
             ),
           ),
         ],
-      ),//hier eine bottom bar hinzufügen, um playlist controls anzuzeigen
+      ),
     );
   }
 }

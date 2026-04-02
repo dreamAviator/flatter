@@ -189,6 +189,11 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     queueRepository.insertItem(item, newIndex);
   }
 
+  List<List<dynamic>> shuffleQueue() {
+  queueRepository.shuffleQueue();
+    return queueRepository.getQueue();
+  }
+
   void makeCurrent(int index) {
     queueRepository.makeCurrent(index);
   }
