@@ -13,7 +13,27 @@ class QueueScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Queue"),
       ),
-      body: QueueWidget(),//hier eine bottom bar hinzufügen, um playlist controls anzuzeigen
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(child: QueueWidget()),
+          Divider(),
+          Container(
+            color: Colors.primaries[1],//farbe auswählen (generell halt wenn du dich um die farben kümmerst
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {
+
+                  },
+                  icon: Icon(Icons.transfer_within_a_station),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),//hier eine bottom bar hinzufügen, um playlist controls anzuzeigen
     );
   }
 }
