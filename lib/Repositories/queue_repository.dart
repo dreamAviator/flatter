@@ -48,8 +48,10 @@ class QueueRepository {
         break;
       } else {
         preQueue.add(item);
-        _queue.remove(item);
       }
+    }
+    for (List<dynamic> item in preQueue) {
+      _queue.remove(item);
     }
     currentItem = _queue[0];
     _queue.removeAt(0);
@@ -58,9 +60,9 @@ class QueueRepository {
         break;
       } else {
         endQueue.add(item);
-        _queue.remove(item);
       }
     }
+    _queue.clear();
     preQueue.shuffle();
     endQueue.shuffle();
     _queue.addAll(preQueue);
