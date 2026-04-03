@@ -49,6 +49,7 @@ class RiverpodManager {
   });
 
   final queueProvider = FutureProvider<List<List<dynamic>>>((ref) {
+    print("i, the queue provider got executed");
     List<List<dynamic>> queue = playerControl.getQueue();
     return queue;
   });

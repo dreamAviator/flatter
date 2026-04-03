@@ -24,7 +24,7 @@ class _QueueScreenState extends State<QueueScreen> {
   Widget buildQueue(WidgetRef ref, BuildContext context, List<List<dynamic>> queue) {
 
     void removeFromQueue(int index) {
-
+      ref.invalidate(riverpodManager.queueProvider);
     }
     void goToAlbum(BuildContext context, String id) {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id,)));
@@ -165,6 +165,7 @@ class _QueueScreenState extends State<QueueScreen> {
                   onPressed: () {
                     playerControl.shuffleQueue();
                     ref.invalidate(riverpodManager.queueProvider);
+                    print("here, the queue provider should have been executed");
                   },
                   icon: Icon(Icons.shuffle),
                 ),
