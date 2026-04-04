@@ -43,7 +43,6 @@ class _QueueScreenState extends State<QueueScreen> {
         ref.invalidate(riverpodManager.queueProvider);
       },
       itemBuilder: (BuildContext context,int index) {
-        print(queue[index]);
         if (queue[index][2] == true) {
           return Card.filled(
             key: Key('$index'),
@@ -165,7 +164,6 @@ class _QueueScreenState extends State<QueueScreen> {
                   onPressed: () {
                     playerControl.shuffleQueue();
                     ref.invalidate(riverpodManager.queueProvider);
-                    print("here, the queue provider should have been executed");
                   },
                   icon: Icon(Icons.shuffle),
                 ),
