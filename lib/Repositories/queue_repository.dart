@@ -1,3 +1,5 @@
+import 'package:flatter/main.dart';
+
 class QueueRepository {
   final List<List<dynamic>> _queue = [];//[path,[metadata],current]
 
@@ -9,8 +11,12 @@ class QueueRepository {
     _queue.add(item);
   }
 
-  void removeItem(int position) {
+  Future<void> removeItem(int position) async {
+    if (_queue[position][2] == true) {
+      await playerControl.skipToNext();
+    }
     _queue.removeAt(position);
+    return;
   }
 
   void clearQueue() {

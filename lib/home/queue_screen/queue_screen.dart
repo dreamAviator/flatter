@@ -24,6 +24,7 @@ class _QueueScreenState extends State<QueueScreen> {
   Widget buildQueue(WidgetRef ref, BuildContext context, List<List<dynamic>> queue) {
 
     void removeFromQueue(int index) {
+      playerControl.removeItemAt(index);
       ref.invalidate(riverpodManager.queueProvider);
     }
     void goToAlbum(BuildContext context, String id) {
@@ -49,18 +50,7 @@ class _QueueScreenState extends State<QueueScreen> {
             child: Column(
               children: [
                 Slidable(
-                  startActionPane: ActionPane(
-                    motion: DrawerMotion(),
-                    children: [
-                      SlidableAction(
-                        onPressed: (_) => (removeFromQueue(index)),
-                        icon: Icons.delete,
-                        label: 'Delete',
-                        backgroundColor: Colors.red,
-                      ),
-                    ],
-                  ),
-                  endActionPane: ActionPane(//farben überlegen
+                  startActionPane: ActionPane(//farben überlegen
                     motion: DrawerMotion(),
                     children: [
                       SlidableAction(
@@ -73,6 +63,17 @@ class _QueueScreenState extends State<QueueScreen> {
                         icon: Icons.person,
                         label: 'Artist',
                       )
+                    ],
+                  ),
+                  endActionPane: ActionPane(
+                    motion: DrawerMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (_) => (removeFromQueue(index)),
+                        icon: Icons.delete,
+                        label: 'Delete',
+                        backgroundColor: Colors.red,
+                      ),
                     ],
                   ),
                   child: ListTile(
