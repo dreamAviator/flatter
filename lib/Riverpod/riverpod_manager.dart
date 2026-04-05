@@ -44,8 +44,9 @@ class RiverpodManager {
   });
 
   final artistDetailsProvider = FutureProvider.family<Map<dynamic,dynamic>,String>((ref,String id) async {
-    Map<dynamic,dynamic> albumDetails = await subsonicService.getArtistDetails(id);
-    return albumDetails;
+    Map<dynamic,dynamic> artistDetails = await subsonicService.getArtistDetails(id);
+    print(artistDetails);
+    return artistDetails;
   });
 
   final queueProvider = FutureProvider<List<List<dynamic>>>((ref) async {

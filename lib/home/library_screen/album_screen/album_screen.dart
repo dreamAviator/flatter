@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/itemMenus.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,7 +86,7 @@ class AlbumScreen extends StatelessWidget {
                 switch (albumDetails) {
                   AsyncValue(:final value?) => TextButton(
                     onPressed: () {
-                      //zum artist gehen
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: value['artistId'])));
                     },
                     child: Text(value['artist']),
                   ),

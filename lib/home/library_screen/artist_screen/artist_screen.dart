@@ -42,7 +42,7 @@ class ArtistScreen extends StatelessWidget {
                   //Navigator.of(context).push();
                 },
                 icon: Icon(Icons.more_vert),
-              ),
+              ),//hier muss ich schauen was ich mache
             ],
           ),
           body: SingleChildScrollView(
@@ -66,16 +66,6 @@ class ArtistScreen extends StatelessWidget {
                   AsyncValue(error: != null) => Text("Error"),
                   AsyncValue() => CircularProgressIndicator(),
                 },
-                switch (albumDetails) {
-                  AsyncValue(:final value?) => TextButton(
-                    onPressed: () {
-                      //zum artist gehen
-                    },
-                    child: Text(value['artist']),
-                  ),
-                  AsyncValue(error: != null) => Text("Error"),
-                  AsyncValue() => CircularProgressIndicator(),
-                },
                 Row(
                   children: [
                     //also ja hier actions
@@ -83,11 +73,14 @@ class ArtistScreen extends StatelessWidget {
                     Text("hier sollen actions hin")
                   ],
                 ),
+                Text("Albums"),
                 switch (albumDetails) {
                   AsyncValue(:final value?) => Text("artists smth here"),
                   AsyncValue(error: != null) => Text("Error"),
                   AsyncValue() => CircularProgressIndicator(),
                 },
+                Divider(),
+                Text("Appears in:"),
               ],
             ),
           ),
