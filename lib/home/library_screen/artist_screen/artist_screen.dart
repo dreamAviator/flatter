@@ -10,7 +10,11 @@ class ArtistScreen extends StatelessWidget {
   const ArtistScreen({super.key,required this.artistID});
   final String artistID;
 
-
+  Widget buildAlbumGrid(context,List<Map> albums) {
+    //hier halt das gridview, evt aus diesen imagecards
+    //idk ob gridview.builder der call ist oder besser gesagt wann das nicht der call ist :shrug:
+    return Text("here will later be the albumgrid");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +79,7 @@ class ArtistScreen extends StatelessWidget {
                 ),
                 Text("Albums"),
                 switch (albumDetails) {
-                  AsyncValue(:final value?) => Text("artists smth here"),
+                  AsyncValue(:final value?) => buildAlbumGrid(context, value['album']),
                   AsyncValue(error: != null) => Text("Error"),
                   AsyncValue() => CircularProgressIndicator(),
                 },

@@ -15,7 +15,7 @@ class AlbumScreen extends StatelessWidget {
     List<Widget> widgetList = [];
     for (Map song in songList) {
       widgetList.add(
-        ListTile(//evt noch cover hinzufügen oder so idk
+        ListTile(//evt noch cover hinzufügen oder so idk//außerdem slidables daraus machen obvs omg
           leading: Text(song['track'].toString()),
           title: Text(song['title']),
           subtitle: Text(song['duration'].toString()),
