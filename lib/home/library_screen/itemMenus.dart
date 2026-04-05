@@ -11,9 +11,11 @@ class ItemMenus {
     return PopupMenuItem(
       onTap: () {
         playerControl.clearQueue();
+        List<String> toGive = [];
         for (Map song in ids) {
-          playerControl.addItem(song['id']);
+          toGive.add(song['id']);
         }
+        playerControl.addItemList(toGive);
       },
       child: Text("Play now"),
     );
@@ -22,9 +24,11 @@ class ItemMenus {
   PopupMenuEntry addNext(List<dynamic> ids) {
     return PopupMenuItem(
       onTap: () {
+        List<String> toGive = [];
         for (Map song in ids.reversed) {
-          playerControl.addNext(song['id']);
+          toGive.add(song['id']);
         }
+        playerControl.addNextList(toGive);
       },
       child: Text("Add next"),
     );
@@ -33,9 +37,11 @@ class ItemMenus {
   PopupMenuEntry enqueue(List<dynamic> ids) {
     return PopupMenuItem(
       onTap: () {
+        List<String> toGive = [];
         for (Map song in ids) {
-          playerControl.addItem(song['id']);
+          toGive.add(song['id']);
         }
+        playerControl.addItemList(toGive);
       },
       child: Text("Enqueue"),
     );

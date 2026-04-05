@@ -106,7 +106,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     player.setSource(queueRepository.getItemAtPos(index)[0]);
   }
 
-  void insertItemAt(int position, String file) async {
+  Future<void> insertItemAt(int position, String file) async {
     bool current = false;
     if (getQueueLength() == 0) {
       current = true;
@@ -142,7 +142,14 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       }
 
        */
-      insertItemAt(getQueueLength(), path);
+      await insertItemAt(getQueueLength(), path);
+    }
+    return;
+  }
+
+  void addItemList(List<String> idList) async {
+    for (String id in idList) {
+      await addItem(id);
     }
     return;
   }
@@ -171,6 +178,13 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
        */
       insertItemAt(getCurrentIndex() + 1, path);
 
+    }
+    return;
+  }
+
+  void addNextList(List<String> idList) async {
+    for (String id in idList) {
+      await addNext(id);
     }
     return;
   }
