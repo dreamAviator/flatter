@@ -19,24 +19,18 @@ class ServerSettingsScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
         ),
       ),
-      body: Column(
+      body: ListView(
+        shrinkWrap: true,
         children: [
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                ListTile(
-                  leading: Icon(Icons.add),
-                  title: Text("Add Server"),
-                  onTap: () {
-                    AddServerPopup.showAddServerPopUp(context,null,null,null,null,null);
-                  },
-                ),
-                Divider(),
-                ServerList(),
-              ],
-            ),
+          ListTile(
+            leading: Icon(Icons.add),
+            title: Text("Add Server"),
+            onTap: () {
+              AddServerPopup.showAddServerPopUp(context,null,null,null,null,null);
+            },
           ),
+          Divider(),
+          ServerList(),
         ],
       ),
     );

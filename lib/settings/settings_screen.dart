@@ -1,3 +1,5 @@
+import 'package:flatter/settings/appearance_settings/appearance_settings_screen.dart';
+import 'package:flatter/settings/behavious_settings/behaviour_settings_screen.dart';
 import 'package:flatter/settings/server_settings/server_settings_screen.dart';
 import 'package:flatter/settings/settings_screen_ViewModel.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +11,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Settings"),
@@ -19,20 +22,51 @@ class SettingsScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
         ),
       ),
-      body: Column(
+      body: //vlt hier anstelle der liste die karten nutzen. idk
+      /*GridView.count(
+        shrinkWrap: true,
+        crossAxisCount: (screenSize.width / 100).toInt(),
         children: [
-          //search bar mb
-          ListView(
-            shrinkWrap: true,
-            children: [
-              ListTile(
-                leading: Icon(Icons.storage),
-                title: Text("Server"),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
-                },
-              )
-            ],
+          Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
+              },
+              child: Column(
+                children: [
+                  Icon(Icons.storage),
+                  Text("Server"),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      */
+      ListView(
+        shrinkWrap: true,
+        children: [
+          ListTile(
+            leading: Icon(Icons.storage),
+            title: Text("Server"),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.dashboard),
+            title: Text("Behaviour"),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => BehaviourSettingsScreen()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.color_lens),
+            title: Text("Appearance"),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppearanceSettingsScreen()));
+            },
           ),
         ],
       ),
