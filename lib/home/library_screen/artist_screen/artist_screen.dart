@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/itemMenus.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,20 +11,56 @@ class ArtistScreen extends StatelessWidget {
   const ArtistScreen({super.key,required this.artistID});
   final String artistID;
 
-  Widget buildAlbumGrid(context,List<Map> albums) {
+  Widget buildAlbumGrid(context,List<dynamic> albums,double screenWidth) {
     //hier halt das gridview, evt aus diesen imagecards
     //idk ob gridview.builder der call ist oder besser gesagt wann das nicht der call ist :shrug:
-    return Text("here will later be the albumgrid");
+    List<Widget> widgetList = [];
+    for (Map<dynamic,dynamic> album in albums) {
+      widgetList.add(
+        Card(
+          clipBehavior: Clip.hardEdge,
+          child: InkWell(
+            splashColor: Colors.blue.withAlpha(30),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: album['id'])));
+            },
+            child: Column(
+              children: [
+                CachedNetworkImage(
+                  imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${album['coverArt']}",
+                  progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress,),
+                  errorWidget: (context,url,error) => IconButton(
+                    onPressed: () {
+                      //hier retry
+                    },
+                    icon: Icon(Icons.error),
+                  ),
+                ),
+                Text(album['songCount'].toString()),
+                Text(album['name']),
+              ],
+            ),
+          ),
+        )
+      );
+    }
+    return Expanded(
+      child: GridView.count(
+        crossAxisCount: (screenWidth / 150).toInt(),
+        children: widgetList,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.sizeOf(context);
     return Consumer(
       builder: (context,ref,child) {
-        final albumDetails = ref.watch(riverpodManager.artistDetailsProvider(artistID));
+        final artistDetails = ref.watch(riverpodManager.artistDetailsProvider(artistID));
         return Scaffold(
           appBar: AppBar(
-            title: switch (albumDetails) {
+            title: switch (artistDetails) {
               AsyncValue(:final value?) => Text(value['name']),
               AsyncValue(error: != null) => Text("Error"),
               AsyncValue() => CircularProgressIndicator(),
@@ -55,7 +92,7 @@ class ArtistScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
                 //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-                switch (albumDetails) {
+                switch (artistDetails) {
                   AsyncValue(:final value?) => CachedNetworkImage(
                     imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}&size=300",
                     progressIndicatorBuilder: (context, url, downloadProgress) =>
@@ -78,8 +115,8 @@ class ArtistScreen extends StatelessWidget {
                   ],
                 ),
                 Text("Albums"),
-                switch (albumDetails) {
-                  AsyncValue(:final value?) => buildAlbumGrid(context, value['album']),
+                switch (artistDetails) {
+                  AsyncValue(:final value?) => buildAlbumGrid(context, value['album'],screenSize.width),
                   AsyncValue(error: != null) => Text("Error"),
                   AsyncValue() => CircularProgressIndicator(),
                 },

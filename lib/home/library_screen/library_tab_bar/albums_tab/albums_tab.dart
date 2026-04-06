@@ -47,7 +47,6 @@ class _AlbumsTabState extends State<AlbumsTab> {
           child: InkWell(
             splashColor: Colors.blue.withAlpha(30),
             onTap: () {
-              debugPrint('Card tapped.');
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumOne['id'])));
             },
             child: Column(
