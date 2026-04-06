@@ -6,12 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:masonry_grid/masonry_grid.dart';
 
 class ArtistScreen extends StatelessWidget {
   const ArtistScreen({super.key,required this.artistID});
   final String artistID;
 
-  Widget buildAlbumGrid(context,List<dynamic> albums,double screenWidth) {
+  Widget buildAlbumGrid(BuildContext context,List<dynamic> albums,double screenWidth) {
     //hier halt das gridview, evt aus diesen imagecards
     //idk ob gridview.builder der call ist oder besser gesagt wann das nicht der call ist :shrug:
     List<Widget> widgetList = [];
@@ -36,7 +37,7 @@ class ArtistScreen extends StatelessWidget {
                     icon: Icon(Icons.error),
                   ),
                 ),
-                Text(album['songCount'].toString()),
+                Text("Songs: ${album['songCount']}"),
                 Text(album['name']),
               ],
             ),
@@ -44,11 +45,7 @@ class ArtistScreen extends StatelessWidget {
         )
       );
     }
-    return GridView.count(
-      crossAxisCount: (screenWidth / 150).toInt(),
-      children: widgetList,
-      physics: NeverScrollableScrollPhysics(),
-    );
+    return MasonryGrid(column: (screenWidth / 150).toInt(),children: widgetList);
   }
 
   @override
