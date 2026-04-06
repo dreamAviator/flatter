@@ -48,7 +48,7 @@ class ArtistScreen extends StatelessWidget {
         )
       );
     }
-    return MasonryGrid(column: (screenWidth / 150).toInt(),children: widgetList);
+    return MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetList);
   }
 
   @override

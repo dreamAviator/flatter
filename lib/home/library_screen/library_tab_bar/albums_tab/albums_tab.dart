@@ -76,7 +76,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
       );
       index = index + 1;
     }
-    return Expanded(child: SingleChildScrollView(child: MasonryGrid(column: (screenWidth / 150).toInt(),children: widgetList,)));
+    return Expanded(child: SingleChildScrollView(child: MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetList,)));
   }
 
   @override
