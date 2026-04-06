@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
+import '../../itemMenus.dart';
+
 class AlbumsTab extends StatefulWidget {
   const AlbumsTab({super.key,required this.viewModel});
   final AlbumsTabViewModel viewModel;
@@ -62,8 +64,11 @@ class _AlbumsTabState extends State<AlbumsTab> {
                     icon: Icon(Icons.error),
                   ),
                 ),
-                Text(albumOne['name']),
-                Text(albumOne['artist'])
+                ListTile(
+                  title: Text(albumOne['name']),
+                  subtitle: Text(albumOne['artist']),
+                  trailing: ItemMenus(context).albumMenu2(albumOne['id'], albumOne['artistId']),
+                ),
               ],
             ),
           ),

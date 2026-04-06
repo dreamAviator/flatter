@@ -154,6 +154,10 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     return;
   }
 
+  void addItemAlbum(String id) async {
+
+  }
+
   Future<void> addNext(String path) async {
     if (await FileSystemEntity.isDirectory(path) == true) {
       Directory dir = Directory(path);
@@ -187,6 +191,10 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       await addNext(id);
     }
     return;
+  }
+
+  void addNextAlbum(String id) async {
+
   }
 
   List<List<dynamic>> getQueue() {

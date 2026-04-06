@@ -37,8 +37,11 @@ class ArtistScreen extends StatelessWidget {
                     icon: Icon(Icons.error),
                   ),
                 ),
-                Text("Songs: ${album['songCount']}"),
-                Text(album['name']),
+                ListTile(
+                  title: Text(album['name']),
+                  subtitle: Text("Song count: ${album['songCount']}"),
+                  trailing: ItemMenus(context).albumMenu2(album['id'], album['artistId']),
+                ),
               ],
             ),
           ),

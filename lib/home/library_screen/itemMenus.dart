@@ -11,6 +11,10 @@ class ItemMenus {
     return PopupMenuItem(
       onTap: () {
         playerControl.clearQueue();
+        if (ids[0] == null) {
+          playerControl.addItemAlbum(ids[1]);
+          return;
+        }
         List<String> toGive = [];
         for (Map song in ids) {
           toGive.add(song['id']);
@@ -24,6 +28,10 @@ class ItemMenus {
   PopupMenuEntry addNext(List<dynamic> ids) {
     return PopupMenuItem(
       onTap: () {
+        if (ids[0] == [null]) {
+          playerControl.addNextAlbum(ids[1]);
+          return;
+        }
         List<String> toGive = [];
         for (Map song in ids.reversed) {
           toGive.add(song['id']);
@@ -37,6 +45,10 @@ class ItemMenus {
   PopupMenuEntry enqueue(List<dynamic> ids) {
     return PopupMenuItem(
       onTap: () {
+        if (ids[0] == null) {
+          playerControl.addItemAlbum(ids[1]);
+          return;
+        }
         List<String> toGive = [];
         for (Map song in ids) {
           toGive.add(song['id']);
@@ -85,6 +97,19 @@ class ItemMenus {
         playNow(songIDs),
         addNext(songIDs),
         enqueue(songIDs),
+        PopupMenuDivider(),
+        goToArtist(albumArtistID),
+      ],
+      child: Icon(Icons.more_vert),
+    );
+  }
+
+  Widget albumMenu2(String id,String albumArtistID) {//for when no song ids are present
+    return PopupMenuButton(
+      itemBuilder: (BuildContext context) => <PopupMenuEntry> [
+        playNow([null,id]),
+        addNext([null,id]),
+        enqueue([null,id]),
         PopupMenuDivider(),
         goToArtist(albumArtistID),
       ],
