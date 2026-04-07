@@ -1,3 +1,4 @@
+import 'package:flatter/settings/behaviour_settings/start_tab_setting.dart';
 import 'package:flutter/material.dart';
 
 class BehaviourSettingsScreen extends StatelessWidget {
@@ -18,7 +19,10 @@ class BehaviourSettingsScreen extends StatelessWidget {
       body: ListView(
         shrinkWrap: true,
         children: [
-//hier halt jtz das ding mit startpage bspw
+          ListTile(
+            title: Text("Start tab"),
+            trailing: StartTabSetting(),
+          )
         ],
       ),
     );

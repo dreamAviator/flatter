@@ -69,9 +69,4 @@ class SettingsController {
     TomlDocument settingsDocument = TomlDocument.fromMap(settingsMap);
     await settingsDocument.save(path);
   }
-
-  List<Widget> getSettingsOptions() {
-    //später implementieren
-    return [];
-  }
 }

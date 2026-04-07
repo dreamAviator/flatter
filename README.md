@@ -6,11 +6,13 @@ A cross platform Navidrome client
 
 - Cross Platform
   - Android
+  - iOS
   - Linux
   - Windows
-  - should work on iOS and MacOS too
-- Batch metadata editor
+  - MacOS
 
 ### planned
 
 - automatically fetch Lyrics from the web
+- play local music
+  - batch metadata editor built in

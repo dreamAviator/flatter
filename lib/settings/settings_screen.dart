@@ -1,9 +1,11 @@
 import 'package:flatter/settings/appearance_settings/appearance_settings_screen.dart';
-import 'package:flatter/settings/behavious_settings/behaviour_settings_screen.dart';
+import 'package:flatter/settings/behaviour_settings/behaviour_settings_screen.dart';
 import 'package:flatter/settings/server_settings/server_settings_screen.dart';
 import 'package:flatter/settings/settings_screen_ViewModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'behaviour_settings/behaviour_settings_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key,required this.viewModel});

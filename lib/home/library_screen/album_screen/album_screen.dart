@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AlbumScreen extends StatelessWidget {
   const AlbumScreen({super.key,required this.albumID});
@@ -13,17 +14,55 @@ class AlbumScreen extends StatelessWidget {
 
   Widget buildAlbumColumn(List<dynamic> songList,BuildContext context,ItemMenus itemMenus) {
     List<Widget> widgetList = [];
+    void goToAlbum(BuildContext context, String id) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id,)));
+    }
+    void goToArtist(BuildContext context, String id) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: id)));
+    }
     for (Map song in songList) {
       widgetList.add(
-        ListTile(//evt noch cover hinzufügen oder so idk//außerdem slidables daraus machen obvs omg
-          leading: Text(song['track'].toString()),
-          title: Text(song['title']),
-          subtitle: Text(song['duration'].toString()),
-          trailing: itemMenus.songMenu(song['id'], song['artistId'], song['albumId']),//artist und album geben leider namen und keine ids zurück...👩‍🦲
-          onTap: () {
-            playerControl.addItem(song['id']);
-          },
-        ),
+        Slidable(
+          startActionPane: ActionPane(
+            motion: DrawerMotion(),
+            children: [
+              SlidableAction(
+                onPressed: (_) => (playerControl.addNext(song['id'])),
+                icon: Icons.list,
+                label: "Play next",
+              ),
+              SlidableAction(
+                onPressed: (_) => print("add to playlist"),
+                icon: Icons.playlist_add,
+                label: "Add to playlist",
+              ),
+            ],
+          ),
+          endActionPane: ActionPane(
+            motion: DrawerMotion(),
+            children: [
+              SlidableAction(
+                onPressed: (_) => (goToAlbum(context, song['albumId'])),
+                icon: Icons.album,
+                label: 'Album',
+              ),
+              SlidableAction(
+                onPressed: (_) => (goToArtist(context, song['artistId'])),
+                icon: Icons.person,
+                label: 'Artist',
+              ),
+            ],
+          ),
+          child: ListTile(//evt noch cover hinzufügen oder so idk//außerdem slidables daraus machen obvs omg
+            leading: Text(song['track'].toString()),
+            title: Text(song['title']),
+            subtitle: Text(song['duration'].toString()),
+            trailing: itemMenus.songMenu(song['id'], song['artistId'], song['albumId']),//artist und album geben leider namen und keine ids zurück...👩‍🦲
+            onTap: () {
+              playerControl.addItem(song['id']);
+            },
+          ),
+        )
       );
     }
     return Column(children: widgetList,);
