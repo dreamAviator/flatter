@@ -56,7 +56,7 @@ class AlbumScreen extends StatelessWidget {
           child: ListTile(//evt noch cover hinzufügen oder so idk//außerdem slidables daraus machen obvs omg
             leading: Text(song['track'].toString()),
             title: Text(song['title']),
-            subtitle: Text(song['duration'].toString()),
+            subtitle: Text(song['artist'].toString()),
             trailing: itemMenus.songMenu(song['id'], song['artistId'], song['albumId']),//artist und album geben leider namen und keine ids zurück...👩‍🦲
             onTap: () {
               playerControl.addItem(song['id']);

@@ -12,6 +12,7 @@ class _StartTabSettingState extends State<StartTabSetting> {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu(
+      selectOnly: true,
       dropdownMenuEntries: [
         DropdownMenuEntry(value: -1,label: "Last opened"),
         DropdownMenuEntry(value: 0, label: "Library"),
