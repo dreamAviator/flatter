@@ -168,7 +168,7 @@ class SubsonicService {
     }
   }
 
-  Future<List<Map<String,dynamic>>> getPlaylists() async {
+  Future<List<dynamic>> getPlaylists() async {
     List<String> url = getURL(null, null, null);
     final uri = Uri.parse(
         "${url[0]}getPlaylists${url[1]}"); //from year, to year und genre filtered fehlt da noch
@@ -187,6 +187,7 @@ class SubsonicService {
       print(subsonicResponse['playlists']['playlist']);
       return subsonicResponse['playlists']['playlist'];
     } catch (error) {
+      print("an error was catched smh idfk what went wrong lolololol");
       return [];
     }
   }

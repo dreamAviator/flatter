@@ -70,7 +70,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                 ListTile(
                   title: Text(playlist['name']),
                   subtitle: Text(playlist['owner']),
-                  trailing: ItemMenus(context).albumMenu2(playlist['id'], playlist['artistId']),
+                  trailing: ItemMenus(context).albumMenu2(playlist['id'], playlist['songCount'].toString()),
                 ),
               ],
             ),
