@@ -43,43 +43,109 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
     print("buildlistview in playlists tab executed");
     print(items);
     List<Widget> widgetList = [];
+    List<Widget> widgetListTwo = [];
     int index = 0;
     while (index < items.length) {
       Map playlist = items[index];
-      widgetList.add(
-        Card(
-          clipBehavior: Clip.hardEdge,
-          child: InkWell(
-            splashColor: Colors.blue.withAlpha(30),
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: playlist['id'])));
-            },
-            child: Column(
-              children: [
-                CachedNetworkImage(
-                  imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${playlist['coverArt']}",
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      CircularProgressIndicator(value: downloadProgress.progress),
-                  errorWidget: (context, url, error) => IconButton(
-                    onPressed: () {
-                      //hier retry
-                    },
-                    icon: Icon(Icons.error),
+      if (playlist['owner'] == databaseControl.getCurrentUsername()) {
+        widgetList.add(
+          Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              splashColor: Colors.blue.withAlpha(30),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        AlbumScreen(albumID: playlist['id'])));
+              },
+              child: Column(
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: "${subsonicService.getURL(
+                        null, null, null)[0]}getCoverArt${subsonicService
+                        .getURL(
+                        null, null, null)[1]}&id=${playlist['coverArt']}",
+                    progressIndicatorBuilder: (context, url,
+                        downloadProgress) =>
+                        CircularProgressIndicator(
+                            value: downloadProgress.progress),
+                    errorWidget: (context, url, error) =>
+                        IconButton(
+                          onPressed: () {
+                            //hier retry
+                          },
+                          icon: Icon(Icons.error),
+                        ),
                   ),
-                ),
-                ListTile(
-                  title: Text(playlist['name']),
-                  subtitle: Text(playlist['owner']),
-                  trailing: ItemMenus(context).albumMenu2(playlist['id'], playlist['songCount'].toString()),
-                ),
-              ],
+                  ListTile(
+                    title: Text(playlist['name']),
+                    subtitle: Text(playlist['owner']),
+                    trailing: ItemMenus(context).albumMenu2(
+                        playlist['id'], playlist['songCount'].toString()),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      );
+        );
+      }
       index = index + 1;
     }
-    return Expanded(child: SingleChildScrollView(child: MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetList,)));
+    index = 0;
+    while (index < items.length) {
+      Map playlist = items[index];
+      if (playlist['owner'] != databaseControl.getCurrentUsername()) {
+        widgetListTwo.add(
+          Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              splashColor: Colors.blue.withAlpha(30),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        AlbumScreen(albumID: playlist['id'])));
+              },
+              child: Column(
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: "${subsonicService.getURL(
+                        null, null, null)[0]}getCoverArt${subsonicService
+                        .getURL(
+                        null, null, null)[1]}&id=${playlist['coverArt']}",
+                    progressIndicatorBuilder: (context, url,
+                        downloadProgress) =>
+                        CircularProgressIndicator(
+                            value: downloadProgress.progress),
+                    errorWidget: (context, url, error) =>
+                        IconButton(
+                          onPressed: () {
+                            //hier retry
+                          },
+                          icon: Icon(Icons.error),
+                        ),
+                  ),
+                  ListTile(
+                    title: Text(playlist['name']),
+                    subtitle: Text(playlist['owner']),
+                    trailing: ItemMenus(context).albumMenu2(
+                        playlist['id'], playlist['songCount'].toString()),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+      index = index + 1;
+    }
+    return Expanded(child: SingleChildScrollView(child: Column(
+      children: [
+        MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetList,),
+        Divider(),
+        Text("Public"),
+        MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetListTwo,),
+      ],
+    )));
   }
 
   @override

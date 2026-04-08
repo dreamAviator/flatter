@@ -71,9 +71,9 @@ class DatabaseController {
   void selectServer(int id) {
     settingsControl.changeSetting('selectedServer', id);
   }
+
   List<String> getCurrentServer() {
     int currentID = settingsControl.loadSetting('selectedServer');
-    //hier die infos des aktuellen sevrer bekommen
     return getServerByID(currentID);
   }
 
@@ -83,6 +83,10 @@ class DatabaseController {
 
   List<List> getServers() {
     return _servers_db.getServers();
+  }
+
+  String getCurrentUsername() {
+    return getCurrentServer()[1];
   }
   //TODO: change favorite status (actually wäre das eigentlich auch für songs babo, aber weniger wichtig. user soll sich einfach eine playlist machen xD
 }
