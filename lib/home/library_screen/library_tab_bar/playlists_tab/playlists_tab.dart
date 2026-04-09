@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playlists_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/playlist_screen/playlist_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +41,6 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
   }
 
   Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
-    print("buildlistview in playlists tab executed");
-    print(items);
     List<Widget> widgetList = [];
     List<Widget> widgetListTwo = [];
     int index = 0;
@@ -56,7 +55,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
-                        AlbumScreen(albumID: playlist['id'])));
+                        PlaylistScreen(playlistID: playlist['id'])));
               },
               child: Column(
                 children: [
@@ -103,7 +102,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
-                        AlbumScreen(albumID: playlist['id'])));
+                        PlaylistScreen(playlistID: playlist['id'])));
               },
               child: Column(
                 children: [

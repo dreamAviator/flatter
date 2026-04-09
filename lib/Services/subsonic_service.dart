@@ -182,9 +182,6 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         return [];
       }
-      print("subsonic thingy here");
-      print(subsonicResponse['playlists']);
-      print(subsonicResponse['playlists']['playlist']);
       return subsonicResponse['playlists']['playlist'];
     } catch (error) {
       print("an error was catched smh idfk what went wrong lolololol");
@@ -207,8 +204,9 @@ class SubsonicService {
         if (subsonicResponse['status'] != "ok") {
           return {};
         }
-        print(subsonicResponse);
-        return subsonicResponse['song'];
+        print("playlis details here");
+        print(subsonicResponse['playlist']);
+        return subsonicResponse['playlist'];
       } catch(error) {
         return {};
       }

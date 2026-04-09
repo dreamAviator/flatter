@@ -93,7 +93,7 @@ class ArtistScreen extends StatelessWidget {
                 //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
                 switch (artistDetails) {
                   AsyncValue(:final value?) => CachedNetworkImage(
-                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}&size=300",
+                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                     progressIndicatorBuilder: (context, url, downloadProgress) =>
                         CircularProgressIndicator(value: downloadProgress.progress),
                     errorWidget: (context, url, error) => IconButton(
