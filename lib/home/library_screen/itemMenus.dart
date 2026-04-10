@@ -12,7 +12,11 @@ class ItemMenus {
       onTap: () {
         playerControl.clearQueue();
         if (ids[0] == null) {
-          playerControl.addItemAlbum(ids[1]);
+          if (ids[2] == "album") {
+            playerControl.addItemAlbum(ids[1]);
+          } else if (ids[2] == "playlist") {
+            playerControl.addItemPlaylist(ids[1]);
+          }
           return;
         }
         List<String> toGive = [];
@@ -29,7 +33,11 @@ class ItemMenus {
     return PopupMenuItem(
       onTap: () {
         if (ids[0] == [null]) {
-          playerControl.addNextAlbum(ids[1]);
+          if (ids[2] == "album") {
+            playerControl.addNextAlbum(ids[1]);
+          } else if (ids[2] == "playlist") {
+            playerControl.addNextPlaylist(ids[1]);
+          }
           return;
         }
         List<String> toGive = [];
@@ -46,7 +54,11 @@ class ItemMenus {
     return PopupMenuItem(
       onTap: () {
         if (ids[0] == null) {
-          playerControl.addItemAlbum(ids[1]);
+          if (ids[2] == "album") {
+            playerControl.addItemAlbum(ids[1]);
+          } else if (ids[2] == "playlist") {
+            playerControl.addItemPlaylist(ids[1]);
+          }
           return;
         }
         List<String> toGive = [];
@@ -74,6 +86,15 @@ class ItemMenus {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: id)));
       },
       child: Text("Artist"),
+    );
+  }
+
+  PopupMenuEntry showPlaylistsByOwner(String owner) {
+    return PopupMenuItem(
+      onTap: () {
+        //hier alle playlists vom owner anzeigen, vlt mit filter options machen
+      },
+      child: Text("Playlists by $owner"),
     );
   }
 
@@ -107,9 +128,9 @@ class ItemMenus {
   Widget albumMenu2(String id,String albumArtistID) {//for when no song ids are present
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
-        playNow([null,id]),
-        addNext([null,id]),
-        enqueue([null,id]),
+        playNow([null,id,"album"]),
+        addNext([null,id,"album"]),
+        enqueue([null,id,"album"]),
         PopupMenuDivider(),
         goToArtist(albumArtistID),
       ],
@@ -122,6 +143,32 @@ class ItemMenus {
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
         addNext(songIDs),
         enqueue(songIDs),
+      ],
+      child: Icon(Icons.more_vert),
+    );
+  }
+
+  Widget playlistMenu(String id,List<dynamic> songIDs,String owner) {
+    return PopupMenuButton(
+      itemBuilder: (BuildContext context) => <PopupMenuEntry> [
+        playNow(songIDs),
+        addNext(songIDs),
+        enqueue(songIDs),
+        PopupMenuDivider(),
+        showPlaylistsByOwner(owner),
+      ],
+      child: Icon(Icons.more_vert),
+    );
+  }
+
+  Widget playlistMenu2(String id,String owner) {
+    return PopupMenuButton(
+      itemBuilder: (BuildContext context) => <PopupMenuEntry> [
+        playNow([null,id,"playlist"]),
+        addNext([null,id,"playlist"]),
+        enqueue([null,id,"playlist"]),
+        PopupMenuDivider(),
+        showPlaylistsByOwner(owner),
       ],
       child: Icon(Icons.more_vert),
     );

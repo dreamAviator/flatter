@@ -100,7 +100,7 @@ class PlaylistScreen extends StatelessWidget {
                   },
                   icon: Icon(Icons.favorite_border),//probably damit sich das ändert hier ein eigenes widget bauen
                 ),
-                itemMenus.albumMenu(value['id'], value['owner'], value['entry']),
+                itemMenus.playlistMenu(value['id'], value['entry'], value['owner']),
               ],
               AsyncValue(error: != null) => [Text("Error")],
               AsyncValue() => [CircularProgressIndicator()]
