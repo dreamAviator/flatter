@@ -17,6 +17,8 @@ class SettingsController {
     'selectedServer':-1,
     'albumSortBy':'random',
     'artistSortBy':'random',
+    'albumPlayButtonAction':'playNow',
+    'playlistPlayButtonAction':'playNow'
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
 

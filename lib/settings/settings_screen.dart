@@ -52,6 +52,7 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.storage),
             title: Text("Server"),
+            trailing: Icon(Icons.arrow_forward),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
             },
@@ -59,6 +60,7 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.dashboard),
             title: Text("Behaviour"),
+            trailing: Icon(Icons.arrow_forward),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => BehaviourSettingsScreen()));
             },
@@ -66,6 +68,7 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.color_lens),
             title: Text("Appearance"),
+            trailing: Icon(Icons.arrow_forward),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppearanceSettingsScreen()));
             },
