@@ -57,7 +57,7 @@ class PlaylistScreen extends StatelessWidget {
               ],
             ),
             child: ListTile(//evt noch cover hinzufügen oder so idk//außerdem slidables daraus machen obvs omg
-              leading: Text(song['track'].toString()),
+              leading: Text(song['duration'].toString()),
               title: Text(song['title']),
               subtitle: Text(song['artist'].toString()),
               trailing: itemMenus.songMenu(song['id'], song['artistId'], song['albumId']),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
@@ -96,9 +96,10 @@ class PlaylistScreen extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    //hier favouriten
+                    //hier bearbeiten
+                    //wär babo wenn du das nur anzeigen würdest, wenn du der owner bist
                   },
-                  icon: Icon(Icons.favorite_border),//probably damit sich das ändert hier ein eigenes widget bauen
+                  icon: Icon(Icons.edit),//probably damit sich das ändert hier ein eigenes widget bauen
                 ),
                 itemMenus.playlistMenu(value['id'], value['entry'], value['owner']),
               ],
