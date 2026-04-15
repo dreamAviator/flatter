@@ -1,3 +1,4 @@
+import 'package:flatter/home/library_screen/add_to_playlist_popup.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/main.dart';
@@ -48,7 +49,7 @@ class ItemMenus {
         toGive.shuffle();
         playerControl.addItemList(toGive);
       },
-      child: Text("Play now"),
+      child: Text("Play now shuffled"),
     );
   }
 
@@ -91,7 +92,7 @@ class ItemMenus {
         toGive.shuffle();
         playerControl.addNextList(toGive);
       },
-      child: Text("Add next"),
+      child: Text("Add next shuffled"),
     );
   }
 
@@ -134,7 +135,7 @@ class ItemMenus {
         toGive.shuffle();
         playerControl.addItemList(toGive);
       },
-      child: Text("Enqueue"),
+      child: Text("Enqueue shuffled"),
     );
   }
 
@@ -165,6 +166,15 @@ class ItemMenus {
     );
   }
 
+  PopupMenuEntry addToPlaylist(List<dynamic> songIDs) {
+    return PopupMenuItem(
+      onTap: () {//irgendwie mit album und so mafhen
+        AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDs);
+      },
+      child: Text("Add to playlist"),
+    );
+  }
+
   Widget songMenu(String id,String artistID, String albumID) {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
@@ -176,6 +186,7 @@ class ItemMenus {
         addNextShuffled([{'id': id}]),
         enqueueShuffled([{'id': id}]),
         PopupMenuDivider(),
+        addToPlaylist([id]),
         goToAlbum(albumID),
         goToArtist(artistID),
       ],
@@ -194,6 +205,7 @@ class ItemMenus {
         addNextShuffled(songIDs),
         enqueueShuffled(songIDs),
         PopupMenuDivider(),
+        addToPlaylist(songIDs),
         goToArtist(albumArtistID),
       ],
       child: Icon(Icons.more_vert),
@@ -238,6 +250,7 @@ class ItemMenus {
         addNextShuffled(songIDs),
         enqueueShuffled(songIDs),
         PopupMenuDivider(),
+        addToPlaylist(songIDs),
         showPlaylistsByOwner(owner),
       ],
       child: Icon(Icons.more_vert),
