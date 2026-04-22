@@ -60,22 +60,25 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
               },
               child: Column(
                 children: [
-                  CachedNetworkImage(
-                    imageUrl: "${subsonicService.getURL(
-                        null, null, null)[0]}getCoverArt${subsonicService
-                        .getURL(
-                        null, null, null)[1]}&id=${playlist['coverArt']}",
-                    progressIndicatorBuilder: (context, url,
-                        downloadProgress) =>
-                        CircularProgressIndicator(
-                            value: downloadProgress.progress),
-                    errorWidget: (context, url, error) =>
-                        IconButton(
-                          onPressed: () {
-                            //hier retry
-                          },
-                          icon: Icon(Icons.error),
-                        ),
+                  AspectRatio(
+                    aspectRatio: 1,
+                    child: CachedNetworkImage(
+                      imageUrl: "${subsonicService.getURL(
+                          null, null, null)[0]}getCoverArt${subsonicService
+                          .getURL(
+                          null, null, null)[1]}&id=${playlist['coverArt']}",
+                      progressIndicatorBuilder: (context, url,
+                          downloadProgress) =>
+                          CircularProgressIndicator(
+                              value: downloadProgress.progress),
+                      errorWidget: (context, url, error) =>
+                          IconButton(
+                            onPressed: () {
+                              //hier retry
+                            },
+                            icon: Icon(Icons.error),
+                          ),
+                    ),
                   ),
                   ListTile(
                     title: Text(playlist['name']),
