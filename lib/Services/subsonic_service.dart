@@ -239,6 +239,9 @@ class SubsonicService {
       });
     }
     final uri = Uri.parse(request);
+    print("now here comes the qrequest");
+    print(request);
+    print("hello hello this is the request");
     try {
       final data = await http.get(uri);
       try {
