@@ -1,3 +1,4 @@
+import 'package:flatter/settings/appearance_settings/landscape_mode_setting.dart';
 import 'package:flutter/material.dart';
 
 class AppearanceSettingsScreen extends StatelessWidget {
@@ -19,6 +20,11 @@ class AppearanceSettingsScreen extends StatelessWidget {
         shrinkWrap: true,
         children: [
 //hier jtz bspw wie viele spalten das album gridview haben soll
+          ListTile(
+            title: Text("Landscape"),
+            subtitle: Text("Changes the look and layout of some things."),
+            trailing: LandscapeModeSetting(),
+          )
         ],
       ),
     );

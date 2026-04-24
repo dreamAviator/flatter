@@ -97,7 +97,7 @@ class ArtistScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
                 //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-                if (Platform.isAndroid == true || Platform.isIOS == true) switch (artistDetails) {
+                if (settingsControl.settingsMap['landscapeMode'] == false) switch (artistDetails) {
                   AsyncValue(:final value?) => CachedNetworkImage(
                     imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                     progressIndicatorBuilder: (context, url, downloadProgress) =>
@@ -113,14 +113,14 @@ class ArtistScreen extends StatelessWidget {
                   AsyncValue(error: != null) => Text("Error"),
                   AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },
-                if (Platform.isAndroid == true || Platform.isIOS == true) Row(
+                if (settingsControl.settingsMap['landscapeMode'] == false) Row(
                   children: [
                     //also ja hier actions
                     //diese diablen bis ergebnis da ist
                     Text("hier sollen actions hin")
                   ],
                 ),
-                if (Platform.isLinux == true || Platform.isMacOS == true|| Platform.isWindows == true) Row(
+                if (settingsControl.settingsMap['landscapeMode'] == true) Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     switch (artistDetails) {

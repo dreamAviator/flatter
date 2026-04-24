@@ -25,6 +25,8 @@ class SettingsController {
     'libraryTab':0,
     'lastLibraryTab':0,
     'addToPlaylistsSkipDuplicates':true,
+    'landscapeMode':true,//TODO:das hier ändern lassen wenn sich die ausrichtung des bildschirms/die größe des fensters so verändert, dass es nicht mehr praktisch wäre
+    'firstStart':true,
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
@@ -32,6 +34,14 @@ class SettingsController {
   Future<void> initialize() async {
     await loadSettings();
     return;
+  }
+
+  void firstStart() {
+    changeSetting('firstStart', false);
+    //sets some settings for the first start
+    if (Platform.isAndroid == true|| Platform.isIOS == true) {
+      changeSetting('landscapeMode', false);
+    }
   }
 
   Future<void> loadSettings() async {
@@ -50,6 +60,9 @@ class SettingsController {
         settingsMap[key] = value;
       }
     });
+    if (settingsMap['firstStart'] == true) {
+      firstStart();
+    }
     print(settingsMap);
   }
 
