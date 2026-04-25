@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/artist_select_window.dart';
 import 'package:flatter/home/library_screen/itemMenus.dart';
-import 'package:flatter/home/library_screen/songList.dart';
+import 'package:flatter/home/library_screen/song_list.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

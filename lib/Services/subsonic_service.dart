@@ -218,7 +218,7 @@ class SubsonicService {
   //do something to server
   Future<Map<dynamic,dynamic>> updatePlaylist(String id,String? name,String? comment,String? public,List<dynamic>? songIDsToAdd,List<int>? indexesToRemove) async {
     List<String> url = getURL(null,null,null);
-    String request = "${url[0]}updatePlaylist${url[1]}&id=$id";
+    String request = "${url[0]}updatePlaylist${url[1]}&playlistId=$id";
     if (name != null) {
       request = "$request&name=$name";
     }
@@ -247,19 +247,24 @@ class SubsonicService {
       try {
         final data = await http.get(uri);
         if (data.statusCode != 200) {
+          print("error 4");
           return {};
         }
         final Map responseMap = jsonDecode(data.body);
         Map subsonicResponse = responseMap['subsonic-response'];
         if (subsonicResponse['status'] != "ok") {
+          print(subsonicResponse);
+          print("error 3");
           return {};
         }
         print('successfully updated playlist');
         return subsonicResponse;
       } catch(error) {
+        print("error 2");
         return {};
       }
     } catch(error) {
+      print("error 1");
       return {};
     }
   }

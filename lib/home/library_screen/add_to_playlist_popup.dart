@@ -2,7 +2,6 @@ import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconify_flutter_plus/icons/mdi.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AddToPlaylistPopup {
@@ -21,6 +20,7 @@ class AddToPlaylistPopup {
               print(playlistIDs);
               print(songIDs);
               print(skipDuplicates);
+              print("no for each the subsonic service is called");
               playlistIDs.forEach((value) {
                 subsonicService.updatePlaylist(value, null, null, null, songIDs, null);
               });

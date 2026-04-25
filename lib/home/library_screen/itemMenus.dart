@@ -3,6 +3,7 @@ import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ItemMenus {
   final BuildContext context;
@@ -167,9 +168,13 @@ class ItemMenus {
   }
 
   PopupMenuEntry addToPlaylist(List<dynamic> songIDs) {
+    List<String> onlySongIDs = [];
+    songIDs.forEach((song) {
+      onlySongIDs.add(song['id']);
+    });
     return PopupMenuItem(
       onTap: () {//irgendwie mit album und so mafhen
-        AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDs);
+        AddToPlaylistPopup.showAddToPlaylistPopup(context, onlySongIDs);
       },
       child: Text("Add to playlist"),
     );
@@ -186,7 +191,7 @@ class ItemMenus {
         addNextShuffled([{'id': id}]),
         enqueueShuffled([{'id': id}]),
         PopupMenuDivider(),
-        addToPlaylist([id]),
+        addToPlaylist([{'id': id}]),
         goToAlbum(albumID),
         goToArtist(artistID),
       ],
