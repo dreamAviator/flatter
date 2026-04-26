@@ -62,4 +62,9 @@ class RiverpodManager {
     print(playlistDetails);
     return playlistDetails;
   });
+
+  final favoriteStatusProvider = FutureProvider.family<bool,List<String?>>((ref,List<String?> ids) async {
+    bool favoriteStatus = await subsonicService.checkStarred(ids[0], ids[1], ids[2]);
+    return favoriteStatus;
+  });
 }

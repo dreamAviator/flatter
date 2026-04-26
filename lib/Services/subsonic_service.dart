@@ -215,6 +215,58 @@ class SubsonicService {
     }
   }
 
+  Future<Map<dynamic,dynamic>> getStarred() async {
+    List<String> url = getURL(null, null, null);
+    final uri = Uri.parse("${url[0]}getStarred2${url[1]}");
+    try {
+      final data = await http.get(uri);
+      try {
+        final data = await http.get(uri);
+        if (data.statusCode != 200) {
+          return {};
+        }
+        final Map responseMap = jsonDecode(data.body);
+        Map subsonicResponse = responseMap['subsonic-response'];
+        if (subsonicResponse['status'] != "ok") {
+          return {};
+        }
+        return subsonicResponse['starred2'];
+      } catch(error) {
+        return {};
+      }
+    } catch(error) {
+      return {};
+    }
+  }
+
+  Future<bool> checkStarred(String? songID,String? albumID,String? artistID) async {
+    Map<dynamic,dynamic> starred = await getStarred();
+    if (albumID != null) {
+      for (Map<dynamic,dynamic> album in starred['album']) {
+        if (songID == album['id']) {
+          return true;
+        }
+      }
+      return false;
+    } else if (artistID != null) {
+      for (Map<dynamic,dynamic> artist in starred['artist']) {
+        if (songID == artist['id']) {
+          return true;
+        }
+      }
+      return false;
+    } else if (songID != null) {
+      for (Map<dynamic,dynamic> song in starred['song']) {
+        if (songID == song['id']) {
+          return true;
+        }
+      }
+      return false;
+    } else {
+      return false;
+    }
+  }
+
   //do something to server
   Future<Map<dynamic,dynamic>> createPlaylist(String name,List<dynamic>? songIDsToAdd) async {
     List<String> url = getURL(null,null,null);

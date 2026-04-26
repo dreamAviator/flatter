@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
+import 'package:flatter/home/library_screen/edit_playlist_popup.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playlists_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/playlist_screen/playlist_screen.dart';
@@ -157,54 +158,59 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.sizeOf(context);
-    return Expanded(
-      child: Consumer(
-        builder: (context, ref, child) {
-          final playlistList = ref.watch(riverpodManager.playlistListProvider);
-          return Column(
-            children: [
-              ListTile(
-                title: Text("uh"),
-                subtitle: Text("hier suchleiste und filter stuff"),
-              ),
-              Row(
-                children: [
-                  Text("hier drop down menü"),
-                  IconButton(
-                    onPressed: () {
-                      reverseSort();
-                      ref.invalidate(riverpodManager.playlistListProvider);
-                    },
-                    icon: (ascending
-                        ? Icon(Icons.arrow_upward)
-                        : Icon(Icons.arrow_downward)),
-                  )
-                ],
-              ),
-              Expanded(
-                child: switch (playlistList) {
-                  AsyncValue(:final value?) => Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          ref.invalidate(riverpodManager.playlistListProvider);
-                          print('value');
-                          print(value);
-                        },
-                        child: Text("invalidate"),
-                      ),
-                      buildListView(value,context,screenSize.width),
-                    ],
-                  ),
-                  AsyncValue(error: != null) => Center(child: const Text("Error")),
-                  AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
-                },
-              ),
-            ],
-          );
-        },
-      ),
+    return Consumer(
+      builder: (context, ref, child) {
+        final playlistList = ref.watch(riverpodManager.playlistListProvider);
+        return Column(
+          children: [
+            Row(
+              children: [
+                Text("hier suchleiste und filter stuff"),
+                IconButton.filled(
+                  onPressed: () {
+                    EditPlaylistPopup.showEditPlaylistPopUp(context, true, null, null, null, null, null);
+                  },
+                  icon: Icon(Icons.add),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Text("hier drop down menü"),
+                IconButton(
+                  onPressed: () {
+                    reverseSort();
+                    ref.invalidate(riverpodManager.playlistListProvider);
+                  },
+                  icon: (ascending
+                      ? Icon(Icons.arrow_upward)
+                      : Icon(Icons.arrow_downward)),
+                )
+              ],
+            ),
+            Expanded(
+              child: switch (playlistList) {
+                AsyncValue(:final value?) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        ref.invalidate(riverpodManager.playlistListProvider);
+                        print('value');
+                        print(value);
+                      },
+                      child: Text("invalidate"),
+                    ),
+                    buildListView(value,context,screenSize.width),
+                  ],
+                ),
+                AsyncValue(error: != null) => Center(child: const Text("Error")),
+                AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

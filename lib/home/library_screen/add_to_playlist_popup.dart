@@ -97,6 +97,7 @@ class AddToPlaylistPopup {
               title: const Text("Add to playlist"),
               content: SingleChildScrollView(
                 child: Column(
+                  spacing: 8,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

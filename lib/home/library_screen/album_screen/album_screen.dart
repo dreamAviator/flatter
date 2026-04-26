@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/artist_select_window.dart';
+import 'package:flatter/home/library_screen/favorite_button.dart';
 import 'package:flatter/home/library_screen/itemMenus.dart';
 import 'package:flatter/home/library_screen/song_list.dart';
 import 'package:flatter/main.dart';
@@ -49,12 +50,7 @@ class AlbumScreen extends StatelessWidget {
                   },
                   icon: Icon(Icons.play_arrow),
                 ),
-                IconButton(
-                  onPressed: () {
-                    //hier favouriten
-                  },
-                  icon: Icon(Icons.favorite_border),//probably damit sich das ändert hier ein eigenes widget bauen
-                ),
+                FavoriteButton(songID: null, albumID: albumID, artistID: null),
                 itemMenus.albumMenu(value['id'], value['artistId'], value['song']),
               ],
               AsyncValue(error: != null) => [Text("Error")],
