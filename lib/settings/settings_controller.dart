@@ -27,6 +27,9 @@ class SettingsController {
     'addToPlaylistsSkipDuplicates':true,
     'landscapeMode':true,//TODO:das hier ändern lassen wenn sich die ausrichtung des bildschirms/die größe des fensters so verändert, dass es nicht mehr praktisch wäre
     'firstStart':true,//einstellung für stern oder herz
+    'searchArtistCount':10,
+    'searchAlbumCount':10,
+    'searchSongCount':30,
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;

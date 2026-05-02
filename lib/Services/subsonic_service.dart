@@ -241,6 +241,29 @@ class SubsonicService {
     }
   }
 
+  Future<Map<dynamic,dynamic>> search(String query,int artistOffset,int albumOffset,int songOffset) async {//hier search2 machen wenn opensubsonic nicht verfügbar ist
+    List<String> url = getURL(null, null, null);
+    int searchArtistCount = settingsControl.loadSetting('searchArtistCount');
+    int searchAlbumCount = settingsControl.loadSetting('searchAlbumCount');
+    int searchSongCount = settingsControl.loadSetting('searchSongCount');
+    final uri = Uri.parse("${url[0]}search3${url[1]}&query=$query&artistOffset=$artistOffset&albumOffset=$albumOffset&songOffset=$songOffset&artistCount=$searchArtistCount&albumCount=$searchAlbumCount&songCount=$searchSongCount");
+    try {
+      final data = await http.get(uri);
+      if (data.statusCode != 200) {
+        return {};
+      }
+      final Map responseMap = jsonDecode(data.body);
+      print(responseMap);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        return {};
+      }
+      return subsonicResponse['searchResult3'];
+    } catch(error) {
+      return {};
+    }
+  }
+
   //do something to server
   Future<Map<dynamic,dynamic>> createPlaylist(String name,List<dynamic>? songIDsToAdd) async {
     List<String> url = getURL(null,null,null);

@@ -65,4 +65,10 @@ class RiverpodManager {
     bool favoriteStatus = await subsonicService.checkStarred(ids[0], ids[1], ids[2]);
     return favoriteStatus;
   });
+
+  final searchProvider = FutureProvider.family<Map<dynamic,dynamic>,List<dynamic>>((ref,List<dynamic> searchParams) async {
+    print("search privder exyecuted");
+    Map<dynamic,dynamic> searchResultsMap = await subsonicService.search(searchParams[0], searchParams[1], searchParams[2], searchParams[3]);
+    return searchResultsMap;
+  });
 }

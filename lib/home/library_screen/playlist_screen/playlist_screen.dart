@@ -76,6 +76,7 @@ class PlaylistScreen extends StatelessWidget {
                       },
                       icon: Icon(Icons.error),
                     ),
+                    height: screenSize.width,
                   ),
                   AsyncValue(error: != null) => Text("Error"),
                   AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
