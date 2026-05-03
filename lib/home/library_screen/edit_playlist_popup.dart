@@ -26,7 +26,20 @@ class EditPlaylistPopup {
             }
             public ??= false;
             return AlertDialog(
-              title: Text(title),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(title),
+                  if (id != null) IconButton(
+                    onPressed: () {
+                      subsonicService.deletePlaylist(id);
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(Icons.delete),
+                  ),
+                ],
+              ),
               content: SingleChildScrollView(
                 child: Form(
                   key: _formKey,

@@ -339,6 +339,30 @@ class SubsonicService {
     }
   }
 
+  Future<Map<dynamic,dynamic>> deletePlaylist(String id) async {
+    List<String> url = getURL(null,null,null);
+    final uri = Uri.parse("${url[0]}deletePlaylist${url[1]}&id=$id");
+    try {
+      final data = await http.get(uri);
+      if (data.statusCode != 200) {
+        print("error 4");
+        return {};
+      }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        print(subsonicResponse);
+        print("error 3");
+        return {};
+      }
+      print('successfully deleted playlist');
+      return subsonicResponse;
+    } catch(error) {
+      print("error 2");
+      return {};
+    }
+  }
+
   Future<Map<dynamic,dynamic>> starUnstar(bool starred,String? songID,String? albumID,String? artistID) async {
     List<String> url = getURL(null, null, null);
     List<String> request = [];
