@@ -7,24 +7,25 @@ class EditPlaylistPopup {
     if (newCreate == false && id == null) {
       return;
     }
+    print("builder executed");
+    String title = "Create playlist";
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    TextEditingController playlistNameController = TextEditingController();
+    TextEditingController playlistCommentController = TextEditingController();
+    if (name != null) {
+      playlistNameController.text = name;
+      title = "Edit $name";
+    }
+    if (comment != null) {
+      playlistCommentController.text = comment;
+    }
+    public ??= false;
     showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context,setState) {
-            String title = "Create playlist";
-            final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-            TextEditingController playlistNameController = TextEditingController();
-            TextEditingController playlistCommentController = TextEditingController();
-            if (name != null) {
-              playlistNameController.text = name;
-              title = "Edit $name";
-            }
-            if (comment != null) {
-              playlistCommentController.text = comment;
-            }
-            public ??= false;
             return AlertDialog(
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

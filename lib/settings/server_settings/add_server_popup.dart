@@ -10,28 +10,27 @@ import '../../Riverpod/riverpod_manager.dart';
 
 class AddServerPopup {
   static void showAddServerPopUp(BuildContext context,String? serverName,String? serverURL,String? serverUsername,String? serverPassword,int? id) {
-    print('executed');
     final riverpodManager = RiverpodManager();
+    String title = "Add Server";
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    TextEditingController serverNameController = TextEditingController();
+    TextEditingController serverURLcontroller = TextEditingController();
+    TextEditingController serverUsernameController = TextEditingController();
+    TextEditingController serverPasswordController = TextEditingController();
+    if (serverName != null && serverURL != null && serverUsername != null && serverPassword!= null && id != null) {
+      title = "Edit $serverName";
+      serverNameController.text = serverName;
+      serverURLcontroller.text = serverURL;
+      serverUsernameController.text = serverUsername;
+      serverPasswordController.text = serverPassword;
+    }
+    List<String> authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
     showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context,setState) {
-            String title = "Add Server";
-            final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-            TextEditingController serverNameController = TextEditingController();
-            TextEditingController serverURLcontroller = TextEditingController();
-            TextEditingController serverUsernameController = TextEditingController();
-            TextEditingController serverPasswordController = TextEditingController();
-            if (serverName != null && serverURL != null && serverUsername != null && serverPassword!= null && id != null) {
-              title = "Edit $serverName";
-              serverNameController.text = serverName;
-              serverURLcontroller.text = serverURL;
-              serverUsernameController.text = serverUsername;
-              serverPasswordController.text = serverPassword;
-            }
-            List<String> authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
             return AlertDialog(//TODO:wenn etwas richtig läuft und man dan etwas ändert, dann sollte es invalidatet werden
               title: Text(title),
               content: SingleChildScrollView(
