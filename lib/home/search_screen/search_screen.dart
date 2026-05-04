@@ -124,6 +124,8 @@ class SearchScreen extends StatelessWidget {
               onChanged: (String value) {
                 search(value,ref);
               },
+              autofocus: true,
+              //hmm
             ); },),
             actions: [
               IconButton(
