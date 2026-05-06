@@ -14,6 +14,12 @@ class PathProvider {
   Future<void> initialize() async {
     await getDataDir();
     await getTempDir();
+    if (Directory(dataDirectory).existsSync() == false) {
+      await Directory(dataDirectory).create(recursive: true);
+    }
+    if (Directory(tempDirectory).existsSync() == false) {
+      await Directory(tempDirectory).create(recursive: true);
+    }
     return;
   }
 
