@@ -36,6 +36,12 @@ class SubsonicService {
 
   Future<Map<dynamic,dynamic>> authenticate(String baseURL,String username,String password) async {
     List<String> url = getURL(baseURL, username, password);
+    if (baseURL == "" && username == "" && password == "") {
+      print("returning didn't even try");
+      return {
+        "status":"didn't even try",
+      };
+    }
     final uri = Uri.parse("${url[0]}ping${url[1]}");
     try {
       final data = await http.get(uri);

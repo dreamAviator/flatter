@@ -9,7 +9,7 @@ class RiverpodManager {
     //mehr statusdinger zurückgeben
     if (loginInformation[0].isEmpty || loginInformation[1].isEmpty || loginInformation[2].isEmpty) {
       print("erevythjing null as it should be");
-      return {};//default value
+      return {"status":"didn't even try"};//default value
     }
     Map<dynamic,dynamic> authenticateResponse = await subsonicService.authenticate(loginInformation[0],loginInformation[1],loginInformation[2]);
     return authenticateResponse;
