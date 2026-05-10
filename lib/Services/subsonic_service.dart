@@ -143,6 +143,15 @@ class SubsonicService {
     }
   }
 
+  Future<List<Map<dynamic,dynamic>>> getArtistAppearances(String artistName,String id) async {
+    Map<dynamic,dynamic> searchResults = await search(artistName, 0, 0, 0);
+    for (Map<dynamic,dynamic> album in searchResults['album']) {
+      if (album['artistId'] != id) {
+        //idk ob das vlt zu lang dauert, aber theoretisch könnte man durch jedes album hier durchgehen und mit der songliste vom album checken, ob da irgendwo die artistID zu finden ist. aber dauert das nicht zu lange?
+      }
+    }
+  }
+
   Future<Map<dynamic,dynamic>> getSongDetails(String id) async {
     List<String> url = getURL(null, null, null);
     final uri = Uri.parse("${url[0]}getSong${url[1]}&id=$id");
