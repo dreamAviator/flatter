@@ -30,7 +30,23 @@ class SearchScreen extends StatelessWidget {
     Widget buildSearchResultsColumn(BuildContext context,Map<dynamic,dynamic> searchResults) {//einstellen, in welcher reihenfolge die kategorien angezeigt werden sollen//kategorien expandable machen//nur die anzahl der reihen, nicht der elemente einstellen
       List<Widget> widgetList = [];
       if (searchResults['artist'] != null) {
-        widgetList.add(Text("Artists"));
+        widgetList.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Artists"),
+          ElevatedButton(
+            onPressed: () {
+              //zum albumscreen gehen
+            },
+            child: Row(
+              children: [
+                Text("Show all"),
+                Icon(Icons.arrow_forward),
+              ],
+            ),
+          )
+        ],
+      ));
         widgetList.add(Divider());
         List<Widget> artistWidgetList = [];
         for (Map<dynamic,dynamic> artist in searchResults['artist']) {
@@ -69,7 +85,23 @@ class SearchScreen extends StatelessWidget {
         widgetList.add(MasonryGrid(column: (screenSize.width / 175).toInt(),children: artistWidgetList,));
       }
       if (searchResults['album'] != null) {
-        widgetList.add(Text("Albums"));
+        widgetList.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Albums"),
+            ElevatedButton(
+              onPressed: () {
+                //zum albumscreen gehen
+              },
+              child: Row(
+                children: [
+                  Text("Show all"),
+                  Icon(Icons.arrow_forward),
+                ],
+              ),
+            )
+          ],
+        ));
         List<Widget> albumWidgetList = [];
         for (Map<dynamic,dynamic> album in searchResults['album']) {
           albumWidgetList.add(
@@ -106,8 +138,24 @@ class SearchScreen extends StatelessWidget {
         }
         widgetList.add(MasonryGrid(column: (screenSize.width / 175).toInt(),children: albumWidgetList,));
       }
-      if (searchResults['song'] != null) {
-        widgetList.add(Text("Songs"));
+      if (searchResults['song'] != null) {//vlt eine einstellung machen, dass welches der suchelemente auch immer als letztes ist, dass das eine unendlich lang scrollbare liste wird
+        widgetList.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Songs"),
+            ElevatedButton(
+              onPressed: () {
+                //zum albumscreen gehen
+              },
+              child: Row(
+                children: [
+                  Text("Show all"),
+                  Icon(Icons.arrow_forward),
+                ],
+              ),
+            )
+          ],
+        ));
         widgetList.add(SongList(songListNullable: searchResults['song'], listView: false));
       }
       return SingleChildScrollView(child: Column(children: widgetList,),);
