@@ -1,9 +1,7 @@
 import 'package:flatter/home/library_screen/library_screen.dart';
 import 'package:flatter/home/library_screen/library_screen_ViewModel.dart';
 import 'package:flatter/home/player_screen/player_screen.dart';
-import 'package:flatter/home/player_screen/player_screen_ViewModel.dart';
 import 'package:flatter/home/queue_screen/queue_screen.dart';
-import 'package:flatter/home/queue_screen/queue_screen_ViewModel.dart';
 import 'package:flatter/home/search_screen/search_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +15,6 @@ class HomeNavigationBar extends StatefulWidget {
 
 class _HomeNavigationBarState extends State<HomeNavigationBar> {
   int currentPageIndex = settingsControl.loadSetting('startTab');
-  final PlayerScreenViewModel playerScreenViewModel = PlayerScreenViewModel();
   final LibraryScreenViewModel libraryScreenViewModel = LibraryScreenViewModel();
 
   @override
@@ -48,7 +45,7 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
       ),
       body: <Widget>[
         LibraryScreen(viewModel: libraryScreenViewModel,),
-        PlayerScreen(viewModel: playerScreenViewModel),
+        PlayerScreen(),
         QueueScreen(),
       ][currentPageIndex],
     );

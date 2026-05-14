@@ -1,6 +1,5 @@
 import 'package:flatter/home/library_screen/library_screen_ViewModel.dart';
 import 'package:flatter/home/player_screen/player_screen.dart';
-import 'package:flatter/home/player_screen/player_screen_ViewModel.dart';
 import 'package:flatter/home/queue_screen/queue_screen.dart';
 import 'package:flatter/home/search_screen/search_screen.dart';
 import 'package:flatter/main.dart';
@@ -20,7 +19,6 @@ class HomeNavigationRail extends StatefulWidget {
 
 class _HomeNavigationRailState extends State<HomeNavigationRail> {
   int currentPageIndex = settingsControl.loadSetting('startTab');
-  final PlayerScreenViewModel playerScreenViewModel = PlayerScreenViewModel();
   final LibraryScreenViewModel libraryScreenViewModel = LibraryScreenViewModel();
   final SettingsScreenViewmodel settingsScreenViewmodel = SettingsScreenViewmodel();
 
@@ -54,7 +52,7 @@ class _HomeNavigationRailState extends State<HomeNavigationRail> {
           const VerticalDivider(),
           Expanded(child: [
             LibraryScreen(viewModel: libraryScreenViewModel),
-            PlayerScreen(viewModel: playerScreenViewModel),
+            PlayerScreen(),
             QueueScreen(),
             SearchScreen(),
             SettingsScreen(viewModel: settingsScreenViewmodel),
