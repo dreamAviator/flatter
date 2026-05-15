@@ -78,6 +78,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
   flutter_launcher_icons: "^0.14.4"
+  msix: ^3.16.13
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -99,6 +100,14 @@ flutter_launcher_icons:
   macos:
     generate: true
     image_path: "lib/assets/icon/app_icon.png"
+
+msix_config:
+  display_name: flatter
+  publisher_display_name: dreamAviator
+  identity_name: me.dreamaviator.flatter
+  msix_version: 0.0.0.1
+  logo_path: /Users/dreamaviator/Documents/coding/flutter/flatter/lib/assets/icon/app_icon.png
+  capabilities: internetClient
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
