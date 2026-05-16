@@ -60,12 +60,12 @@ class _QueueWidgetState extends State<QueueWidget> {
                       motion: DrawerMotion(),
                       children: [
                         SlidableAction(
-                          onPressed: (_) => (goToAlbum(context, _items[index][1][4])),
+                          onPressed: (_) => (goToAlbum(context, _items[index][1]['album'])),
                           icon: Icons.album,
                           label: 'Album',
                         ),
                         SlidableAction(
-                          onPressed: (_) => (goToArtist(context, _items[index][1][2])),
+                          onPressed: (_) => (goToArtist(context, _items[index][1]['artist'])),
                           icon: Icons.person,
                           label: 'Artist',
                         )
@@ -74,7 +74,7 @@ class _QueueWidgetState extends State<QueueWidget> {
                     child: ListTile(
                       title: Text(_items[index][1][0]),
                       subtitle: Text(_items[index][1][1]),
-                      trailing: ItemMenus(context).songMenu(_items[index][0], _items[index][1][2], _items[index][1][4]),
+                      trailing: ItemMenus(context).songMenu(_items[index][0], _items[index][1]['artistId'], _items[index][1]['albumId']),
                     ),
                   ),
                 ],
@@ -100,21 +100,21 @@ class _QueueWidgetState extends State<QueueWidget> {
                         motion: DrawerMotion(),
                         children: [
                           SlidableAction(
-                            onPressed: (_) => (goToAlbum(context, _items[index][1][4])),
+                            onPressed: (_) => (goToAlbum(context, _items[index][1]['albumId'])),
                             icon: Icons.album,
                             label: 'Album',
                           ),
                           SlidableAction(
-                            onPressed: (_) => (goToArtist(context, _items[index][1][2])),
+                            onPressed: (_) => (goToArtist(context, _items[index][1]['artistId'])),
                             icon: Icons.person,
                             label: 'Artist',
                           )
                         ],
                       ),
                       child: ListTile(
-                        title: Text(_items[index][1][0]),
-                        subtitle: Text(_items[index][1][1]),
-                        trailing: ItemMenus(context).songMenu(_items[index][0], _items[index][1][2], _items[index][1][4]),//aus dem hier eine checkbox machen wenn man dinge selected
+                        title: Text(_items[index][1]['title']),
+                        subtitle: Text(_items[index][1]['artist']),
+                        trailing: ItemMenus(context).songMenu(_items[index][0], _items[index][1]['artistId'], _items[index][1]['albumId']),//aus dem hier eine checkbox machen wenn man dinge selected
                       ),
                     ),
                   ],

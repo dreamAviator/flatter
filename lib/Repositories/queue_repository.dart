@@ -1,7 +1,7 @@
 import 'package:flatter/main.dart';
 
 class QueueRepository {
-  final List<List<dynamic>> _queue = [];//[path,[metadata],current]
+  final List<List<dynamic>> _queue = []; //[path or id or link,{metadata},current]
 
   void insertItem(List<dynamic> item,int position) {
     _queue.insert(position, item);
