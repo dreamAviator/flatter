@@ -18,3 +18,14 @@ Most of the relevant code and all of the cross-platform code is inside of the li
 | Services     | All network request logic (currently only Subsonic Service)                        |
 | settings     | Settings logic<br/>Settings UI                                                     |
 | storage      | Database logic                                                                     |
+
+It is probably not good practice, but for some important things I use lists or maps. For example:
+- Play Status
+  - {
+    - **status**: integer
+      - **1:** playing
+      - **2:** paused
+      - **3:** stopped
+      - **4:** loading
+    - currentQueueElement: integer
+- 

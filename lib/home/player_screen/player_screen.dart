@@ -32,9 +32,25 @@ class PlayerScreen extends StatelessWidget {
                         Image.asset("lib/assets/images/empty_player.png",height: screenSize.width / 3,),
                         Column(
                           children: [
-                            Text("Title"),
-                            Text("Interpret"),
-                          ]
+                            TextButton(
+                              onPressed: () {
+
+                              },
+                              child: Text("Title"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+
+                              },
+                              child: Text("Album"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+
+                              },
+                              child: Text("Artist"),
+                            ),
+                          ],
                         ),
                       ],
                     ),
