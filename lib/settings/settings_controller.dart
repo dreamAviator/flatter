@@ -30,6 +30,7 @@ class SettingsController {
     'searchArtistCount':10,
     'searchAlbumCount':10,
     'searchSongCount':30,
+    'mode':"navidrome",
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
