@@ -1,13 +1,13 @@
 import 'package:flatter/main.dart';
 
 class QueueRepository {
-  final List<List<dynamic>> _queue = []; //[path or id or link,{metadata},current]
+  final List<Map<dynamic,dynamic>> _queue = []; //[path or id or link,{metadata},current]
 
-  void insertItem(List<dynamic> item,int position) {
+  void insertItem(Map<dynamic,dynamic> item,int position) {
     _queue.insert(position, item);
   }
 
-  void addItem(List<dynamic> item) {
+  void addItem(Map<dynamic,dynamic> item) {
     _queue.add(item);
   }
 
@@ -23,11 +23,11 @@ class QueueRepository {
     _queue.clear();
   }
 
-  List<dynamic> getItemAtPos(int position) {
+  Map<dynamic,dynamic> getItemAtPos(int position) {
     return _queue[position];
   }
 
-  List<List<dynamic>> getQueue() {
+  List<Map<dynamic,dynamic>> getQueue() {
     return _queue;
   }
 
@@ -36,7 +36,7 @@ class QueueRepository {
   }
 
   void makeCurrent(int index) {
-    for (List<dynamic> item in _queue) {
+    for (Map<dynamic,dynamic> item in _queue) {
       item[2] = false;
     }
     _queue[index][2] = true;
@@ -46,22 +46,22 @@ class QueueRepository {
     if (_queue.isEmpty) {
       return;
     }
-    List<List<dynamic>> preQueue = [];
-    List<dynamic> currentItem = [];
-    List<List<dynamic>> endQueue = [];
-    for (List<dynamic> item in _queue) {
+    List<Map<dynamic,dynamic>> preQueue = [];
+    Map<dynamic,dynamic> currentItem = {};
+    List<Map<dynamic,dynamic>> endQueue = [];
+    for (Map<dynamic,dynamic> item in _queue) {
       if (item[2] == true) {
         break;
       } else {
         preQueue.add(item);
       }
     }
-    for (List<dynamic> item in preQueue) {
+    for (Map<dynamic,dynamic> item in preQueue) {
       _queue.remove(item);
     }
     currentItem = _queue[0];
     _queue.removeAt(0);
-    for (List<dynamic> item in _queue) {
+    for (Map<dynamic,dynamic> item in _queue) {
       if (item[2] == true) {
         break;
       } else {

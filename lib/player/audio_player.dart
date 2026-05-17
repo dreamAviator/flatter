@@ -27,6 +27,10 @@ class MyPlayer {
     await _player.pause();
   }
 
+  Future<void> stop() async {
+    await _player.stop();
+  }
+
   Future<void> seek(Duration position) async {
     await _player.seek(position);
   }
