@@ -28,6 +28,15 @@ class QueueRepository {
     return _queue[position];
   }
 
+  int getCurrentIndex() {
+    for (int i = 0; i < getQueueLength(); i++) {
+      if (_queue[i].extras!['current'] == true) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   List<MediaItem> getQueue() {
     return _queue;
   }

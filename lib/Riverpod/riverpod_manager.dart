@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -46,8 +47,8 @@ class RiverpodManager {
     return artistAppearances;
   });
 
-  final queueProvider = FutureProvider<List<List<dynamic>>>((ref) async {
-    List<List<dynamic>> queue = playerControl.getQueue();
+  final queueProvider = FutureProvider<List<MediaItem>>((ref) async {
+    List<MediaItem> queue = await playerControl.customAction("getQueue");
     return queue;
   });
 

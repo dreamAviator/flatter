@@ -39,9 +39,9 @@ class AlbumScreen extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     String action = settingsControl.settingsMap['albumPlayButtonAction'];
-                    switch (action) {
+                    switch (action) {//die sachen so implementieren, dass sich dieses ding hier die dinger holt oder ein anderer teil und dann die sahcne an die playercontrol weitergegeben werden, die playercontrol sollte nicht die sachen holen müssen
                       case "playNow":
-                        playerControl.clearQueue();
+                        playerControl.customAction('clearQueue');
                         playerControl.addItemAlbum(value['id']);
                       case "playNext":
                         playerControl.addNextAlbum(value['id']);
