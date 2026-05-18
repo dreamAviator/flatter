@@ -1,18 +1,19 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flatter/main.dart';
 
 class QueueRepository {
-  final List<Map<dynamic,dynamic>> _queue = []; //[path or id or link,{metadata},current]
+  final List<MediaItem> _queue = [];
 
-  void insertItem(Map<dynamic,dynamic> item,int position) {
+  void insertItem(MediaItem item,int position) {
     _queue.insert(position, item);
   }
 
-  void addItem(Map<dynamic,dynamic> item) {
+  void addItem(MediaItem item) {
     _queue.add(item);
   }
 
   Future<void> removeItem(int position) async {
-    if (_queue[position][2] == true) {
+    if (_queue[position].extras!['current'] == true) {
       await playerControl.skipToNext();
     }
     _queue.removeAt(position);
@@ -23,11 +24,11 @@ class QueueRepository {
     _queue.clear();
   }
 
-  Map<dynamic,dynamic> getItemAtPos(int position) {
+  MediaItem getItemAtPos(int position) {
     return _queue[position];
   }
 
-  List<Map<dynamic,dynamic>> getQueue() {
+  List<MediaItem> getQueue() {
     return _queue;
   }
 
@@ -36,33 +37,33 @@ class QueueRepository {
   }
 
   void makeCurrent(int index) {
-    for (Map<dynamic,dynamic> item in _queue) {
-      item[2] = false;
+    for (MediaItem item in _queue) {
+      item.extras!['current'] = false;
     }
-    _queue[index][2] = true;
+    _queue[index].extras!['current'] = true;
   }
 
   void shuffleQueue() {
     if (_queue.isEmpty) {
       return;
     }
-    List<Map<dynamic,dynamic>> preQueue = [];
-    Map<dynamic,dynamic> currentItem = {};
-    List<Map<dynamic,dynamic>> endQueue = [];
-    for (Map<dynamic,dynamic> item in _queue) {
-      if (item[2] == true) {
+    List<MediaItem> preQueue = [];
+    MediaItem currentItem = MediaItem(id: "", title: "");
+    List<MediaItem> endQueue = [];
+    for (MediaItem item in _queue) {
+      if (item.extras!['current'] == true) {
         break;
       } else {
         preQueue.add(item);
       }
     }
-    for (Map<dynamic,dynamic> item in preQueue) {
+    for (MediaItem item in preQueue) {
       _queue.remove(item);
     }
     currentItem = _queue[0];
     _queue.removeAt(0);
-    for (Map<dynamic,dynamic> item in _queue) {
-      if (item[2] == true) {
+    for (MediaItem item in _queue) {
+      if (item.extras!['current'] == true) {
         break;
       } else {
         endQueue.add(item);

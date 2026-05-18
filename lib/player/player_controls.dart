@@ -3,7 +3,7 @@ import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/player/audio_player.dart';
 
 class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
-  QueueRepository queueRepository = QueueRepository();
+  final QueueRepository _queueRepository = QueueRepository();
   final _player = MyPlayer();
 
   @override
@@ -14,14 +14,29 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   Future<void> stop() => _player.stop();
   @override
   Future<void> seek(Duration position) => _player.seek(position);
+
   @override
-  Future<void> skipToQueueItem(int i) async {
-    Map<dynamic,dynamic> item = queueRepository.getItemAtPos(i);
-    queueRepository.makeCurrent(i);
-    _player.seek(Duration.zero);
-    _player.setSource(item['id']);
+  Future<void> playMediaItem(MediaItem mediaItem) async {
+    _queueRepository.clearQueue();
+    _queueRepository.addItem(mediaItem);
+    skipToQueueItem(0);
     return;
   }
-
-
+  @override
+  addQueueItem(MediaItem mediaItem) async {
+    _queueRepository.addItem(mediaItem);
+    return;
+  }
+  @override
+  insertQueueItem(int index,MediaItem mediaItem) async {
+    _queueRepository.insertItem(mediaItem, index);
+  }
+  @override
+  Future<void> skipToQueueItem(int index) async {
+    MediaItem item = _queueRepository.getItemAtPos(index);
+    _queueRepository.makeCurrent(index);
+    _player.seek(Duration.zero);
+    _player.setSource(item.id);
+    return;
+  }
 }
