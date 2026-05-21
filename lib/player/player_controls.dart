@@ -2,10 +2,13 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/player/audio_player.dart';
+import 'package:flatter/useful_scripts.dart';
 
 class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final QueueRepository _queueRepository = QueueRepository();
   final _player = MyPlayer();
+
+  final SubsonicJustAudioCompatibility usefulScript = SubsonicJustAudioCompatibility();
 
   //play controls
   @override
@@ -79,13 +82,21 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
 
     } else if (name case 'addNextByID') {
       if (extras != null) {
-        List<MediaItem> songList = [];
         String? albumID = extras['addNextByID']['albumID'];
         String? playlistID = extras['addNextByID']['albumID'];
         String? artistID = extras['addNextByID']['albumID'];
         if (albumID != null) {
-          Map<dynamic,dynamic> albumDetails = await subsonicService.getAlbumDetails(albumID);
-
+          Map<dynamic,dynamic> details = await subsonicService.getAlbumDetails(albumID);
+          List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(details['song']);
+          customAction('addNext',{'addNext':mediaItemList});
+        }
+        if (playlistID != null) {
+          Map<dynamic,dynamic> details = await subsonicService.getPlaylistDetails(playlistID);
+          List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(details['entry']);
+          customAction('addNext',{'addNext':mediaItemList});
+        }
+        if (artistID != null) {
+          //hier halt alle songs bekommen, probably durch full search einfach
         }
       }
     }
