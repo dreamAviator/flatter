@@ -83,7 +83,7 @@ class _QueueScreenState extends State<QueueScreen> {
                   child: ListTile(
                     title: Text(queue[index].title),
                     subtitle: Text(queue[index].artist!),
-                    trailing: ItemMenus(context).songMenu(queue[index].id, queue[index].extras!['artistID'], queue[index].extras!['albumID']),
+                    trailing: ItemMenus(context).songMenuQueue(queue[index]),
                   ),
                 ),
               ],
@@ -124,7 +124,7 @@ class _QueueScreenState extends State<QueueScreen> {
                   child: ListTile(
                     title: Text(queue[index].title),
                     subtitle: Text(queue[index].artist!),
-                    trailing: ItemMenus(context).songMenu(queue[index].id, queue[index].extras!['artistID'], queue[index].extras!['albumID']),
+                    trailing: ItemMenus(context).songMenuQueue(queue[index]),
                   ),
                 ),
               ],

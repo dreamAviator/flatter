@@ -51,7 +51,7 @@ class SearchArtistScreen extends StatelessWidget {
                   ),
                   ListTile(
                     title: Text(artist['name']),
-                    trailing: ItemMenus(context).artistMenu(artist['id'], []),
+                    trailing: ItemMenus(context).artistMenu(artist),
                   ),
                 ],
               ),

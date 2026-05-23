@@ -53,7 +53,7 @@ class SearchAlbumScreen extends StatelessWidget {
                   ListTile(
                     title: Text(album['name']),
                     subtitle: Text("Song count: ${album['songCount']}"),
-                    trailing: ItemMenus(context).albumMenu2(album['id'], album['artistId']),
+                    trailing: ItemMenus(context).albumMenuList(album),
                   ),
                 ],
               ),

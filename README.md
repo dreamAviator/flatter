@@ -2,6 +2,8 @@
 
 A cross platform Navidrome client
 
+**all data for the servers, including passwords are currently saved in plaintext in a databse, this will be fixed later on**
+
 ## features
 
 - Cross Platform

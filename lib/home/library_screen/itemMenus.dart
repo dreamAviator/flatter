@@ -1,16 +1,35 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 
-class ItemMenus {
+class ItemMenus {//man muss hier halt später einstellen können, welche aktionen hier und welche im bottom sheet angezeigt werden sollen
   ItemMenus(this.context);
   final BuildContext context;
 
   Widget songMenu(Map<dynamic,dynamic> song) {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
-
+        PopupMenuItem(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return SizedBox(
+                  child: Text("here are more options"),
+                );
+              }
+            );
+          },
+          child: Text("More"),
+        )
       ],
       child: Icon(Icons.more_vert),
+    );
+  }
+  Widget songMenuQueue(MediaItem song) {
+    return PopupMenuButton(
+      itemBuilder: (BuildContext context) => <PopupMenuEntry> [
+
+      ],
     );
   }
   Widget albumMenu(Map<dynamic,dynamic> album) {
