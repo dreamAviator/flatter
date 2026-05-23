@@ -53,7 +53,7 @@ class PlaylistScreen extends StatelessWidget {
                   },
                   icon: Icon(Icons.edit),//probably damit sich das ändert hier ein eigenes widget bauen
                 ),
-                itemMenus.playlistMenu(value['id'], value['entry'], value['owner']),
+                itemMenus.playlistMenu(value),
               ],
               AsyncValue(error: != null) => [Text("Error")],
               AsyncValue() => [LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)]

@@ -85,8 +85,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                   ListTile(
                     title: Text(playlist['name']),
                     subtitle: Text(playlist['songCount'].toString()),
-                    trailing: ItemMenus(context).playlistMenu2(
-                        playlist['id'], playlist['owner']),
+                    trailing: ItemMenus(context).playlistMenuList(playlist),
                   ),
                 ],
               ),
@@ -135,8 +134,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                   ListTile(
                     title: Text(playlist['name']),
                     subtitle: Text(playlist['owner']),
-                    trailing: ItemMenus(context).albumMenu2(
-                        playlist['id'], playlist['songCount'].toString()),
+                    trailing: ItemMenus(context).playlistMenuList(playlist),
                   ),
                 ],
               ),

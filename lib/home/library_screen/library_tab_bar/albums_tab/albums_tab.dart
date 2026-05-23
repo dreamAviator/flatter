@@ -72,7 +72,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                 ListTile(
                   title: Text(albumOne['name']),
                   subtitle: Text(albumOne['artist']),
-                  trailing: ItemMenus(context).albumMenu2(albumOne['id'], albumOne['artistId']),
+                  trailing: ItemMenus(context).albumMenuList(albumOne),
                 ),
               ],
             ),

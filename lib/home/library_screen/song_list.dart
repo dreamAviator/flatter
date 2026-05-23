@@ -74,7 +74,7 @@ class SongList extends StatelessWidget {
                 ],
               ),
               subtitle: Text(songList[index]['artist'].toString()),
-              trailing: ItemMenus(context).songMenu(songList[index]['id'], songList[index]['artistId'], songList[index]['albumId']),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
+              trailing: ItemMenus(context).songMenu(songList[index]),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
               onTap: () {
                 playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(songList[index]));
               },
@@ -127,7 +127,7 @@ class SongList extends StatelessWidget {
                   ],
                 ),
                 subtitle: Text(song['artist'].toString()),
-                trailing: ItemMenus(context).songMenu(song['id'], song['artistId'], song['albumId']),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
+                trailing: ItemMenus(context).songMenu(song),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
                 onTap: () {
                   playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(song));
                 },

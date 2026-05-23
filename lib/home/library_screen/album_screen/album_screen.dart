@@ -54,7 +54,7 @@ class AlbumScreen extends StatelessWidget {
                   icon: Icon(Icons.play_arrow),
                 ),
                 FavoriteButton(songID: null, albumID: albumID, artistID: null),
-                itemMenus.albumMenu(value['id'], value['artistId'], value['song']),
+                itemMenus.albumMenu(value),
               ],
               AsyncValue(error: != null) => [Text("Error")],
               AsyncValue() => [LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)]
