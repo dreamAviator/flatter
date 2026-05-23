@@ -31,6 +31,21 @@ class SettingsController {
     'searchAlbumCount':10,
     'searchSongCount':30,
     'mode':"navidrome",
+    'songMenuActionOrder':{
+      'mainMenu':['playNow','addNext','enqueue'],
+      'moreSheet':['album','artist'],
+      'unused':[],
+    },
+    'albumMenuActionOrder':{
+      'mainMenu':['playNow','addNext','enqueue'],
+      'moreSheet':['artist'],
+      'unused':['playNowShuffled','addNextShuffled','enqueueShuffled'],
+    },
+    'artistMenuActionOrder':{
+      'mainMenu':['playNow','addNext','enqueue'],
+      'moreSheet':['playNowShuffled','addNextShuffled','enqueueShuffled'],
+      'unused':[],
+    },
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
