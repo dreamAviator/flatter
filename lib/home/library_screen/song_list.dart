@@ -17,9 +17,6 @@ class SongList extends StatelessWidget {
   Widget build(BuildContext context) {
     final SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
     List<dynamic> songList = [];
-    print("now is songlist nullable");
-    print(songListNullable);
-    print("this was songlist nullable");
     if (songListNullable != null && songListNullable?.isEmpty == false) {
       print(songListNullable);
       songList.addAll(songListNullable!);
@@ -89,13 +86,7 @@ class SongList extends StatelessWidget {
       );
     } else {
       List<Widget> widgetList = [];
-      print("now is songlist");
-      print(songList);
-      print("this was songlist");
       for (Map song in songList) {
-        print("now is song");
-        print(song);
-        print("this was song");
         widgetList.add(
             Slidable(
               startActionPane: ActionPane(
