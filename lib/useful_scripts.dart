@@ -2,7 +2,7 @@ import 'package:audio_service/audio_service.dart';
 
 class SubsonicJustAudioCompatibility {
 
-  List<MediaItem> subsonicSongListToMediaItemList(List<Map<dynamic,dynamic>> songList) {
+  List<MediaItem> subsonicSongListToMediaItemList(List<dynamic> songList) {
     List<MediaItem> mediaItemList = [];
     for (Map<dynamic,dynamic> song in songList) {
       mediaItemList.add(subsonicSongToMediaItem(song));

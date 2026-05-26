@@ -89,8 +89,8 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       if (extras != null) {
         String? songID = extras['addNextByID']['songID'];//should not be used, i should use full song items
         String? albumID = extras['addNextByID']['albumID'];
-        String? playlistID = extras['addNextByID']['albumID'];
-        String? artistID = extras['addNextByID']['albumID'];
+        String? playlistID = extras['addNextByID']['playlistID'];
+        String? artistID = extras['addNextByID']['artistID'];
         bool? shuffled = extras['addNextByID']['shuffled'];
         if (songID != null) {
           //hier song details halt bekommen

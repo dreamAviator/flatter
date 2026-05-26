@@ -109,12 +109,11 @@ class ArtistScreen extends StatelessWidget {
                 icon: Icon(Icons.play_arrow),
               ),
               FavoriteButton(songID: null, albumID: null, artistID: artistID),
-              IconButton(
-                onPressed: () {
-                  //Navigator.of(context).push();
-                },
-                icon: Icon(Icons.more_vert),
-              ),//hier muss ich schauen was ich mache
+              switch (artistDetails) {
+                AsyncValue(:final value?) => ItemMenus(context).artistMenu(value),
+                AsyncValue(error: != null) => Text("Error"),
+                AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+              },
             ],
           ),
           body: SingleChildScrollView(
