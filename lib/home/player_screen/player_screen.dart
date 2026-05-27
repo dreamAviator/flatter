@@ -1,5 +1,6 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
+import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -80,25 +81,21 @@ class PlayerScreen extends StatelessWidget {
                                   IconButton(
                                     icon: Icon(Icons.fast_rewind),
                                     onPressed: () {
-
+                                      playerControl.skipToQueueItem(0);
+                                      //playerControl.skipToPrevious();//TODO:nur wenn mehr als [zeit] überschritten wurde (in den einstellungen zeit einstellen)
                                     },
                                   ),
-                                  IconButton(
-                                    icon: Icon(Icons.play_arrow),
-                                    onPressed: () {
-
-                                    },
-                                  ),
+                                  PlayButton(),
                                   IconButton(
                                     icon: Icon(Icons.fast_forward),
                                     onPressed: () {
-
+                                      playerControl.skipToNext();
                                     },
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.shuffle),
                                     onPressed: () {
-
+                                      playerControl.customAction('shuffleQueue');
                                     },
                                   ),
                                 ],

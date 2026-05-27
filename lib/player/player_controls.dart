@@ -13,9 +13,21 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   //play controls
   @override
-  Future<void> play() => _player.play();
+  Future<void> play() async {
+    _player.play();
+    playbackState.add(playbackState.value.copyWith(
+      controls: [MediaControl.pause],
+      playing: true,
+    ));
+  }
   @override
-  Future<void> pause() => _player.pause();
+  Future<void> pause() async {
+    _player.pause();
+    playbackState.add(playbackState.value.copyWith(
+      playing: false,
+      controls: [MediaControl.play],
+    ));
+  }
   @override
   Future<void> stop() => _player.stop();
   @override
@@ -30,7 +42,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     _queueRepository.makeCurrent(index);
     _player.seek(Duration.zero);
     _player.setSource(item.id);
-    return;
+    play();
   }
   /*
   @override
@@ -46,7 +58,6 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     skipToQueueItem(0);
     return;
   }
-  //queue controls
   @override
   Future<dynamic> customAction(String name,[Map<String,dynamic>? extras]) async {
     if (name case 'getQueue') {
@@ -117,6 +128,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       }
     }
   }
+  //queue controls
   @override
   Future<void> addQueueItem(MediaItem mediaItem) async {
     _queueRepository.addItem(mediaItem);
