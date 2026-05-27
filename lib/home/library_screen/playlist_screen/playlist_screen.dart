@@ -145,12 +145,7 @@ class PlaylistScreen extends StatelessWidget {
                   ),
                 ),
                 switch (playlistDetails) {
-                  AsyncValue(:final value?) => Column(
-                    children: [
-                      Text(playlistDetails.toString()),
-                      Text(value['entry'][0]['title2']),
-                    ],
-                  ),//SongList(songListNullable: value['entry'],listView: false),
+                  AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: false),
                   AsyncValue(error: != null) => Text("Error"),
                   AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                 },

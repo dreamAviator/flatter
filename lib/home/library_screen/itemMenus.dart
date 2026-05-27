@@ -4,6 +4,7 @@ import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/material.dart';
+import 'package:deepcopy/deepcopy.dart';
 
 class ItemMenus {//man muss hier halt später einstellen können, welche aktionen hier und welche im bottom sheet angezeigt werden sollen
   ItemMenus(this.context);
@@ -273,7 +274,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
   }
 
   //menus
-  Widget songMenu(Map<dynamic,dynamic> song) {
+  Widget songMenu(Map<dynamic,dynamic> songOld) {
+    Map<dynamic,dynamic> song = songOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('songMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
     List<ListTile> moreSheetEntryList = [];
@@ -311,11 +313,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         onTap: () {
           showModalBottomSheet(
               context: context,
+              showDragHandle: true,
               builder: (BuildContext context) {
-                return SizedBox(//mal schauen wie du das mit dem grid machst//die gridsize einstellung gibt es schon (also in der settingsmap)
-                  child: Column(
-                    children: moreSheetEntryList,
-                  ),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: moreSheetEntryList,
                 );
               }
           );
@@ -365,11 +367,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         onTap: () {
           showModalBottomSheet(
               context: context,
+              showDragHandle: true,
               builder: (BuildContext context) {
-                return SizedBox(//mal schauen wie du das mit dem grid machst//die gridsize einstellung gibt es schon (also in der settingsmap)
-                  child: Column(
-                    children: moreSheetEntryList,
-                  ),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: moreSheetEntryList,
                 );
               }
           );
@@ -382,11 +384,13 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: Icon(Icons.more_vert),
     );
   }
-  Widget albumMenu(Map<dynamic,dynamic> album) {
+  Widget albumMenu(Map<dynamic,dynamic> albumOld) {
+    Map<dynamic,dynamic> album = albumOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('albumMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
     List<ListTile> moreSheetEntryList = [];
-    List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(album['song']);
+    List<MediaItem> songList = [];
+    if (album['song'] != null) songList = usefulScripts.subsonicSongListToMediaItemList(album['song']);
     for (String action in actionOrder['mainMenu']) {
       switch (action) {
         case 'playNow':
@@ -428,11 +432,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         onTap: () {
           showModalBottomSheet(
               context: context,
+              showDragHandle: true,
               builder: (BuildContext context) {
-                return SizedBox(//mal schauen wie du das mit dem grid machst//die gridsize einstellung gibt es schon (also in der settingsmap)
-                  child: Column(
-                    children: moreSheetEntryList,
-                  ),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: moreSheetEntryList,
                 );
               }
           );
@@ -445,7 +449,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: Icon(Icons.more_vert),
     );
   }
-  Widget albumMenuList(Map<dynamic,dynamic> albumMinimal) {
+  Widget albumMenuList(Map<dynamic,dynamic> albumMinimalOld) {
+    Map<dynamic,dynamic> albumMinimal = albumMinimalOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('albumMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
     List<ListTile> moreSheetEntryList = [];
@@ -490,11 +495,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         onTap: () {
           showModalBottomSheet(
               context: context,
+              showDragHandle: true,
               builder: (BuildContext context) {
-                return SizedBox(//mal schauen wie du das mit dem grid machst//die gridsize einstellung gibt es schon (also in der settingsmap)
-                  child: Column(
-                    children: moreSheetEntryList,
-                  ),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: moreSheetEntryList,
                 );
               }
           );
@@ -548,11 +553,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         onTap: () {
           showModalBottomSheet(
               context: context,
+              showDragHandle: true,
               builder: (BuildContext context) {
-                return SizedBox(//mal schauen wie du das mit dem grid machst//die gridsize einstellung gibt es schon (also in der settingsmap)
-                  child: Column(
-                    children: moreSheetEntryList,
-                  ),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: moreSheetEntryList,
                 );
               }
           );
@@ -565,11 +570,13 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: Icon(Icons.more_vert),
     );
   }
-  Widget playlistMenu(Map<dynamic,dynamic> playlist) {//vlt noch ein show playlists by user, hast du ja im playlist screen an sich auch schon vor glaube ich
+  Widget playlistMenu(Map<dynamic,dynamic> playlistOld) {//vlt noch ein show playlists by user, hast du ja im playlist screen an sich auch schon vor glaube ich
+    Map<dynamic,dynamic> playlist = playlistOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('playlistMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
     List<ListTile> moreSheetEntryList = [];
-    List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(playlist['entry']);
+    List<MediaItem> songList = [];
+    if (playlist['entry'] != null) songList = usefulScripts.subsonicSongListToMediaItemList(playlist['entry']);
     for (String action in actionOrder['mainMenu']) {
       switch (action) {
         case 'playNow':
@@ -607,11 +614,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         onTap: () {
           showModalBottomSheet(
               context: context,
+              showDragHandle: true,
               builder: (BuildContext context) {
-                return SizedBox(//mal schauen wie du das mit dem grid machst//die gridsize einstellung gibt es schon (also in der settingsmap)
-                  child: Column(
-                    children: moreSheetEntryList,
-                  ),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: moreSheetEntryList,
                 );
               }
           );
@@ -624,7 +631,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: Icon(Icons.more_vert),
     );
   }
-  Widget playlistMenuList(Map<dynamic,dynamic> playlistMinimal) {
+  Widget playlistMenuList(Map<dynamic,dynamic> playlistMinimalOld) {
+    Map<dynamic,dynamic> playlistMinimal = playlistMinimalOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('playlistMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
     List<ListTile> moreSheetEntryList = [];
@@ -664,14 +672,14 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       menuEntryList.add(PopupMenuItem(
         onTap: () {
           showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return SizedBox(//mal schauen wie du das mit dem grid machst//die gridsize einstellung gibt es schon (also in der settingsmap)
-                  child: Column(
-                    children: moreSheetEntryList,
-                  ),
-                );
-              }
+            context: context,
+            showDragHandle: true,
+            builder: (BuildContext context) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: moreSheetEntryList,
+              );
+            }
           );
         },
         child: Text("More"),
