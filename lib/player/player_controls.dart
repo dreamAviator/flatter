@@ -55,13 +55,12 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   Future<void> playMediaItem(MediaItem mediaItem) async {
     _queueRepository.clearQueue();
     _queueRepository.addItem(mediaItem);
-    skipToQueueItem(0);
     return;
   }
   @override
   Future<dynamic> customAction(String name,[Map<String,dynamic>? extras]) async {
     if (name case 'getQueue') {
-      return getQueue();
+      return _queueRepository.getQueue();
     } else if (name case 'clearQueue') {
       _queueRepository.clearQueue();
       return;
@@ -126,22 +125,22 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
           //shuffle nd vergessen
         }
       }
+    } else if (name case 'getCurrentItem') {
+      return _queueRepository.getItemAtPos(_queueRepository.getCurrentIndex());
     }
   }
   //queue controls
   @override
   Future<void> addQueueItem(MediaItem mediaItem) async {
     _queueRepository.addItem(mediaItem);
+    if (_queueRepository.getQueueLength() == 1) skipToQueueItem(0);
     return;
   }
   @override
   Future<void> insertQueueItem(int index,MediaItem mediaItem) async {
     _queueRepository.insertItem(mediaItem, index);
+    if (_queueRepository.getQueueLength() == 1) skipToQueueItem(0);
   }
   @override
   Future<void> removeQueueItemAt(int index) => _queueRepository.removeItem(index);
-
-  List<MediaItem> getQueue() {
-    return _queueRepository.getQueue();
-  }
 }

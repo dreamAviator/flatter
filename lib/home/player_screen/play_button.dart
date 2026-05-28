@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter_plus/icons/ic.dart';
 
 class PlayButton extends StatelessWidget {
   PlayButton({super.key});
@@ -15,10 +16,17 @@ class PlayButton extends StatelessWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (playing)
-              IconButton(onPressed: playerControl.pause, icon: Icon(Icons.pause))
+            if (processingState == AudioProcessingState.error)
+              IconButton(onPressed: null, icon: Icon(Icons.error))
+            else if (processingState == AudioProcessingState.buffering || processingState == AudioProcessingState.loading)
+              IconButton(onPressed: null, icon: CircularProgressIndicator())
+            else if (processingState == AudioProcessingState.idle)
+              IconButton(onPressed: null, icon: Icon(Icons.stop))
             else
-              IconButton(onPressed: playerControl.play, icon: Icon(Icons.play_arrow))
+              if (playing)
+                IconButton(onPressed: playerControl.pause, icon: Icon(Icons.pause))
+              else
+                IconButton(onPressed: playerControl.play, icon: Icon(Icons.play_arrow))
           ],
         );
       }

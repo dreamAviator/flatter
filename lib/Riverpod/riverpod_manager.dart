@@ -6,9 +6,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../main.dart';
 
 class RiverpodManager {
+  /*
   final playerUiProvider = FutureProvider<Map<dynamic,dynamic>>((ref) async {
     return {};
   });
+
+   */
 
   final authenticateProvider = FutureProvider.family<Map<dynamic,dynamic>,List<String>>((ref,List<String> loginInformation) async {
     if (loginInformation[0].isEmpty || loginInformation[1].isEmpty || loginInformation[2].isEmpty) {
