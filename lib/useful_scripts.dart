@@ -16,15 +16,15 @@ class SubsonicJustAudioCompatibility {
     String album = song['album'];
     String artist = song['artist'];
     Duration duration = Duration(seconds: song['duration']);
-    Map<String,dynamic> extras = {};
-    song.forEach((key,value) {
-      extras[key] = value;
-    });
     song.remove('id');
     song.remove('title');
     song.remove('album');
     song.remove('artist');
     song.remove('duration');
+    Map<String,dynamic> extras = {};
+    song.forEach((key,value) {
+      extras[key] = value;
+    });
     return MediaItem(id: id, title: title, album: album, artist: artist, duration: duration,extras: extras);//rating noch rein
   }
 }
