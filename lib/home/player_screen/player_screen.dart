@@ -91,7 +91,7 @@ class PlayerScreen extends StatelessWidget {
                                 icon: Icon(Icons.fast_rewind),
                                 onPressed: () {
                                   AudioService.position.listen((Duration position) {
-                                    if (position.inSeconds < settingsControl.loadSetting('timeUntilSeekToStart')) {
+                                    if (position.inSeconds >= settingsControl.loadSetting('timeUntilSeekToStart') && settingsControl.loadSetting('timeUntilSeekToStart') != -1) {
                                       playerControl.seek(Duration.zero);
                                     } else {
                                       playerControl.skipToPrevious();

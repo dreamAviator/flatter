@@ -1,6 +1,7 @@
 import 'package:flatter/settings/behaviour_settings/library_start_tab_setting.dart';
 import 'package:flatter/settings/behaviour_settings/play_actions_settings/play_actions_settings_screen.dart';
 import 'package:flatter/settings/behaviour_settings/start_tab_setting.dart';
+import 'package:flatter/settings/behaviour_settings/time_until_seek_to_start_setting.dart';
 import 'package:flutter/material.dart';
 
 class BehaviourSettingsScreen extends StatelessWidget {
@@ -38,6 +39,11 @@ class BehaviourSettingsScreen extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => PlayActionsSettingsScreen()));
             },
           ),
+          ListTile(
+            title: Text("Time until seek to start"),
+            trailing: TimeUntilSeekToStartSetting(),
+            subtitle: Text("The time that has to be passed, until pressing the rewind key will seek to the start of the current item instead of skipping to the previous one. Put -1 to never seek to the start."),
+          )
         ],
       ),
     );
