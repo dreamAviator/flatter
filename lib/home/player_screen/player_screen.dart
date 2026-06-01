@@ -3,6 +3,7 @@ import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
+import 'package:flatter/home/player_screen/player_image.dart';
 import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/home/player_screen/progess_slider.dart';
 import 'package:flatter/main.dart';
@@ -26,7 +27,7 @@ class PlayerScreen extends StatelessWidget {
                   spacing: 12,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Image.asset("lib/assets/images/empty_player.png",height: screenSize.width / 3,),
+                    PlayerImage(height: screenSize.width / 3),
                     StreamBuilder(
                       stream: playerControl.mediaItem,
                       builder: (context, asyncSnapshot) {
@@ -134,7 +135,7 @@ class PlayerScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Image.asset("lib/assets/images/empty_player.png",height: screenSize.width - 16,),
+                PlayerImage(height: screenSize.width - 16),
                 StreamBuilder(
                   stream: playerControl.mediaItem,
                   builder: (context, asyncSnapshot) {
