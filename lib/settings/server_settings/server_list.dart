@@ -10,11 +10,11 @@ import '../../Riverpod/riverpod_manager.dart';
 import 'add_server_popup.dart';
 
 class ServerList extends StatelessWidget {
-  const ServerList({super.key});
+  const ServerList({super.key, required this.riverpodManager});
+  final RiverpodManager riverpodManager;
 
   @override
   Widget build(BuildContext context) {
-    final riverpodManager = RiverpodManager();
     return Consumer(
       builder: (context,ref,child) {
         final serverWidgetList = ref.watch(riverpodManager.serverListProvider);
@@ -34,42 +34,78 @@ class ServerList extends StatelessWidget {
                       }
                       void editServer(int id) {
                         List<String> serverInfo = databaseControl.getServerByID(id);
-                        AddServerPopup.showAddServerPopUp(context, serverInfo[3], serverInfo[0], serverInfo[1], serverInfo[2], id);
+                        AddServerPopup.showAddServerPopUp(context, serverInfo[3], serverInfo[0], serverInfo[1], serverInfo[2], id, riverpodManager);
                       }
-
-                      return Slidable(
-                        startActionPane: ActionPane(
-                          motion: DrawerMotion(),
-                          children: [
-                            SlidableAction(//farbe noch festlegen
-                              onPressed: (_) => (editServer(value[index][0])),
-                              icon: Icons.edit,
-                              label: 'Edit',
-                            ),
-                          ],
-                        ),
-                        endActionPane: ActionPane(
-                          motion: DrawerMotion(),
-                          children: [
-                            SlidableAction(//stattdessen vielleicht dismissible machen und nicht mit bestätigung. oder aber in den einstellungen festlegen lassen
-                              onPressed: (_) => (deleteServer(value[index][0])),
-                              icon: Icons.delete,
-                              label: 'Delete',
-                              backgroundColor: Colors.red,
-                            ),
-                          ],
-                        ),
-                        child: ListTile(
-                          leading: Icon(Icons.storage),
-                          title: Text(value[index][1]),
-                          subtitle: Text(value[index][2]),
-                          trailing: ServerMenu(context,ref,value[index][0]).serverMenu(value[index][0]),
-                          onTap: () {
-                            databaseControl.selectServer(value[index][0]);
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      );
+                      int currentlySelectedServer = settingsControl.loadSetting('selectedServer');
+                      if (currentlySelectedServer == value[index][0]) {
+                        return Slidable(
+                          startActionPane: ActionPane(
+                            motion: DrawerMotion(),
+                            children: [
+                              SlidableAction(//farbe noch festlegen
+                                onPressed: (_) => (editServer(value[index][0])),
+                                icon: Icons.edit,
+                                label: 'Edit',
+                              ),
+                            ],
+                          ),
+                          endActionPane: ActionPane(
+                            motion: DrawerMotion(),
+                            children: [
+                              SlidableAction(//stattdessen vielleicht dismissible machen und nicht mit bestätigung. oder aber in den einstellungen festlegen lassen
+                                onPressed: (_) => (deleteServer(value[index][0])),
+                                icon: Icons.delete,
+                                label: 'Delete',
+                                backgroundColor: Colors.red,
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            leading: Icon(Icons.check),
+                            title: Text(value[index][1]),
+                            subtitle: Text(value[index][2]),
+                            trailing: ServerMenu(context,ref,value[index][0],riverpodManager).serverMenu(),
+                            onTap: () {
+                              databaseControl.selectServer(value[index][0]);
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        );
+                      } else {
+                        return Slidable(
+                          startActionPane: ActionPane(
+                            motion: DrawerMotion(),
+                            children: [
+                              SlidableAction(//farbe noch festlegen
+                                onPressed: (_) => (editServer(value[index][0])),
+                                icon: Icons.edit,
+                                label: 'Edit',
+                              ),
+                            ],
+                          ),
+                          endActionPane: ActionPane(
+                            motion: DrawerMotion(),
+                            children: [
+                              SlidableAction(//stattdessen vielleicht dismissible machen und nicht mit bestätigung. oder aber in den einstellungen festlegen lassen
+                                onPressed: (_) => (deleteServer(value[index][0])),
+                                icon: Icons.delete,
+                                label: 'Delete',
+                                backgroundColor: Colors.red,
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            leading: Icon(Icons.storage),
+                            title: Text(value[index][1]),
+                            subtitle: Text(value[index][2]),
+                            trailing: ServerMenu(context,ref,value[index][0],riverpodManager).serverMenu(),
+                            onTap: () {
+                              databaseControl.selectServer(value[index][0]);
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        );
+                      }
                     },
                   ),
                 ),

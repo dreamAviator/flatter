@@ -9,8 +9,7 @@ import '../../Riverpod/riverpod_manager.dart';
 
 
 class AddServerPopup {
-  static void showAddServerPopUp(BuildContext context,String? serverName,String? serverURL,String? serverUsername,String? serverPassword,int? id) {
-    final riverpodManager = RiverpodManager();
+  static void showAddServerPopUp(BuildContext context,String? serverName,String? serverURL,String? serverUsername,String? serverPassword,int? id, RiverpodManager riverpodManager) {
     String title = "Add Server";
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     TextEditingController serverNameController = TextEditingController();
@@ -44,6 +43,7 @@ class AddServerPopup {
                   }
                   databaseControl.addServer(serverNameController.text, serverURLcontroller.text, serverUsernameController.text,serverPasswordController.text);
                   Navigator.of(context).pop();
+                  ref.invalidate(riverpodManager.serverListProvider);
                 }
               },
               child: Text("Save"),

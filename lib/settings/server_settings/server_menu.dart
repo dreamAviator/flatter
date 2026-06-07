@@ -10,17 +10,17 @@ class ServerMenu {
   final BuildContext context;
   final WidgetRef ref;
   final int id;
-  ServerMenu(this.context,this.ref,this.id);
-  final riverpodManager = RiverpodManager();
+  final RiverpodManager riverpodManager;
+  ServerMenu(this.context,this.ref,this.id, this.riverpodManager);
 
-  Widget serverMenu(int id) {
+  Widget serverMenu() {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
         PopupMenuItem(
           child: Text("Edit"),
           onTap: () {
             List<String> serverInfo = databaseControl.getServerByID(id);
-            AddServerPopup.showAddServerPopUp(context, serverInfo[3], serverInfo[0], serverInfo[1], serverInfo[2], id);
+            AddServerPopup.showAddServerPopUp(context, serverInfo[3], serverInfo[0], serverInfo[1], serverInfo[2], id, riverpodManager);
           },
         ),
         PopupMenuItem(
