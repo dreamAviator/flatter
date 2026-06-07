@@ -20,6 +20,11 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     });
 
      */
+    playbackState.listen((data) {
+      if (data.processingState == AudioProcessingState.completed) {
+        skipToNext();
+      }
+    });
   }
 
   final SubsonicJustAudioCompatibility usefulScript = SubsonicJustAudioCompatibility();
