@@ -26,7 +26,7 @@ class SettingsController {
     'lastLibraryTab':0,
     'addToPlaylistsSkipDuplicates':true,
     'landscapeMode':true,//TODO:das hier ändern lassen wenn sich die ausrichtung des bildschirms/die größe des fensters so verändert, dass es nicht mehr praktisch wäre//das passiert jetzt bei jedem starten, das noch beim drehen des bildschirms halt hinkriegen. außerdem muss der toggle den man hat, das overriden können, so macht der toggle gar nichts basically//ok das wird acutally automatisch geändert, aber das ist leider falsch wenn man zurück geht und beim drehen auf einem anderen screen als dem home screen ist
-    'firstStart':true,//einstellung für stern oder herz
+    'firstStart':true,//einstellung für stern oder herz für das favouriten der songs vlt
     'searchArtistCount':10,
     'searchAlbumCount':10,
     'searchSongCount':30,

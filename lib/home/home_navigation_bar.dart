@@ -1,3 +1,4 @@
+import 'package:flatter/home/first_start_popup.dart';
 import 'package:flatter/home/library_screen/library_screen.dart';
 import 'package:flatter/home/library_screen/library_screen_ViewModel.dart';
 import 'package:flatter/home/player_screen/player_screen.dart';
@@ -19,6 +20,12 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+    /*
+    if (settingsControl.loadSetting('firstStart') == false) {
+      FirstStartPopup.showFirstStartPopup(context);
+    }
+    funktioniert nicht
+     */
     if (currentPageIndex == -1) {
       currentPageIndex = settingsControl.loadSetting('lastTab');
     }
