@@ -315,9 +315,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: moreSheetEntryList,
+                return SafeArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: moreSheetEntryList,
+                  ),
                 );
               }
           );
@@ -369,9 +371,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: moreSheetEntryList,
+                return SafeArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: moreSheetEntryList,
+                  ),
                 );
               }
           );
@@ -434,9 +438,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: moreSheetEntryList,
+                return SafeArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: moreSheetEntryList,
+                  ),
                 );
               }
           );
@@ -497,9 +503,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: moreSheetEntryList,
+                return SafeArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: moreSheetEntryList,
+                  ),
                 );
               }
           );
@@ -555,9 +563,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: moreSheetEntryList,
+                return SafeArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: moreSheetEntryList,
+                  ),
                 );
               }
           );
@@ -616,9 +626,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: moreSheetEntryList,
+                return SafeArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: moreSheetEntryList,
+                  ),
                 );
               }
           );
@@ -675,9 +687,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
             context: context,
             showDragHandle: true,
             builder: (BuildContext context) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: moreSheetEntryList,
+              return SafeArea(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: moreSheetEntryList,
+                ),
               );
             }
           );
