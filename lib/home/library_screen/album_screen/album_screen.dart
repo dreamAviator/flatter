@@ -62,6 +62,7 @@ class AlbumScreen extends StatelessWidget {
               AsyncValue() => [LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)]
             }
           ),
+          /*
           body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
@@ -141,6 +142,91 @@ class AlbumScreen extends StatelessWidget {
                 },
               ],
             ),
+          ),
+
+           */
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
+                    //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
+                    if (settingsControl.settingsMap['landscapeMode'] == false) switch (albumDetails) {
+                      AsyncValue(:final value?) => CachedNetworkImage(
+                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
+                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                        errorWidget: (context, url, error) => IconButton(
+                          onPressed: () {
+                            //hier retry
+                          },
+                          icon: Icon(Icons.error),
+                        ),
+                        height: screenSize.width,
+                      ),
+                      AsyncValue(error: != null) => Text("Error"),
+                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                    },
+                    if (settingsControl.settingsMap['landscapeMode'] == false) switch (albumDetails) {
+                      AsyncValue(:final value?) => TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: value['artistId'])));
+                        },
+                        child: Text(value['artist']),
+                      ),
+                      AsyncValue(error: != null) => Text("Error"),
+                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                    },
+                    if (settingsControl.settingsMap['landscapeMode'] == false) Row(
+                      children: [
+                        //also ja hier actions
+                        //diese diablen bis ergebnis da ist
+                        Text("hier sollen actions hin")
+                      ],
+                    ),
+                    if (settingsControl.settingsMap['landscapeMode'] == true) Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        switch (albumDetails) {
+                          AsyncValue(:final value?) => CachedNetworkImage(
+                            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
+                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                            errorWidget: (context, url, error) => IconButton(
+                              onPressed: () {
+                                //hier retry
+                              },
+                              icon: Icon(Icons.error),
+                            ),
+                            width: screenSize.width / 3,
+                            height: screenSize.width / 3,
+                          ),
+                          AsyncValue(error: != null) => Text("Error"),
+                          AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                        },
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text("hier"),
+                              Text("sollen"),
+                              Text("actions"),
+                              Text("hin"),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              switch (albumDetails) {
+                AsyncValue(:final value?) => SongList(songListNullable: value['song'],listView: true,sliver: true,),
+                AsyncValue(error: != null) => Text("Error"),
+                AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
+              },
+            ],
           ),
         );
       },

@@ -159,7 +159,7 @@ class SearchScreen extends StatelessWidget {
             )
           ],
         ));
-        widgetList.add(SongList(songListNullable: searchResults['song'], listView: false));
+        widgetList.add(SongList(songListNullable: searchResults['song'], listView: false,sliver: false,));
       }
       return SingleChildScrollView(child: Column(children: widgetList,),);
     }
