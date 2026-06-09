@@ -27,7 +27,7 @@ class SearchSongScreen extends StatelessWidget {
         builder: (context,ref,child) {
           final fullSearchResults = ref.watch(riverpodManager.fullSearchProvider(query));
           return switch (fullSearchResults) {
-            AsyncValue(:final value?) => SongList(songListNullable: value['song'], listView: true,sliver: false,),
+            AsyncValue(:final value?) => SongList(songListNullable: value['song'], listView: true,sliver: false,filter: false),
             AsyncValue(error: != null) => Text("error"),
             AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
           };
