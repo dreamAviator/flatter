@@ -9,10 +9,11 @@ import 'album_screen/album_screen.dart';
 import 'artist_screen/artist_screen.dart';
 
 class SongList extends StatelessWidget {
-  const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver});
+  const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver,required this.filter});
   final List<dynamic>? songListNullable;
   final bool listView;
   final bool sliver;
+  final bool filter;
 
   @override
   Widget build(BuildContext context) {

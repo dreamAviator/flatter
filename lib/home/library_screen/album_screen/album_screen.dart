@@ -222,7 +222,7 @@ class AlbumScreen extends StatelessWidget {
                 ),
               ),
               switch (albumDetails) {
-                AsyncValue(:final value?) => SongList(songListNullable: value['song'],listView: true,sliver: true,),
+                AsyncValue(:final value?) => SongList(songListNullable: value['song'],listView: true,sliver: true,filter: true),
                 AsyncValue(error: != null) => Text("Error"),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
               },
