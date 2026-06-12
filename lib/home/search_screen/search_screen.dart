@@ -161,7 +161,7 @@ class SearchScreen extends StatelessWidget {
             )
           ],
         ));
-        widgetList.add(SongList(songListNullable: searchResults['song'], listView: false,sliver: false,filter: false,));
+        widgetList.add(SongList(songListNullable: searchResults['song'], listView: false,sliver: false));
       }
       return SingleChildScrollView(child: Column(children: widgetList,),);
     }
@@ -300,7 +300,7 @@ class SearchScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                      SongList(songListNullable: value['song'], listView: true, sliver: true, filter: false),
+                      SongList(songListNullable: value['song'], listView: true, sliver: true),
                     ],
                   ),
                   AsyncValue(error: != null) => const Text("error"),

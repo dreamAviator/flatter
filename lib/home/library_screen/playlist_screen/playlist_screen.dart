@@ -245,7 +245,7 @@ class PlaylistScreen extends StatelessWidget {
                 ),
               ),
               switch (playlistDetails) {
-                AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: true,sliver: true,filter: true),
+                AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: true,sliver: true,),
                 AsyncValue(error: != null) => Text("Error"),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
               },
