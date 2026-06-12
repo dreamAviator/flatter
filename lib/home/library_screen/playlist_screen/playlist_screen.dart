@@ -16,6 +16,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../Riverpod/riverpod_manager.dart';
 import '../album_screen/album_screen.dart';
+import '../search_filter_widget.dart';
 
 class PlaylistScreen extends StatelessWidget {
   const PlaylistScreen({super.key,required this.playlistID});
@@ -26,6 +27,7 @@ class PlaylistScreen extends StatelessWidget {
     final riverpodManager = RiverpodManager();
     ItemMenus itemMenus = ItemMenus(context);
     final Size screenSize = MediaQuery.sizeOf(context);
+    final filterNotifier = ValueNotifier<String>('');
     return Consumer(
       builder: (context,ref,child) {
         final playlistDetails = ref.watch(riverpodManager.playlistDetailsProvider(playlistID));
@@ -244,8 +246,9 @@ class PlaylistScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              SliverToBoxAdapter(child: SearchFilterWidget(filterNotifier: filterNotifier),),
               switch (playlistDetails) {
-                AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: true,sliver: true,),
+                AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: true,sliver: true,filterNotifier: filterNotifier),
                 AsyncValue(error: != null) => Text("Error"),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
               },

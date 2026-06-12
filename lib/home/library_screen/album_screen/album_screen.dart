@@ -25,6 +25,7 @@ class AlbumScreen extends StatelessWidget {
     final riverpodManager = RiverpodManager();
     ItemMenus itemMenus = ItemMenus(context);
     final Size screenSize = MediaQuery.sizeOf(context);
+    final filterNotifier = ValueNotifier<String>('');
     return Consumer(
       builder: (context,ref,child) {
         final albumDetails = ref.watch(riverpodManager.albumDetailsProvider(albumID));
@@ -222,7 +223,7 @@ class AlbumScreen extends StatelessWidget {
                 ),
               ),
               switch (albumDetails) {
-                AsyncValue(:final value?) => SongList(songListNullable: value['song'],listView: true,sliver: true),
+                AsyncValue(:final value?) => SongList(songListNullable: value['song'],listView: true,sliver: true,filterNotifier: filterNotifier,),
                 AsyncValue(error: != null) => Text("Error"),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
               },
