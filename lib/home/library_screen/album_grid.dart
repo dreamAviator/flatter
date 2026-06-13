@@ -15,7 +15,6 @@ class AlbumGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.sizeOf(context);
     List<dynamic> albumList = [];
     if (albumListNullable != null && albumListNullable?.isEmpty == false) {
       print(albumListNullable);
