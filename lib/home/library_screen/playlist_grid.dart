@@ -8,11 +8,12 @@ import '../../main.dart';
 import 'itemMenus.dart';
 
 class PlaylistGrid extends StatelessWidget {
-  const PlaylistGrid({super.key,required this.playlistListNullable,required this.crossAxisCount,required this.sliver,this.onlyOwn});
+  const PlaylistGrid({super.key,required this.playlistListNullable,required this.crossAxisCount,required this.sliver,this.onlyOwn,this.filterNotifier});
   final List<dynamic>? playlistListNullable;
   final int crossAxisCount;
   final bool sliver;
   final bool? onlyOwn;
+  final ValueNotifier<String>? filterNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -57,18 +58,173 @@ class PlaylistGrid extends StatelessWidget {
       }
     }
     if (sliver == true) {
-      return SliverMasonryGrid.count(
-        crossAxisCount: crossAxisCount,
-        childCount: playlistList.length,
-        itemBuilder: (context, index) {
-          Map item = playlistList[index];
-          if (onlyOwn == true) {
+      if (filterNotifier != null) {
+        return ValueListenableBuilder(
+          valueListenable: filterNotifier!,
+          builder: (context,String filter,child) {
+            List<dynamic> filteredPlaylistList = new List.from(playlistList);
+            if (filter.isNotEmpty) {
+              filteredPlaylistList.removeWhere((item) {
+                if (item is Map) {
+                  for (var value in item.values) {
+                    if (value is String) {
+                      if (value.toLowerCase().contains(filter.toLowerCase())) {
+                        return false;
+                      }
+                    }
+                  }
+                }
+                return true;
+              });
+            }
+            if (filteredPlaylistList.isEmpty) {
+              return (SliverToBoxAdapter(child: Center(child: Text("No playlists")),));
+            }
+            return SliverMasonryGrid.count(
+              crossAxisCount: crossAxisCount,
+              childCount: filteredPlaylistList.length,
+              itemBuilder: (context, index) {
+                Map item = filteredPlaylistList[index];
+                if (onlyOwn == true) {
+                  return Card(
+                    clipBehavior: Clip.hardEdge,
+                    child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () {
+                        print("playlost tapped");
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                PlaylistScreen(playlistID: item['id'])));
+                      },
+                      child: Column(
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 1,
+                            child: CachedNetworkImage(
+                              imageUrl: "${subsonicService.getURL(
+                                  null, null, null)[0]}getCoverArt${subsonicService
+                                  .getURL(
+                                  null, null, null)[1]}&id=${item['coverArt']}",
+                              progressIndicatorBuilder: (context, url,
+                                  downloadProgress) =>
+                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                              errorWidget: (context, url, error) =>
+                                  IconButton(
+                                    onPressed: () {
+                                      //hier retry
+                                    },
+                                    icon: Icon(Icons.error),
+                                  ),
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(item['name']),
+                            subtitle: Text(item['songCount'].toString()),
+                            trailing: ItemMenus(context).playlistMenuList(item),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return Card(
+                  clipBehavior: Clip.hardEdge,
+                  child: InkWell(
+                    splashColor: Colors.blue.withAlpha(30),
+                    onTap: () {
+                      print("playlist tabbed");
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              PlaylistScreen(playlistID: item['id'])));
+                    },
+                    child: Column(
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: CachedNetworkImage(
+                            imageUrl: "${subsonicService.getURL(
+                                null, null, null)[0]}getCoverArt${subsonicService
+                                .getURL(
+                                null, null, null)[1]}&id=${item['coverArt']}",
+                            progressIndicatorBuilder: (context, url,
+                                downloadProgress) =>
+                                LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                            errorWidget: (context, url, error) =>
+                                IconButton(
+                                  onPressed: () {
+                                    //hier retry
+                                  },
+                                  icon: Icon(Icons.error),
+                                ),
+                          ),
+                        ),
+                        ListTile(
+                          title: Text(item['name']),
+                          subtitle: Text(item['owner']),
+                          trailing: ItemMenus(context).playlistMenuList(item),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      } else {
+        return SliverMasonryGrid.count(
+          crossAxisCount: crossAxisCount,
+          childCount: playlistList.length,
+          itemBuilder: (context, index) {
+            Map item = playlistList[index];
+            if (onlyOwn == true) {
+              return Card(
+                clipBehavior: Clip.hardEdge,
+                child: InkWell(
+                  splashColor: Colors.blue.withAlpha(30),
+                  onTap: () {
+                    print("playlost tapped");
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            PlaylistScreen(playlistID: item['id'])));
+                  },
+                  child: Column(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 1,
+                        child: CachedNetworkImage(
+                          imageUrl: "${subsonicService.getURL(
+                              null, null, null)[0]}getCoverArt${subsonicService
+                              .getURL(
+                              null, null, null)[1]}&id=${item['coverArt']}",
+                          progressIndicatorBuilder: (context, url,
+                              downloadProgress) =>
+                              LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                          errorWidget: (context, url, error) =>
+                              IconButton(
+                                onPressed: () {
+                                  //hier retry
+                                },
+                                icon: Icon(Icons.error),
+                              ),
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(item['name']),
+                        subtitle: Text(item['songCount'].toString()),
+                        trailing: ItemMenus(context).playlistMenuList(item),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
             return Card(
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 splashColor: Colors.blue.withAlpha(30),
                 onTap: () {
-                  print("playlost tapped");
+                  print("playlist tabbed");
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
                           PlaylistScreen(playlistID: item['id'])));
@@ -96,69 +252,184 @@ class PlaylistGrid extends StatelessWidget {
                     ),
                     ListTile(
                       title: Text(item['name']),
-                      subtitle: Text(item['songCount'].toString()),
+                      subtitle: Text(item['owner']),
                       trailing: ItemMenus(context).playlistMenuList(item),
                     ),
                   ],
                 ),
               ),
             );
-          }
-          return Card(
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-              splashColor: Colors.blue.withAlpha(30),
-              onTap: () {
-                print("playlist tabbed");
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        PlaylistScreen(playlistID: item['id'])));
-              },
-              child: Column(
-                children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: CachedNetworkImage(
-                      imageUrl: "${subsonicService.getURL(
-                          null, null, null)[0]}getCoverArt${subsonicService
-                          .getURL(
-                          null, null, null)[1]}&id=${item['coverArt']}",
-                      progressIndicatorBuilder: (context, url,
-                          downloadProgress) =>
-                          LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                      errorWidget: (context, url, error) =>
-                          IconButton(
-                            onPressed: () {
-                              //hier retry
-                            },
-                            icon: Icon(Icons.error),
-                          ),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(item['name']),
-                    subtitle: Text(item['owner']),
-                    trailing: ItemMenus(context).playlistMenuList(item),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
+          },
+        );
+      }
     } else {
-      return MasonryGridView.count(
-        crossAxisCount: crossAxisCount,
-        itemCount: playlistList.length,
-        itemBuilder: (context, index) {
-          Map item = playlistList[index];
-          if (onlyOwn == true) {
+      if (filterNotifier != null) {
+        return ValueListenableBuilder(
+          valueListenable: filterNotifier!,
+          builder: (context,String filter,child) {
+            List<dynamic> filteredPlaylistList = new List.from(playlistList);
+            if (filter.isNotEmpty) {
+              filteredPlaylistList.removeWhere((item) {
+                if (item is Map) {
+                  for (var value in item.values) {
+                    if (value is String) {
+                      if (value.toLowerCase().contains(filter.toLowerCase())) {
+                        return false;
+                      }
+                    }
+                  }
+                }
+                return true;
+              });
+            }
+            if (filteredPlaylistList.isEmpty) {
+              return (Center(child: Text("No playlists")));
+            }
+            return MasonryGridView.count(
+              crossAxisCount: crossAxisCount,
+              itemCount: filteredPlaylistList.length,
+              itemBuilder: (context, index) {
+                Map item = filteredPlaylistList[index];
+                if (onlyOwn == true) {
+                  return Card(
+                    clipBehavior: Clip.hardEdge,
+                    child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () {
+                        print("playlost tapped");
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                PlaylistScreen(playlistID: item['id'])));
+                      },
+                      child: Column(
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 1,
+                            child: CachedNetworkImage(
+                              imageUrl: "${subsonicService.getURL(
+                                  null, null, null)[0]}getCoverArt${subsonicService
+                                  .getURL(
+                                  null, null, null)[1]}&id=${item['coverArt']}",
+                              progressIndicatorBuilder: (context, url,
+                                  downloadProgress) =>
+                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                              errorWidget: (context, url, error) =>
+                                  IconButton(
+                                    onPressed: () {
+                                      //hier retry
+                                    },
+                                    icon: Icon(Icons.error),
+                                  ),
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(item['name']),
+                            subtitle: Text(item['songCount'].toString()),
+                            trailing: ItemMenus(context).playlistMenuList(item),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return Card(
+                  clipBehavior: Clip.hardEdge,
+                  child: InkWell(
+                    splashColor: Colors.blue.withAlpha(30),
+                    onTap: () {
+                      print("playlist tabbed");
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              PlaylistScreen(playlistID: item['id'])));
+                    },
+                    child: Column(
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: CachedNetworkImage(
+                            imageUrl: "${subsonicService.getURL(
+                                null, null, null)[0]}getCoverArt${subsonicService
+                                .getURL(
+                                null, null, null)[1]}&id=${item['coverArt']}",
+                            progressIndicatorBuilder: (context, url,
+                                downloadProgress) =>
+                                LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                            errorWidget: (context, url, error) =>
+                                IconButton(
+                                  onPressed: () {
+                                    //hier retry
+                                  },
+                                  icon: Icon(Icons.error),
+                                ),
+                          ),
+                        ),
+                        ListTile(
+                          title: Text(item['name']),
+                          subtitle: Text(item['owner']),
+                          trailing: ItemMenus(context).playlistMenuList(item),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      } else {
+        return MasonryGridView.count(
+          crossAxisCount: crossAxisCount,
+          itemCount: playlistList.length,
+          itemBuilder: (context, index) {
+            Map item = playlistList[index];
+            if (onlyOwn == true) {
+              return Card(
+                clipBehavior: Clip.hardEdge,
+                child: InkWell(
+                  splashColor: Colors.blue.withAlpha(30),
+                  onTap: () {
+                    print("playlost tapped");
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            PlaylistScreen(playlistID: item['id'])));
+                  },
+                  child: Column(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 1,
+                        child: CachedNetworkImage(
+                          imageUrl: "${subsonicService.getURL(
+                              null, null, null)[0]}getCoverArt${subsonicService
+                              .getURL(
+                              null, null, null)[1]}&id=${item['coverArt']}",
+                          progressIndicatorBuilder: (context, url,
+                              downloadProgress) =>
+                              LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                          errorWidget: (context, url, error) =>
+                              IconButton(
+                                onPressed: () {
+                                  //hier retry
+                                },
+                                icon: Icon(Icons.error),
+                              ),
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(item['name']),
+                        subtitle: Text(item['songCount'].toString()),
+                        trailing: ItemMenus(context).playlistMenuList(item),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
             return Card(
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 splashColor: Colors.blue.withAlpha(30),
                 onTap: () {
-                  print("playlost tapped");
+                  print("playlist tabbed");
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
                           PlaylistScreen(playlistID: item['id'])));
@@ -186,56 +457,16 @@ class PlaylistGrid extends StatelessWidget {
                     ),
                     ListTile(
                       title: Text(item['name']),
-                      subtitle: Text(item['songCount'].toString()),
+                      subtitle: Text(item['owner']),
                       trailing: ItemMenus(context).playlistMenuList(item),
                     ),
                   ],
                 ),
               ),
             );
-          }
-          return Card(
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-              splashColor: Colors.blue.withAlpha(30),
-              onTap: () {
-                print("playlist tabbed");
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        PlaylistScreen(playlistID: item['id'])));
-              },
-              child: Column(
-                children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: CachedNetworkImage(
-                      imageUrl: "${subsonicService.getURL(
-                          null, null, null)[0]}getCoverArt${subsonicService
-                          .getURL(
-                          null, null, null)[1]}&id=${item['coverArt']}",
-                      progressIndicatorBuilder: (context, url,
-                          downloadProgress) =>
-                          LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                      errorWidget: (context, url, error) =>
-                          IconButton(
-                            onPressed: () {
-                              //hier retry
-                            },
-                            icon: Icon(Icons.error),
-                          ),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(item['name']),
-                    subtitle: Text(item['owner']),
-                    trailing: ItemMenus(context).playlistMenuList(item),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
+          },
+        );
+      }
     }
   }
 }

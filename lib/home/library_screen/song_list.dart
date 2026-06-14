@@ -52,7 +52,7 @@ class SongList extends StatelessWidget {
                   if (item is Map) {
                     for (var value in item.values) {
                       if (value is String) {
-                        if (value.toLowerCase().contains(filter)) {
+                        if (value.toLowerCase().contains(filter.toLowerCase())) {
                           return false;
                         }
                       } else if (value is List) {
@@ -60,13 +60,13 @@ class SongList extends StatelessWidget {
                           if (underValue is Map) {
                             for (var underUnderValue in underValue.values) {
                               if (underUnderValue is String) {
-                                if (underUnderValue.toLowerCase().contains(filter)) {
+                                if (underUnderValue.toLowerCase().contains(filter.toLowerCase())) {
                                   return false;
                                 }
                               }
                             }
                           } else if (underValue is String) {
-                            if (underValue.toLowerCase().contains(filter)) {
+                            if (underValue.toLowerCase().contains(filter.toLowerCase())) {
                               return false;
                             }
                           }

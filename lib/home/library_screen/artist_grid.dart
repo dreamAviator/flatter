@@ -39,13 +39,16 @@ class ArtistGrid extends StatelessWidget {
               filteredArtistList.removeWhere((item) {
                 if (item is Map) {
                   if (item['name'] is String) {
-                    if (item['name'].contains(filter)) {
+                    if (item['name'].toLowerCase().contains(filter.toLowerCase())) {
                       return false;
                     }
                   }
                 }
                 return true;
               });
+            }
+            if (filteredArtistList.isEmpty) {
+              return (SliverToBoxAdapter(child: Center(child: Text("No artists")),));
             }
             return SliverMasonryGrid.count(
               crossAxisCount: crossAxisCount,
@@ -135,13 +138,16 @@ class ArtistGrid extends StatelessWidget {
               filteredArtistList.removeWhere((item) {
                 if (item is Map) {
                   if (item['name'] is String) {
-                    if (item['name'].contains(filter)) {
+                    if (item['name'].toLowerCase().contains(filter.toLowerCase())) {
                       return false;
                     }
                   }
                 }
                 return true;
               });
+            }
+            if (filteredArtistList.isEmpty) {
+              return (Center(child: Text("No artists")));
             }
             return MasonryGridView.count(
               crossAxisCount: crossAxisCount,

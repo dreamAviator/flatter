@@ -2,6 +2,7 @@ import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/album_grid.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/search_filter_widget.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
+    final filterNotifier = ValueNotifier<String>('');
     return Expanded(
       child: Consumer(
         builder: (context, ref, child) {
@@ -99,10 +101,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
               SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    ListTile(
-                      title: Text("uh"),
-                      subtitle: Text("hier suchleiste und filter stuff"),
-                    ),
+                    SearchFilterWidget(filterNotifier: filterNotifier),
                     Row(
                       children: [
                         Text("hier drop down menü"),
@@ -121,7 +120,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                 ),
               ),
               switch (albumList) {
-                AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
+                AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,filterNotifier: filterNotifier,),
                 AsyncValue(error: != null) => Center(child: const Text("Error")),
                 AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
               },

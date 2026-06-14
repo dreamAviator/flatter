@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image_ce/cached_network_image.dart';
+import 'package:flatter/home/library_screen/album_grid.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/itemMenus.dart';
 import 'package:flatter/main.dart';
@@ -116,14 +117,12 @@ class ArtistScreen extends StatelessWidget {
               },
             ],
           ),
-          body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
-                //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-                if (settingsControl.settingsMap['landscapeMode'] == false) switch (artistDetails) {
-                  AsyncValue(:final value?) => CachedNetworkImage(
+          body: CustomScrollView(
+            slivers: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
+              //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
+              if (settingsControl.settingsMap['landscapeMode'] == false) switch (artistDetails) {
+                AsyncValue(:final value?) => SliverToBoxAdapter(
+                  child: CachedNetworkImage(
                     imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                     progressIndicatorBuilder: (context, url, downloadProgress) =>
                         LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
@@ -135,17 +134,21 @@ class ArtistScreen extends StatelessWidget {
                     ),
                     height: screenSize.width,
                   ),
-                  AsyncValue(error: != null) => Text("Error"),
-                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                },
-                if (settingsControl.settingsMap['landscapeMode'] == false) Row(
+                ),
+                AsyncValue(error: != null) => SliverToBoxAdapter(child: Text("Error")),
+                AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
+              },
+              if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
+                child: Row(
                   children: [
                     //also ja hier actions
                     //diese diablen bis ergebnis da ist
                     Text("hier sollen actions hin")
                   ],
                 ),
-                if (settingsControl.settingsMap['landscapeMode'] == true) Row(
+              ),
+              if (settingsControl.settingsMap['landscapeMode'] == true) SliverToBoxAdapter(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     switch (artistDetails) {
@@ -165,34 +168,37 @@ class ArtistScreen extends StatelessWidget {
                       AsyncValue(error: != null) => Text("Error"),
                       AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     },
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text("hier"),
-                          Text("sollen"),
-                          Text("actions"),
-                          Text("hin"),
-                        ],
+                    SliverToBoxAdapter(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text("hier"),
+                            Text("sollen"),
+                            Text("actions"),
+                            Text("hin"),
+                          ],
+                        ),
                       ),
                     )
                   ],
                 ),
-                Text("Albums"),
-                switch (artistDetails) {
-                  AsyncValue(:final value?) => buildAlbumGrid(context, value['album'],screenSize.width),
-                  AsyncValue(error: != null) => Text("error"),
-                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                },
-                Divider(),
-                Text("Appears in:"),
-                switch (artistDetails) {
-                  AsyncValue(:final value?) => buildArtistAppearances(context, value['name'], screenSize.width),
-                  AsyncValue(error: != null) => Text("error1"),
-                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)
-                }
-              ],
-            ),
+              ),
+              SliverToBoxAdapter(child: Text("Albums")),
+              switch (artistDetails) {
+                //AsyncValue(:final value?) => buildAlbumGrid(context, value['album'],screenSize.width),
+                AsyncValue(:final value?) => AlbumGrid(albumListNullable: value['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
+                AsyncValue(error: != null) => SliverToBoxAdapter(child: Text("error")),
+                AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
+              },
+              SliverToBoxAdapter(child: Divider()),
+              SliverToBoxAdapter(child: Text("Appears in:")),
+              switch (artistDetails) {
+                AsyncValue(:final value?) => buildArtistAppearances(context, value['name'], screenSize.width),
+                AsyncValue(error: != null) => SliverToBoxAdapter(child: Text("error1")),
+                AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))
+              }
+            ],
           ),
         );
       },
