@@ -55,6 +55,7 @@ dependencies:
   masonry_grid: ^1.0.0
   image_card: ^0.0.4
   url_launcher: ^6.3.2
+  marqueer: ^2.0.5
 
   # Select the native media_kit libs based on your usage:
   # NOTE: if including video libs already, these audio libs aren't necessary.
