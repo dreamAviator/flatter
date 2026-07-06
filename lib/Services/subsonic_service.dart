@@ -177,7 +177,7 @@ class SubsonicService {
 
   Future<List<dynamic>> getRandomSongs(int? size,String? genre,int? fromYear,int? toYear) async {
     List<String> url = getURL(null, null, null);
-    String uriString = "${url[0]}getArtists${url[1]}";
+    String uriString = "${url[0]}getRandomSongs${url[1]}";
     if (size != null) {
       uriString = "$uriString&size=$size";
     }
