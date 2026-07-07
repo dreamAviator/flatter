@@ -12,25 +12,23 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   PlayerControls() {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
-    /*
-    playbackState.listen((data) {
-      if (data.processingState == AudioProcessingState.completed) {
-        skipToNext();
-      }
-    });
 
-     */
-    playbackState.listen((data) {
+    playbackState.listen((data) async {
       if (data.processingState == AudioProcessingState.completed) {
+        if (_queueRepository.getCurrentIndex() == _queueRepository.getQueueLength() - 1) {
+          stop();
+        }
         skipToNext();
       }
     });
+    /*
     AudioService.position.listen((data) {
       if (data >= Duration(seconds: settingsControl.loadSetting('timeUntilScrobble'))) {
         print("harharhar");
         subsonicService.scrobble(mediaItem.value?.id ?? null, true);
       }
     });
+    */
   }
 
   final SubsonicJustAudioCompatibility usefulScript = SubsonicJustAudioCompatibility();
