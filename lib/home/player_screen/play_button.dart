@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +15,10 @@ class PlayButton extends StatelessWidget {
       builder: (context, snapshot) {
         final playing = snapshot.data?.playing ?? false;
         final processingState = snapshot.data?.processingState ?? AudioProcessingState.idle;
+        print("processing state and then playing yes no");
+        //print(processingState);
+        //print(playing);
+        print("done");
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

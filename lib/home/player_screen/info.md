@@ -1,1 +1,0 @@
-hier auch den miniplayer rein falls du den machst

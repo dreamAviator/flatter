@@ -8,16 +8,16 @@ In these directories is platform specific code and other stuff. With a really ba
 Most of the relevant code and all of the cross-platform code is inside of the lib directory.
 
 # Structure
-| Directory    | What's inside?                                                                     |
-|--------------|------------------------------------------------------------------------------------|
-| assets       | Assets                                                                             | 
-| home         | All UI (except settings)                                                           |
-| player       | Player logic<br/>Player (& queue) control logic<br/>Audio Activity & Session logic |
-| Repositories | SSOT of Queue                                                                      |
-| Riverpod     | ALl Riverpod logic (State management)                                              |
-| Services     | All network request logic (currently only Subsonic Service)                        |
-| settings     | Settings logic<br/>Settings UI                                                     |
-| storage      | Database logic                                                                     |
+| Directory    | What's inside?                                                                               |
+|--------------|----------------------------------------------------------------------------------------------|
+| assets       | Assets                                                                                       | 
+| home         | All UI (except settings)<br/>player_screen folder also contains mini player (if that exists) |
+| player       | Player logic<br/>Player (& queue) control logic<br/>Audio Activity & Session logic           |
+| Repositories | SSOT of Queue                                                                                |
+| Riverpod     | ALl Riverpod logic (State management)                                                        |
+| Services     | All network request logic (currently only Subsonic Service)                                  |
+| settings     | Settings logic<br/>Settings UI                                                               |
+| storage      | Database logic                                                                               |
 
 ## main.dart
 Initializes a few utility files and classes. (*Some stuff is done badly right now, the databaseControl for example gets accessed from all over the project, which will get fixed later.*)
