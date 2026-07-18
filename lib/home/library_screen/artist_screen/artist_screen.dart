@@ -168,17 +168,15 @@ class ArtistScreen extends StatelessWidget {
                       AsyncValue(error: != null) => Text("Error"),
                       AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     },
-                    SliverToBoxAdapter(
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("hier"),
-                            Text("sollen"),
-                            Text("actions"),
-                            Text("hin"),
-                          ],
-                        ),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("hier"),
+                          Text("sollen"),
+                          Text("actions"),
+                          Text("hin"),
+                        ],
                       ),
                     )
                   ],

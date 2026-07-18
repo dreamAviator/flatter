@@ -3,6 +3,7 @@ import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
+import 'package:flatter/home/library_screen/artist_select_window.dart';
 import 'package:flatter/home/player_screen/player_image.dart';
 import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/home/player_screen/progess_slider.dart';
@@ -36,6 +37,7 @@ class PlayerScreen extends StatelessWidget {
                         final String artist = asyncSnapshot.data?.artist ?? "Unknown";
                         final String? albumID = asyncSnapshot.data?.extras?['albumId'];
                         final String? artistID = asyncSnapshot.data?.extras?['artistId'];
+                        final List? artists = asyncSnapshot.data?.extras?['artists'];
                         return Column(
                           children: [
                             TextButton(
@@ -54,7 +56,11 @@ class PlayerScreen extends StatelessWidget {
                             if (artistID == null) Text(album),
                             if (artistID != null) TextButton(
                               onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
+                                if (artists?.length == 1 || artists == null) {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
+                                } else {
+                                  ArtistSelectWindow.showArtistSelectWindow(context, artists);
+                                }
                               },
                               child: Text(artist),
                             ),
