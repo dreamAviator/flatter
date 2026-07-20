@@ -80,14 +80,12 @@ class ArtistScreen extends StatelessWidget {
       return Consumer(
         builder: (context,ref,child) {
           final artistAppearances = ref.watch(riverpodManager.artistAppearancesProvider(nameAndId));
-          return Container(
-            child: switch (artistAppearances) {
-              //AsyncValue(:final value?) => buildAlbumGrid(context, value, screenSize.width),
-              AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
-              AsyncValue(error: != null) => SliverToBoxAdapter(child: Text(artistAppearances.error.toString())),
-              AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
-            },
-          );
+          return switch (artistAppearances) {
+            //AsyncValue(:final value?) => buildAlbumGrid(context, value, screenSize.width),
+            AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
+            AsyncValue(error: != null) => SliverToBoxAdapter(child: Text(artistAppearances.error.toString())),
+            AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
+          };
         },
       );
     }
@@ -195,7 +193,7 @@ class ArtistScreen extends StatelessWidget {
                 AsyncValue(:final value?) => buildArtistAppearances(context, value['name'], screenSize.width),
                 AsyncValue(error: != null) => SliverToBoxAdapter(child: Text("error1")),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))
-              }
+              },
             ],
           ),
         );

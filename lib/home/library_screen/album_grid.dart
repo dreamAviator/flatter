@@ -202,6 +202,7 @@ class AlbumGrid extends StatelessWidget {
         return MasonryGridView.count(
           crossAxisCount: crossAxisCount,
           itemCount: albumList.length,
+          shrinkWrap: true,
           itemBuilder: (context, index) {
             Map albumOne = albumList[index];
             return Card(
