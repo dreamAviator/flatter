@@ -6,11 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_card/image_card.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:masonry_grid/masonry_grid.dart';
 
 import '../../main.dart';
 import 'artist_screen/artist_screen.dart';
 
-class ArtistSelectWindow {//TODO:joa das hier machen nh :P
+class ArtistSelectWindow {
   static void showArtistSelectWindow(BuildContext context,List<dynamic> artistInfosLite) {
     final riverpodManager = RiverpodManager();
     Size screenSize = MediaQuery.of(context).size;
@@ -20,8 +21,69 @@ class ArtistSelectWindow {//TODO:joa das hier machen nh :P
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context,setState) {
+            List<Widget> widgetList = [];
+            for (Map artist in artistInfosLite) {
+              widgetList.add(
+                  Card(
+                    clipBehavior: Clip.hardEdge,
+                    child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () {
+                        debugPrint('Card tapped.');
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artist['id'])));
+                      },
+                      child: Column(
+                        children: [
+                          Consumer(
+                            builder: (context, ref, child) {
+                              final artistDetails = ref.watch(riverpodManager.artistDetailsProvider(artist['id']));
+                              return SizedBox(
+                                  height: 150,
+                                  width: 150,
+                                  child: switch (artistDetails) {
+                                    AsyncValue(:final value?) => CachedNetworkImage(
+                                      imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
+                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                          LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                      errorWidget: (context, url, error) => IconButton(
+                                        onPressed: () {
+                                          //hier retry
+                                        },
+                                        icon: Icon(Icons.error),
+                                      ),
+                                    ),
+                                    AsyncValue(error: != null) => const Text("error"),
+                                    AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                  }
+                              );
+                            },
+                          ),
+                          Text(artist['name']),
+                        ],
+                      ),
+                    ),
+                  ),
+              );
+            }
             return AlertDialog(
-              title: Text("Select artist"),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Select artist"),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(Icons.close),
+                  )
+                ],
+              ),
+              content: MasonryGrid(
+                column: (screenSize.width / 200).toInt(),
+                children: widgetList,
+              ),
+              /*
               content: MasonryGridView.count(
                 crossAxisCount: (screenSize.width / 200).toInt(),
                 itemCount: artistInfosLite.length,
@@ -66,6 +128,8 @@ class ArtistSelectWindow {//TODO:joa das hier machen nh :P
                   );
                 },
               )
+
+               */
             );
           },
         );

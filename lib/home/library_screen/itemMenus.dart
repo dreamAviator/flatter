@@ -6,6 +6,8 @@ import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/material.dart';
 import 'package:deepcopy/deepcopy.dart';
 
+import 'artist_select_popup.dart';
+
 class ItemMenus {//man muss hier halt später einstellen können, welche aktionen hier und welche im bottom sheet angezeigt werden sollen
   ItemMenus(this.context);
   final BuildContext context;
@@ -134,15 +136,20 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: Text("Album"),
     );
   }
-  PopupMenuEntry artist(String artistID) {//TODO:später zu dem machen, dass du zwischen mehreren artists auswählen kannst
+  PopupMenuEntry artist(String artistID,List? artists) {
     return PopupMenuItem(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
+        Navigator.of(context).pop();
+        if (artists?.length == 1 || artists == null) {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
+        } else {
+          ArtistSelectWindow.showArtistSelectWindow(context, artists);
+        }
       },
       child: Text("Artist"),
     );
   }
-  PopupMenuEntry unFavorite(String? songID,String? albumID,String? artistID) {//TODO:später zu dem machen, dass du zwischen mehreren artists auswählen kannst
+  PopupMenuEntry unFavorite(String? songID,String? albumID,String? artistID) {
     return PopupMenuItem(
       onTap: () {
         unFavoriteLogic(songID, albumID, artistID);
@@ -280,15 +287,20 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       title: Text("Album"),
     );
   }
-  ListTile artistMoreSheet(String artistID) {//TODO:später zu dem machen, dass du zwischen mehreren artists auswählen kannst
+  ListTile artistMoreSheet(String artistID,List? artists) {
     return ListTile(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
+        Navigator.of(context).pop();
+        if (artists?.length == 1 || artists == null) {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
+        } else {
+          ArtistSelectWindow.showArtistSelectWindow(context, artists);
+        }
       },
       title: Text("Artist"),
     );
   }
-  ListTile unFavoriteMoreSheet(String? songID,String? albumID, String? artistID) {//TODO:später zu dem machen, dass du zwischen mehreren artists auswählen kannst
+  ListTile unFavoriteMoreSheet(String? songID,String? albumID, String? artistID) {
     return ListTile(
       onTap: () {
         unFavoriteLogic(songID, albumID, artistID);
@@ -315,7 +327,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         case 'album':
           menuEntryList.add(album(songMediaItem.extras!['albumId']));
         case 'artist':
-          menuEntryList.add(artist(songMediaItem.extras!['artistId']));
+          menuEntryList.add(artist(songMediaItem.extras!['artistId'],songMediaItem.extras!['artists']));
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -329,7 +341,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         case 'album':
           moreSheetEntryList.add(albumMoreSheet(songMediaItem.extras!['albumId']));
         case 'artist':
-          moreSheetEntryList.add(artistMoreSheet(songMediaItem.extras!['artistId']));
+          moreSheetEntryList.add(artistMoreSheet(songMediaItem.extras!['artistId'],songMediaItem.extras!['artists']));
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {
@@ -371,7 +383,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         case 'album':
           menuEntryList.add(album(song.extras!['albumId']));
         case 'artist':
-          menuEntryList.add(artist(song.extras!['artistId']));
+          menuEntryList.add(artist(song.extras!['artistId'],song.extras!['artists']));
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -385,7 +397,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         case 'album':
           moreSheetEntryList.add(albumMoreSheet(song.extras!['albumId']));
         case 'artist':
-          moreSheetEntryList.add(artistMoreSheet(song.extras!['artistId']));
+          moreSheetEntryList.add(artistMoreSheet(song.extras!['artistId'],song.extras!['artists']));
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {
@@ -428,7 +440,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         case 'enqueue':
           menuEntryList.add(enqueue(songList));
         case 'artist':
-          menuEntryList.add(artist(album['artistId']));
+          menuEntryList.add(artist(album['artistId'],album['artists']));
         case 'playNowShuffled':
           menuEntryList.add(playNowShuffled(songList));
         case 'addNextShuffled':
@@ -446,7 +458,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         case 'enqueue':
           moreSheetEntryList.add(enqueueMoreSheet(songList));
         case 'artist':
-          moreSheetEntryList.add(artistMoreSheet(album['artistId']));
+          moreSheetEntryList.add(artistMoreSheet(album['artistId'],album['artists']));
         case 'playNowShuffled':
           moreSheetEntryList.add(playNowShuffledMoreSheet(songList));
         case 'addNextShuffled':
@@ -493,7 +505,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         case 'enqueue':
           menuEntryList.add(enqueueByID({'albumID':albumMinimal['id']}));
         case 'artist':
-          menuEntryList.add(artist(albumMinimal['artistId']));
+          menuEntryList.add(artist(albumMinimal['artistId'],albumMinimal['artists']));
         case 'playNowShuffled':
           menuEntryList.add(playNowShuffledByID({'albumID':albumMinimal['id']}));
         case 'addNextShuffled':
@@ -511,7 +523,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         case 'enqueue':
           moreSheetEntryList.add(enqueueByIDMoreSheet({'albumID':albumMinimal['id']}));
         case 'artist':
-          moreSheetEntryList.add(artistMoreSheet(albumMinimal['artistId']));
+          moreSheetEntryList.add(artistMoreSheet(albumMinimal['artistId'],albumMinimal['artists']));
         case 'playNowShuffled':
           moreSheetEntryList.add(playNowShuffledByIDMoreSheet({'albumID':albumMinimal['id']}));
         case 'addNextShuffled':

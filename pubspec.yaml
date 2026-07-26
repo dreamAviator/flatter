@@ -51,7 +51,6 @@ dependencies:
   # shimmer_animation: ^2.2.2//später wieder
   # marquee: ^2.3.0//später wieder
   cached_network_image_ce: ^4.6.4
-  # flutter_staggered_grid_view: ^0.7.0
   masonry_grid: ^1.0.0
   image_card: ^0.0.4
   url_launcher: ^6.3.2
