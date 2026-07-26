@@ -67,7 +67,7 @@ class ArtistScreen extends StatelessWidget {
         )
       );
     }
-    return MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetList);
+    return SliverToBoxAdapter(child: MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetList));
   }
 
   @override
@@ -81,8 +81,8 @@ class ArtistScreen extends StatelessWidget {
         builder: (context,ref,child) {
           final artistAppearances = ref.watch(riverpodManager.artistAppearancesProvider(nameAndId));
           return switch (artistAppearances) {
-            //AsyncValue(:final value?) => buildAlbumGrid(context, value, screenSize.width),
-            AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
+            AsyncValue(:final value?) => buildAlbumGrid(context, value, screenSize.width),
+            //AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
             AsyncValue(error: != null) => SliverToBoxAdapter(child: Text(artistAppearances.error.toString())),
             AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
           };
