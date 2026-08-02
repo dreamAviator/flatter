@@ -9,6 +9,7 @@ import '../useful_scripts.dart';
 class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final QueueRepository _queueRepository = QueueRepository();
   final _player = MyPlayer();
+  Stream<PlayerState> get playerState => _player.playerStateStream;
 
   PlayerControls() {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);

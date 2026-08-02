@@ -4,6 +4,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class PlayButton extends StatelessWidget {
@@ -11,8 +12,8 @@ class PlayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PlaybackState>(
-      stream: playerControl.playbackState,
+    return StreamBuilder<PlayerState>(
+      stream: playerControl.playerState,
       builder: (context, snapshot) {
         final playing = snapshot.data?.playing ?? false;
         final processingState = snapshot.data?.processingState ?? AudioProcessingState.idle;
