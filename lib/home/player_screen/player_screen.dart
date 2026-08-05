@@ -28,7 +28,7 @@ class PlayerScreen extends StatelessWidget {
                   spacing: 12,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    PlayerImage(height: screenSize.width / 3),
+                    PlayerImage(sidelength: screenSize.width / 3),
                     StreamBuilder(
                       stream: playerControl.mediaItem,
                       builder: (context, asyncSnapshot) {
@@ -134,61 +134,92 @@ class PlayerScreen extends StatelessWidget {
       );
     } else {
       return Column(
-        spacing: 12,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                PlayerImage(height: screenSize.width - 16),
-                StreamBuilder(
-                  stream: playerControl.mediaItem,
-                  builder: (context, asyncSnapshot) {
-                    final String title = asyncSnapshot.data?.title ?? "Unknown";
-                    final String album = asyncSnapshot.data?.album ?? "Unknown";
-                    final String artist = asyncSnapshot.data?.artist ?? "Unknown";
-                    final String? albumID = asyncSnapshot.data?.extras?['albumId'];//TODO:hier natürlich auch den artist chooser ausführen später
-                    final String? artistID = asyncSnapshot.data?.extras?['artistId'];
-                    final List? artists = asyncSnapshot.data?.extras?['artists'];
-                    return Column(
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                    //hier vlt noch was hinzufügen
-                          },
-                          child: Text(title),
-                        ),
-                        if (albumID == null) Text(album),
-                        if (albumID != null) TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumID)));
-                          },
-                          child: Text(album),
-                        ),
-                        if (artistID == null) Text(album),
-                        if (artistID != null) TextButton(
-                          onPressed: () {
-                            if (artists?.length == 1 || artists == null) {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
-                            } else {
-                              ArtistSelectWindow.showArtistSelectWindow(context, artists);
-                            }
-                          },
-                          child: Text(artist),
-                        ),
-                      ],
-                    );
-                  }
-                ),
-              ],
-            ),//minus das padding auf beiden sieten halt
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                double height = constraints.maxHeight;
+                double sidelength = constraints.maxWidth;
+                if (sidelength > height) {
+                  sidelength = height;
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: PlayerImage(sidelength: sidelength),//minus das padding auf beiden sieten halt
+                );
+              }
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               spacing: 12,
               children: [
+                StreamBuilder(
+                    stream: playerControl.mediaItem,
+                    builder: (context, asyncSnapshot) {
+                      final String title = asyncSnapshot.data?.title ?? "Unknown";
+                      final String album = asyncSnapshot.data?.album ?? "Unknown";
+                      final String artist = asyncSnapshot.data?.artist ?? "Unknown";
+                      final String? albumID = asyncSnapshot.data?.extras?['albumId'];
+                      final String? artistID = asyncSnapshot.data?.extras?['artistId'];
+                      final List? artists = asyncSnapshot.data?.extras?['artists'];
+                      return Column(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              //hier vlt noch was hinzufügen
+                            },
+                            child: Text(title),
+                          ),
+                          if (albumID == null) Text(album),
+                          if (albumID != null) TextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumID)));
+                            },
+                            child: Text(album),
+                          ),
+                          if (artistID == null) Text(album),
+                          if (artistID != null) TextButton(
+                            onPressed: () {
+                              if (artists?.length == 1 || artists == null) {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
+                              } else {
+                                ArtistSelectWindow.showArtistSelectWindow(context, artists);
+                              }
+                            },
+                            child: Text(artist),
+                          ),
+                        ],
+                      );
+                    }
+                ),
+                Card.filled(//das hier expanded für die lyrics mb, sodass sie dann über dem cover sind, dass wäre tuff
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+
+                        },
+                        icon: Icon(Icons.playlist_add),
+                      ),
+                      IconButton(
+                        onPressed: () {
+
+                        },
+                        icon: Icon(Icons.loop),
+                      ),
+                      IconButton(
+                        onPressed: () {
+
+                        },
+                        icon: Icon(Icons.shuffle),
+                      ),
+                    ],
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

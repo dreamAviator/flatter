@@ -6,8 +6,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PlayerImage extends StatelessWidget {
-  const PlayerImage({super.key,required this.height});
-  final double height;
+  const PlayerImage({super.key,required this.sidelength});
+  final double sidelength;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class PlayerImage extends StatelessWidget {
       builder: (context, snapshot) {
         final coverID = snapshot.data?.extras?['coverArt'];
         if (coverID == null) {
-          return Image.asset("lib/assets/images/empty_player.png",height: height,);
+          return Image.asset("lib/assets/images/empty_player.png",width: sidelength,);
         } else {
           return CachedNetworkImage(
             imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=$coverID",
@@ -28,8 +28,8 @@ class PlayerImage extends StatelessWidget {
               },
               icon: Icon(Icons.error),
             ),
-            height: height,
-            width: height,
+            height: sidelength,
+            width: sidelength,
           );
         }
       },

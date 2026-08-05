@@ -21,7 +21,7 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
   @override
   Widget build(BuildContext context) {
     /*
-    if (settingsControl.loadSetting('firstStart') == false) {
+    if (settingsControl.loadSSetting('firstStart') == false) {
       FirstStartPopup.showFirstStartPopup(context);
     }
     funktioniert nicht
