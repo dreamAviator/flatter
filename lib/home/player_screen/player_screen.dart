@@ -4,6 +4,7 @@ import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/artist_select_popup.dart';
+import 'package:flatter/home/library_screen/favorite_button.dart';
 import 'package:flatter/home/player_screen/player_image.dart';
 import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/home/player_screen/progess_slider.dart';
@@ -199,7 +200,6 @@ class PlayerScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-
                       IconButton(
                         onPressed: () {
 
@@ -212,23 +212,35 @@ class PlayerScreen extends StatelessWidget {
                         },
                         icon: Icon(Icons.shuffle),
                       ),
-                      IconButton(
-                        onPressed: () {
-
-                        },
-                        icon: Icon(Icons.playlist_add),
+                      StreamBuilder(
+                        stream: playerControl.mediaItem,
+                        builder: (context, asyncSnapshot) {
+                          String? id = asyncSnapshot.data?.id;
+                          return IconButton(
+                            onPressed: () {
+                              print('add $id to playlist');
+                            },
+                            icon: Icon(Icons.playlist_add),
+                          );
+                        }
                       ),
-                      IconButton(//TODO:einen eigenen rating button machen, wenn es ein rating gibt dann das ding ausfüllen
-                        onPressed: () {
-
-                        },
-                        icon: Icon(Icons.thumbs_up_down_outlined),
+                      StreamBuilder(
+                        stream: playerControl.mediaItem,
+                        builder: (context, asyncSnapshot) {
+                          return IconButton(//TODO:einen eigenen rating button machen, wenn es ein rating gibt dann das ding ausfüllen
+                            onPressed: () {
+                          
+                            },
+                            icon: Icon(Icons.thumbs_up_down_outlined),
+                          );
+                        }
                       ),
-                      IconButton(//das hier zum FavoriteButton machen, dafür benötigst du aber die songid, also probably wieder ein stream builder
-                        onPressed: () {
-
-                        },
-                        icon: Icon(Icons.favorite_border),
+                      StreamBuilder(
+                        stream: playerControl.mediaItem,
+                        builder: (context, asyncSnapshot) {
+                          String? id = asyncSnapshot.data?.id;
+                          return FavoriteButton(songID: id, albumID: null, artistID: null);
+                        }
                       ),
                     ],
                   ),
