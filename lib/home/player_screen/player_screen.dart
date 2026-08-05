@@ -199,23 +199,36 @@ class PlayerScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      IconButton(
-                        onPressed: () {
 
-                        },
-                        icon: Icon(Icons.playlist_add),
-                      ),
                       IconButton(
                         onPressed: () {
 
                         },
                         icon: Icon(Icons.loop),
                       ),
-                      IconButton(
+                      IconButton(//hier überlegen, ob das die playlist shufflen soll oder den shuffle modus wie in anderen playern anschalten soll
                         onPressed: () {
 
                         },
                         icon: Icon(Icons.shuffle),
+                      ),
+                      IconButton(
+                        onPressed: () {
+
+                        },
+                        icon: Icon(Icons.playlist_add),
+                      ),
+                      IconButton(//TODO:einen eigenen rating button machen, wenn es ein rating gibt dann das ding ausfüllen
+                        onPressed: () {
+
+                        },
+                        icon: Icon(Icons.thumbs_up_down_outlined),
+                      ),
+                      IconButton(//das hier zum FavoriteButton machen, dafür benötigst du aber die songid, also probably wieder ein stream builder
+                        onPressed: () {
+
+                        },
+                        icon: Icon(Icons.favorite_border),
                       ),
                     ],
                   ),
