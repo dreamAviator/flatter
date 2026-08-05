@@ -79,9 +79,41 @@ class PlayerScreen extends StatelessWidget {
                       spacing: 12,
                       children: [
                         Expanded(
-                          child: Container(
-                            color: Colors.white,
-                            child: Text("hier lyrics und mehr"),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  color: Colors.white,
+                                  child: Text("hier lyrics und mehr"),
+                                ),
+                              ),
+                              Card.filled(//das hier expanded für die lyrics mb, sodass sie dann über dem cover sind, dass wäre tuff
+                                child: StreamBuilder(
+                                  stream: playerControl.mediaItem,
+                                  builder: (context, asyncSnapshot) {
+                                    String? id = asyncSnapshot.data?.id;
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            print('add $id to playlist');
+                                          },
+                                          icon: Icon(Icons.playlist_add),
+                                        ),
+                                        IconButton(//TODO:einen eigenen rating button machen, wenn es ein rating gibt dann das ding ausfüllen
+                                          onPressed: () {
+
+                                          },
+                                          icon: Icon(Icons.thumbs_up_down_outlined),
+                                        ),
+                                        FavoriteButton(songID: id, albumID: null, artistID: null),
+                                      ],
+                                    );
+                                  }
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Padding(
