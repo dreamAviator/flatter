@@ -1,3 +1,4 @@
+import 'package:flatter/home/library_screen/song_tile.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +81,8 @@ class SongList extends StatelessWidget {
               return SliverList.builder(
                 itemCount: filteredSongList.length,
                 itemBuilder: (BuildContext context, int index) {
+                  return SongTile(song: filteredSongList[index]);
+                  /*
                   return Slidable(
                     startActionPane: ActionPane(
                       motion: DrawerMotion(),
@@ -129,6 +132,8 @@ class SongList extends StatelessWidget {
                       },
                     ),
                   );
+                  
+                   */
                 },
               );
             },
@@ -137,6 +142,8 @@ class SongList extends StatelessWidget {
           return SliverList.builder(
             itemCount: songList.length,
             itemBuilder: (BuildContext context, int index) {
+              return SongTile(song: songList[index],);
+              /*
               return Slidable(
                 startActionPane: ActionPane(
                   motion: DrawerMotion(),
@@ -186,6 +193,8 @@ class SongList extends StatelessWidget {
                   },
                 ),
               );
+              
+               */
             },
           );
         }
@@ -195,6 +204,8 @@ class SongList extends StatelessWidget {
         return ListView.builder(
           itemCount: songList.length,
           itemBuilder: (BuildContext context, int index) {
+            return SongTile(song: songList[index]);
+            /*
             return Slidable(
               startActionPane: ActionPane(
                 motion: DrawerMotion(),
@@ -244,6 +255,8 @@ class SongList extends StatelessWidget {
                 },
               ),
             );
+            
+             */
           },
         );
       }
@@ -253,6 +266,8 @@ class SongList extends StatelessWidget {
         List<Widget> widgetList = [];
         for (Map song in songList) {
           widgetList.add(
+            SongTile(song: song)
+            /*
               Slidable(
                 startActionPane: ActionPane(
                   motion: DrawerMotion(),
@@ -302,6 +317,8 @@ class SongList extends StatelessWidget {
                   },
                 ),
               )
+              
+             */
           );
         }
         return SliverToBoxAdapter(
@@ -312,6 +329,8 @@ class SongList extends StatelessWidget {
         List<Widget> widgetList = [];
         for (Map song in songList) {
           widgetList.add(
+            SongTile(song: song)
+            /*
               Slidable(
                 startActionPane: ActionPane(
                   motion: DrawerMotion(),
@@ -361,6 +380,8 @@ class SongList extends StatelessWidget {
                   },
                 ),
               )
+              
+             */
           );
         }
         return Column(children: widgetList,);

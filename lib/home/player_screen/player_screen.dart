@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
+import 'package:flatter/home/library_screen/add_to_playlist_popup.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/artist_select_popup.dart';
@@ -97,7 +98,7 @@ class PlayerScreen extends StatelessWidget {
                                       children: [
                                         IconButton(
                                           onPressed: () {
-                                            print('add $id to playlist');
+                                            AddToPlaylistPopup.showAddToPlaylistPopup(context, [id]);
                                           },
                                           icon: Icon(Icons.playlist_add),
                                         ),
@@ -250,7 +251,7 @@ class PlayerScreen extends StatelessWidget {
                           String? id = asyncSnapshot.data?.id;
                           return IconButton(
                             onPressed: () {
-                              print('add $id to playlist');
+                              AddToPlaylistPopup.showAddToPlaylistPopup(context, [id]);
                             },
                             icon: Icon(Icons.playlist_add),
                           );
