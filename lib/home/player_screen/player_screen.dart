@@ -102,7 +102,7 @@ class PlayerScreen extends StatelessWidget {
                                           },
                                           icon: Icon(Icons.playlist_add),
                                         ),
-                                        IconButton(//TODO:einen eigenen rating button machen, wenn es ein rating gibt dann das ding ausfüllen
+                                        IconButton(//TODO:create own rating button (fill out star if rating is present)
                                           onPressed: () {
 
                                           },
@@ -260,7 +260,7 @@ class PlayerScreen extends StatelessWidget {
                       StreamBuilder(
                         stream: playerControl.mediaItem,
                         builder: (context, asyncSnapshot) {
-                          return IconButton(//TODO:einen eigenen rating button machen, wenn es ein rating gibt dann das ding ausfüllen
+                          return IconButton(//TODO:create own rating button (fill out star if rating is present)
                             onPressed: () {
                           
                             },

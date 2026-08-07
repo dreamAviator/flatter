@@ -122,7 +122,7 @@ class AddServerPopup {
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context,setState) {
-            return AlertDialog(//TODO:wenn etwas richtig läuft und man dan etwas ändert, dann sollte es invalidatet werden
+            return AlertDialog(//TODO:should only invalidate when things like server address change
               title: Text(title),
               content: SingleChildScrollView(
                 child: Form(

@@ -34,7 +34,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
 
   @override
-  Future<void> play() async {//TODO:das hier besser machen, also so, dass buffering und loading und ready gut reflektiert werden etc (sollte in der progressbar sein)
+  Future<void> play() async {//ehemalstodo:das hier besser machen, also so, dass buffering und loading und ready gut reflektiert werden etc (sollte in der progressbar sein)
     if (player.playerState().processingState == ProcessingState.idle) {
       if (await session.setActive(true)) {
         setSource(0);

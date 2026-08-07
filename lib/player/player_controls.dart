@@ -165,7 +165,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     return PlaybackState(
       controls: [
         MediaControl.rewind,
-        if (_player.playerState.playing) MediaControl.pause else MediaControl.play,//TODO:aussuchen, was alles angezeigt werden soll
+        if (_player.playerState.playing) MediaControl.pause else MediaControl.play,//TODO:decide what to show in media noticiation
         MediaControl.fastForward,
       ],
       systemActions: const {

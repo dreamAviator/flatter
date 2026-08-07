@@ -110,7 +110,7 @@ class SongList extends StatelessWidget {
                           label: 'Album',
                         ),
                         SlidableAction(
-                          onPressed: (_) => (goToArtist(context, filteredSongList[index]['artistId'])),//TODO:wenn es mehrere artists gibt, dann hier das popup öffnen (einstellbar machen, ob popup oder zum main artist)
+                          onPressed: (_) => (goToArtist(context, filteredSongList[index]['artistId'])),//ehemals:wenn es mehrere artists gibt, dann hier das popup öffnen (einstellbar machen, ob popup oder zum main artist)
                           icon: Icons.person,
                           label: 'Artist',
                         ),

@@ -88,5 +88,4 @@ class DatabaseController {
   String getCurrentUsername() {
     return getCurrentServer()[1];
   }
-  //TODO: change favorite status (actually wäre das eigentlich auch für songs babo, aber weniger wichtig. user soll sich einfach eine playlist machen xD
 }

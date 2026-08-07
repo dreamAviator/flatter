@@ -18,7 +18,7 @@ class TimeUntilSeekToStartSetting extends StatelessWidget {
           hintText: "Seconds",
           border: OutlineInputBorder(),
         ),
-        onChanged: (value) {//TODO:dieser code hier ist sehr schlimm, aber funktioniert so halbwegs
+        onChanged: (value) {//TODO:bad code, barely functional
           if (value.isEmpty) {
 
           } else {
