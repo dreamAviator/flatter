@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:flatter/home/library_screen/add_to_playlist_popup.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -168,12 +169,19 @@ class _QueueScreenState extends State<QueueScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
               children: [
-                IconButton(
-                  onPressed: () {
-
-                  },
-                  icon: Icon(Icons.playlist_add),
-                ),
+                switch (queue) {
+                  AsyncValue(:final value?) => IconButton(
+                    onPressed: () {
+                      AddToPlaylistPopup.showAddToPlaylistPopup(context, value);
+                    },
+                    icon: Icon(Icons.playlist_add),
+                  ),
+                  AsyncValue(error: != null) => IconButton(
+                    onPressed: null,
+                    icon: Icon(Icons.playlist_add),
+                  ),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                },
                 IconButton(
                   onPressed: () {
                     playerControl.customAction('shuffleQueue');
