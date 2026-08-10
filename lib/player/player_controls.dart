@@ -14,8 +14,8 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   PlayerControls() {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
 
-    playbackState.listen((data) async {
-      if (data.processingState == AudioProcessingState.completed) {
+    playerState.listen((data) async {
+      if (data.processingState == ProcessingState.completed) {
         if (_queueRepository.getCurrentIndex() == _queueRepository.getQueueLength() - 1) {
           stop();
         }
@@ -109,8 +109,41 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       }
     } else if (name case 'shuffleQueue') {
       _queueRepository.shuffleQueue();
-    } else if (name case 'addByID') {//TODO: das hier fehlt halt
-
+    } else if (name case 'addByID') {
+      if (extras != null) {
+        String? songID = extras['addNextByID']['songID'];//should not be used, i should use full song items
+        String? albumID = extras['addNextByID']['albumID'];
+        String? playlistID = extras['addNextByID']['playlistID'];
+        String? artistID = extras['addNextByID']['artistID'];
+        bool? shuffled = extras['addNextByID']['shuffled'];
+        if (songID != null) {
+          //hier song details halt bekommen
+          Map<dynamic,dynamic> details = await subsonicService.getSongDetails(songID);
+          MediaItem mediaItem = usefulScript.subsonicSongToMediaItem(details['song']);
+          customAction('addMultiple',{'addMultiple':{'tracks':[mediaItem],'shuffled':shuffled}});
+        }
+        if (albumID != null) {
+          Map<dynamic,dynamic> details = await subsonicService.getAlbumDetails(albumID);
+          List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(details['song']);
+          if (shuffled == true) mediaItemList.shuffle();
+          customAction('addMultiple',{'addMultiple':{'tracks':mediaItemList,'shuffled':shuffled}});
+        }
+        if (playlistID != null) {
+          Map<dynamic,dynamic> details = await subsonicService.getPlaylistDetails(playlistID);
+          List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(details['entry']);
+          if (shuffled == true) mediaItemList.shuffle();
+          customAction('addMultiple',{'addMultiple':{'tracks':mediaItemList,'shuffled':shuffled}});
+        }
+        if (artistID != null) {
+          //hier halt alle songs bekommen, probably durch full search einfach
+          //shuffle nd vergessen
+          Map<dynamic,dynamic> artistDetails = await subsonicService.getArtistDetails(artistID);
+          String artistName = artistDetails['name'];
+          Map<dynamic,dynamic> fullSearch = await subsonicService.getPlaylistDetails(artistName);
+          List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(fullSearch['song']);
+          customAction('addMultiple',{'addMultiple':{'tracks':mediaItemList,'shuffled':shuffled}});
+        }
+      }
     } else if (name case 'addNextByID') {
       if (extras != null) {
         String? songID = extras['addNextByID']['songID'];//should not be used, i should use full song items
@@ -122,23 +155,28 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
           //hier song details halt bekommen
           Map<dynamic,dynamic> details = await subsonicService.getSongDetails(songID);
           MediaItem mediaItem = usefulScript.subsonicSongToMediaItem(details['song']);
-          customAction('addNext',{'addNext':[mediaItem]});
+          customAction('addNext',{'addNext':{'tracks':[mediaItem],'shuffled':shuffled}});
         }
         if (albumID != null) {
           Map<dynamic,dynamic> details = await subsonicService.getAlbumDetails(albumID);
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(details['song']);
           if (shuffled == true) mediaItemList.shuffle();
-          customAction('addNext',{'addNext':mediaItemList});
+          customAction('addNext',{'addNext':{'tracks':mediaItemList,'shuffled':shuffled}});
         }
         if (playlistID != null) {
           Map<dynamic,dynamic> details = await subsonicService.getPlaylistDetails(playlistID);
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(details['entry']);
           if (shuffled == true) mediaItemList.shuffle();
-          customAction('addNext',{'addNext':mediaItemList});
+          customAction('addNext',{'addNext':{'tracks':mediaItemList,'shuffled':shuffled}});
         }
         if (artistID != null) {
           //hier halt alle songs bekommen, probably durch full search einfach
           //shuffle nd vergessen
+          Map<dynamic,dynamic> artistDetails = await subsonicService.getArtistDetails(artistID);
+          String artistName = artistDetails['name'];
+          Map<dynamic,dynamic> fullSearch = await subsonicService.getPlaylistDetails(artistName);
+          List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(fullSearch['song']);
+          customAction('addNext',{'addNext':{'tracks':mediaItemList,'shuffled':shuffled}});
         }
       }
     } else if (name case 'getCurrentItem') {

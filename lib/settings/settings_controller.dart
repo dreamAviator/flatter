@@ -25,7 +25,8 @@ class SettingsController {
     'libraryTab':0,
     'lastLibraryTab':0,
     'addToPlaylistsSkipDuplicates':true,
-    'landscapeMode':true,//TODO:needs to override automatic change of layout, needs a third setting then
+    'landscapeMode':true,//TODO:needs to override automatic change of layout, extra setting added below
+    'automaticRotationOverride':false,
     'firstStart':true,//einstellung für stern oder herz für das favouriten der songs vlt
     'searchArtistCount':10,
     'searchAlbumCount':10,
@@ -54,6 +55,8 @@ class SettingsController {
     'moreOptionsSheetGridSize':3,//evt wegmachen, falls du das nicht als grid nimmst
     'timeUntilSeekToStart':3,//inSeconds
     'timeUntilScrobble':3,
+    'skipArtistSelectionOnPlayerScreen':false,
+    'skipArtistSelectionEverywhereElse':false,
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;

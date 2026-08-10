@@ -14,7 +14,7 @@ class SettingsScreen extends StatelessWidget {
   final SettingsScreenViewmodel viewModel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {//TODO:suche hinzufügen
     final Size screenSize = MediaQuery.sizeOf(context);
     if (settingsControl.loadSetting('landscapeMode') == false) {//ich glaube du solltest später einen weg finden, dass ohne dieses if ding zu machen. vlt kann da==ja der back button zum letzten tab oder so. idk. vlt dann mit pfeil nach oben. wär cool eig
       return Scaffold(

@@ -50,14 +50,17 @@ class LibraryTabBar extends StatelessWidget {
               icon: Icon(Icons.search),
             )
           ],
-          bottom: const TabBar(
-            tabs: [
+          bottom: TabBar(
+            tabs: const [
               //Tab(icon: Icon(Icons.folder_copy),),
               Tab(icon: Icon(Icons.queue_music),),
               Tab(icon: Icon(Icons.music_note),),
               Tab(icon: Icon(Icons.album),),
               Tab(icon: Icon(Icons.person),),
             ],
+            onTap: (index) {
+              settingsControl.changeSetting('lastLibraryTab', index);
+            },
           ),
         ),
         body: TabBarView(
