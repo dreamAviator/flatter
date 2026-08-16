@@ -9,6 +9,7 @@ import 'package:marqueer/marqueer.dart';
 import '../../useful_scripts.dart';
 import 'album_screen/album_screen.dart';
 import 'artist_screen/artist_screen.dart';
+import 'artist_select_popup.dart';
 
 class SongTile extends StatelessWidget {
   const SongTile({super.key,required this.song});
@@ -20,8 +21,12 @@ class SongTile extends StatelessWidget {
     void goToAlbum(BuildContext context, String id) {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id,)));
     }
-    void goToArtist(BuildContext context, String id) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: id)));
+    void goToArtist(BuildContext context, String id,List? artists) {
+      if (artists?.length == 1 || artists == null) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: id)));
+      } else {
+        ArtistSelectWindow.showArtistSelectWindow(context, artists);
+      }
     }
     return Slidable(
       startActionPane: ActionPane(
@@ -50,7 +55,7 @@ class SongTile extends StatelessWidget {
             label: 'Album',
           ),
           SlidableAction(
-            onPressed: (_) => (goToArtist(context, song['artistId'])),
+            onPressed: (_) => (goToArtist(context, song['artistId'], song['artists'])),
             icon: Icons.person,
             label: 'Artist',
           )
