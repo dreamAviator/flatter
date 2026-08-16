@@ -165,7 +165,7 @@ class PlaylistScreen extends StatelessWidget {
                   children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
                     //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
                     if (settingsControl.settingsMap['landscapeMode'] == false) switch (playlistDetails) {
-                      AsyncValue(:final value?) => CachedNetworkImage(
+                      AsyncValue(:final value?) => CachedNetworkImage(//TODO:das hier zu einem page view machen, um auf der zweiten seite den comment anzuzeigen
                         imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                             LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
