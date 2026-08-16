@@ -182,8 +182,8 @@ class ArtistScreen extends StatelessWidget {
               ),
               SliverToBoxAdapter(child: Text("Albums")),
               switch (artistDetails) {
-                //AsyncValue(:final value?) => buildAlbumGrid(context, value['album'],screenSize.width),
-                AsyncValue(:final value?) => AlbumGrid(albumListNullable: value['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
+                AsyncValue(:final value?) => buildAlbumGrid(context, value['album'],screenSize.width),
+                //AsyncValue(:final value?) => AlbumGrid(albumListNullable: value['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
                 AsyncValue(error: != null) => SliverToBoxAdapter(child: Text("error")),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
               },
