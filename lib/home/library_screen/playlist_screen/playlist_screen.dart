@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
@@ -31,6 +32,7 @@ class PlaylistScreen extends StatelessWidget {
     return Consumer(
       builder: (context,ref,child) {
         final playlistDetails = ref.watch(riverpodManager.playlistDetailsProvider(playlistID));
+        PageController pageController = PageController();
         return Scaffold(
           appBar: AppBar(
             title: switch (playlistDetails) {
@@ -165,17 +167,71 @@ class PlaylistScreen extends StatelessWidget {
                   children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
                     //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
                     if (settingsControl.settingsMap['landscapeMode'] == false) switch (playlistDetails) {
-                      AsyncValue(:final value?) => CachedNetworkImage(//TODO:das hier zu einem page view machen, um auf der zweiten seite den comment anzuzeigen
-                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                        errorWidget: (context, url, error) => IconButton(
-                          onPressed: () {
-                            //hier retry
-                          },
-                          icon: Icon(Icons.error),
+                      AsyncValue(:final value?) => AspectRatio(
+                        aspectRatio: 1,
+                        child: PageView(
+                          scrollBehavior: MaterialScrollBehavior().copyWith(
+                            dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch, PointerDeviceKind.stylus, PointerDeviceKind.trackpad, PointerDeviceKind.unknown},
+                          ),
+                          controller: pageController,
+                          children: [
+                            Stack(
+                              alignment: Alignment.centerRight,
+                              children: [
+                                CachedNetworkImage(//TODO:das hier zu einem page view machen, um auf der zweiten seite den comment anzuzeigen
+                                  imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
+                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                    LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                  errorWidget: (context, url, error) => IconButton(
+                                    onPressed: () {
+                                    //hier retry
+                                    },
+                                    icon: Icon(Icons.error),
+                                  ),
+                                  height: screenSize.width,
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    pageController.jumpToPage(1);
+                                  },
+                                  icon: Icon(Icons.arrow_forward_ios),
+                                  color: Colors.white,//TODO:die Farbe hier dynamisch auswählen
+                                ),
+                              ]
+                            ),
+                            if (value['comment'] == "")
+                              Stack(
+                                alignment: Alignment.centerLeft,
+                                children: [
+                                  Center(
+                                    child: Text("No comment"),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      pageController.jumpToPage(0);
+                                    },
+                                    icon: Icon(Icons.arrow_back_ios_new),
+                                  ),
+                                ]
+                              )
+                            else
+                              Stack(
+                                alignment: Alignment.centerLeft,
+                                children: [
+                                  Center(
+                                    child: Text(value['comment']),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      pageController.jumpToPage(0);
+                                    },
+                                    icon: Icon(Icons.arrow_back_ios_new),
+                                  ),
+                                ]
+                              )
+                          ],
+
                         ),
-                        height: screenSize.width,
                       ),
                       AsyncValue(error: != null) => Text("Error"),
                       AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
