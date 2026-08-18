@@ -77,6 +77,7 @@ class SettingsController {
     String path = dataDirectory.path;
     path = "${path}/flatter_settings.toml";
     if (await File(path).exists() == false) {
+      print("file does not exist");
       settingsDocument = TomlDocument.fromMap(defaultSettingsMap);
       File(path).writeAsString(settingsDocument.toString());
     }

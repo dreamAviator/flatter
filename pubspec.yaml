@@ -36,7 +36,6 @@ dependencies:
   path_provider: ^2.1.5
   toml: ^0.18.0
   iconify_flutter_plus: ^1.0.4
-  dynamic_color: ^1.8.1
   saf_util: ^0.11.0
   just_audio: ^0.10.5
   just_audio_media_kit: ^2.1.0
