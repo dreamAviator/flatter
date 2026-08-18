@@ -60,25 +60,52 @@ class EditPlaylistPopup {
                           return null;
                         },
                       ),
-                      TextFormField(
-                        maxLines: null,
-                        decoration: const InputDecoration(
-                          hintText: "Comment",
-                          border: OutlineInputBorder(),
-                        ),
-                        controller: playlistCommentController,
-                      ),
-                      ListTile(
-                        leading: Text("Public"),
-                        trailing: Switch(
-                          value: public!,
-                          onChanged: (bool value) {
-                            setState(() {
-                              public = value;
-                            });
-                          },
+                      if (newCreate == false)
+                        TextFormField(
+                          maxLines: null,
+                          decoration: const InputDecoration(
+                            hintText: "Comment",
+                            border: OutlineInputBorder(),
+                          ),
+                          controller: playlistCommentController,
                         )
-                      ),
+                      else
+                        Tooltip(
+                          message: "Not available while creating",
+                          child: TextFormField(
+                            maxLines: null,
+                            decoration: const InputDecoration(
+                              hintText: "Comment",
+                              border: OutlineInputBorder(),
+                            ),
+                            controller: playlistCommentController,
+                            enabled: false,
+
+                          ),
+                        ),
+                      if (newCreate == false)
+                        ListTile(
+                          leading: Text("Public"),
+                          trailing: Switch(
+                            value: public!,
+                            onChanged: (bool value) {
+                              setState(() {
+                                public = value;
+                              });
+                            },
+                          )
+                        )
+                      else
+                        ListTile(
+                          leading: Text("Public"),
+                          trailing: Tooltip(
+                            message: "Not available while creating",
+                            child: Switch(
+                              value: public!,
+                              onChanged: null,
+                            ),
+                          )
+                        ),
                       FilledButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {

@@ -197,7 +197,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
               AsyncValue(error: != null) => Center(child: const Text("Error")),
               AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
             },
-            SliverToBoxAdapter(child: Text("Public"),),
+            SliverToBoxAdapter(child: Text("Shared with you"),),
             switch (playlistList) {
               AsyncValue(:final value?) => PlaylistGrid(playlistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: false,filterNotifier: filterNotifier,),
               AsyncValue(error: != null) => Center(child: const Text("Error")),

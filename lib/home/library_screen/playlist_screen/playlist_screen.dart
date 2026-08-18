@@ -14,6 +14,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:marqueer/marqueer.dart';
 
 import '../../../Riverpod/riverpod_manager.dart';
 import '../album_screen/album_screen.dart';
@@ -36,7 +37,7 @@ class PlaylistScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: switch (playlistDetails) {
-              AsyncValue(:final value?) => Text(value['name']),
+              AsyncValue(:final value?) => Marqueer(child: Text(value['name']),intrinsicCrossAxisSize: true,infinity: false,),
               AsyncValue(error: != null) => Text("Error"),
               AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
             },
@@ -178,7 +179,7 @@ class PlaylistScreen extends StatelessWidget {
                             Stack(
                               alignment: Alignment.centerRight,
                               children: [
-                                CachedNetworkImage(//TODO:das hier zu einem page view machen, um auf der zweiten seite den comment anzuzeigen
+                                CachedNetworkImage(
                                   imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                                   progressIndicatorBuilder: (context, url, downloadProgress) =>
                                     LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
@@ -219,7 +220,7 @@ class PlaylistScreen extends StatelessWidget {
                                 alignment: Alignment.centerLeft,
                                 children: [
                                   Center(
-                                    child: Text(value['comment']),
+                                    child: SingleChildScrollView(child: Text(value['comment']),),
                                   ),
                                   IconButton(
                                     onPressed: () {
