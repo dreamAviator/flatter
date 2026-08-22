@@ -25,7 +25,7 @@ class LibraryTabBar extends StatelessWidget {
       startTab = settingsControl.settingsMap['lastLibraryTab'];
     }
 //    final FoldersTabViewModel foldersTabViewModel = FoldersTabViewModel();
-  //TODO:du brauchst noch einen tab nur zum suchen hier in dem man nach allem suchen kann//entweder macht das der suchen tab schon, oder ich weiß aktuell nicht was ich hier gemeint habe
+  //du brauchst noch einen tab nur zum suchen hier in dem man nach allem suchen kann//entweder macht das der suchen tab schon, oder ich weiß aktuell nicht was ich hier gemeint habe
     final PlaylistsTabViewModel playlistsTabViewModel = PlaylistsTabViewModel();
     final SongsTabViewModel songsTabViewModel = SongsTabViewModel();
     final AlbumsTabViewModel albumsTabViewModel = AlbumsTabViewModel();
