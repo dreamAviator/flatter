@@ -34,17 +34,17 @@ class SettingsController {
     'mode':"navidrome",
     'songMenuActionOrder':{
       'mainMenu':['playNow','addNext','enqueue'],
-      'moreSheet':['album','artist'],
+      'moreSheet':['album','artist','unFavorite'],
       'unused':[],
     },
     'albumMenuActionOrder':{
       'mainMenu':['playNow','addNext','enqueue'],
-      'moreSheet':['artist'],
-      'unused':['playNowShuffled','addNextShuffled','enqueueShuffled'],
+      'moreSheet':['artist','playNowShuffled','addNextShuffled','enqueueShuffled','unFavorite'],
+      'unused':[],
     },
     'artistMenuActionOrder':{
       'mainMenu':['playNow','addNext','enqueue'],
-      'moreSheet':['playNowShuffled','addNextShuffled','enqueueShuffled'],
+      'moreSheet':['playNowShuffled','addNextShuffled','enqueueShuffled','unFavorite'],
       'unused':[],
     },
     'playlistMenuActionOrder':{

@@ -328,6 +328,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           menuEntryList.add(album(songMediaItem.extras!['albumId']));
         case 'artist':
           menuEntryList.add(artist(songMediaItem.extras!['artistId'],songMediaItem.extras!['artists']));
+        case 'unFavorite':
+          menuEntryList.add(unFavorite(songMediaItem.id, null, null));
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -342,6 +344,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(albumMoreSheet(songMediaItem.extras!['albumId']));
         case 'artist':
           moreSheetEntryList.add(artistMoreSheet(songMediaItem.extras!['artistId'],songMediaItem.extras!['artists']));
+        case 'unFavorite':
+          moreSheetEntryList.add(unFavoriteMoreSheet(songMediaItem.id, null, null));
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {
@@ -384,6 +388,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           menuEntryList.add(album(song.extras!['albumId']));
         case 'artist':
           menuEntryList.add(artist(song.extras!['artistId'],song.extras!['artists']));
+        case 'unFavorite':
+          menuEntryList.add(unFavorite(song.id, null, null));
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -398,6 +404,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(albumMoreSheet(song.extras!['albumId']));
         case 'artist':
           moreSheetEntryList.add(artistMoreSheet(song.extras!['artistId'],song.extras!['artists']));
+        case 'unFavorite':
+          moreSheetEntryList.add(unFavoriteMoreSheet(song.id, null, null));
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {
@@ -447,6 +455,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           menuEntryList.add(addNextShuffled(songList));
         case 'enqueueShuffled':
           menuEntryList.add(enqueueShuffled(songList));
+        case 'unFavorite':
+          menuEntryList.add(unFavorite(null, album['id'], null));
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -465,6 +475,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(addNextShuffledMoreSheet(songList));
         case 'enqueueShuffled':
           moreSheetEntryList.add(enqueueShuffledMoreSheet(songList));
+        case 'unFavorite':
+          moreSheetEntryList.add(unFavoriteMoreSheet(null, album['id'], null));
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {
@@ -512,6 +524,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           menuEntryList.add(addNextShuffledByID({'albumID':albumMinimal['id']}));
         case 'enqueueShuffled':
           menuEntryList.add(enqueueShuffledByID({'albumID':albumMinimal['id']}));
+        case 'unFavorite':
+          menuEntryList.add(unFavorite(null, albumMinimal['id'], null));
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -530,6 +544,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(addNextShuffledByIDMoreSheet({'albumID':albumMinimal['id']}));
         case 'enqueueShuffled':
           moreSheetEntryList.add(enqueueShuffledByIDMoreSheet({'albumID':albumMinimal['id']}));
+        case 'unFavorite':
+          moreSheetEntryList.add(unFavoriteMoreSheet(null, albumMinimal['id'], null));
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {
@@ -574,6 +590,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           menuEntryList.add(addNextShuffledByID({'artistID':artist['id']}));
         case 'enqueueShuffled':
           menuEntryList.add(enqueueShuffledByID({'artistID':artist['id']}));
+        case 'unFavorite':
+          menuEntryList.add(unFavorite(null, null, artist['id']));
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -590,6 +608,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(addNextShuffledByIDMoreSheet({'artistID':artist['id']}));
         case 'enqueueShuffled':
           moreSheetEntryList.add(enqueueShuffledByIDMoreSheet({'artistID':artist['id']}));
+        case 'unFavorite':
+          moreSheetEntryList.add(unFavoriteMoreSheet(null, null, artist['id']));
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {
