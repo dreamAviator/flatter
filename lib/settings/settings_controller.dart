@@ -88,6 +88,15 @@ class SettingsController {
         settingsMap[key] = value;
       }
     });
+    List keysToRemove = [];
+    settingsMap.forEach((key,value) {
+      if (defaultSettingsMap[key] == null) {
+        keysToRemove.add(key);
+      }
+    });
+    for (String key in keysToRemove) {
+      settingsMap.remove(key);
+    }
     if (settingsMap['firstStart'] == true) {
       firstStart();
     }

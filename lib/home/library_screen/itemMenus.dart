@@ -305,7 +305,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         unFavoriteLogic(songID, albumID, artistID);
       },
-      title: Text("Artist"),
+      title: Text("(Un)Favorite)"),//TODO:das hier je nach aktuellem status evt ändern, mal schauen, je nachdem wie einfach das ist
     );
   }
 
