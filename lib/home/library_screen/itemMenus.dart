@@ -154,7 +154,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         unFavoriteLogic(songID, albumID, artistID);
       },
-      child: Text("(Un)favorite)"),
+      child: Text("(Un)favorite"),
     );
   }
   Future<void> unFavoriteLogic(String? songID,String? albumID,String? artistID) async {
@@ -305,7 +305,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         unFavoriteLogic(songID, albumID, artistID);
       },
-      title: Text("(Un)Favorite)"),//TODO:das hier je nach aktuellem status evt ändern, mal schauen, je nachdem wie einfach das ist
+      title: Text("(Un)Favorite"),//TODO:das hier je nach aktuellem status evt ändern, mal schauen, je nachdem wie einfach das ist
     );
   }
 
