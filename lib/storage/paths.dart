@@ -16,6 +16,14 @@ class PathProvider {
     await getTempDir();
     if (Directory(dataDirectory).existsSync() == false) {
       await Directory(dataDirectory).create(recursive: true);
+      await Directory("$dataDirectory/navidrome_mode").create(recursive: true);
+      await Directory("$dataDirectory/local_mode").create(recursive: true);
+    }
+    if (Directory("$dataDirectory/navidrome_mode").existsSync() == false) {
+      await Directory("$dataDirectory/navidrome_mode").create(recursive: true);
+    }
+    if (Directory("$dataDirectory/local_mode").existsSync() == false) {
+      await Directory("$dataDirectory/local_mode").create(recursive: true);
     }
     if (Directory(tempDirectory).existsSync() == false) {
       await Directory(tempDirectory).create(recursive: true);

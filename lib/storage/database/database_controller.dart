@@ -1,17 +1,17 @@
 import 'package:flatter/main.dart';
 import 'package:flatter/storage/database/local/folders_database.dart';
 import 'package:flatter/storage/database/local/local_library_database.dart';
-import 'package:flatter/storage/database/navidrome/servers_database.dart';
+import 'package:flatter/storage/database/navidrome/navidrome_mode_servers_database.dart';
 import 'package:sqlite3/common.dart';
 
 class DatabaseController {
-  late LocalLibraryDatabase _library_db;
-  late FoldersDatabase _folder_db;
+  late LocalModeLibraryDatabase _library_db;
+  late LocalModeLibraryFoldersDatabase _folder_db;
   late ServersDatabase _servers_db;
 
   Future<void> initialize() async {
-    _library_db = LocalLibraryDatabase();
-    _folder_db = FoldersDatabase();
+    _library_db = LocalModeLibraryDatabase();
+    _folder_db = LocalModeLibraryFoldersDatabase();
     _servers_db = ServersDatabase();
     await _library_db.initialize();
     await _folder_db.initialize();
