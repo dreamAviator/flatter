@@ -1,5 +1,5 @@
 import 'package:flatter/home/library_screen/add_to_playlist_popup.dart';
-import 'package:flatter/home/library_screen/itemMenus.dart';
+import 'package:flatter/home/library_screen/item_menus.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +12,10 @@ import 'artist_screen/artist_screen.dart';
 import 'artist_select_popup.dart';
 
 class SongTile extends StatelessWidget {
-  const SongTile({super.key,required this.song});
+  const SongTile({super.key,required this.song,required this.playlistID, required this.usecase});
   final Map song;
+  final String? playlistID;
+  final String? usecase;//um je nach usecase verschiedene einstellungen (bspw zu item menüs bzw slidables) zu holen
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,7 @@ class SongTile extends StatelessWidget {
           ],
         ),
         subtitle: Expanded(child: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(song['artist'].toString()))),
-        trailing: ItemMenus(context).songMenu(song),
+        trailing: ItemMenus(context).songMenu(song,playlistID),
         onTap: () {
           playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(song));
         },

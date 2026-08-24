@@ -12,7 +12,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
 import '../../../../Riverpod/riverpod_manager.dart';
-import '../../itemMenus.dart';
+import '../../item_menus.dart';
 
 class AlbumsTab extends StatefulWidget {
   const AlbumsTab({super.key,required this.viewModel});

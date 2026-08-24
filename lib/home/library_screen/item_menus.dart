@@ -165,6 +165,14 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       subsonicService.starUnstar(false, songID, albumID, artistID);
     }
   }
+  PopupMenuEntry removeFromPlaylist(String songID,String playlistID) {
+    return PopupMenuItem(
+      onTap: () {
+        subsonicService.updatePlaylist(playlistID, null, null, null, null, [songID]);
+      },
+      child: Text("Remove from playlist"),
+    );
+  }
   //More Sheet Menu Entry Actions
   ListTile playNowMoreSheet(List<MediaItem> items) {
     return ListTile(
@@ -308,9 +316,17 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       title: Text("(Un)Favorite"),//TODO:das hier je nach aktuellem status evt ändern, mal schauen, je nachdem wie einfach das ist
     );
   }
+  ListTile removeFromPlaylistMoreSheet(String songID,String playlistID) {
+    return ListTile(
+      onTap: () {
+        subsonicService.updatePlaylist(playlistID, null, null, null, null, [songID]);
+      },
+      title: Text("Remove from playlist"),
+    );
+  }
 
   //menus//TODO:favorite/unfavorite noch hinzufügen
-  Widget songMenu(Map<dynamic,dynamic> songOld) {
+  Widget songMenu(Map<dynamic,dynamic> songOld, String? playlistID) {
     Map<dynamic,dynamic> song = songOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('songMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
@@ -330,6 +346,11 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           menuEntryList.add(artist(songMediaItem.extras!['artistId'],songMediaItem.extras!['artists']));
         case 'unFavorite':
           menuEntryList.add(unFavorite(songMediaItem.id, null, null));
+        case 'removeFromPlaylist':
+          if (playlistID != null) {
+            menuEntryList.add(removeFromPlaylist(songMediaItem.id, playlistID));
+          }
+
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -346,6 +367,10 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(artistMoreSheet(songMediaItem.extras!['artistId'],songMediaItem.extras!['artists']));
         case 'unFavorite':
           moreSheetEntryList.add(unFavoriteMoreSheet(songMediaItem.id, null, null));
+        case 'removeFromPlaylist':
+          if (playlistID != null) {
+            moreSheetEntryList.add(removeFromPlaylistMoreSheet(songMediaItem.id, playlistID));
+          }
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {

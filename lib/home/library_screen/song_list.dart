@@ -3,18 +3,19 @@ import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flatter/home/library_screen/itemMenus.dart';
+import 'package:flatter/home/library_screen/item_menus.dart';
 
 import '../../main.dart';
 import 'album_screen/album_screen.dart';
 import 'artist_screen/artist_screen.dart';
 
 class SongList extends StatelessWidget {
-  const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver, this.filterNotifier});
+  const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver, this.filterNotifier,required this.playlistID});
   final List<dynamic>? songListNullable;
   final bool listView;
   final bool sliver;
   final ValueNotifier<String>? filterNotifier;
+  final String? playlistID;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +82,7 @@ class SongList extends StatelessWidget {
               return SliverList.builder(
                 itemCount: filteredSongList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return SongTile(song: filteredSongList[index]);
+                  return SongTile(song: filteredSongList[index],playlistID: playlistID,usecase: null,);
                   /*
                   return Slidable(
                     startActionPane: ActionPane(
@@ -142,7 +143,7 @@ class SongList extends StatelessWidget {
           return SliverList.builder(
             itemCount: songList.length,
             itemBuilder: (BuildContext context, int index) {
-              return SongTile(song: songList[index],);
+              return SongTile(song: songList[index],playlistID: playlistID,usecase: null,);
               /*
               return Slidable(
                 startActionPane: ActionPane(
@@ -204,7 +205,7 @@ class SongList extends StatelessWidget {
         return ListView.builder(
           itemCount: songList.length,
           itemBuilder: (BuildContext context, int index) {
-            return SongTile(song: songList[index]);
+            return SongTile(song: songList[index],playlistID: playlistID,usecase: null,);
             /*
             return Slidable(
               startActionPane: ActionPane(
@@ -266,7 +267,7 @@ class SongList extends StatelessWidget {
         List<Widget> widgetList = [];
         for (Map song in songList) {
           widgetList.add(
-            SongTile(song: song)
+            SongTile(song: song,playlistID: playlistID,usecase: null,)
             /*
               Slidable(
                 startActionPane: ActionPane(
@@ -329,7 +330,7 @@ class SongList extends StatelessWidget {
         List<Widget> widgetList = [];
         for (Map song in songList) {
           widgetList.add(
-            SongTile(song: song)
+            SongTile(song: song,playlistID: playlistID,usecase: null,)
             /*
               Slidable(
                 startActionPane: ActionPane(

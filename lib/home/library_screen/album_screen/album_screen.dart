@@ -6,7 +6,7 @@ import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/artist_select_popup.dart';
 import 'package:flatter/home/library_screen/favorite_button.dart';
-import 'package:flatter/home/library_screen/itemMenus.dart';
+import 'package:flatter/home/library_screen/item_menus.dart';
 import 'package:flatter/home/library_screen/song_list.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -223,7 +223,7 @@ class AlbumScreen extends StatelessWidget {
                 ),
               ),
               switch (albumDetails) {
-                AsyncValue(:final value?) => SongList(songListNullable: value['song'],listView: true,sliver: true,filterNotifier: filterNotifier,),
+                AsyncValue(:final value?) => SongList(songListNullable: value['song'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: null,),
                 AsyncValue(error: != null) => Text("Error"),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
               },

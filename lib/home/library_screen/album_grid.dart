@@ -6,7 +6,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../main.dart';
 import 'album_screen/album_screen.dart';
-import 'itemMenus.dart';
+import 'item_menus.dart';
 
 class AlbumGrid extends StatelessWidget {
   const AlbumGrid({super.key,required this.albumListNullable,required this.crossAxisCount,required this.sliver,this.filterNotifier});

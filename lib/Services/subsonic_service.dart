@@ -433,7 +433,7 @@ class SubsonicService {
     }
   }
 
-  Future<Map<dynamic,dynamic>> updatePlaylist(String id,String? name,String? comment,String? public,List<dynamic>? songIDsToAdd,List<int>? indexesToRemove) async {
+  Future<Map<dynamic,dynamic>> updatePlaylist(String id,String? name,String? comment,String? public,List<dynamic>? songIDsToAdd,List<String>? indexesToRemove) async {
     List<String> url = getURL(null,null,null);
     String request = "${url[0]}updatePlaylist${url[1]}&playlistId=$id";
     if (name != null) {

@@ -246,7 +246,7 @@ class SearchScreen extends StatelessWidget {
                 ],
               ),
             ),
-          SongList(songListNullable: searchResults['song'], listView: true, sliver: true),
+          SongList(songListNullable: searchResults['song'], listView: true, sliver: true,playlistID: null,),
         ],
       );
     }

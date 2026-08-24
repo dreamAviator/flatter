@@ -5,7 +5,7 @@ import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/artist_select_popup.dart';
 import 'package:flatter/home/library_screen/edit_playlist_popup.dart';
-import 'package:flatter/home/library_screen/itemMenus.dart';
+import 'package:flatter/home/library_screen/item_menus.dart';
 import 'package:flatter/home/library_screen/song_list.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -305,7 +305,7 @@ class PlaylistScreen extends StatelessWidget {
               ),
               SliverToBoxAdapter(child: SearchFilterWidget(filterNotifier: filterNotifier),),
               switch (playlistDetails) {
-                AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: true,sliver: true,filterNotifier: filterNotifier),
+                AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: value['id'],),
                 AsyncValue(error: != null) => Text("Error"),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
               },

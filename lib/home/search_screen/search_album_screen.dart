@@ -9,7 +9,7 @@ import 'package:masonry_grid/masonry_grid.dart';
 import '../../Riverpod/riverpod_manager.dart';
 import '../../main.dart';
 import '../library_screen/album_screen/album_screen.dart';
-import '../library_screen/itemMenus.dart';
+import '../library_screen/item_menus.dart';
 
 class SearchAlbumScreen extends StatelessWidget {
   const SearchAlbumScreen({super.key,required this.query});

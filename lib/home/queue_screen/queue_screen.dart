@@ -14,7 +14,7 @@ import '../../Riverpod/riverpod_manager.dart';
 import '../../settings/settings_screen.dart';
 import '../../settings/settings_screen_ViewModel.dart';
 import '../library_screen/artist_screen/artist_screen.dart';
-import '../library_screen/itemMenus.dart';
+import '../library_screen/item_menus.dart';
 
 class QueueScreen extends StatefulWidget {
   const QueueScreen({super.key});
