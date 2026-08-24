@@ -5,7 +5,10 @@ import 'package:flatter/home/player_screen/player_screen.dart';
 import 'package:flatter/home/queue_screen/queue_screen.dart';
 import 'package:flatter/home/search_screen/search_screen.dart';
 import 'package:flatter/main.dart';
+import 'package:flatter/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../settings/settings_screen_ViewModel.dart';
 
 class HomeNavigationBar extends StatefulWidget {
   const HomeNavigationBar({super.key});
@@ -26,8 +29,14 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
     }
     funktioniert nicht
      */
-    if (currentPageIndex == -1) {
+    if (currentPageIndex <= -1) {
       currentPageIndex = settingsControl.loadSetting('lastTab');
+    } else if (currentPageIndex == 3) {
+      currentPageIndex = 0;
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchScreen()));
+    } else if (currentPageIndex > 3) {
+      currentPageIndex = 1;
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsScreen(viewModel: SettingsScreenViewmodel())));
     }
     return Scaffold(
       bottomNavigationBar: NavigationBar(
