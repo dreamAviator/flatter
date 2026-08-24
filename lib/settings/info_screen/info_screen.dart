@@ -31,6 +31,9 @@ class InfoScreen extends StatelessWidget {
             leading: Icon(Icons.article),
             title: Text("View licenses"),
             trailing: Icon(Icons.arrow_forward),
+            onTap: () {
+              showLicensePage(context: context);
+            },
           ),
         ],
       ),
