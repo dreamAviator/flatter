@@ -68,10 +68,13 @@ dependencies:
   rxdart: ^0.28.0
   #flutter_staggered_grid_view: ^0.7.0
   flutter_staggered_grid_view:
-     path: ./flutter_staggered_grid_view-feature-masonry_cache
+    path: ./flutter_staggered_grid_view-feature-masonry_cache
     #git:
     #  url: https://github.com/letsar/flutter_staggered_grid_view.git
     #  ref: feature/masonry_cache
+  flutter_number_picker:
+    path: ./flutter_number_picker-master
+    #TODO:das hier auf pub.dev hochladen, ist ein update weil die dependencies geupdatet wurden (flutter svg, außerdem kannst du das noch weiter entwickeln)
 
   #flutter_staggered_grid_view_fix_branch:
   #  path: ./flutter_staggered_grid_view_fix_branch
@@ -135,6 +138,7 @@ flutter:
   assets:
     - lib/assets/icon/github_icon.png
     - lib/assets/images/empty_player.png
+    - lib/assets/icon/app_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -7,8 +7,9 @@ class InfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      /*
       appBar: AppBar(
-        title: const Text("Behaviour Settings"),
+        title: const Text("About flatter"),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -16,26 +17,39 @@ class InfoScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
         ),
       ),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          ListTile(
-            leading: ImageIcon(AssetImage("lib/assets/icon/github_icon.png")),
-            title: Text("Flatter on GitHub"),
-            trailing: Icon(Icons.link),
-            onTap: () {
-              launchUrl(Uri.https("github.com","/dreamAviator/flatter"));
-            },
+
+       */
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text("flatter"),
+              background: Image.asset("lib/assets/icon/app_icon.png"),
+            ),
+            expandedHeight: 200,
           ),
-          ListTile(
-            leading: Icon(Icons.article),
-            title: Text("View licenses"),
-            trailing: Icon(Icons.arrow_forward),
-            onTap: () {
-              showLicensePage(context: context);
-            },
+          SliverList(
+            delegate: SliverChildListDelegate.fixed([
+              ListTile(
+                leading: ImageIcon(AssetImage("lib/assets/icon/github_icon.png")),
+                title: Text("Flatter on GitHub"),
+                trailing: Icon(Icons.link),
+                onTap: () {
+                  launchUrl(Uri.https("github.com","/dreamAviator/flatter"));
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.article),
+                title: Text("View licenses"),
+                trailing: Icon(Icons.arrow_forward),
+                onTap: () {
+                  showLicensePage(context: context);
+                },
+              ),
+            ]),
           ),
-        ],
+        ]
       ),
     );
   }

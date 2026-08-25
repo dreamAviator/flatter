@@ -11,7 +11,7 @@ class LandscapeModeSetting extends StatefulWidget {
 class _LandscapeModeSettingState extends State<LandscapeModeSetting> {
   @override
   Widget build(BuildContext context) {
-    bool landscapeMode = settingsControl.settingsMap['landscapeMode'];
+    bool landscapeMode = settingsControl.loadSetting('landscapeMode');
     return Switch(
       value: landscapeMode,
       onChanged: (bool value) {
