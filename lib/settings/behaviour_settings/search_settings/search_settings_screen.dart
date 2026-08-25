@@ -25,7 +25,7 @@ class SearchSettingsScreen extends StatelessWidget {
             trailing: ClearSearchSetting(),
             subtitle: Text("Clear the search input after leaving the search screen"),
           ),
-          //TODO:search results number setting, mit dem gleichen number picker package auch die anderen settings mit zahlen einrichten
+          //TODO:search results number setting, mit dem gleichen number picker package auch die anderen settings mit zahlen einrichten :3
         ],
       ),
     );
