@@ -1,4 +1,5 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
+import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flatter/home/library_screen/album_grid.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:intrinsic_size_builder/intrinsic_size_builder.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
@@ -96,35 +98,44 @@ class _AlbumsTabState extends State<AlbumsTab> {
       child: Consumer(
         builder: (context, ref, child) {
           final albumList = ref.watch(riverpodManager.albumListProvider(filterSortList));
-          return CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
+          return IntrinsicSizeBuilder(
+            subject: Column(
+              children: [
+                SearchFilterWidget(filterNotifier: filterNotifier),
+                Row(
                   children: [
-                    SearchFilterWidget(filterNotifier: filterNotifier),
-                    Row(
-                      children: [
-                        Text("hier drop down menü"),
-                        IconButton(
-                          onPressed: () {
-                            reverseSort();
-                            ref.invalidate(riverpodManager.albumListProvider);
-                          },
-                          icon: (ascending
-                              ? Icon(Icons.arrow_upward)
-                              : Icon(Icons.arrow_downward)),
-                        )
-                      ],
-                    ),
-                  ]
+                    Text("hier drop down menü"),
+                    IconButton(
+                      onPressed: () {
+                        reverseSort();
+                        ref.invalidate(riverpodManager.albumListProvider);
+                      },
+                      icon: (ascending
+                          ? Icon(Icons.arrow_upward)
+                          : Icon(Icons.arrow_downward)),
+                    )
+                  ],
                 ),
-              ),
-              switch (albumList) {
-                AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,filterNotifier: filterNotifier,),
-                AsyncValue(error: != null) => SliverToBoxAdapter(child: Center(child: const Text("Error"))),
-                AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
-              },
-            ],
+              ],
+            ),
+            builder: (context,subjectSize,subject) {
+              return CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    primary: false,
+                    floating: true,
+                    snap: true,
+                    expandedHeight: subjectSize.height,
+                    flexibleSpace: Expanded(child: subject)
+                  ),
+                  switch (albumList) {
+                    AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,filterNotifier: filterNotifier,),
+                    AsyncValue(error: != null) => SliverToBoxAdapter(child: Center(child: const Text("Error"))),
+                    AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
+                  },
+                ],
+              );
+            },
           );
         },
       ),

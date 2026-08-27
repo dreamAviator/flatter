@@ -225,6 +225,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.2"
+  extended_sliver:
+    dependency: "direct main"
+    description:
+      name: extended_sliver
+      sha256: "2198476e535aa0210656a9cf8b59331bf860bb543ac2431c5ec8d49bd76a310d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.3"
   fake_async:
     dependency: transitive
     description:
@@ -422,6 +430,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.4"
+  intrinsic_size_builder:
+    dependency: "direct main"
+    description:
+      name: intrinsic_size_builder
+      sha256: fe922745d2d880cc4e0564254c7d7fe5de87ae8f7278453a2b482829d47acea4
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   io:
     dependency: transitive
     description:
