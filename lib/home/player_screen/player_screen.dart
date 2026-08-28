@@ -98,7 +98,9 @@ class PlayerScreen extends StatelessWidget {
                                       children: [
                                         IconButton(
                                           onPressed: () {
-                                            AddToPlaylistPopup.showAddToPlaylistPopup(context, [id]);
+                                            if (id != null) {
+                                              AddToPlaylistPopup.showAddToPlaylistPopup(context, [id]);
+                                            }
                                           },
                                           icon: Icon(Icons.playlist_add),
                                         ),
@@ -251,7 +253,10 @@ class PlayerScreen extends StatelessWidget {
                           String? id = asyncSnapshot.data?.id;
                           return IconButton(
                             onPressed: () {
-                              AddToPlaylistPopup.showAddToPlaylistPopup(context, [id]);
+                              if (id != null) {
+                                AddToPlaylistPopup.showAddToPlaylistPopup(context, [id]);
+                              }
+
                             },
                             icon: Icon(Icons.playlist_add),
                           );

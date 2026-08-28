@@ -4,6 +4,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flatter/home/library_screen/add_to_playlist_popup.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/main.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,6 +28,7 @@ class _QueueScreenState extends State<QueueScreen> {
 
   Widget buildQueue(WidgetRef ref, BuildContext context, List<MediaItem> queue) {
     final riverpodManager = RiverpodManager();
+    SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
 
     void removeFromQueue(int index) {
       playerControl.removeQueueItemAt(index);
@@ -172,7 +174,11 @@ class _QueueScreenState extends State<QueueScreen> {
                 switch (queue) {
                   AsyncValue(:final value?) => IconButton(
                     onPressed: () {
-                      AddToPlaylistPopup.showAddToPlaylistPopup(context, value);
+                      List<String> songIDlist = [];
+                      for (MediaItem mediaItem in value) {
+                        songIDlist.add(mediaItem.id);
+                      }
+                      AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
                     },
                     icon: Icon(Icons.playlist_add),
                   ),

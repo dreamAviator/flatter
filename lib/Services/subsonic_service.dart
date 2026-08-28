@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flatter/main.dart';
 
@@ -434,6 +435,16 @@ class SubsonicService {
   }
 
   Future<Map<dynamic,dynamic>> updatePlaylist(String id,String? name,String? comment,String? public,List<dynamic>? songIDsToAdd,List<String>? indexesToRemove) async {
+    /*
+    final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text("test"),
+
+      )
+    );
+
+     */
     List<String> url = getURL(null,null,null);
     String request = "${url[0]}updatePlaylist${url[1]}&playlistId=$id";
     if (name != null) {
@@ -446,14 +457,15 @@ class SubsonicService {
       request = "$request&public=$public";
     }
     if (songIDsToAdd != null) {
-      songIDsToAdd.forEach((value) {
-        request = "$request&songIdToAdd=${value.toString()}";
-      });
+      for (String songID in songIDsToAdd) {
+        print("adding songid to songidtoadd");
+        request = "$request&songIdToAdd=${songID.toString()}";
+      }
     }
     if (indexesToRemove != null) {
-      indexesToRemove.forEach((value) {
-        request = "$request&songIndexToRemove=$value";
-      });
+      for (String songID in indexesToRemove) {
+        request = "$request&songIndexToRemove=$songID";
+      }
     }
     final uri = Uri.parse(request);
     try {
@@ -469,7 +481,7 @@ class SubsonicService {
         print("error 3");
         return {};
       }
-      print('successfully updated playlist');
+      //messenger.hideCurrentSnackBar();
       return subsonicResponse;
     } catch(error) {
       print("error 2");

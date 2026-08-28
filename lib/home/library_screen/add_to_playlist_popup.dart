@@ -8,7 +8,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../Riverpod/riverpod_manager.dart';
 
 class AddToPlaylistPopup {
-  static void showAddToPlaylistPopup(BuildContext context,List<dynamic> songIDs) {
+  static void showAddToPlaylistPopup(BuildContext context,List<String> songIDs) {
     final riverpodManager = RiverpodManager();
     bool skipDuplicates = settingsControl.settingsMap['addToPlaylistsSkipDuplicates'];
     bool selectMultiple = false;
@@ -25,9 +25,9 @@ class AddToPlaylistPopup {
               print(songIDs);
               print(skipDuplicates);
               print("no for each the subsonic service is called");
-              playlistIDs.forEach((value) {
-                subsonicService.updatePlaylist(value, null, null, null, songIDs, null);
-              });//hier überlegen, ob das ding offen bleiben soll, bis es hinzugefügt wurde
+              for (String playlistID in playlistIDs) {
+                subsonicService.updatePlaylist(playlistID, null, null, null, songIDs, null);
+              }//hier überlegen, ob das ding offen bleiben soll, bis es hinzugefügt wurde
               Navigator.of(context).pop();
             }
             Widget buildPlaylistColumn(context,List<dynamic> playlistList,WidgetRef ref) {//vlt einen schalter machen, dass man mehrere playlists auswählen kann
