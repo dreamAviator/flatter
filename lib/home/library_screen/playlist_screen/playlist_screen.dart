@@ -3,10 +3,10 @@ import 'dart:ui';
 
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
-import 'package:flatter/home/library_screen/artist_select_popup.dart';
-import 'package:flatter/home/library_screen/edit_playlist_popup.dart';
-import 'package:flatter/home/library_screen/item_menus.dart';
-import 'package:flatter/home/library_screen/song_list.dart';
+import 'package:flatter/home/library_screen/popups/artist_select_popup.dart';
+import 'package:flatter/home/library_screen/popups/edit_playlist_popup.dart';
+import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
+import 'package:flatter/home/library_screen/item_widgets/song_list.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
-import 'package:flatter/home/library_screen/artist_grid.dart';
+import 'package:flatter/home/library_screen/item_widgets/artist_grid.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +8,7 @@ import 'package:masonry_grid/masonry_grid.dart';
 
 import '../../Riverpod/riverpod_manager.dart';
 import '../../main.dart';
-import '../library_screen/item_menus.dart';
+import '../library_screen/item_widgets/per_item/item_menus.dart';
 
 class SearchArtistScreen extends StatelessWidget {
   const SearchArtistScreen({super.key,required this.query});

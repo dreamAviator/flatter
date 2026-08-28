@@ -1,10 +1,10 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
-import 'package:flatter/home/library_screen/album_grid.dart';
+import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
-import 'package:flatter/home/library_screen/artist_grid.dart';
+import 'package:flatter/home/library_screen/item_widgets/artist_grid.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
-import 'package:flatter/home/library_screen/song_list.dart';
+import 'package:flatter/home/library_screen/item_widgets/song_list.dart';
 import 'package:flatter/home/search_screen/search_album_screen.dart';
 import 'package:flatter/home/search_screen/search_artist_screen.dart';
 import 'package:flatter/home/search_screen/search_song_screen.dart';
@@ -301,7 +301,7 @@ class SearchScreen extends StatelessWidget {
           leading: IconButton(
             onPressed: () {
               if (settingsControl.loadSetting('clearSearchOnExit') == true) {
-                searchFieldController.clear();
+                searchFieldController.clear();//TODO:das hier auch im landscape mode hinkriegen
               }
               Navigator.of(context).pop();
             },

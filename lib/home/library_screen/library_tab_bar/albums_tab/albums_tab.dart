@@ -1,6 +1,6 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:extended_sliver/extended_sliver.dart';
-import 'package:flatter/home/library_screen/album_grid.dart';
+import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/search_filter_widget.dart';
@@ -14,7 +14,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
 import '../../../../Riverpod/riverpod_manager.dart';
-import '../../item_menus.dart';
+import '../../item_widgets/per_item/item_menus.dart';
 
 class AlbumsTab extends StatefulWidget {
   const AlbumsTab({super.key,required this.viewModel});
@@ -126,7 +126,17 @@ class _AlbumsTabState extends State<AlbumsTab> {
                     floating: true,
                     snap: true,
                     expandedHeight: subjectSize.height,
-                    flexibleSpace: Expanded(child: subject)
+                    flexibleSpace: Expanded(child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        bool visible = true;
+                        print(constraints.maxHeight);
+                        print(subjectSize.height);
+                        if (constraints.heightConstraints().maxHeight < subjectSize.height) {
+                          visible = false;
+                        }
+                        return Visibility(visible: visible,child: subject);
+                      }
+                    )),
                   ),
                   switch (albumList) {
                     AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,filterNotifier: filterNotifier,),

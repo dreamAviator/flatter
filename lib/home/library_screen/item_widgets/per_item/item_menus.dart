@@ -6,7 +6,7 @@ import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/material.dart';
 import 'package:deepcopy/deepcopy.dart';
 
-import 'artist_select_popup.dart';//TODO:add to playlist fehlt
+import '../../popups/artist_select_popup.dart';//TODO:add to playlist fehlt
 
 class ItemMenus {//man muss hier halt später einstellen können, welche aktionen hier und welche im bottom sheet angezeigt werden sollen
   ItemMenus(this.context);

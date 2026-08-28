@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:flatter/home/library_screen/add_to_playlist_popup.dart';
+import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
@@ -15,7 +15,7 @@ import '../../Riverpod/riverpod_manager.dart';
 import '../../settings/settings_screen.dart';
 import '../../settings/settings_screen_ViewModel.dart';
 import '../library_screen/artist_screen/artist_screen.dart';
-import '../library_screen/item_menus.dart';
+import '../library_screen/item_widgets/per_item/item_menus.dart';
 
 class QueueScreen extends StatefulWidget {
   const QueueScreen({super.key});

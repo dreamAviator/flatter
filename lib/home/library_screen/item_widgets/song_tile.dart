@@ -1,15 +1,15 @@
-import 'package:flatter/home/library_screen/add_to_playlist_popup.dart';
-import 'package:flatter/home/library_screen/item_menus.dart';
+import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
+import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:marqueer/marqueer.dart';
 
-import '../../useful_scripts.dart';
-import 'album_screen/album_screen.dart';
-import 'artist_screen/artist_screen.dart';
-import 'artist_select_popup.dart';
+import '../../../useful_scripts.dart';
+import '../album_screen/album_screen.dart';
+import '../artist_screen/artist_screen.dart';
+import '../popups/artist_select_popup.dart';
 
 class SongTile extends StatelessWidget {
   const SongTile({super.key,required this.song,required this.playlistID, required this.usecase});

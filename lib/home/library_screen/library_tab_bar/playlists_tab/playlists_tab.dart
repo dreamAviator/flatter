@@ -1,9 +1,9 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
-import 'package:flatter/home/library_screen/edit_playlist_popup.dart';
+import 'package:flatter/home/library_screen/popups/edit_playlist_popup.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playlists_tab_ViewModel.dart';
-import 'package:flatter/home/library_screen/playlist_grid.dart';
+import 'package:flatter/home/library_screen/item_widgets/playlist_grid.dart';
 import 'package:flatter/home/library_screen/playlist_screen/playlist_screen.dart';
 import 'package:flatter/home/library_screen/search_filter_widget.dart';
 import 'package:flatter/main.dart';
@@ -14,7 +14,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
 import '../../../../Riverpod/riverpod_manager.dart';
-import '../../item_menus.dart';
+import '../../item_widgets/per_item/item_menus.dart';
 
 class PlaylistsTab extends StatefulWidget {
   const PlaylistsTab({super.key,required this.viewModel});
@@ -161,51 +161,55 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
     final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
     final ValueNotifier<String> filterNotifier = ValueNotifier('');
-    return Consumer(
-      builder: (context, ref, child) {
-        final playlistList = ref.watch(riverpodManager.playlistListProvider);
-        return CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: SearchFilterWidget(filterNotifier: filterNotifier),
-            ),
-            SliverToBoxAdapter(
-              child: Row(
-                children: [
-                  Text("hier drop down menü"),
-                  IconButton(
-                    onPressed: () {
-                      reverseSort();
-                      ref.invalidate(riverpodManager.playlistListProvider);
-                    },
-                    icon: (ascending
-                        ? Icon(Icons.arrow_upward)
-                        : Icon(Icons.arrow_downward)),
-                  ),
-                  IconButton.filled(
-                    onPressed: () {
-                      EditPlaylistPopup.showEditPlaylistPopUp(context, true, null, null, null, null, null);
-                    },
-                    icon: Icon(Icons.add),
-                  )
-                ],
+    return Expanded(
+      child: Consumer(
+        builder: (context, ref, child) {
+          final playlistList = ref.watch(riverpodManager.playlistListProvider);
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    SearchFilterWidget(filterNotifier: filterNotifier),
+                    Row(
+                      children: [
+                        Text("hier drop down menü"),
+                        IconButton(
+                          onPressed: () {
+                            reverseSort();
+                            ref.invalidate(riverpodManager.playlistListProvider);
+                          },
+                          icon: (ascending
+                              ? Icon(Icons.arrow_upward)
+                              : Icon(Icons.arrow_downward)),
+                        ),
+                        IconButton.filled(
+                          onPressed: () {
+                            EditPlaylistPopup.showEditPlaylistPopUp(context, true, null, null, null, null, null);
+                          },
+                          icon: Icon(Icons.add),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SliverToBoxAdapter(child: Text("Own"),),
-            switch (playlistList) {
-              AsyncValue(:final value?) => PlaylistGrid(playlistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: true,filterNotifier: filterNotifier,),
-              AsyncValue(error: != null) => Center(child: const Text("Error")),
-              AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
-            },
-            SliverToBoxAdapter(child: Text("Shared with you"),),
-            switch (playlistList) {
-              AsyncValue(:final value?) => PlaylistGrid(playlistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: false,filterNotifier: filterNotifier,),
-              AsyncValue(error: != null) => Center(child: const Text("Error")),
-              AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
-            },
-          ],
-        );
-      },
+              SliverToBoxAdapter(child: Text("Own"),),
+              switch (playlistList) {
+                AsyncValue(:final value?) => PlaylistGrid(playlistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: true,filterNotifier: filterNotifier,),
+                AsyncValue(error: != null) => SliverToBoxAdapter(child: Center(child: const Text("Error"))),
+                AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
+              },
+              SliverToBoxAdapter(child: Text("Shared with you"),),
+              switch (playlistList) {
+                AsyncValue(:final value?) => PlaylistGrid(playlistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: false,filterNotifier: filterNotifier,),
+                AsyncValue(error: != null) => SliverToBoxAdapter(child: Center(child: const Text("Error"))),
+                AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
+              },
+            ],
+          );
+        },
+      ),
     );
   }
 }

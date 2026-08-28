@@ -1,5 +1,5 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
-import 'package:flatter/home/library_screen/artist_grid.dart';
+import 'package:flatter/home/library_screen/item_widgets/artist_grid.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/artists_tab/artists_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/search_filter_widget.dart';
@@ -126,7 +126,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
               switch (artistList) {
                 AsyncValue(:final value?) => ArtistGrid(artistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: true,),//noch schauen wie ich die index buchstaben einfügen kann
                 //AsyncValue(:final value?) => SliverToBoxAdapter(child: buildListView(value, context, screenSize.width)),
-                AsyncValue(error: != null) => Center(child: const Text("Error")),
+                AsyncValue(error: != null) => SliverToBoxAdapter(child: Center(child: const Text("Error"))),
                 AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
               },
             ],

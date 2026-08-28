@@ -1,13 +1,13 @@
-import 'package:flatter/home/library_screen/song_tile.dart';
+import 'package:flatter/home/library_screen/item_widgets/song_tile.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flatter/home/library_screen/item_menus.dart';
+import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
 
-import '../../main.dart';
-import 'album_screen/album_screen.dart';
-import 'artist_screen/artist_screen.dart';
+import '../../../main.dart';
+import '../album_screen/album_screen.dart';
+import '../artist_screen/artist_screen.dart';
 
 class SongList extends StatelessWidget {
   const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver, this.filterNotifier,required this.playlistID});

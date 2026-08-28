@@ -1,5 +1,5 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
-import 'package:flatter/home/library_screen/album_grid.dart';
+import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +9,7 @@ import 'package:masonry_grid/masonry_grid.dart';
 import '../../Riverpod/riverpod_manager.dart';
 import '../../main.dart';
 import '../library_screen/album_screen/album_screen.dart';
-import '../library_screen/item_menus.dart';
+import '../library_screen/item_widgets/per_item/item_menus.dart';
 
 class SearchAlbumScreen extends StatelessWidget {
   const SearchAlbumScreen({super.key,required this.query});

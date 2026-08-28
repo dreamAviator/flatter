@@ -4,9 +4,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 //import 'package:flutter_staggered_grid_view_fix_branch/flutter_staggered_grid_view.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../../main.dart';
-import 'album_screen/album_screen.dart';
-import 'item_menus.dart';
+import '../../../main.dart';
+import '../album_screen/album_screen.dart';
+import 'per_item/item_menus.dart';
 
 class AlbumGrid extends StatelessWidget {
   const AlbumGrid({super.key,required this.albumListNullable,required this.crossAxisCount,required this.sliver,this.filterNotifier});
