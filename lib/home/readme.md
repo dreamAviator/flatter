@@ -1,1 +1,1 @@
-the settings screen and all child screens are in the settings directory
+the settings screen and all its child screens are in the settings directory
