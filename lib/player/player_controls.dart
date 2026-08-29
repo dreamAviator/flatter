@@ -111,11 +111,11 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       _queueRepository.shuffleQueue();
     } else if (name case 'addByID') {
       if (extras != null) {
-        String? songID = extras['addNextByID']['songID'];//should not be used, i should use full song items
-        String? albumID = extras['addNextByID']['albumID'];
-        String? playlistID = extras['addNextByID']['playlistID'];
-        String? artistID = extras['addNextByID']['artistID'];
-        bool? shuffled = extras['addNextByID']['shuffled'];
+        String? songID = extras['addByID']['songID'];//should not be used, i should use full song items
+        String? albumID = extras['addByID']['albumID'];
+        String? playlistID = extras['addByID']['playlistID'];
+        String? artistID = extras['addByID']['artistID'];
+        bool? shuffled = extras['addByID']['shuffled'];
         if (songID != null) {
           //hier song details halt bekommen
           Map<dynamic,dynamic> details = await subsonicService.getSongDetails(songID);
@@ -139,7 +139,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
           //shuffle nd vergessen
           Map<dynamic,dynamic> artistDetails = await subsonicService.getArtistDetails(artistID);
           String artistName = artistDetails['name'];
-          Map<dynamic,dynamic> fullSearch = await subsonicService.getPlaylistDetails(artistName);
+          Map<dynamic,dynamic> fullSearch = await subsonicService.fullSearch(artistName);
+          print(fullSearch);
+          print("THIS WAS FULL SEARCH");
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(fullSearch['song']);
           customAction('addMultiple',{'addMultiple':{'tracks':mediaItemList,'shuffled':shuffled}});
         }
@@ -174,7 +176,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
           //shuffle nd vergessen
           Map<dynamic,dynamic> artistDetails = await subsonicService.getArtistDetails(artistID);
           String artistName = artistDetails['name'];
-          Map<dynamic,dynamic> fullSearch = await subsonicService.getPlaylistDetails(artistName);
+          Map<dynamic,dynamic> fullSearch = await subsonicService.fullSearch(artistName);
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(fullSearch['song']);
           customAction('addNext',{'addNext':{'tracks':mediaItemList,'shuffled':shuffled}});
         }

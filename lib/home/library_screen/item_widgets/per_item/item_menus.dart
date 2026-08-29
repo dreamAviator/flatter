@@ -19,7 +19,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     return PopupMenuItem(
       onTap: () {
         playerControl.customAction('clearQueue');
-        playerControl.customAction('addMultiple',{'addMultiple':items});
+        playerControl.customAction('addMultiple',{'addMultiple':{'tracks':items}});
       },
       child: Text("Play now"),
     );
