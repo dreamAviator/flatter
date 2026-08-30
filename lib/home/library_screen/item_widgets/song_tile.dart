@@ -72,11 +72,12 @@ class SongTile extends StatelessWidget {
             Expanded(child: Marqueer(intrinsicCrossAxisSize: true, infinity: false,child: Text(song['title']),)),
           ],
         ),
-        subtitle: Expanded(child: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(song['artist'].toString()))),
+        subtitle: Container(child: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(song['artist'].toString()))),
         trailing: ItemMenus(context).songMenu(song,playlistID),
         onTap: () {
           playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(song));
         },
+
       ),
     );
   }

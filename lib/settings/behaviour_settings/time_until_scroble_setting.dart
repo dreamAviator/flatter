@@ -20,7 +20,7 @@ class TimeUntilScrobleSetting extends StatelessWidget {
           hintText: "Seconds",
           border: OutlineInputBorder(),
         ),
-        onChanged: (value) {//TODO:bad code, barely functional
+        onChanged: (value) {//bad code, barely functional
           if (value.isEmpty) {
 
           } else {
