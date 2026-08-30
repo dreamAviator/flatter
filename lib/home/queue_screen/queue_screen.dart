@@ -17,7 +17,7 @@ import '../../settings/settings_screen_ViewModel.dart';
 import '../library_screen/artist_screen/artist_screen.dart';
 import '../library_screen/item_widgets/per_item/item_menus.dart';
 
-class QueueScreen extends StatefulWidget {
+class QueueScreen extends StatefulWidget {//TODO:queue screen rework, so dass der screen aktualisiert wird wenn ein element entfernt wird oder zum nächsten element gegangen wird
   const QueueScreen({super.key});
 
   @override

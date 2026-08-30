@@ -45,8 +45,19 @@ class PlaylistScreen extends StatelessWidget {
               AsyncValue(:final value?) => [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
                 IconButton(
                   onPressed: () {
-                    ArtistSelectWindow.showArtistSelectWindow(context, ["1"]);
-                    //hier eine aktion auswählen, kann man in den settings einstellen. entweder abspielen, enqueue oder play next
+                    String action = settingsControl.settingsMap['playlistPlayButtonAction'];
+                    switch (action) {//die sachen so implementieren, dass sich dieses ding hier die dinger holt oder ein anderer teil und dann die sahcne an die playercontrol weitergegeben werden, die playercontrol sollte nicht die sachen holen müssen
+                      case "playNow":
+                        playerControl.customAction('clearQueue');
+                        playerControl.customAction('addMultiple',{'addMultiple': {
+                          'tracks':value['id'],
+                        }});
+                      case "playNext":
+                        playerControl.customAction('addNextByID',{'addNextByID':value['id']});
+                      case "enqueue":
+                        playerControl.customAction('addByID',{'addByID':value['id']});
+                    //muss noch was für die shuffled dinger machen
+                    }
                   },
                   icon: Icon(Icons.play_arrow),
                 ),

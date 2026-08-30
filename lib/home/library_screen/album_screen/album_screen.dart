@@ -38,7 +38,7 @@ class AlbumScreen extends StatelessWidget {
             },
             actions: switch (albumDetails) {
               AsyncValue(:final value?) => [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
-                IconButton(
+                IconButton(//TODO:überall diese knöpfe richtig machen
                   onPressed: () {
                     String action = settingsControl.settingsMap['albumPlayButtonAction'];
                     switch (action) {//die sachen so implementieren, dass sich dieses ding hier die dinger holt oder ein anderer teil und dann die sahcne an die playercontrol weitergegeben werden, die playercontrol sollte nicht die sachen holen müssen
