@@ -1,12 +1,14 @@
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_number_picker/flutter_number_picker.dart';
 
 class TimeUntilSeekToStartSetting extends StatelessWidget {
   const TimeUntilSeekToStartSetting({super.key});
 
   @override
   Widget build(BuildContext context) {
+    /*
     TextEditingController controller = TextEditingController();
     controller.text = settingsControl.loadSetting('timeUntilSeekToStart').toString();
     return IntrinsicWidth(
@@ -46,6 +48,17 @@ class TimeUntilSeekToStartSetting extends StatelessWidget {
           }
         },
       ),
+    );
+
+     */
+    return CustomNumberPicker(
+      initialValue: settingsControl.loadSetting('timeUntilSeekToStart'),
+      minValue: 0,
+      step: 1,
+      maxValue: 999,
+      onValue: (int value) {
+        settingsControl.changeSetting('timeUntilSeekToStart', value);
+      },
     );
   }
 }

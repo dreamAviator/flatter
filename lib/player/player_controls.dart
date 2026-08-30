@@ -87,7 +87,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         bool? shuffled = extras['addNext']['shuffled'];
         if (shuffled == true) mediaItemList.shuffle();
         for (MediaItem item in mediaItemList.reversed) {
-          insertQueueItem(currentIndex, item);
+          insertQueueItem(currentIndex + 1, item);
         }
       }
     } else if (name case 'addMultiple') {

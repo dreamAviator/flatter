@@ -14,12 +14,12 @@ class _LandscapeModeSettingState extends State<LandscapeModeSetting> {
     bool landscapeMode = settingsControl.loadSetting('landscapeMode');
     return Switch(
       value: landscapeMode,
-      onChanged: (bool value) {
+      onChanged: null,/*(bool value) {
         settingsControl.changeSetting('landscapeMode', value);
         setState(() {
           landscapeMode = value;
         });
-      },
+      },*/
     );
   }
 }

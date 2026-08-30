@@ -1,12 +1,14 @@
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_number_picker/flutter_number_picker.dart';
 
 class TimeUntilScrobleSetting extends StatelessWidget {
   const TimeUntilScrobleSetting({super.key});
 
   @override
   Widget build(BuildContext context) {
+    /*
     TextEditingController controller = TextEditingController();
     controller.text = settingsControl.loadSetting('timeUntilScrobble').toString();
     return IntrinsicWidth(
@@ -46,6 +48,17 @@ class TimeUntilScrobleSetting extends StatelessWidget {
           }
         },
       ),
+    );
+
+     */
+    return CustomNumberPicker(
+      initialValue: settingsControl.loadSetting('timeUntilScrobble'),
+      minValue: 0,
+      step: 1,
+      maxValue: 999,
+      onValue: (int value) {
+        settingsControl.changeSetting('timeUntilScrobble', value);
+      },
     );
   }
 }
