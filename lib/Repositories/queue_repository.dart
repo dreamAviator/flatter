@@ -1,15 +1,20 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/main.dart';
+import 'package:rxdart/rxdart.dart';
 
 class QueueRepository {
   final List<MediaItem> _queue = [];
 
+  final queueStream = BehaviorSubject<List<MediaItem>>.seeded([]);
+
   void insertItem(MediaItem item,int position) {
     _queue.insert(position, item);
+    queueStream.add(_queue);
   }
 
   void addItem(MediaItem item) {
     _queue.add(item);
+    queueStream.add(_queue);
   }
 
   Future<void> removeItem(int position) async {
@@ -17,11 +22,13 @@ class QueueRepository {
       await playerControl.skipToNext();
     }
     _queue.removeAt(position);
+    queueStream.add(_queue);
     return;
   }
 
   void clearQueue() {
     _queue.clear();
+    queueStream.add(_queue);
   }
 
   MediaItem getItemAtPos(int position) {
@@ -50,6 +57,7 @@ class QueueRepository {
       item.extras!['current'] = false;
     }
     _queue[index].extras!['current'] = true;
+    queueStream.add(_queue);
   }
 
   void shuffleQueue() {
@@ -84,5 +92,6 @@ class QueueRepository {
     _queue.addAll(preQueue);
     _queue.add(currentItem);
     _queue.addAll(endQueue);
+    queueStream.add(_queue);
   }
 }

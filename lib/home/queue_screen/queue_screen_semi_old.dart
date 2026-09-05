@@ -26,12 +26,13 @@ class QueueScreen extends StatefulWidget {//TODO:queue screen rework, so dass de
 
 class _QueueScreenState extends State<QueueScreen> {
 
-  Widget buildQueue(BuildContext context, List<MediaItem> queue) {
+  Widget buildQueue(WidgetRef ref, BuildContext context, List<MediaItem> queue) {
     final riverpodManager = RiverpodManager();
     SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
 
     void removeFromQueue(int index) {
       playerControl.removeQueueItemAt(index);
+      ref.invalidate(riverpodManager.queueProvider);
     }
     void goToAlbum(BuildContext context, String id) {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id,)));
@@ -47,6 +48,7 @@ class _QueueScreenState extends State<QueueScreen> {
           newIndex -= 1;
         }
         playerControl.customAction("moveQueueItem",{'moveQueueItem':{'oldIndex':oldIndex,'newIndex':newIndex}});
+        ref.invalidate(riverpodManager.queueProvider);
       },
       itemBuilder: (BuildContext context,int index) {
         if (queue[index].extras!['current'] == true) {
@@ -113,14 +115,6 @@ class _QueueScreenState extends State<QueueScreen> {
                   ),
                   endActionPane: ActionPane(
                     motion: DrawerMotion(),
-                    /*
-                    dismissible: DismissiblePane(
-                      onDismissed: () {
-                        removeFromQueue(index);
-                      },
-                    ),
-                    benötigt einen key um dismissable zu sein
-                     */
                     children: [
                       SlidableAction(
                         onPressed: (_) => (removeFromQueue(index)),
@@ -130,7 +124,6 @@ class _QueueScreenState extends State<QueueScreen> {
                       ),
                     ],
                   ),
-
                   child: ListTile(
                     title: Text(queue[index].title),
                     subtitle: Text(queue[index].artist!),
@@ -160,63 +153,65 @@ class _QueueScreenState extends State<QueueScreen> {
           ),
         ],
       ),
-      body: StreamBuilder(
-        stream: playerControl.queueStream,
-        builder: (context, snapshot) {
-          final queue = snapshot.data ?? [];
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: buildQueue(context,queue),
-              ),
-              Divider(),
-              Container(
-                color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        List<String> songIDlist = [];
-                        for (MediaItem mediaItem in queue) {
-                          songIDlist.add(mediaItem.id);
-                        }
-                        AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
-                      },
-                      icon: Icon(Icons.playlist_add_outlined),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        playerControl.customAction('shuffleQueue');
-                      },
-                      icon: Icon(Icons.shuffle_outlined),
-                    ),
-                    IconButton(
-                      onPressed: () {
-
-                      },
-                      icon: Icon(Icons.loop_outlined),//hier halt single und ganze queue
-                    ),
-                    IconButton(
-                      onPressed: () {
-
-                      },
-                      icon: Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        playerControl.customAction('clearQueue');//TODO:confirmation
-                      },
-                      icon: Icon(Icons.delete_outline),
-                    )
-                  ],
+      body: Consumer(builder: (context, ref, child) {
+        final queue = ref.watch(riverpodManager.queueProvider);
+        return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: switch (queue) {
+              AsyncValue(:final value?) => buildQueue(ref,context,value),
+              AsyncValue(error: != null) => const Text("error"),
+              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+            },
+          ),
+          Divider(),
+          Container(
+            color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
+              children: [
+                switch (queue) {
+                  AsyncValue(:final value?) => IconButton(
+                    onPressed: () {
+                      List<String> songIDlist = [];
+                      for (MediaItem mediaItem in value) {
+                        songIDlist.add(mediaItem.id);
+                      }
+                      AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
+                    },
+                    icon: Icon(Icons.playlist_add),
+                  ),
+                  AsyncValue(error: != null) => IconButton(
+                    onPressed: null,
+                    icon: Icon(Icons.playlist_add),
+                  ),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                },
+                IconButton(
+                  onPressed: () {
+                    playerControl.customAction('shuffleQueue');
+                    ref.invalidate(riverpodManager.queueProvider);
+                  },
+                  icon: Icon(Icons.shuffle),
                 ),
-              ),
-            ],
-          );
-        }
-      ),
+                IconButton(
+                  onPressed: () {
+
+                  },
+                  icon: Icon(Icons.loop),//hier halt single und ganze queue
+                ),
+                IconButton(
+                  onPressed: () {
+
+                  },
+                  icon: Icon(Icons.search),//search und evt animation selbst bauen qwq
+                ),
+              ],
+            ),
+          ),
+        ],
+      ); },),
     );
   }
 }

@@ -10,6 +10,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final QueueRepository _queueRepository = QueueRepository();
   final _player = MyPlayer();
   Stream<PlayerState> get playerState => _player.playerStateStream;
+  Stream<List<MediaItem>> get queueStream => _queueRepository.queueStream;
 
   PlayerControls() {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
@@ -36,7 +37,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     _player.pause();
   }
   @override
-  Future<void> stop() => _player.stop();
+  Future<void> stop() => _player.stop();//TODO:hier player clearen oder so idk
   @override
   Future<void> seek(Duration position) => _player.seek(position);
   @override
@@ -66,6 +67,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   @override
   Future<void> setShuffleMode(//) =>
    */
+  //TODO:den stream von der queue hierherholen und forwarden, maybe in den anderen stream intergeiren?
 
   @override
   Future<void> playMediaItem(MediaItem mediaItem) async {
@@ -79,6 +81,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       return _queueRepository.getQueue();
     } else if (name case 'clearQueue') {
       _queueRepository.clearQueue();
+      stop();
       return;
     } else if (name case 'addNext') {
       if (extras != null) {
