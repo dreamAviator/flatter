@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
+import 'package:flatter/home/queue_screen/confirm_delete_queue_popup.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:s_disabled/s_disabled.dart';
 
 import '../../Riverpod/riverpod_manager.dart';
 import '../../settings/settings_screen.dart';
@@ -29,6 +31,10 @@ class _QueueScreenState extends State<QueueScreen> {
   Widget buildQueue(BuildContext context, List<MediaItem> queue) {
     final riverpodManager = RiverpodManager();
     SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
+
+    if (queue.isEmpty) {
+      return Text("Queue empty");
+    }
 
     void removeFromQueue(int index) {
       playerControl.removeQueueItemAt(index);
@@ -163,7 +169,11 @@ class _QueueScreenState extends State<QueueScreen> {
       body: StreamBuilder(
         stream: playerControl.queueStream,
         builder: (context, snapshot) {
+          bool queueEmpty = false;
           final queue = snapshot.data ?? [];
+          if (queue.isEmpty) {
+            queueEmpty = true;
+          }
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -171,46 +181,49 @@ class _QueueScreenState extends State<QueueScreen> {
                 child: buildQueue(context,queue),
               ),
               Divider(),
-              Container(
-                color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        List<String> songIDlist = [];
-                        for (MediaItem mediaItem in queue) {
-                          songIDlist.add(mediaItem.id);
-                        }
-                        AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
-                      },
-                      icon: Icon(Icons.playlist_add_outlined),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        playerControl.customAction('shuffleQueue');
-                      },
-                      icon: Icon(Icons.shuffle_outlined),
-                    ),
-                    IconButton(
-                      onPressed: () {
+              SDisabled(
+                isDisabled: queueEmpty,
+                child: Container(
+                  color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          List<String> songIDlist = [];
+                          for (MediaItem mediaItem in queue) {
+                            songIDlist.add(mediaItem.id);
+                          }
+                          AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
+                        },
+                        icon: Icon(Icons.playlist_add_outlined),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          playerControl.customAction('shuffleQueue');
+                        },
+                        icon: Icon(Icons.shuffle_outlined),
+                      ),
+                      IconButton(
+                        onPressed: () {
 
-                      },
-                      icon: Icon(Icons.loop_outlined),//hier halt single und ganze queue
-                    ),
-                    IconButton(
-                      onPressed: () {
+                        },
+                        icon: Icon(Icons.loop_outlined),//hier halt single und ganze queue
+                      ),
+                      IconButton(
+                        onPressed: () {
 
-                      },
-                      icon: Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        playerControl.customAction('clearQueue');//TODO:confirmation
-                      },
-                      icon: Icon(Icons.delete_outline),
-                    )
-                  ],
+                        },
+                        icon: Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
+                        },
+                        icon: Icon(Icons.delete_outline),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],
