@@ -24,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
           ),
         ),
         body: //vlt hier anstelle der liste die karten nutzen. idk
@@ -53,33 +53,33 @@ class SettingsScreen extends StatelessWidget {
           shrinkWrap: true,
           children: [
             ListTile(
-              leading: Icon(Icons.storage),
-              title: Text("Server"),
-              trailing: Icon(Icons.arrow_forward),
+              leading: const Icon(Icons.storage),
+              title: const Text("Server"),
+              trailing: const Icon(Icons.arrow_forward),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.dashboard),
-              title: Text("Behaviour"),
-              trailing: Icon(Icons.arrow_forward),
+              leading: const Icon(Icons.dashboard),
+              title: const Text("Behaviour"),
+              trailing: const Icon(Icons.arrow_forward),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => BehaviourSettingsScreen()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.color_lens),
-              title: Text("Appearance"),
-              trailing: Icon(Icons.arrow_forward),
+              leading: const Icon(Icons.color_lens),
+              title: const Text("Appearance"),
+              trailing: const Icon(Icons.arrow_forward),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppearanceSettingsScreen()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text("About"),
-              trailing: Icon(Icons.arrow_forward),
+              leading: const Icon(Icons.info),
+              title: const Text("About"),
+              trailing: const Icon(Icons.arrow_forward),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen()));
               },
@@ -118,33 +118,33 @@ class SettingsScreen extends StatelessWidget {
           shrinkWrap: true,
           children: [
             ListTile(
-              leading: Icon(Icons.storage),
-              title: Text("Server"),
-              trailing: Icon(Icons.arrow_forward),
+              leading: const Icon(Icons.storage),
+              title: const Text("Server"),
+              trailing: const Icon(Icons.arrow_forward),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.dashboard),
-              title: Text("Behaviour"),
-              trailing: Icon(Icons.arrow_forward),
+              leading: const Icon(Icons.dashboard),
+              title: const Text("Behaviour"),
+              trailing: const Icon(Icons.arrow_forward),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => BehaviourSettingsScreen()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.color_lens),
-              title: Text("Appearance"),
-              trailing: Icon(Icons.arrow_forward),
+              leading: const Icon(Icons.color_lens),
+              title: const Text("Appearance"),
+              trailing: const Icon(Icons.arrow_forward),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppearanceSettingsScreen()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text("About"),
-              trailing: Icon(Icons.arrow_forward),
+              leading: const Icon(Icons.info),
+              title: const Text("About"),
+              trailing: const Icon(Icons.arrow_forward),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen()));
               },

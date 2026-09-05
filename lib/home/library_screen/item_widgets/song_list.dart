@@ -26,18 +26,12 @@ class SongList extends StatelessWidget {
       songList.addAll(songListNullable!);
     } else {
       if (sliver == true) {
-        return SliverToBoxAdapter(
+        return const SliverToBoxAdapter(
           child: Center(child: Text("No songs")),
         );
       } else {
-        return Center(child: Text("No songs"));
+        return const Center(child: Text("No songs"));
       }
-    }
-    void goToAlbum(BuildContext context, String id) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id,)));
-    }
-    void goToArtist(BuildContext context, String id) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: id)));
     }
     print("returning a non enmpty song list");
     if (listView == true) {

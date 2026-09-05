@@ -61,8 +61,8 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
       ),
       body: [
         LibraryScreen(viewModel: libraryScreenViewModel,),
-        PlayerScreen(),
-        QueueScreen(),
+        const PlayerScreen(),
+        const QueueScreen(),
       ][currentPageIndex],
       /*
       body: IndexedStack(

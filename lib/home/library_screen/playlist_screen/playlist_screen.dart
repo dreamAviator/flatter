@@ -37,8 +37,8 @@ class PlaylistScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: switch (playlistDetails) {
-              AsyncValue(:final value?) => Marqueer(child: Text(value['name']),intrinsicCrossAxisSize: true,infinity: false,),
-              AsyncValue(error: != null) => Text("Error"),
+              AsyncValue(:final value?) => Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(value['name']),),
+              AsyncValue(error: != null) => const Text("Error"),
               AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
             },
             actions: switch (playlistDetails) {
@@ -59,7 +59,7 @@ class PlaylistScreen extends StatelessWidget {
                     //muss noch was für die shuffled dinger machen
                     }
                   },
-                  icon: Icon(Icons.play_arrow),
+                  icon: const Icon(Icons.play_arrow),
                 ),
                 IconButton(
                   onPressed: () {
@@ -67,11 +67,11 @@ class PlaylistScreen extends StatelessWidget {
                     //wär babo wenn du das nur anzeigen würdest, wenn du der owner bist
                     EditPlaylistPopup.showEditPlaylistPopUp(context, false, value['id'], value['name'], value['comment'], value['public'],null);
                   },
-                  icon: Icon(Icons.edit),//probably damit sich das ändert hier ein eigenes widget bauen
+                  icon: const Icon(Icons.edit),//probably damit sich das ändert hier ein eigenes widget bauen
                 ),
                 itemMenus.playlistMenu(value),
               ],
-              AsyncValue(error: != null) => [Text("Error")],
+              AsyncValue(error: != null) => [const Text("Error")],
               AsyncValue() => [LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)]
             }
           ),
@@ -198,7 +198,7 @@ class PlaylistScreen extends StatelessWidget {
                                     onPressed: () {
                                     //hier retry
                                     },
-                                    icon: Icon(Icons.error),
+                                    icon: const Icon(Icons.error),
                                   ),
                                   height: screenSize.width,
                                 ),
@@ -206,7 +206,7 @@ class PlaylistScreen extends StatelessWidget {
                                   onPressed: () {
                                     pageController.jumpToPage(1);
                                   },
-                                  icon: Icon(Icons.arrow_forward_ios),
+                                  icon: const Icon(Icons.arrow_forward_ios),
                                   color: Colors.white,//TODO:die Farbe hier dynamisch auswählen
                                 ),
                               ]
@@ -216,13 +216,13 @@ class PlaylistScreen extends StatelessWidget {
                                 alignment: Alignment.centerLeft,
                                 children: [
                                   Center(
-                                    child: Text("No comment"),
+                                    child: const Text("No comment"),
                                   ),
                                   IconButton(
                                     onPressed: () {
                                       pageController.jumpToPage(0);
                                     },
-                                    icon: Icon(Icons.arrow_back_ios_new),
+                                    icon: const Icon(Icons.arrow_back_ios_new),
                                   ),
                                 ]
                               )
@@ -237,7 +237,7 @@ class PlaylistScreen extends StatelessWidget {
                                     onPressed: () {
                                       pageController.jumpToPage(0);
                                     },
-                                    icon: Icon(Icons.arrow_back_ios_new),
+                                    icon: const Icon(Icons.arrow_back_ios_new),
                                   ),
                                 ]
                               )
@@ -245,7 +245,7 @@ class PlaylistScreen extends StatelessWidget {
 
                         ),
                       ),
-                      AsyncValue(error: != null) => Text("Error"),
+                      AsyncValue(error: != null) => const Text("Error"),
                       AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     },
                     if (settingsControl.settingsMap['landscapeMode'] == false) switch (playlistDetails) {
@@ -255,7 +255,7 @@ class PlaylistScreen extends StatelessWidget {
                         },
                         child: Text(value['owner']),
                       ),
-                      AsyncValue(error: != null) => Text("Error"),
+                      AsyncValue(error: != null) => const Text("Error"),
                       AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     },
                     if (settingsControl.settingsMap['landscapeMode'] == false) Row(
@@ -285,7 +285,7 @@ class PlaylistScreen extends StatelessWidget {
                               width: screenSize.width / 3,
                               height: screenSize.width / 3,
                             ),
-                            AsyncValue(error: != null) => Text("Error"),
+                            AsyncValue(error: != null) => const Text("Error"),
                             AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                           },
                           Center(
@@ -303,7 +303,7 @@ class PlaylistScreen extends StatelessWidget {
                             child: SingleChildScrollView(
                               child: switch (playlistDetails) {
                                 AsyncValue(:final value?) => Text(value['comment']),
-                                AsyncValue(error: != null) => Text("error"),
+                                AsyncValue(error: != null) => const Text("error"),
                                 AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                               },
                             ),
@@ -317,7 +317,7 @@ class PlaylistScreen extends StatelessWidget {
               SliverToBoxAdapter(child: SearchFilterWidget(filterNotifier: filterNotifier),),
               switch (playlistDetails) {
                 AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: value['id'],),
-                AsyncValue(error: != null) => Text("Error"),
+                AsyncValue(error: != null) => const Text("Error"),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
               },
             ],

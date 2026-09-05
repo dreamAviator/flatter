@@ -8,20 +8,20 @@ class ConfirmDeleteQueuePopup {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Clear queue?"),
+          title: const Text("Clear queue?"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
             TextButton(
               onPressed: () {
                 playerControl.customAction('clearQueue');
                 Navigator.of(context).pop();
               },
-              child: Text("Confirm"),
+              child: const Text("Confirm"),
             ),
           ],
         );

@@ -77,7 +77,6 @@ class SongTile extends StatelessWidget {
         onTap: () {
           playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(song));
         },
-
       ),
     );
   }

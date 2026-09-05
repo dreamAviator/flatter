@@ -21,7 +21,7 @@ class SearchAlbumScreen extends StatelessWidget {
     //idk ob gridview.builder der call ist oder besser gesagt wann das nicht der call ist :shrug:
     List<dynamic> albums = [];
     if (albumsNullable == null || albumsNullable.isEmpty) {
-      return Text("No albums");
+      return const Text("No albums");
     }
     for (var value in albumsNullable) {
       albums.add(value);
@@ -29,37 +29,37 @@ class SearchAlbumScreen extends StatelessWidget {
     List<Widget> widgetList = [];
     for (Map<dynamic,dynamic> album in albums) {
       widgetList.add(
-          Card(
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-              splashColor: Colors.blue.withAlpha(30),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: album['id'])));
-              },
-              child: Column(
-                children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: CachedNetworkImage(
-                      imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${album['coverArt']}",
-                      progressIndicatorBuilder: (context, url, downloadProgress) => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                      errorWidget: (context,url,error) => IconButton(
-                        onPressed: () {
-                          //hier retry
-                        },
-                        icon: Icon(Icons.error),
-                      ),
+        Card(
+          clipBehavior: Clip.hardEdge,
+          child: InkWell(
+            splashColor: Colors.blue.withAlpha(30),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: album['id'])));
+            },
+            child: Column(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: CachedNetworkImage(
+                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${album['coverArt']}",
+                    progressIndicatorBuilder: (context, url, downloadProgress) => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                    errorWidget: (context,url,error) => IconButton(
+                      onPressed: () {
+                        //hier retry
+                      },
+                      icon: Icon(Icons.error),
                     ),
                   ),
-                  ListTile(
-                    title: Text(album['name']),
-                    subtitle: Text("Song count: ${album['songCount']}"),
-                    trailing: ItemMenus(context).albumMenuList(album),
-                  ),
-                ],
-              ),
+                ),
+                ListTile(
+                  title: Text(album['name']),
+                  subtitle: Text("Song count: ${album['songCount']}"),
+                  trailing: ItemMenus(context).albumMenuList(album),
+                ),
+              ],
             ),
-          )
+          ),
+        )
       );
     }
     return MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetList);
@@ -76,7 +76,7 @@ class SearchAlbumScreen extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       body: Consumer(
@@ -84,7 +84,7 @@ class SearchAlbumScreen extends StatelessWidget {
           final fullSearchResults = ref.watch(riverpodManager.fullSearchProvider(query));
           return switch (fullSearchResults) {
             AsyncValue(:final value?) => AlbumGrid(albumListNullable: value['album'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: false),
-            AsyncValue(error: != null) => Text("error"),
+            AsyncValue(error: != null) => const Text("error"),
             AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
           };
         },

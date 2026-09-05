@@ -24,11 +24,11 @@ class BehaviourSettingsScreen extends StatelessWidget {
       body: ListView(//hier space zwischen allen items machen
         shrinkWrap: true,
         children: [
-          ListTile(
+          const ListTile(
             title: Text("Start tab"),
             trailing: StartTabSetting(),
           ),
-          ListTile(
+          const ListTile(
             title: Text("Library start tab"),
             trailing: LibraryStartTabSetting(),
           ),
@@ -41,12 +41,12 @@ class BehaviourSettingsScreen extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => PlayActionsSettingsScreen()));
             },
           ),
-          ListTile(
+          const ListTile(
             title: Text("Time until seek to start"),
             trailing: TimeUntilSeekToStartSetting(),
             subtitle: Text("The time that has to be passed, until pressing the rewind key will seek to the start of the current item instead of skipping to the previous one. Put -1 to never seek to the start."),
           ),
-          ListTile(
+          const ListTile(
             title: Text("Time until scrobble"),
             trailing: TimeUntilScrobleSetting(),
             subtitle: Text("The time that has to be passed, for the server to register you playing the song"),

@@ -33,7 +33,7 @@ class AddServerPopup {
         return Column(
           spacing: 8,
           children: [
-            Text("Connection successful"),
+            const Text("Connection successful"),
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
@@ -46,7 +46,7 @@ class AddServerPopup {
                   ref.invalidate(riverpodManager.serverListProvider);
                 }
               },
-              child: Text("Save"),
+              child: const Text("Save"),
             )
           ],
         );
@@ -54,7 +54,7 @@ class AddServerPopup {
         return Column(
           spacing: 8,
           children: [
-            Text("URL does not point to Subsonic or OpenSubsonic compatible server"),
+            const Text("URL does not point to Subsonic or OpenSubsonic compatible server"),
             ElevatedButton(
               onPressed: () {
                 authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
@@ -62,7 +62,7 @@ class AddServerPopup {
                   ref.invalidate(riverpodManager.authenticateProvider);
                 }
               },
-              child: Text("Test connection"),
+              child: const Text("Test connection"),
             )
           ],
         );
@@ -78,7 +78,7 @@ class AddServerPopup {
                   ref.invalidate(riverpodManager.authenticateProvider);
                 }
               },
-              child: Text("Test connection"),
+              child: const Text("Test connection"),
             )
           ],
         );
@@ -86,7 +86,7 @@ class AddServerPopup {
         return Column(
           spacing: 8,
           children: [
-            Text(""),
+            const Text(""),
             ElevatedButton(
               onPressed: () {
                 authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
@@ -94,7 +94,7 @@ class AddServerPopup {
                   ref.invalidate(riverpodManager.authenticateProvider);
                 }
               },
-              child: Text("Test connection"),
+              child: const Text("Test connection"),
             )
           ],
         );
@@ -102,7 +102,7 @@ class AddServerPopup {
         return Column(
           spacing: 8,
           children: [
-            Text('Something went wrong'),
+            const Text('Something went wrong'),
             ElevatedButton(
               onPressed: () {
                 authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
@@ -110,7 +110,7 @@ class AddServerPopup {
                   ref.invalidate(riverpodManager.authenticateProvider);
                 }
               },
-              child: Text("Test connection"),
+              child: const Text("Test connection"),
             )
           ],
         );
@@ -204,7 +204,7 @@ class AddServerPopup {
                                   LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                                   ElevatedButton(
                                     onPressed: null,
-                                    child: Text("Test connection"),
+                                    child: const Text("Test connection"),
                                   )
                                 ],
                               ),

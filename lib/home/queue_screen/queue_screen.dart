@@ -29,11 +29,10 @@ class QueueScreen extends StatefulWidget {//TODO:queue screen rework, so dass de
 class _QueueScreenState extends State<QueueScreen> {
 
   Widget buildQueue(BuildContext context, List<MediaItem> queue) {
-    final riverpodManager = RiverpodManager();
     SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
 
     if (queue.isEmpty) {
-      return Text("Queue empty");
+      return const Text("Queue empty");
     }
 
     void removeFromQueue(int index) {
@@ -162,7 +161,7 @@ class _QueueScreenState extends State<QueueScreen> {
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsScreen(viewModel: SettingsScreenViewmodel())));
               },
-              icon: Icon(Icons.settings)
+              icon: const Icon(Icons.settings)
           ),
         ],
       ),
@@ -180,7 +179,7 @@ class _QueueScreenState extends State<QueueScreen> {
               Expanded(
                 child: buildQueue(context,queue),
               ),
-              Divider(),
+              const Divider(),
               SDisabled(
                 isDisabled: queueEmpty,
                 child: Container(
@@ -196,31 +195,31 @@ class _QueueScreenState extends State<QueueScreen> {
                           }
                           AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
                         },
-                        icon: Icon(Icons.playlist_add_outlined),
+                        icon: const Icon(Icons.playlist_add_outlined),
                       ),
                       IconButton(
                         onPressed: () {
                           playerControl.customAction('shuffleQueue');
                         },
-                        icon: Icon(Icons.shuffle_outlined),
+                        icon: const Icon(Icons.shuffle_outlined),
                       ),
                       IconButton(
                         onPressed: () {
 
                         },
-                        icon: Icon(Icons.loop_outlined),//hier halt single und ganze queue
+                        icon: const Icon(Icons.loop_outlined),//hier halt single und ganze queue
                       ),
                       IconButton(
                         onPressed: () {
 
                         },
-                        icon: Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
+                        icon: const Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
                       ),
                       IconButton(
                         onPressed: () {
                           ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
                         },
-                        icon: Icon(Icons.delete_outline),
+                        icon: const Icon(Icons.delete_outline),
                       )
                     ],
                   ),

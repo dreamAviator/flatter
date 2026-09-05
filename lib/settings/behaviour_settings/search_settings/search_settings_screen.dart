@@ -19,7 +19,7 @@ class SearchSettingsScreen extends StatelessWidget {
       ),
       body: ListView(//hier space zwischen allen items machen
         shrinkWrap: true,
-        children: [
+        children: const [
           ListTile(
             title: Text("Clear search"),
             trailing: ClearSearchSetting(),

@@ -20,7 +20,7 @@ class SearchSongScreen extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       body: Consumer(
@@ -28,7 +28,7 @@ class SearchSongScreen extends StatelessWidget {
           final fullSearchResults = ref.watch(riverpodManager.fullSearchProvider(query));
           return switch (fullSearchResults) {
             AsyncValue(:final value?) => SongList(songListNullable: value['song'], listView: true,sliver: false,playlistID: null,),
-            AsyncValue(error: != null) => Text("error"),
+            AsyncValue(error: != null) => const Text("error"),
             AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
           };
         },

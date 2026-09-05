@@ -18,7 +18,6 @@ class PlayerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    RiverpodManager riverpodManager = RiverpodManager();
     if (settingsControl.loadSetting('landscapeMode') == true) {
       return Column(
         children: [
@@ -142,7 +141,7 @@ class PlayerScreen extends StatelessWidget {
                                   });
                                 },
                               ),
-                              PlayButton(),
+                              const PlayButton(),
                               IconButton(
                                 icon: Icon(Icons.fast_forward),
                                 onPressed: () {
@@ -165,7 +164,7 @@ class PlayerScreen extends StatelessWidget {
               ],
             ),
           ),
-          ProgressSlider(),
+          const ProgressSlider(),
         ],
       );
     } else {
@@ -239,13 +238,13 @@ class PlayerScreen extends StatelessWidget {
                         onPressed: () {
 
                         },
-                        icon: Icon(Icons.loop),
+                        icon: const Icon(Icons.loop),
                       ),
                       IconButton(//hier überlegen, ob das die playlist shufflen soll oder den shuffle modus wie in anderen playern anschalten soll
                         onPressed: () {
 
                         },
-                        icon: Icon(Icons.shuffle),
+                        icon: const Icon(Icons.shuffle),
                       ),
                       StreamBuilder(
                         stream: playerControl.mediaItem,
@@ -258,7 +257,7 @@ class PlayerScreen extends StatelessWidget {
                               }
 
                             },
-                            icon: Icon(Icons.playlist_add),
+                            icon: const Icon(Icons.playlist_add),
                           );
                         }
                       ),
@@ -269,7 +268,7 @@ class PlayerScreen extends StatelessWidget {
                             onPressed: () {
                           
                             },
-                            icon: Icon(Icons.thumbs_up_down_outlined),
+                            icon: const Icon(Icons.thumbs_up_down_outlined),
                           );
                         }
                       ),
@@ -298,16 +297,16 @@ class PlayerScreen extends StatelessWidget {
                         });
                       },
                     ),
-                    PlayButton(),
+                    const PlayButton(),
                     IconButton(
-                      icon: Icon(Icons.fast_forward),
+                      icon: const Icon(Icons.fast_forward),
                       onPressed: () {
                         playerControl.skipToNext();
                       },
                     ),
                   ],
                 ),
-                ProgressSlider(),
+                const ProgressSlider(),
               ],
             ),
           ),

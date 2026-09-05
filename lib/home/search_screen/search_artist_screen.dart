@@ -20,7 +20,7 @@ class SearchArtistScreen extends StatelessWidget {
     //idk ob gridview.builder der call ist oder besser gesagt wann das nicht der call ist :shrug:
     List<dynamic> artists = [];
     if (artistsNullable == null || artistsNullable.isEmpty) {
-      return Text("No artists");
+      return const Text("No artists");
     }
     for (var value in artistsNullable) {
       artists.add(value);
@@ -28,36 +28,36 @@ class SearchArtistScreen extends StatelessWidget {
     List<Widget> widgetList = [];
     for (Map<dynamic,dynamic> artist in artists) {
       widgetList.add(
-          Card(
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-              splashColor: Colors.blue.withAlpha(30),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artist['id'])));
-              },
-              child: Column(
-                children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: CachedNetworkImage(
-                      imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${artist['coverArt']}",
-                      progressIndicatorBuilder: (context, url, downloadProgress) => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                      errorWidget: (context,url,error) => IconButton(
-                        onPressed: () {
-                          //hier retry
-                        },
-                        icon: Icon(Icons.error),
-                      ),
+        Card(
+          clipBehavior: Clip.hardEdge,
+          child: InkWell(
+            splashColor: Colors.blue.withAlpha(30),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artist['id'])));
+            },
+            child: Column(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: CachedNetworkImage(
+                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${artist['coverArt']}",
+                    progressIndicatorBuilder: (context, url, downloadProgress) => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                    errorWidget: (context,url,error) => IconButton(
+                      onPressed: () {
+                        //hier retry
+                      },
+                      icon: const Icon(Icons.error),
                     ),
                   ),
-                  ListTile(
-                    title: Text(artist['name']),
-                    trailing: ItemMenus(context).artistMenu(artist),
-                  ),
-                ],
-              ),
+                ),
+                ListTile(
+                  title: Text(artist['name']),
+                  trailing: ItemMenus(context).artistMenu(artist),
+                ),
+              ],
             ),
-          )
+          ),
+        )
       );
     }
     return MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetList);
@@ -74,7 +74,7 @@ class SearchArtistScreen extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       body: Consumer(
@@ -82,7 +82,7 @@ class SearchArtistScreen extends StatelessWidget {
           final fullSearchResults = ref.watch(riverpodManager.fullSearchProvider(query));
           return switch (fullSearchResults) {
             AsyncValue(:final value?) => ArtistGrid(artistListNullable: value['artist'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: false,withIndexesGiven: false,),
-            AsyncValue(error: != null) => Text("error"),
+            AsyncValue(error: != null) => const Text("error"),
             AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
           };
         },

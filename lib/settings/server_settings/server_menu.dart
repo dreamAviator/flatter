@@ -17,21 +17,21 @@ class ServerMenu {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => <PopupMenuEntry> [
         PopupMenuItem(
-          child: Text("Edit"),
+          child: const Text("Edit"),
           onTap: () {
             List<String> serverInfo = databaseControl.getServerByID(id);
             AddServerPopup.showAddServerPopUp(context, serverInfo[3], serverInfo[0], serverInfo[1], serverInfo[2], id, riverpodManager);
           },
         ),
         PopupMenuItem(
-          child: Text("Remove/Delete"),//entscheiden
+          child: const Text("Remove/Delete"),//entscheiden
           onTap: () {
             databaseControl.deleteServer(id);
             ref.invalidate(riverpodManager.serverListProvider);
           },
         )
       ],
-      child: Icon(Icons.more_vert),
+      child: const Icon(Icons.more_vert),
     );
   }
 }

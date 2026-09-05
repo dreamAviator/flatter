@@ -22,58 +22,58 @@ class ArtistSelectWindow {//TODO:setting for going to main artist instead of ope
         List<Widget> widgetList = [];
         for (Map artist in artistInfosLite) {
           widgetList.add(
-              Card(
-                clipBehavior: Clip.hardEdge,
-                child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: () {
-                    debugPrint('Card tapped.');
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artist['id'])));
-                  },
-                  child: Column(
-                    children: [
-                      Consumer(
-                        builder: (context, ref, child) {
-                          final artistDetails = ref.watch(riverpodManager.artistDetailsProvider(artist['id']));
-                          return SizedBox(
-                              height: 150,
-                              width: 150,
-                              child: switch (artistDetails) {
-                                AsyncValue(:final value?) => CachedNetworkImage(
-                                  imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
-                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                      LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                                  errorWidget: (context, url, error) => IconButton(
-                                    onPressed: () {
-                                      //hier retry
-                                    },
-                                    icon: Icon(Icons.error),
-                                  ),
-                                ),
-                                AsyncValue(error: != null) => const Text("error"),
-                                AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                              }
-                          );
-                        },
-                      ),
-                      Text(artist['name']),
-                    ],
-                  ),
+            Card(
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                splashColor: Colors.blue.withAlpha(30),
+                onTap: () {
+                  debugPrint('Card tapped.');
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artist['id'])));
+                },
+                child: Column(
+                  children: [
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final artistDetails = ref.watch(riverpodManager.artistDetailsProvider(artist['id']));
+                        return SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: switch (artistDetails) {
+                            AsyncValue(:final value?) => CachedNetworkImage(
+                              imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
+                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                              errorWidget: (context, url, error) => IconButton(
+                                onPressed: () {
+                                  //hier retry
+                                },
+                                icon: const Icon(Icons.error),
+                              ),
+                            ),
+                            AsyncValue(error: != null) => const Text("error"),
+                            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                          }
+                        );
+                      },
+                    ),
+                    Text(artist['name']),
+                  ],
                 ),
               ),
+            ),
           );
         }
         return AlertDialog(
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Select artist"),
+              const Text("Select artist"),
               IconButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.close),
+                icon: const Icon(Icons.close),
               )
             ],
           ),
