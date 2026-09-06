@@ -17,9 +17,9 @@ class FirstStartPopup {
                     child: Text("This is shown on the first start of the app"),
                   ),
                   ListTile(
-                    title: Text("Add a server"),
+                    title: const Text("Add a server"),
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();//idk, wenn da noch mehr kommt dann soll das obvs nicht weg
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
                     },
                   ),

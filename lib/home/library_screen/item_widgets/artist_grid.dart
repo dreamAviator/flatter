@@ -29,11 +29,11 @@ class ArtistGrid extends StatelessWidget {
       }
     } else {
       if (sliver == true) {
-        return SliverToBoxAdapter(
+        return const SliverToBoxAdapter(
           child: Center(child: Text("No songs")),
         );
       } else {
-        return Center(child: Text("No songs"));
+        return const Center(child: Text("No songs"));
       }
     }
     if (sliver == true) {
@@ -55,7 +55,7 @@ class ArtistGrid extends StatelessWidget {
               });
             }
             if (filteredArtistList.isEmpty) {
-              return (SliverToBoxAdapter(child: Center(child: Text("No artists")),));
+              return const SliverToBoxAdapter(child: Center(child: Text("No artists")),);
             }
             return SliverMasonryGrid.count(
               crossAxisCount: crossAxisCount,
@@ -154,7 +154,7 @@ class ArtistGrid extends StatelessWidget {
               });
             }
             if (filteredArtistList.isEmpty) {
-              return (Center(child: Text("No artists")));
+              return const Center(child: Text("No artists"));
             }
             return MasonryGridView.count(
               crossAxisCount: crossAxisCount,

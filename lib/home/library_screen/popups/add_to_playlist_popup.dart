@@ -52,7 +52,7 @@ class AddToPlaylistPopup {
                 }
               } else {
                 widgetList.add(FilledButton(
-                  child: Text("Add to playlist(s)"),
+                  child: const Text("Add to playlist(s)"),
                   onPressed: () {
                     print("addging to playlists now or smth idj bleh");
                     List<String> playlistIDs = [];
@@ -105,7 +105,7 @@ class AddToPlaylistPopup {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Skip duplicates"),
+                        const Text("Skip duplicates"),
                         Switch(
                           value: skipDuplicates,
                           onChanged: (bool value) {
@@ -119,7 +119,7 @@ class AddToPlaylistPopup {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Select multiple"),
+                        const Text("Select multiple"),
                         Consumer(
                           builder: (context,ref,child) {
                             return Switch(
@@ -142,7 +142,7 @@ class AddToPlaylistPopup {
                         Navigator.of(context).pop();
                         EditPlaylistPopup.showEditPlaylistPopUp(context, true, null, null, null, null, songIDs);
                       },
-                      child: Text("Create new"),
+                      child: const Text("Create new"),
                     ),
                     Consumer(
                       builder: (context,ref,child) {

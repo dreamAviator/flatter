@@ -19,9 +19,9 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     return PopupMenuItem(
       onTap: () {
         playerControl.customAction('clearQueue');
-        playerControl.customAction('addMultiple',{'addMultiple':items});
+        playerControl.customAction('addMultiple',{'addMultiple':{'tracks':items}});
       },
-      child: Text("Play now"),
+      child: const Text("Play now"),
     );
   }
   PopupMenuEntry addNext(List<MediaItem> items) {
@@ -29,7 +29,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         playerControl.customAction('addNext',{'addNext':{'tracks':items}});
       },
-      child: Text("Add next"),
+      child: const Text("Add next"),
     );
   }
   PopupMenuEntry enqueue(List<MediaItem> items) {
@@ -37,7 +37,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         playerControl.customAction('addMultiple',{'addMultiple':{'tracks':items}});
       },
-      child: Text("Enqueue"),
+      child: const Text("Enqueue"),
     );
   }
   PopupMenuEntry playNowShuffled(List<MediaItem> items) {
@@ -50,7 +50,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           'shuffled':true,
         }});
       },
-      child: Text("Play now shuffled"),
+      child: const Text("Play now shuffled"),
     );
   }
   PopupMenuEntry addNextShuffled(List<MediaItem> items) {
@@ -61,7 +61,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           'shuffled':true,
         }});
       },
-      child: Text("Add next shuffled"),
+      child: const Text("Add next shuffled"),
     );
   }
   PopupMenuEntry enqueueShuffled(List<MediaItem> items) {
@@ -72,7 +72,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           'shuffled':true,
         }});
       },
-      child: Text("Enqueue shuffled"),
+      child: const Text("Enqueue shuffled"),
     );
   }
   PopupMenuEntry playNowByID(Map id) {
@@ -81,7 +81,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         playerControl.customAction('clearQueue');
         playerControl.customAction('addByID',{'addByID':id});
       },
-      child: Text("Play now"),
+      child: const Text("Play now"),
     );
   }
   PopupMenuEntry addNextByID(Map id) {
@@ -89,7 +89,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         playerControl.customAction('addNextByID',{'addNextByID':id});
       },
-      child: Text("Add next"),
+      child: const Text("Add next"),
     );
   }
   PopupMenuEntry enqueueByID(Map id) {
@@ -97,7 +97,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         playerControl.customAction('addByID',{'addByID':id});
       },
-      child: Text("Enqueue"),
+      child: const Text("Enqueue"),
     );
   }
   PopupMenuEntry playNowShuffledByID(Map id) {
@@ -107,7 +107,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         id['shuffled'] = true;
         playerControl.customAction('addByID',{'addByID':id});
       },
-      child: Text("Play now shuffled"),
+      child: const Text("Play now shuffled"),
     );
   }
   PopupMenuEntry addNextShuffledByID(Map id) {
@@ -116,7 +116,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         id['shuffled'] = true;
         playerControl.customAction('addNextByID',{'addNextByID':id});
       },
-      child: Text("Add next shuffled"),
+      child: const Text("Add next shuffled"),
     );
   }
   PopupMenuEntry enqueueShuffledByID(Map id) {
@@ -125,7 +125,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         id['shuffled'] = true;
         playerControl.customAction('addByID',{'addByID':id});
       },
-      child: Text("Enqueue shuffled"),
+      child: const Text("Enqueue shuffled"),
     );
   }
   PopupMenuEntry album(String albumID) {
@@ -133,7 +133,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumID)));
       },
-      child: Text("Album"),
+      child: const Text("Album"),
     );
   }
   PopupMenuEntry artist(String artistID,List? artists) {
@@ -146,7 +146,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           ArtistSelectWindow.showArtistSelectWindow(context, artists);
         }
       },
-      child: Text("Artist"),
+      child: const Text("Artist"),
     );
   }
   PopupMenuEntry unFavorite(String? songID,String? albumID,String? artistID) {
@@ -154,7 +154,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         unFavoriteLogic(songID, albumID, artistID);
       },
-      child: Text("(Un)favorite"),
+      child: const Text("(Un)favorite"),
     );
   }
   Future<void> unFavoriteLogic(String? songID,String? albumID,String? artistID) async {
@@ -170,7 +170,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         subsonicService.updatePlaylist(playlistID, null, null, null, null, [songID]);
       },
-      child: Text("Remove from playlist"),
+      child: const Text("Remove from playlist"),
     );
   }
   //More Sheet Menu Entry Actions
@@ -180,7 +180,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         playerControl.customAction('clearQueue');
         playerControl.customAction('addMultiple',{'addMultiple':items});
       },
-      title: Text("Play now"),
+      title: const Text("Play now"),
     );
   }
   ListTile addNextMoreSheet(List<MediaItem> items) {
@@ -188,7 +188,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         playerControl.customAction('addNext',{'addNext':{'tracks':items}});
       },
-      title: Text("Add next"),
+      title: const Text("Add next"),
     );
   }
   ListTile enqueueMoreSheet(List<MediaItem> items) {
@@ -196,7 +196,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         playerControl.customAction('addMultiple',{'addMultiple':{'tracks':items}});
       },
-      title: Text("Enqueue"),
+      title: const Text("Enqueue"),
     );
   }
   ListTile playNowShuffledMoreSheet(List<MediaItem> items) {
@@ -209,7 +209,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           'shuffled':true,
         }});
       },
-      title: Text("Play now shuffled"),
+      title: const Text("Play now shuffled"),
     );
   }
   ListTile addNextShuffledMoreSheet(List<MediaItem> items) {
@@ -220,7 +220,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           'shuffled':true,
         }});
       },
-      title: Text("Add next shuffled"),
+      title: const Text("Add next shuffled"),
     );
   }
   ListTile enqueueShuffledMoreSheet(List<MediaItem> items) {
@@ -231,7 +231,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           'shuffled':true,
         }});
       },
-      title: Text("Enqueue shuffled"),
+      title: const Text("Enqueue shuffled"),
     );
   }
   ListTile playNowByIDMoreSheet(Map id) {
@@ -240,7 +240,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         playerControl.customAction('clearQueue');
         playerControl.customAction('addByID',{'addByID':id});
       },
-      title: Text("Play now"),
+      title: const Text("Play now"),
     );
   }
   ListTile addNextByIDMoreSheet(Map id) {
@@ -248,7 +248,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         playerControl.customAction('addNextByID',{'addNextByID':id});
       },
-      title: Text("Add next"),
+      title: const Text("Add next"),
     );
   }
   ListTile enqueueByIDMoreSheet(Map id) {
@@ -256,7 +256,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         playerControl.customAction('addByID',{'addByID':id});
       },
-      title: Text("Enqueue"),
+      title: const Text("Enqueue"),
     );
   }
   ListTile playNowShuffledByIDMoreSheet(Map id) {
@@ -266,7 +266,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         id['shuffled'] = true;
         playerControl.customAction('addByID',{'addByID':id});
       },
-      title: Text("Play now shuffled"),
+      title: const Text("Play now shuffled"),
     );
   }
   ListTile addNextShuffledByIDMoreSheet(Map id) {
@@ -275,7 +275,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         id['shuffled'] = true;
         playerControl.customAction('addNextByID',{'addNextByID':id});
       },
-      title: Text("Add next shuffled"),
+      title: const Text("Add next shuffled"),
     );
   }
   ListTile enqueueShuffledByIDMoreSheet(Map id) {
@@ -284,7 +284,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         id['shuffled'] = true;
         playerControl.customAction('addByID',{'addByID':id});
       },
-      title: Text("Enqueue shuffled"),
+      title: const Text("Enqueue shuffled"),
     );
   }
   ListTile albumMoreSheet(String albumID) {
@@ -292,7 +292,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumID)));
       },
-      title: Text("Album"),
+      title: const Text("Album"),
     );
   }
   ListTile artistMoreSheet(String artistID,List? artists) {
@@ -305,7 +305,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           ArtistSelectWindow.showArtistSelectWindow(context, artists);
         }
       },
-      title: Text("Artist"),
+      title: const Text("Artist"),
     );
   }
   ListTile unFavoriteMoreSheet(String? songID,String? albumID, String? artistID) {
@@ -313,7 +313,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         unFavoriteLogic(songID, albumID, artistID);
       },
-      title: Text("(Un)Favorite"),//TODO:das hier je nach aktuellem status evt ändern, mal schauen, je nachdem wie einfach das ist
+      title: const Text("(Un)Favorite"),//TODO:das hier je nach aktuellem status evt ändern, mal schauen, je nachdem wie einfach das ist
     );
   }
   ListTile removeFromPlaylistMoreSheet(String songID,String playlistID) {
@@ -321,7 +321,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         subsonicService.updatePlaylist(playlistID, null, null, null, null, [songID]);
       },
-      title: Text("Remove from playlist"),
+      title:const  Text("Remove from playlist"),
     );
   }
 
@@ -389,12 +389,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               }
           );
         },
-        child: Text("More"),
+        child: const Text("More"),
       ));
     }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => menuEntryList,
-      child: Icon(Icons.more_vert),
+      child: const Icon(Icons.more_vert),
     );
   }
   Widget songMenuQueue(MediaItem song) {
@@ -449,12 +449,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               }
           );
         },
-        child: Text("More"),
+        child: const Text("More"),
       ));
     }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => menuEntryList,
-      child: Icon(Icons.more_vert),
+      child: const Icon(Icons.more_vert),
     );
   }
   Widget albumMenu(Map<dynamic,dynamic> albumOld) {
@@ -520,12 +520,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               }
           );
         },
-        child: Text("More"),
+        child: const Text("More"),
       ));
     }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => menuEntryList,
-      child: Icon(Icons.more_vert),
+      child: const Icon(Icons.more_vert),
     );
   }
   Widget albumMenuList(Map<dynamic,dynamic> albumMinimalOld) {
@@ -589,12 +589,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               }
           );
         },
-        child: Text("More"),
+        child: const Text("More"),
       ));
     }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => menuEntryList,
-      child: Icon(Icons.more_vert),
+      child: const Icon(Icons.more_vert),
     );
   }
   Widget artistMenu(Map<dynamic,dynamic> artist) {
@@ -653,12 +653,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               }
           );
         },
-        child: Text("More"),
+        child: const Text("More"),
       ));
     }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => menuEntryList,
-      child: Icon(Icons.more_vert),
+      child: const Icon(Icons.more_vert),
     );
   }
   Widget playlistMenu(Map<dynamic,dynamic> playlistOld) {//vlt noch ein show playlists by user, hast du ja im playlist screen an sich auch schon vor glaube ich
@@ -716,12 +716,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
               }
           );
         },
-        child: Text("More"),
+        child: const Text("More"),
       ));
     }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => menuEntryList,
-      child: Icon(Icons.more_vert),
+      child: const Icon(Icons.more_vert),
     );
   }
   Widget playlistMenuList(Map<dynamic,dynamic> playlistMinimalOld) {
@@ -777,12 +777,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
             }
           );
         },
-        child: Text("More"),
+        child: const Text("More"),
       ));
     }
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => menuEntryList,
-      child: Icon(Icons.more_vert),
+      child: const Icon(Icons.more_vert),
     );
   }
 }

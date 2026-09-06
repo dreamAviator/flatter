@@ -126,7 +126,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
               switch (artistList) {
                 AsyncValue(:final value?) => ArtistGrid(artistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: true,),//noch schauen wie ich die index buchstaben einfügen kann
                 //AsyncValue(:final value?) => SliverToBoxAdapter(child: buildListView(value, context, screenSize.width)),
-                AsyncValue(error: != null) => SliverToBoxAdapter(child: Center(child: const Text("Error"))),
+                AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("Error"))),
                 AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
               },
             ],

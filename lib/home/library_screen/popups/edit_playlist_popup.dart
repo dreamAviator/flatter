@@ -37,7 +37,7 @@ class EditPlaylistPopup {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     },
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                   ),
                 ],
               ),
@@ -85,7 +85,7 @@ class EditPlaylistPopup {
                         ),
                       if (newCreate == false)
                         ListTile(
-                          leading: Text("Public"),
+                          leading: const Text("Public"),
                           trailing: Switch(
                             value: public!,
                             onChanged: (bool value) {
@@ -97,7 +97,7 @@ class EditPlaylistPopup {
                         )
                       else
                         ListTile(
-                          leading: Text("Public"),
+                          leading: const Text("Public"),
                           trailing: Tooltip(
                             message: "Not available while creating",
                             child: Switch(
@@ -120,7 +120,7 @@ class EditPlaylistPopup {
                             Navigator.of(context).pop();
                           }
                         },
-                        child: Text("Save"),
+                        child: const Text("Save"),
                       ),
                     ],
                   ),

@@ -13,12 +13,12 @@ class AppearanceSettingsScreen extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       body: ListView(
         shrinkWrap: true,
-        children: [
+        children: const [
 //hier jtz bspw wie viele spalten das album gridview haben soll
           ListTile(
             title: Text("Landscape"),

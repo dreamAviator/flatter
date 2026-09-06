@@ -26,7 +26,7 @@ class PlayerImage extends StatelessWidget {
               onPressed: () {
                 //hier retry
               },
-              icon: Icon(Icons.error),
+              icon: const Icon(Icons.error),
             ),
             height: sidelength,
             width: sidelength,

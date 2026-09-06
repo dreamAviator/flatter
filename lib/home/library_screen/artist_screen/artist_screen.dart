@@ -97,7 +97,7 @@ class ArtistScreen extends StatelessWidget {
           appBar: AppBar(
             title: switch (artistDetails) {
               AsyncValue(:final value?) => Text(value['name']),
-              AsyncValue(error: != null) => Text("Error"),
+              AsyncValue(error: != null) => const Text("Error"),
               AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
             },
             actions: [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
@@ -110,7 +110,7 @@ class ArtistScreen extends StatelessWidget {
               FavoriteButton(songID: null, albumID: null, artistID: artistID),
               switch (artistDetails) {
                 AsyncValue(:final value?) => ItemMenus(context).artistMenu(value),
-                AsyncValue(error: != null) => Text("Error"),
+                AsyncValue(error: != null) => const Text("Error"),
                 AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
               },
             ],
@@ -133,7 +133,7 @@ class ArtistScreen extends StatelessWidget {
                     height: screenSize.width,
                   ),
                 ),
-                AsyncValue(error: != null) => SliverToBoxAdapter(child: Text("Error")),
+                AsyncValue(error: != null) => SliverToBoxAdapter(child: const Text("Error")),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
               },
               if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
@@ -163,7 +163,7 @@ class ArtistScreen extends StatelessWidget {
                         width: screenSize.width / 3,
                         height: screenSize.width / 3,
                       ),
-                      AsyncValue(error: != null) => Text("Error"),
+                      AsyncValue(error: != null) => const Text("Error"),
                       AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     },
                     Center(
@@ -180,18 +180,18 @@ class ArtistScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SliverToBoxAdapter(child: Text("Albums")),
+              const SliverToBoxAdapter(child: Text("Albums")),
               switch (artistDetails) {
                 //AsyncValue(:final value?) => buildAlbumGrid(context, value['album'],screenSize.width),
                 AsyncValue(:final value?) => AlbumGrid(albumListNullable: value['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
-                AsyncValue(error: != null) => SliverToBoxAdapter(child: Text("error")),
+                AsyncValue(error: != null) => const SliverToBoxAdapter(child: Text("error")),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
               },
-              SliverToBoxAdapter(child: Divider()),
-              SliverToBoxAdapter(child: Text("Appears in:")),
+              const SliverToBoxAdapter(child: Divider()),
+              const SliverToBoxAdapter(child: Text("Appears in:")),
               switch (artistDetails) {
                 AsyncValue(:final value?) => buildArtistAppearances(context, value['name'], screenSize.width),
-                AsyncValue(error: != null) => SliverToBoxAdapter(child: Text("error1")),
+                AsyncValue(error: != null) => const SliverToBoxAdapter(child: Text("error1")),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))
               },
             ],

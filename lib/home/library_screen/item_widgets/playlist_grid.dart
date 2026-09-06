@@ -26,11 +26,11 @@ class PlaylistGrid extends StatelessWidget {
       playlistList.addAll(playlistListNullable!);
     } else {
       if (sliver == true) {
-        return SliverToBoxAdapter(
+        return const SliverToBoxAdapter(
           child: Center(child: Text("No songs")),
         );
       } else {
-        return Center(child: Text("No songs"));
+        return const Center(child: Text("No songs"));
       }
     }
     if (onlyOwn == true) {
@@ -78,7 +78,7 @@ class PlaylistGrid extends StatelessWidget {
               });
             }
             if (filteredPlaylistList.isEmpty) {
-              return (SliverToBoxAdapter(child: Center(child: Text("No playlists")),));
+              return const SliverToBoxAdapter(child: Center(child: Text("No playlists")),);
             }
             return SliverMasonryGrid.count(
               crossAxisCount: crossAxisCount,
@@ -283,7 +283,7 @@ class PlaylistGrid extends StatelessWidget {
               });
             }
             if (filteredPlaylistList.isEmpty) {
-              return (Center(child: Text("No playlists")));
+              return const Center(child: Text("No playlists"));
             }
             return MasonryGridView.count(
               crossAxisCount: crossAxisCount,

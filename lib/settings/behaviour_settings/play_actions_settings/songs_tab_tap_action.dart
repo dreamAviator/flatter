@@ -13,7 +13,7 @@ class _SongsTabTapActionSetting extends State<SongsTabTapActionSetting> {
   Widget build(BuildContext context) {
     return DropdownMenu(
       selectOnly: true,
-      dropdownMenuEntries: [
+      dropdownMenuEntries: const [
         DropdownMenuEntry(value: 'playNow',label: "Play now"),
         DropdownMenuEntry(value: 'playNext', label: "Play next"),
         DropdownMenuEntry(value: 'enqueue', label: "Enqueue"),

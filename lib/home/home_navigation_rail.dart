@@ -60,9 +60,9 @@ class _HomeNavigationRailState extends State<HomeNavigationRail> {
           Expanded(
             child: [
               LibraryScreen(viewModel: libraryScreenViewModel),
-              PlayerScreen(),
-              QueueScreen(),
-              SearchScreen(),
+              const PlayerScreen(),
+              const QueueScreen(),
+              const SearchScreen(),
               SettingsScreen(viewModel: settingsScreenViewmodel),
               ][currentPageIndex],
             /*

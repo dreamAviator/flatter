@@ -181,12 +181,12 @@ class SearchScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Artists"),
+                      const Text("Artists"),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchArtistScreen(query: searchFieldController.text)));
                         },
-                        child: Row(
+                        child: const Row(
                           children: [
                             Text("Show all"),
                             Icon(Icons.arrow_forward),
@@ -195,7 +195,7 @@ class SearchScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  Divider(),
+                  const Divider(),
                 ],
               ),
             ),
@@ -207,12 +207,12 @@ class SearchScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Albums"),
+                      const Text("Albums"),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchAlbumScreen(query: searchFieldController.text)));
                         },
-                        child: Row(
+                        child: const Row(
                           children: [
                             Text("Show all"),
                             Icon(Icons.arrow_forward),
@@ -221,7 +221,7 @@ class SearchScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  Divider(),
+                  const Divider(),
                 ],
               ),
             ),
@@ -233,12 +233,12 @@ class SearchScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Songs"),
+                      const Text("Songs"),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: searchFieldController.text)));
                         },
-                        child: Row(
+                        child: const Row(
                           children: [
                             Text("Show all"),
                             Icon(Icons.arrow_forward),
@@ -247,7 +247,7 @@ class SearchScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  Divider(),
+                  const Divider(),
                 ],
               ),
             ),
@@ -275,7 +275,7 @@ class SearchScreen extends StatelessWidget {
           ); },),
           actions: [
             IconButton(
-              icon: Icon(Icons.backspace),
+              icon: const Icon(Icons.backspace),
               onPressed: () {
                 searchFieldController.clear();
               },
@@ -305,7 +305,7 @@ class SearchScreen extends StatelessWidget {
               }
               Navigator.of(context).pop();
             },
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
           ),
           title: Consumer(builder: (context, ref, child) { return TextField(
             controller: searchFieldController,
@@ -318,7 +318,7 @@ class SearchScreen extends StatelessWidget {
           ); },),
           actions: [
             Consumer(builder: (context, ref, child) { return IconButton(
-              icon: Icon(Icons.backspace),
+              icon: const Icon(Icons.backspace),
               onPressed: () {
                 searchFieldController.clear();
                 search("", ref);

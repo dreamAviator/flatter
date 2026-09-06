@@ -19,20 +19,20 @@ class ServerSettingsScreen extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       body: ListView(
         shrinkWrap: true,
         children: [
           ListTile(
-            leading: Icon(Icons.add),
-            title: Text("Add Server"),
+            leading: const Icon(Icons.add),
+            title: const Text("Add Server"),
             onTap: () {
               AddServerPopup.showAddServerPopUp(context,null,null,null,null,null,riverpodManager);
             },
           ),
-          Divider(),
+          const Divider(),
           ServerList(riverpodManager: riverpodManager,),
         ],
       ),

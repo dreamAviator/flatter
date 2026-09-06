@@ -16,12 +16,12 @@ class PlayActionsSettingsScreen extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       body: ListView(
         shrinkWrap: true,
-        children: [
+        children: const [
           ListTile(
             title: Text("Album play button action"),
             subtitle: Text("Configure what happens, when you click the play button on the album screen"),

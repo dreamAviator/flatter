@@ -9,7 +9,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../Riverpod/riverpod_manager.dart';
 import 'add_server_popup.dart';
 
-class ServerList extends StatelessWidget {
+class ServerList extends StatelessWidget {//TODO:das hier mit nem valuenotifier oder so machen, nicht mit riverpod
   const ServerList({super.key, required this.riverpodManager});
   final RiverpodManager riverpodManager;
 
@@ -61,7 +61,7 @@ class ServerList extends StatelessWidget {
                             ],
                           ),
                           child: ListTile(
-                            leading: Icon(Icons.check),
+                            leading: const Icon(Icons.check),
                             title: Text(value[index][1]),
                             subtitle: Text(value[index][2]),
                             trailing: ServerMenu(context,ref,value[index][0],riverpodManager).serverMenu(),
@@ -95,7 +95,7 @@ class ServerList extends StatelessWidget {
                             ],
                           ),
                           child: ListTile(
-                            leading: Icon(Icons.storage),
+                            leading: const Icon(Icons.storage),
                             title: Text(value[index][1]),
                             subtitle: Text(value[index][2]),
                             trailing: ServerMenu(context,ref,value[index][0],riverpodManager).serverMenu(),

@@ -13,9 +13,9 @@ class FavoriteButton extends StatelessWidget {
 
   Icon decideIcon(bool? value) {
     if (value == true) {
-      return Icon(Icons.favorite);
+      return const Icon(Icons.favorite);
     } else {
-      return Icon(Icons.favorite_border);
+      return const Icon(Icons.favorite_border);
     }
   }
 
@@ -23,7 +23,7 @@ class FavoriteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
     if (songID == null && albumID == null && artistID == null) {
-      return IconButton(
+      return const IconButton(
         onPressed: null,
         icon: Icon(Icons.error),
       );
@@ -53,8 +53,8 @@ class FavoriteButton extends StatelessWidget {
           },
           icon: switch (favoriteStatus) {
             AsyncValue(:final value?) => decideIcon(value),
-            AsyncValue(error: != null) => Icon(Icons.error),
-            AsyncValue() => Icon(Icons.pending),
+            AsyncValue(error: != null) => const Icon(Icons.error),
+            AsyncValue() => const Icon(Icons.pending),
           },
         );
       },

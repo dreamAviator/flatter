@@ -3,7 +3,11 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  connectivity_plus
+  desktop_webview_window
+  file_saver
   media_kit_libs_windows_audio
+  nb_utils
   url_launcher_windows
 )
 

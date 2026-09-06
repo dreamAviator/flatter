@@ -45,7 +45,7 @@ class SongsTab extends StatelessWidget {
               ),
               switch (randomSongList) {
                 AsyncValue(:final value?) => SongList(listView: true,sliver: true,songListNullable: value,filterNotifier: filterNotifier,playlistID: null,),
-                AsyncValue(error: != null) => SliverToBoxAdapter(child: Center(child: Text("error"),)),
+                AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("error"),)),
                 AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),),
               }
             ],

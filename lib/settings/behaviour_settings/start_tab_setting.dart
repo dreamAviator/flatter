@@ -13,7 +13,7 @@ class _StartTabSettingState extends State<StartTabSetting> {
   Widget build(BuildContext context) {
     return DropdownMenu(
       selectOnly: true,
-      dropdownMenuEntries: [
+      dropdownMenuEntries: const [
         DropdownMenuEntry(value: -1,label: "Last opened"),
         DropdownMenuEntry(value: 0, label: "Library"),
         DropdownMenuEntry(value: 1, label: "Player"),

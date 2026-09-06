@@ -33,12 +33,12 @@ class AlbumScreen extends StatelessWidget {
           appBar: AppBar(
             title: switch (albumDetails) {
               AsyncValue(:final value?) => Text(value['name']),
-              AsyncValue(error: != null) => Text("Error"),
+              AsyncValue(error: != null) => const Text("Error"),
               AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
             },
             actions: switch (albumDetails) {
               AsyncValue(:final value?) => [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
-                IconButton(
+                IconButton(//TODO:überall diese knöpfe richtig machen
                   onPressed: () {
                     String action = settingsControl.settingsMap['albumPlayButtonAction'];
                     switch (action) {//die sachen so implementieren, dass sich dieses ding hier die dinger holt oder ein anderer teil und dann die sahcne an die playercontrol weitergegeben werden, die playercontrol sollte nicht die sachen holen müssen
@@ -59,7 +59,7 @@ class AlbumScreen extends StatelessWidget {
                 FavoriteButton(songID: null, albumID: albumID, artistID: null),
                 itemMenus.albumMenu(value),
               ],
-              AsyncValue(error: != null) => [Text("Error")],
+              AsyncValue(error: != null) => [const Text("Error")],
               AsyncValue() => [LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)]
             }
           ),
@@ -166,7 +166,7 @@ class AlbumScreen extends StatelessWidget {
                         ),
                         height: screenSize.width,
                       ),
-                      AsyncValue(error: != null) => Text("Error"),
+                      AsyncValue(error: != null) => const Text("Error"),
                       AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     },
                     if (settingsControl.settingsMap['landscapeMode'] == false) switch (albumDetails) {
@@ -176,7 +176,7 @@ class AlbumScreen extends StatelessWidget {
                         },
                         child: Text(value['artist']),
                       ),
-                      AsyncValue(error: != null) => Text("Error"),
+                      AsyncValue(error: != null) => const Text("Error"),
                       AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                     },
                     if (settingsControl.settingsMap['landscapeMode'] == false) Row(
@@ -203,7 +203,7 @@ class AlbumScreen extends StatelessWidget {
                             width: screenSize.width / 3,
                             height: screenSize.width / 3,
                           ),
-                          AsyncValue(error: != null) => Text("Error"),
+                          AsyncValue(error: != null) => const Text("Error"),
                           AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                         },
                         Center(
@@ -224,7 +224,7 @@ class AlbumScreen extends StatelessWidget {
               ),
               switch (albumDetails) {
                 AsyncValue(:final value?) => SongList(songListNullable: value['song'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: null,),
-                AsyncValue(error: != null) => Text("Error"),
+                AsyncValue(error: != null) => const Text("Error"),
                 AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
               },
             ],

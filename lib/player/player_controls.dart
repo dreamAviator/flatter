@@ -10,6 +10,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final QueueRepository _queueRepository = QueueRepository();
   final _player = MyPlayer();
   Stream<PlayerState> get playerState => _player.playerStateStream;
+  Stream<List<MediaItem>> get queueStream => _queueRepository.queueStream;
 
   PlayerControls() {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
@@ -36,7 +37,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     _player.pause();
   }
   @override
-  Future<void> stop() => _player.stop();
+  Future<void> stop() => _player.stop();//TODO:hier player clearen oder so idk
   @override
   Future<void> seek(Duration position) => _player.seek(position);
   @override
@@ -66,6 +67,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   @override
   Future<void> setShuffleMode(//) =>
    */
+  //TODO:den stream von der queue hierherholen und forwarden, maybe in den anderen stream intergeiren?
 
   @override
   Future<void> playMediaItem(MediaItem mediaItem) async {
@@ -79,6 +81,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       return _queueRepository.getQueue();
     } else if (name case 'clearQueue') {
       _queueRepository.clearQueue();
+      stop();
       return;
     } else if (name case 'addNext') {
       if (extras != null) {
@@ -87,7 +90,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         bool? shuffled = extras['addNext']['shuffled'];
         if (shuffled == true) mediaItemList.shuffle();
         for (MediaItem item in mediaItemList.reversed) {
-          insertQueueItem(currentIndex, item);
+          insertQueueItem(currentIndex + 1, item);
         }
       }
     } else if (name case 'addMultiple') {
@@ -111,11 +114,11 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       _queueRepository.shuffleQueue();
     } else if (name case 'addByID') {
       if (extras != null) {
-        String? songID = extras['addNextByID']['songID'];//should not be used, i should use full song items
-        String? albumID = extras['addNextByID']['albumID'];
-        String? playlistID = extras['addNextByID']['playlistID'];
-        String? artistID = extras['addNextByID']['artistID'];
-        bool? shuffled = extras['addNextByID']['shuffled'];
+        String? songID = extras['addByID']['songID'];//should not be used, i should use full song items
+        String? albumID = extras['addByID']['albumID'];
+        String? playlistID = extras['addByID']['playlistID'];
+        String? artistID = extras['addByID']['artistID'];
+        bool? shuffled = extras['addByID']['shuffled'];
         if (songID != null) {
           //hier song details halt bekommen
           Map<dynamic,dynamic> details = await subsonicService.getSongDetails(songID);
@@ -139,7 +142,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
           //shuffle nd vergessen
           Map<dynamic,dynamic> artistDetails = await subsonicService.getArtistDetails(artistID);
           String artistName = artistDetails['name'];
-          Map<dynamic,dynamic> fullSearch = await subsonicService.getPlaylistDetails(artistName);
+          Map<dynamic,dynamic> fullSearch = await subsonicService.fullSearch(artistName);
+          print(fullSearch);
+          print("THIS WAS FULL SEARCH");
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(fullSearch['song']);
           customAction('addMultiple',{'addMultiple':{'tracks':mediaItemList,'shuffled':shuffled}});
         }
@@ -174,7 +179,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
           //shuffle nd vergessen
           Map<dynamic,dynamic> artistDetails = await subsonicService.getArtistDetails(artistID);
           String artistName = artistDetails['name'];
-          Map<dynamic,dynamic> fullSearch = await subsonicService.getPlaylistDetails(artistName);
+          Map<dynamic,dynamic> fullSearch = await subsonicService.fullSearch(artistName);
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(fullSearch['song']);
           customAction('addNext',{'addNext':{'tracks':mediaItemList,'shuffled':shuffled}});
         }

@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
-import 'package:flatter/home/queue_screen/confirm_delete_queue_popup.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:s_disabled/s_disabled.dart';
 
 import '../../Riverpod/riverpod_manager.dart';
 import '../../settings/settings_screen.dart';
@@ -28,15 +26,13 @@ class QueueScreen extends StatefulWidget {//TODO:queue screen rework, so dass de
 
 class _QueueScreenState extends State<QueueScreen> {
 
-  Widget buildQueue(BuildContext context, List<MediaItem> queue) {
+  Widget buildQueue(WidgetRef ref, BuildContext context, List<MediaItem> queue) {
+    final riverpodManager = RiverpodManager();
     SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
-
-    if (queue.isEmpty) {
-      return const Text("Queue empty");
-    }
 
     void removeFromQueue(int index) {
       playerControl.removeQueueItemAt(index);
+      ref.invalidate(riverpodManager.queueProvider);
     }
     void goToAlbum(BuildContext context, String id) {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: id,)));
@@ -52,6 +48,7 @@ class _QueueScreenState extends State<QueueScreen> {
           newIndex -= 1;
         }
         playerControl.customAction("moveQueueItem",{'moveQueueItem':{'oldIndex':oldIndex,'newIndex':newIndex}});
+        ref.invalidate(riverpodManager.queueProvider);
       },
       itemBuilder: (BuildContext context,int index) {
         if (queue[index].extras!['current'] == true) {
@@ -118,14 +115,6 @@ class _QueueScreenState extends State<QueueScreen> {
                   ),
                   endActionPane: ActionPane(
                     motion: DrawerMotion(),
-                    /*
-                    dismissible: DismissiblePane(
-                      onDismissed: () {
-                        removeFromQueue(index);
-                      },
-                    ),
-                    benötigt einen key um dismissable zu sein
-                     */
                     children: [
                       SlidableAction(
                         onPressed: (_) => (removeFromQueue(index)),
@@ -135,7 +124,6 @@ class _QueueScreenState extends State<QueueScreen> {
                       ),
                     ],
                   ),
-
                   child: ListTile(
                     title: Text(queue[index].title),
                     subtitle: Text(queue[index].artist!),
@@ -161,74 +149,69 @@ class _QueueScreenState extends State<QueueScreen> {
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsScreen(viewModel: SettingsScreenViewmodel())));
               },
-              icon: const Icon(Icons.settings)
+              icon: Icon(Icons.settings)
           ),
         ],
       ),
-      body: StreamBuilder(
-        stream: playerControl.queueStream,
-        builder: (context, snapshot) {
-          bool queueEmpty = false;
-          final queue = snapshot.data ?? [];
-          if (queue.isEmpty) {
-            queueEmpty = true;
-          }
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: buildQueue(context,queue),
-              ),
-              const Divider(),
-              SDisabled(
-                isDisabled: queueEmpty,
-                child: Container(
-                  color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          List<String> songIDlist = [];
-                          for (MediaItem mediaItem in queue) {
-                            songIDlist.add(mediaItem.id);
-                          }
-                          AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
-                        },
-                        icon: const Icon(Icons.playlist_add_outlined),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          playerControl.customAction('shuffleQueue');
-                        },
-                        icon: const Icon(Icons.shuffle_outlined),
-                      ),
-                      IconButton(
-                        onPressed: () {
-
-                        },
-                        icon: const Icon(Icons.loop_outlined),//hier halt single und ganze queue
-                      ),
-                      IconButton(
-                        onPressed: () {
-
-                        },
-                        icon: const Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
-                        },
-                        icon: const Icon(Icons.delete_outline),
-                      )
-                    ],
+      body: Consumer(builder: (context, ref, child) {
+        final queue = ref.watch(riverpodManager.queueProvider);
+        return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: switch (queue) {
+              AsyncValue(:final value?) => buildQueue(ref,context,value),
+              AsyncValue(error: != null) => const Text("error"),
+              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+            },
+          ),
+          Divider(),
+          Container(
+            color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
+              children: [
+                switch (queue) {
+                  AsyncValue(:final value?) => IconButton(
+                    onPressed: () {
+                      List<String> songIDlist = [];
+                      for (MediaItem mediaItem in value) {
+                        songIDlist.add(mediaItem.id);
+                      }
+                      AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
+                    },
+                    icon: Icon(Icons.playlist_add),
                   ),
+                  AsyncValue(error: != null) => IconButton(
+                    onPressed: null,
+                    icon: Icon(Icons.playlist_add),
+                  ),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                },
+                IconButton(
+                  onPressed: () {
+                    playerControl.customAction('shuffleQueue');
+                    ref.invalidate(riverpodManager.queueProvider);
+                  },
+                  icon: Icon(Icons.shuffle),
                 ),
-              ),
-            ],
-          );
-        }
-      ),
+                IconButton(
+                  onPressed: () {
+
+                  },
+                  icon: Icon(Icons.loop),//hier halt single und ganze queue
+                ),
+                IconButton(
+                  onPressed: () {
+
+                  },
+                  icon: Icon(Icons.search),//search und evt animation selbst bauen qwq
+                ),
+              ],
+            ),
+          ),
+        ],
+      ); },),
     );
   }
 }

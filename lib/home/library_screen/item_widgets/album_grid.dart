@@ -23,11 +23,11 @@ class AlbumGrid extends StatelessWidget {
       albumList.addAll(albumListNullable!);
     } else {
       if (sliver == true) {
-        return SliverToBoxAdapter(
+        return const SliverToBoxAdapter(
           child: Center(child: Text("No songs")),
         );
       } else {
-        return Center(child: Text("No songs"));
+        return const Center(child: Text("No songs"));
       }
     }
     if (sliver == true) {
@@ -51,7 +51,7 @@ class AlbumGrid extends StatelessWidget {
               });
             }
             if (filteredAlbumList.isEmpty) {
-              return (SliverToBoxAdapter(child: Center(child: Text("No albums")),));
+              return const SliverToBoxAdapter(child: Center(child: Text("No albums")),);
             }
             return SliverMasonryGrid.count(
               crossAxisCount: crossAxisCount,
@@ -156,7 +156,7 @@ class AlbumGrid extends StatelessWidget {
               });
             }
             if (filteredAlbumList.isEmpty) {
-              return (SliverToBoxAdapter(child: Center(child: Text("No albums")),));
+              return const SliverToBoxAdapter(child: Center(child: Text("No albums")),);
             }
             return MasonryGridView.count(
               crossAxisCount: crossAxisCount,
