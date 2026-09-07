@@ -32,23 +32,23 @@ class SettingsController {
     'searchSongCount':30,
     'mode':"navidrome",
     'songMenuActionOrder':{//TODO:das hier muss sich automatisch ändern, wenn optionen hinzugefügt oder entfernt werden
-      'mainMenu':['playNow','addNext','enqueue','removeFromPlaylist'],
+      'mainMenu':['playNow','addNext','enqueue','addToPlaylist','removeFromPlaylist'],
       'moreSheet':['album','artist','unFavorite'],
       'unused':[],
     },
     'albumMenuActionOrder':{
       'mainMenu':['playNow','addNext','enqueue'],
-      'moreSheet':['artist','playNowShuffled','addNextShuffled','enqueueShuffled','unFavorite'],
+      'moreSheet':['artist','playNowShuffled','addNextShuffled','enqueueShuffled','unFavorite','addToPlaylist'],
       'unused':[],
     },
     'artistMenuActionOrder':{
       'mainMenu':['playNow','addNext','enqueue'],
-      'moreSheet':['playNowShuffled','addNextShuffled','enqueueShuffled','unFavorite'],
+      'moreSheet':['playNowShuffled','addNextShuffled','enqueueShuffled','unFavorite','addToPlaylist'],
       'unused':[],
     },
     'playlistMenuActionOrder':{
       'mainMenu':['playNow','addNext','enqueue'],
-      'moreSheet':['playNowShuffled','addNextShuffled','enqueueShuffled'],
+      'moreSheet':['playNowShuffled','addNextShuffled','enqueueShuffled','addToPlaylist'],
       'unused':[],
     },
     'moreOptionsSheetGridSize':3,//evt wegmachen, falls du das nicht als grid nimmst

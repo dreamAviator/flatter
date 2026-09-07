@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
+import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/material.dart';
@@ -165,6 +166,14 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       subsonicService.starUnstar(false, songID, albumID, artistID);
     }
   }
+  PopupMenuEntry addToPlaylist(List<String> songIDs) {
+    return PopupMenuItem(
+      onTap: () {
+        AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDs);
+      },
+      child: const Text("Add to playlist"),
+    );
+  }
   PopupMenuEntry removeFromPlaylist(String songID,String playlistID) {
     return PopupMenuItem(
       onTap: () {
@@ -316,12 +325,20 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       title: const Text("(Un)Favorite"),//TODO:das hier je nach aktuellem status evt ändern, mal schauen, je nachdem wie einfach das ist
     );
   }
+  ListTile addToPlaylistMoreSheet(List<String> songIDs) {
+    return ListTile(
+      onTap: () {
+        AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDs);
+      },
+      title: const Text("Add to playlist")
+    );
+  }
   ListTile removeFromPlaylistMoreSheet(String songID,String playlistID) {
     return ListTile(
       onTap: () {
         subsonicService.updatePlaylist(playlistID, null, null, null, null, [songID]);
       },
-      title:const  Text("Remove from playlist"),
+      title: const Text("Remove from playlist"),
     );
   }
 
@@ -346,11 +363,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           menuEntryList.add(artist(songMediaItem.extras!['artistId'],songMediaItem.extras!['artists']));
         case 'unFavorite':
           menuEntryList.add(unFavorite(songMediaItem.id, null, null));
+        case 'addToPlaylist':
+          menuEntryList.add(addToPlaylist([songMediaItem.id]));
         case 'removeFromPlaylist':
           if (playlistID != null) {
             menuEntryList.add(removeFromPlaylist(songMediaItem.id, playlistID));
           }
-
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -367,6 +385,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(artistMoreSheet(songMediaItem.extras!['artistId'],songMediaItem.extras!['artists']));
         case 'unFavorite':
           moreSheetEntryList.add(unFavoriteMoreSheet(songMediaItem.id, null, null));
+        case 'addToPlaylist':
+          moreSheetEntryList.add(addToPlaylistMoreSheet([songMediaItem.id]));
         case 'removeFromPlaylist':
           if (playlistID != null) {
             moreSheetEntryList.add(removeFromPlaylistMoreSheet(songMediaItem.id, playlistID));
@@ -415,6 +435,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           menuEntryList.add(artist(song.extras!['artistId'],song.extras!['artists']));
         case 'unFavorite':
           menuEntryList.add(unFavorite(song.id, null, null));
+        case 'addToPlaylist':
+          addToPlaylist([song.id]);
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -431,6 +453,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(artistMoreSheet(song.extras!['artistId'],song.extras!['artists']));
         case 'unFavorite':
           moreSheetEntryList.add(unFavoriteMoreSheet(song.id, null, null));
+        case 'addToPlaylist':
+          moreSheetEntryList.add(addToPlaylistMoreSheet([song.id]));
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {
@@ -482,6 +506,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           menuEntryList.add(enqueueShuffled(songList));
         case 'unFavorite':
           menuEntryList.add(unFavorite(null, album['id'], null));
+        case 'addToPlaylist':
+          List<String> songIDs = [];
+          for (MediaItem song in songList) {
+            songIDs.add(song.id);
+          }
+          menuEntryList.add(addToPlaylist(songIDs));
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -502,6 +532,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(enqueueShuffledMoreSheet(songList));
         case 'unFavorite':
           moreSheetEntryList.add(unFavoriteMoreSheet(null, album['id'], null));
+        case 'addToPlaylist':
+          List<String> songIDs = [];
+          for (MediaItem song in songList) {
+            songIDs.add(song.id);
+          }
+          moreSheetEntryList.add(addToPlaylistMoreSheet(songIDs));
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {
@@ -528,7 +564,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: const Icon(Icons.more_vert),
     );
   }
-  Widget albumMenuList(Map<dynamic,dynamic> albumMinimalOld) {
+  Widget albumMenuList(Map<dynamic,dynamic> albumMinimalOld) {//TODO:addToPlaylist
     Map<dynamic,dynamic> albumMinimal = albumMinimalOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('albumMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
@@ -597,7 +633,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: const Icon(Icons.more_vert),
     );
   }
-  Widget artistMenu(Map<dynamic,dynamic> artist) {
+  Widget artistMenu(Map<dynamic,dynamic> artist) {//TODO:addToPlaylist
     Map actionOrder = settingsControl.loadSetting('artistMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
     List<ListTile> moreSheetEntryList = [];
@@ -661,6 +697,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: const Icon(Icons.more_vert),
     );
   }
+  //TODO:artistMenuList
   Widget playlistMenu(Map<dynamic,dynamic> playlistOld) {//vlt noch ein show playlists by user, hast du ja im playlist screen an sich auch schon vor glaube ich
     Map<dynamic,dynamic> playlist = playlistOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('playlistMenuActionOrder');
@@ -682,6 +719,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           menuEntryList.add(addNextShuffled(songList));
         case 'enqueueShuffled':
           menuEntryList.add(enqueueShuffled(songList));
+        case 'addToPlaylist':
+          List<String> songIDs = [];
+          for (MediaItem song in songList) {
+            songIDs.add(song.id);
+          }
+          menuEntryList.add(addToPlaylist(songIDs));
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -698,6 +741,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(addNextShuffledMoreSheet(songList));
         case 'enqueueShuffled':
           moreSheetEntryList.add(enqueueShuffledMoreSheet(songList));
+        case 'addToPlaylist':
+          List<String> songIDs = [];
+          for (MediaItem song in songList) {
+            songIDs.add(song.id);
+          }
+          moreSheetEntryList.add(addToPlaylistMoreSheet(songIDs));
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {
