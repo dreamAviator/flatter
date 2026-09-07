@@ -697,7 +697,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: const Icon(Icons.more_vert),
     );
   }
-  //TODO:artistMenuList
+  //TODO:artistMenuList//TODO:addToPlaylist
   Widget playlistMenu(Map<dynamic,dynamic> playlistOld) {//vlt noch ein show playlists by user, hast du ja im playlist screen an sich auch schon vor glaube ich
     Map<dynamic,dynamic> playlist = playlistOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('playlistMenuActionOrder');
@@ -773,7 +773,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: const Icon(Icons.more_vert),
     );
   }
-  Widget playlistMenuList(Map<dynamic,dynamic> playlistMinimalOld) {
+  Widget playlistMenuList(Map<dynamic,dynamic> playlistMinimalOld) {//TODO:addToPlaylist
     Map<dynamic,dynamic> playlistMinimal = playlistMinimalOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('playlistMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
