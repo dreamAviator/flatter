@@ -132,7 +132,7 @@ class PlayerScreen extends StatelessWidget {
                               IconButton(
                                 icon: Icon(Icons.fast_rewind),
                                 onPressed: () {
-                                  AudioService.position.listen((Duration position) {
+                                  AudioService.position.listen((Duration position) {//TODO:fixen, von playerControls und playerstate probably abhängig machen
                                     if (position.inSeconds >= settingsControl.loadSetting('timeUntilSeekToStart') && settingsControl.loadSetting('timeUntilSeekToStart') != -1) {
                                       playerControl.seek(Duration.zero);
                                     } else {

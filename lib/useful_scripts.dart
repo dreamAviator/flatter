@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
+import 'package:toml/toml.dart';
 
 class SubsonicJustAudioCompatibility {
 
@@ -26,5 +29,36 @@ class SubsonicJustAudioCompatibility {
       extras[key] = value;
     });
     return MediaItem(id: id, title: title, album: album, artist: artist, duration: duration,extras: extras);//rating noch rein
+  }
+}
+
+class OtherScripts {
+  List<String> queueToIDlist(List<MediaItem> queue) {
+    List<String> idList = [];
+    for (MediaItem item in queue) {
+      idList.add(item.id);
+    }
+    return idList;
+  }
+
+  Future<List<MediaItem>> idListToQueue(List<String> idList) async {
+    return [];
+  }
+}
+
+
+// Source - https://stackoverflow.com/a/73503029
+// Posted by eamirho3ein, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-09-08, License - CC BY-SA 4.0
+
+extension BoolOpposite on bool {
+  bool opposite() {
+    return this ? false : true;
+  }
+}
+
+extension TomlDocumentSave on TomlDocument {
+  Future<void> save(String filename) {
+    return File(filename).writeAsString(toString());
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flatter/settings/behaviour_settings/library_start_tab_setting.dart';
 import 'package:flatter/settings/behaviour_settings/play_actions_settings/play_actions_settings_screen.dart';
+import 'package:flatter/settings/behaviour_settings/queue_settings/queue_settings_screen.dart';
 import 'package:flatter/settings/behaviour_settings/search_settings/search_settings_screen.dart';
 import 'package:flatter/settings/behaviour_settings/start_tab_setting.dart';
 import 'package:flatter/settings/behaviour_settings/time_until_scroble_setting.dart';
@@ -50,6 +51,14 @@ class BehaviourSettingsScreen extends StatelessWidget {
             title: Text("Time until scrobble"),
             trailing: TimeUntilScrobleSetting(),
             subtitle: Text("The time that has to be passed, for the server to register you playing the song"),
+          ),
+          ListTile(
+            leading: Icon(Icons.queue_music),
+            title: Text("Queue settings"),
+            trailing: Icon(Icons.arrow_forward),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => QueueSettingsScreen()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.search),

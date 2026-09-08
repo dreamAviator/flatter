@@ -1,13 +1,19 @@
 import 'dart:io';
 
+import 'package:flatter/main.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:toml/toml.dart';
 
+import '../useful_scripts.dart';
+
+/*
 extension on TomlDocument {
   Future<void> save(String filename) {
     return File(filename).writeAsString(toString());
   }
 }
+
+ */
 
 class SettingsController {
   Map defaultSettingsMap = {
@@ -57,6 +63,8 @@ class SettingsController {
     'skipArtistSelectionOnPlayerScreen':false,
     'skipArtistSelectionEverywhereElse':false,
     'clearSearchOnExit':true,
+    'persistentQueue':false,
+    'syncQueueWithServer':false,
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
@@ -128,9 +136,8 @@ class SettingsController {
   }
 
   void saveSettings() async {
-    Directory dataDirectory = await getApplicationSupportDirectory();
-    String path = dataDirectory.path;
-    path = "${path}/flatter_settings.toml";
+    String dataDirectory = pathProvider.dataDirectory;
+    String path = "${dataDirectory}/flatter_settings.toml";
     TomlDocument settingsDocument = TomlDocument.fromMap(settingsMap);
     await settingsDocument.save(path);
   }

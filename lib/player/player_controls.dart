@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flatter/Repositories/queue_repository.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/player/audio_player.dart';
+import 'package:flatter/storage/local_not_database_storage_controller.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../useful_scripts.dart';
@@ -9,6 +10,7 @@ import '../useful_scripts.dart';
 class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final QueueRepository _queueRepository = QueueRepository();
   final _player = MyPlayer();
+  final localNotDatabaseStorageController = LocalNotDatabaseStorageController();
   Stream<PlayerState> get playerState => _player.playerStateStream;
   Stream<List<MediaItem>> get queueStream => _queueRepository.queueStream;
 
@@ -31,6 +33,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   @override
   Future<void> play() async {
     _player.play();
+    if (settingsControl.loadSetting('persistentQueue')) {
+      localNotDatabaseStorageController.saveQueue();
+    }
   }
   @override
   Future<void> pause() async {
@@ -45,11 +50,17 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     if (_queueRepository.getCurrentIndex() != _queueRepository.getQueueLength() - 1) {
       skipToQueueItem(_queueRepository.getCurrentIndex() + 1);
     }
+    if (settingsControl.loadSetting('persistentQueue')) {
+      localNotDatabaseStorageController.saveQueue();
+    }
   }
   @override
   Future<void> skipToPrevious() async {
     if (_queueRepository.getCurrentIndex() != 0) {//vlt hier machen, dass es funktioniert wenn man ein looping angeschaltet hat
       skipToQueueItem(_queueRepository.getCurrentIndex() - 1);
+    }
+    if (settingsControl.loadSetting('persistentQueue')) {
+      localNotDatabaseStorageController.saveQueue();
     }
   }
   @override
@@ -60,6 +71,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     _player.setSource(item.id);
     mediaItem.add(item);
     play();
+    if (settingsControl.loadSetting('persistentQueue')) {
+      localNotDatabaseStorageController.saveQueue();
+    }
   }
   /*
   @override
@@ -83,6 +97,8 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       _queueRepository.clearQueue();
       stop();
       return;
+    } else if (name case 'getCurrentIndex') {
+      return _queueRepository.getCurrentIndex();
     } else if (name case 'addNext') {
       if (extras != null) {
         int currentIndex = _queueRepository.getCurrentIndex();
@@ -91,6 +107,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         if (shuffled == true) mediaItemList.shuffle();
         for (MediaItem item in mediaItemList.reversed) {
           insertQueueItem(currentIndex + 1, item);
+        }
+        if (settingsControl.loadSetting('persistentQueue')) {
+          localNotDatabaseStorageController.saveQueue();
         }
       }
     } else if (name case 'addMultiple') {
@@ -101,6 +120,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         for (MediaItem item in mediaItemList) {
           addQueueItem(item);
         }
+        if (settingsControl.loadSetting('persistentQueue')) {
+          localNotDatabaseStorageController.saveQueue();
+        }
       }
     } else if (name case 'moveQueueItem') {
       if (extras != null) {
@@ -109,9 +131,15 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         MediaItem item = _queueRepository.getItemAtPos(oldIndex);
         removeQueueItemAt(oldIndex);
         insertQueueItem(newIndex, item);
+        if (settingsControl.loadSetting('persistentQueue')) {
+          localNotDatabaseStorageController.saveQueue();
+        }
       }
     } else if (name case 'shuffleQueue') {
       _queueRepository.shuffleQueue();
+      if (settingsControl.loadSetting('persistentQueue')) {
+        localNotDatabaseStorageController.saveQueue();
+      }
     } else if (name case 'addByID') {
       if (extras != null) {
         String? songID = extras['addByID']['songID'];//should not be used, i should use full song items
@@ -148,6 +176,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(fullSearch['song']);
           customAction('addMultiple',{'addMultiple':{'tracks':mediaItemList,'shuffled':shuffled}});
         }
+        if (settingsControl.loadSetting('persistentQueue')) {
+          localNotDatabaseStorageController.saveQueue();
+        }
       }
     } else if (name case 'addNextByID') {
       if (extras != null) {
@@ -183,6 +214,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(fullSearch['song']);
           customAction('addNext',{'addNext':{'tracks':mediaItemList,'shuffled':shuffled}});
         }
+        if (settingsControl.loadSetting('persistentQueue')) {
+          localNotDatabaseStorageController.saveQueue();
+        }
       }
     } else if (name case 'getCurrentItem') {
       return _queueRepository.getItemAtPos(_queueRepository.getCurrentIndex());
@@ -193,15 +227,27 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   Future<void> addQueueItem(MediaItem mediaItem) async {
     _queueRepository.addItem(mediaItem);
     if (_queueRepository.getQueueLength() == 1) skipToQueueItem(0);
+    if (settingsControl.loadSetting('persistentQueue')) {
+      localNotDatabaseStorageController.saveQueue();
+    }
     return;
   }
   @override
   Future<void> insertQueueItem(int index,MediaItem mediaItem) async {
     _queueRepository.insertItem(mediaItem, index);
     if (_queueRepository.getQueueLength() == 1) skipToQueueItem(0);
+    if (settingsControl.loadSetting('persistentQueue')) {
+      localNotDatabaseStorageController.saveQueue();
+    }
   }
   @override
-  Future<void> removeQueueItemAt(int index) => _queueRepository.removeItem(index);
+  Future<void> removeQueueItemAt(int index) async {
+    _queueRepository.removeItem(index);
+    if (settingsControl.loadSetting('persistentQueue')) {
+      localNotDatabaseStorageController.saveQueue();
+    }
+    return;
+  }
 
 
   PlaybackState _transformEvent(PlaybackEvent event) {
@@ -235,7 +281,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   Duration? getDuration() {
     return _player.duration;
   }
-  Duration getPosition() {
+  Duration getPosition() {//TODO:das hier für das spulen
     return _player.position;
   }
   Duration getBufferedPosition() {
