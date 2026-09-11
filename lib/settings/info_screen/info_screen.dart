@@ -25,7 +25,7 @@ class InfoScreen extends StatelessWidget {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text("flatter"),
-              background: Image.asset("lib/assets/icon/app_icon.png"),
+              background: Image.asset("lib/assets/images/app_logo.png"),
             ),
             expandedHeight: 200,
           ),
