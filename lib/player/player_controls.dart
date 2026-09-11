@@ -25,6 +25,11 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         skipToNext();
       }
     });
+    
+    if (settingsControl.loadSetting('persistentQueue') == true) {
+      print('getting queue');
+      customAction('loadPersistentQueue');
+    }
   }
 
   final SubsonicJustAudioCompatibility usefulScript = SubsonicJustAudioCompatibility();
@@ -220,6 +225,17 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       }
     } else if (name case 'getCurrentItem') {
       return _queueRepository.getItemAtPos(_queueRepository.getCurrentIndex());
+    } else if (name case 'replaceQueue') {
+      if (extras?['queue'] != null) {
+        if (extras?['queue'].runtimeType == List<MediaItem>) {
+          _queueRepository.replaceQueue(extras!['queue']);
+        }
+      }
+    } else if (name case 'loadPersistentQueue') {
+      List<MediaItem> persistentQueue = await localNotDatabaseStorageController.loadQueue();
+      await customAction('replaceQueue',{'queue':persistentQueue});
+      skipToQueueItem(_queueRepository.getCurrentIndex());
+      pause();
     }
   }
   //queue controls

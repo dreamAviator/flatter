@@ -24,6 +24,12 @@ late final AudioSession session;
 
 
 void main() async {
+  pathProvider = PathProvider();
+  databaseControl = DatabaseController();
+  settingsControl = SettingsController();
+  await pathProvider.initialize();
+  await databaseControl.initialize();
+  await settingsControl.initialize();
   playerControl = await AudioService.init(
     builder: () => PlayerControls(),
     config: AudioServiceConfig(
@@ -34,12 +40,6 @@ void main() async {
   session = await AudioSession.instance;
   await session.configure(AudioSessionConfiguration.music());
   WidgetsFlutterBinding.ensureInitialized();
-  pathProvider = PathProvider();
-  databaseControl = DatabaseController();
-  settingsControl = SettingsController();
-  await pathProvider.initialize();
-  await databaseControl.initialize();
-  await settingsControl.initialize();
   runApp(
     const ProviderScope(
       child: MyApp(),
