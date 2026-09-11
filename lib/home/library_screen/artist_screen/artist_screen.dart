@@ -73,6 +73,7 @@ class ArtistScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
+    ItemMenus itemMenus = ItemMenus(context);
     final Size screenSize = MediaQuery.sizeOf(context);
 
     Widget buildArtistAppearances(BuildContext context,String name,double screenWidth) {
@@ -94,26 +95,83 @@ class ArtistScreen extends StatelessWidget {
       builder: (context,ref,child) {
         final artistDetails = ref.watch(riverpodManager.artistDetailsProvider(artistID));
         return Scaffold(
-          appBar: AppBar(
+          appBar: AppBar(//TODO:hier die knöpfe oben wie beim album und playlist screen, außerdem auf einer zweiten seite eine artist description aus dem internet
             title: switch (artistDetails) {
               AsyncValue(:final value?) => Text(value['name']),
               AsyncValue(error: != null) => const Text("Error"),
               AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
             },
-            actions: [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
-              IconButton(
-                onPressed: () {
-                  //hier eine aktion auswählen, kann man in den settings einstellen. entweder abspielen, enqueue oder play next
-                },
-                icon: Icon(Icons.play_arrow),
-              ),
-              FavoriteButton(songID: null, albumID: null, artistID: artistID),
-              switch (artistDetails) {
-                AsyncValue(:final value?) => ItemMenus(context).artistMenu(value),
-                AsyncValue(error: != null) => const Text("Error"),
-                AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-              },
-            ],
+            actions: switch (artistDetails) {
+              AsyncValue(:final value?) => [
+              //evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
+                IconButton(
+                  onPressed: () {
+                    //hier eine aktion auswählen, kann man in den settings einstellen. entweder abspielen, enqueue oder play next
+                    String action = settingsControl.loadSetting('artistPlayButtonAction');
+                    switch (action) {
+                      case "playNow":
+                        playerControl.customAction('clearQueue');
+                        playerControl.customAction('addByID',
+                          {'addByID':
+                            {
+                              'artistID':value['id'],
+                            }
+                          }
+                        );
+                      case "playNext":
+                        playerControl.customAction('addNextByID',
+                          {'addByID':
+                            {
+                              'artistID':value['id'],
+                            }
+                          }
+                        );
+                      case "enqueue":
+                        playerControl.customAction('addByID',
+                          {'addByID':
+                            {
+                              'artistID':value['id'],
+                            }
+                          }
+                        );
+                      case "playNowShuffled":
+                        playerControl.customAction('clearQueue');
+                        playerControl.customAction('addByID',
+                          {'addByID':
+                            {
+                              'artistID':value['id'],
+                              'shuffled':true,
+                            }
+                          }
+                        );
+                      case "playNextShuffled":
+                        playerControl.customAction('addNextByID',
+                          {'addByID':
+                            {
+                              'artistID':value['id'],
+                              'shuffled':true,
+                            }
+                          }
+                        );
+                      case "enqueueShuffled":
+                        playerControl.customAction('addByID',
+                          {'addByID':
+                            {
+                              'artistID':value['id'],
+                              'shuffled':true,
+                            }
+                          }
+                        );
+                    }
+                  },
+                  icon: Icon(Icons.play_arrow),
+                ),
+                FavoriteButton(songID: null, albumID: null, artistID: artistID),
+                itemMenus.artistMenu(value),
+              ],
+              AsyncValue(error: != null) => [const Text("Error")],
+              AsyncValue() => [LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)],
+            },
           ),
           body: CustomScrollView(
             slivers: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst

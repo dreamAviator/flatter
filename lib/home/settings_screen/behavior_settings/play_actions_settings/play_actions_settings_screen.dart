@@ -28,6 +28,11 @@ class PlayActionsSettingsScreen extends StatelessWidget {
             trailing: AlbumPlayButtonSetting(),
           ),
           ListTile(
+            title: Text("Artist play button action"),
+            subtitle: Text("Configure what happens, when you click the play button on the artist screen"),
+            trailing: AlbumPlayButtonSetting(),
+          ),
+          ListTile(
             title: Text("Playlist play button action"),
             subtitle: Text("Configure what happens, when you click the play button on the playlist screen"),
             trailing: AlbumPlayButtonSetting(),

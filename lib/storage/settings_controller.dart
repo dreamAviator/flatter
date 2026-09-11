@@ -23,6 +23,7 @@ class SettingsController {
     'albumSortBy':'random',
     'artistSortBy':'random',
     'albumPlayButtonAction':'playNow',
+    'artistPlayButtonAction':'playNow',
     'playlistPlayButtonAction':'playNow',
     'albumSongListTapAction':'enqueue',
     'playlistSongListTapAction':'enqueue',

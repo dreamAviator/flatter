@@ -86,7 +86,6 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   @override
   Future<void> setShuffleMode(//) =>
    */
-  //TODO:den stream von der queue hierherholen und forwarden, maybe in den anderen stream intergeiren?
 
   @override
   Future<void> playMediaItem(MediaItem mediaItem) async {

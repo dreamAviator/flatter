@@ -9,6 +9,7 @@ import 'package:flatter/home/library_screen/item_widgets/per_item/favorite_butto
 import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
 import 'package:flatter/home/library_screen/item_widgets/song_list.dart';
 import 'package:flatter/main.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -23,6 +24,7 @@ class AlbumScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
+    final usefulScripts = SubsonicJustAudioCompatibility();
     ItemMenus itemMenus = ItemMenus(context);
     final Size screenSize = MediaQuery.sizeOf(context);
     final filterNotifier = ValueNotifier<String>('');
@@ -37,21 +39,45 @@ class AlbumScreen extends StatelessWidget {
               AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
             },
             actions: switch (albumDetails) {
-              AsyncValue(:final value?) => [//evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
+              AsyncValue(:final value?) => [//TODO:(bei den anderen screens auch) evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
                 IconButton(//TODO:überall diese knöpfe richtig machen
                   onPressed: () {
                     String action = settingsControl.settingsMap['albumPlayButtonAction'];
+                    List<Map>? subsonicSongList = value['song'];
+                    if (subsonicSongList == null) {
+                      return;
+                    }
+                    List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList);
                     switch (action) {//die sachen so implementieren, dass sich dieses ding hier die dinger holt oder ein anderer teil und dann die sahcne an die playercontrol weitergegeben werden, die playercontrol sollte nicht die sachen holen müssen
                       case "playNow":
                         playerControl.customAction('clearQueue');
                         playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':value['id'],
+                          'tracks':songList,
                         }});
                       case "playNext":
-                        playerControl.customAction('addNextByID',{'addNextByID':value['id']});
+                        playerControl.customAction('addNext',{'addNext': {
+                          'tracks':songList,
+                        }});
                       case "enqueue":
-                        playerControl.customAction('addByID',{'addByID':value['id']});
-                        //muss noch was für die shuffled dinger machen
+                        playerControl.customAction('addMultiple',{'addMultiple': {
+                          'tracks':songList,
+                        }});
+                      case "playNowShuffled":
+                        playerControl.customAction('clearQueue');
+                        playerControl.customAction('addMultiple',{'addMultiple': {
+                          'tracks':songList,
+                          'shuffled':true,
+                        }});
+                      case "playNextShuffled":
+                        playerControl.customAction('addNext',{'addNext': {
+                          'tracks':songList,
+                          'shuffled':true,
+                        }});
+                      case "enqueueShuffled":
+                        playerControl.customAction('addMultiple',{'addMultiple': {
+                          'tracks':songList,
+                          'shuffled':true,
+                        }});
                     }
                   },
                   icon: Icon(Icons.play_arrow),
