@@ -1,7 +1,7 @@
-import 'package:flatter/settings/behaviour_settings/play_actions_settings/album_play_button_setting.dart';
-import 'package:flatter/settings/behaviour_settings/play_actions_settings/album_song_list_tap_action.dart';
-import 'package:flatter/settings/behaviour_settings/play_actions_settings/playlist_song_list_tap_action.dart';
-import 'package:flatter/settings/behaviour_settings/play_actions_settings/songs_tab_tap_action.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/play_actions_settings/album_play_button_setting.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/play_actions_settings/album_song_list_tap_action.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/play_actions_settings/playlist_song_list_tap_action.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/play_actions_settings/songs_tab_tap_action.dart';
 import 'package:flutter/material.dart';
 
 class PlayActionsSettingsScreen extends StatelessWidget {

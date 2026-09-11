@@ -1,4 +1,4 @@
-import 'package:flatter/settings/appearance_settings/landscape_mode_setting.dart';
+import 'package:flatter/home/settings_screen/appearance_settings/landscape_mode_setting.dart';
 import 'package:flutter/material.dart';
 
 class AppearanceSettingsScreen extends StatelessWidget {

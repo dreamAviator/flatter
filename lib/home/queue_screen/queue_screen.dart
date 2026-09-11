@@ -14,8 +14,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:s_disabled/s_disabled.dart';
 
 import '../../Riverpod/riverpod_manager.dart';
-import '../../settings/settings_screen.dart';
-import '../../settings/settings_screen_ViewModel.dart';
+import '../settings_screen/settings_screen.dart';
+import '../settings_screen/settings_screen_ViewModel.dart';
 import '../library_screen/artist_screen/artist_screen.dart';
 import '../library_screen/item_widgets/per_item/item_menus.dart';
 

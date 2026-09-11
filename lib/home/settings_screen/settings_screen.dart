@@ -1,13 +1,13 @@
 import 'package:flatter/main.dart';
-import 'package:flatter/settings/appearance_settings/appearance_settings_screen.dart';
-import 'package:flatter/settings/behaviour_settings/behaviour_settings_screen.dart';
-import 'package:flatter/settings/info_screen/info_screen.dart';
-import 'package:flatter/settings/server_settings/server_settings_screen.dart';
-import 'package:flatter/settings/settings_screen_ViewModel.dart';
+import 'package:flatter/home/settings_screen/appearance_settings/appearance_settings_screen.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/behaviour_settings_screen.dart';
+import 'package:flatter/home/settings_screen/info_screen/info_screen.dart';
+import 'package:flatter/home/settings_screen/server_settings/server_settings_screen.dart';
+import 'package:flatter/home/settings_screen/settings_screen_ViewModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'behaviour_settings/behaviour_settings_screen.dart';
+import 'behavior_settings/behaviour_settings_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key,required this.viewModel});

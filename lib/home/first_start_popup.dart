@@ -1,4 +1,4 @@
-import 'package:flatter/settings/server_settings/server_settings_screen.dart';
+import 'package:flatter/home/settings_screen/server_settings/server_settings_screen.dart';
 import 'package:flutter/material.dart';
 
 class FirstStartPopup {

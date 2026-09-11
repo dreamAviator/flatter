@@ -1,6 +1,6 @@
 import 'package:flatter/main.dart';
-import 'package:flatter/settings/behaviour_settings/queue_settings/persistent_queue_setting.dart';
-import 'package:flatter/settings/behaviour_settings/queue_settings/sync_with_server_setting.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/queue_settings/persistent_queue_setting.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/queue_settings/sync_with_server_setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:s_disabled/s_disabled.dart';

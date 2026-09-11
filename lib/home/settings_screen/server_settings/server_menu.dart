@@ -1,10 +1,10 @@
 import 'package:flatter/main.dart';
-import 'package:flatter/settings/server_settings/add_server_popup.dart';
+import 'package:flatter/home/settings_screen/server_settings/add_server_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../Riverpod/riverpod_manager.dart';
+import '../../../Riverpod/riverpod_manager.dart';
 
 class ServerMenu {
   final BuildContext context;

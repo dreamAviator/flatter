@@ -1,10 +1,10 @@
-import 'package:flatter/settings/behaviour_settings/library_start_tab_setting.dart';
-import 'package:flatter/settings/behaviour_settings/play_actions_settings/play_actions_settings_screen.dart';
-import 'package:flatter/settings/behaviour_settings/queue_settings/queue_settings_screen.dart';
-import 'package:flatter/settings/behaviour_settings/search_settings/search_settings_screen.dart';
-import 'package:flatter/settings/behaviour_settings/start_tab_setting.dart';
-import 'package:flatter/settings/behaviour_settings/time_until_scroble_setting.dart';
-import 'package:flatter/settings/behaviour_settings/time_until_seek_to_start_setting.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/library_start_tab_setting.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/play_actions_settings/play_actions_settings_screen.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/queue_settings/queue_settings_screen.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/search_settings/search_settings_screen.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/start_tab_setting.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/time_until_scroble_setting.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/time_until_seek_to_start_setting.dart';
 import 'package:flutter/material.dart';
 
 class BehaviourSettingsScreen extends StatelessWidget {

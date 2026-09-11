@@ -1,12 +1,12 @@
 import 'package:flatter/main.dart';
-import 'package:flatter/settings/server_settings/server_menu.dart';
+import 'package:flatter/home/settings_screen/server_settings/server_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../../Riverpod/riverpod_manager.dart';
+import '../../../Riverpod/riverpod_manager.dart';
 import 'add_server_popup.dart';
 
 class ServerList extends StatelessWidget {//TODO:das hier mit nem valuenotifier oder so machen, nicht mit riverpod

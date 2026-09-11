@@ -5,10 +5,10 @@ import 'package:flatter/home/player_screen/player_screen.dart';
 import 'package:flatter/home/queue_screen/queue_screen.dart';
 import 'package:flatter/home/search_screen/search_screen.dart';
 import 'package:flatter/main.dart';
-import 'package:flatter/settings/settings_screen.dart';
+import 'package:flatter/home/settings_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../settings/settings_screen_ViewModel.dart';
+import 'settings_screen/settings_screen_ViewModel.dart';
 
 class HomeNavigationBar extends StatefulWidget {
   const HomeNavigationBar({super.key});

@@ -6,8 +6,8 @@ import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../settings/settings_screen.dart';
-import '../settings/settings_screen_ViewModel.dart';
+import 'settings_screen/settings_screen.dart';
+import 'settings_screen/settings_screen_ViewModel.dart';
 import 'first_start_popup.dart';
 import 'library_screen/library_screen.dart';
 

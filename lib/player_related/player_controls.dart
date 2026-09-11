@@ -1,7 +1,7 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:flatter/Repositories/queue_repository.dart';
+import 'package:flatter/player_related/queue_repository.dart';
 import 'package:flatter/main.dart';
-import 'package:flatter/player/audio_player.dart';
+import 'package:flatter/player_related/audio_player.dart';
 import 'package:flatter/storage/local_not_database_storage_controller.dart';
 import 'package:just_audio/just_audio.dart';
 
