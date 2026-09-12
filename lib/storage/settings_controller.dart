@@ -38,7 +38,7 @@ class SettingsController {
     'searchAlbumCount':10,
     'searchSongCount':30,
     'mode':"navidrome",
-    'songMenuActionOrder':{//TODO:das hier muss sich automatisch ändern, wenn optionen hinzugefügt oder entfernt werden
+    'songMenuActionOrder':{
       'mainMenu':['playNow','addNext','enqueue','addToPlaylist','removeFromPlaylist'],
       'moreSheet':['album','artist','unFavorite'],
       'unused':[],

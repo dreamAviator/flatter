@@ -7,7 +7,7 @@ import 'package:toml/toml.dart';
 
 class LocalNotDatabaseStorageController {
   final usefulScripts = SubsonicJustAudioCompatibility();
-  void saveQueue() async {
+  Future<void> saveQueue() async {
     List<MediaItem> queue = await playerControl.customAction('getQueue');
     List<dynamic> queueSubsonicSongs = usefulScripts.mediaItemListToSubsonicSongList(queue);
     String dataDirectory = pathProvider.dataDirectory;
@@ -19,6 +19,7 @@ class LocalNotDatabaseStorageController {
     };
     TomlDocument persistentQueueDocument = TomlDocument.fromMap(persistentQueueMap);
     persistentQueueDocument.save(path);
+    return;
   }
 
   Future<List<MediaItem>> loadQueue() async {

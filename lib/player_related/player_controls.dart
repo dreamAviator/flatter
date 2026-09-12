@@ -47,6 +47,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   @override
   Future<void> stop() async {//TODO:hier player clearen oder so idk
     _player.stop();
+
     return;
   }
   @override
@@ -72,6 +73,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
   @override
   Future<void> skipToQueueItem(int index) async {
+    print("skip to queue item");
     MediaItem item = _queueRepository.getItemAtPos(index);
     _queueRepository.makeCurrent(index);
     _player.seek(Duration.zero);
@@ -111,7 +113,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         bool? shuffled = extras['addNext']['shuffled'];
         if (shuffled == true) mediaItemList.shuffle();
         for (MediaItem item in mediaItemList.reversed) {
-          insertQueueItem(currentIndex + 1, item);
+          insertQueueItem(currentIndex + 1, item,true);
         }
       }
     } else if (name case 'addMultiple') {
@@ -120,7 +122,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         bool? shuffled = extras['addMultiple']['shuffled'];
         if (shuffled == true) mediaItemList.shuffle();
         for (MediaItem item in mediaItemList) {
-          addQueueItem(item);
+          addQueueItem(item,true);
         }
       }
     } else if (name case 'moveQueueItem') {
@@ -223,17 +225,21 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
   //queue controls
   @override
-  Future<void> addQueueItem(MediaItem mediaItem) async {
+  Future<void> addQueueItem(MediaItem mediaItem, [bool? dontSave]) async {
     _queueRepository.addItem(mediaItem);
     if (_queueRepository.getQueueLength() == 1) skipToQueueItem(0);
-    localNotDatabaseStorageController.saveQueue();
+    if (dontSave != true) {
+      localNotDatabaseStorageController.saveQueue();
+    }
     return;
   }
   @override
-  Future<void> insertQueueItem(int index,MediaItem mediaItem) async {
+  Future<void> insertQueueItem(int index,MediaItem mediaItem, [bool? dontSave]) async {
     _queueRepository.insertItem(mediaItem, index);
     if (_queueRepository.getQueueLength() == 1) skipToQueueItem(0);
-    localNotDatabaseStorageController.saveQueue();
+    if (dontSave != true) {
+      localNotDatabaseStorageController.saveQueue();
+    }
   }
   @override
   Future<void> removeQueueItemAt(int index) async {
