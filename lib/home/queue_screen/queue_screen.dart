@@ -28,9 +28,7 @@ class QueueScreen extends StatefulWidget {//TODO:queue screen rework, so dass de
 
 class _QueueScreenState extends State<QueueScreen> {
 
-  Widget buildQueue(BuildContext context, List<MediaItem> queue) {
-    SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
-
+  Widget buildQueue(BuildContext context, List<MediaItem> queue) {//TODO:scroll_to_index package dafür (um zum richtigen element zu scrollen)
     if (queue.isEmpty) {
       return const Text("Queue empty");
     }
@@ -152,7 +150,6 @@ class _QueueScreenState extends State<QueueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final riverpodManager = RiverpodManager();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Queue"),
