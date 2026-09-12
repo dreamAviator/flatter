@@ -43,7 +43,7 @@ class AlbumScreen extends StatelessWidget {
                 IconButton(//TODO:überall diese knöpfe richtig machen
                   onPressed: () {
                     String action = settingsControl.settingsMap['albumPlayButtonAction'];
-                    List<Map>? subsonicSongList = value['song'];
+                    List<dynamic>? subsonicSongList = value['song'];
                     if (subsonicSongList == null) {
                       return;
                     }

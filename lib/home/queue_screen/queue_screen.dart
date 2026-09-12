@@ -28,7 +28,7 @@ class QueueScreen extends StatefulWidget {//TODO:queue screen rework, so dass de
 
 class _QueueScreenState extends State<QueueScreen> {
 
-  Widget buildQueue(BuildContext context, List<MediaItem> queue) {//TODO:scroll_to_index package dafür (um zum richtigen element zu scrollen)
+  Widget buildQueue(BuildContext context, List<MediaItem> queue) {//TODO:wenn alle items gleichgroß sind, kannst du das einfach mit der item höhe ausrechnen
     if (queue.isEmpty) {
       return const Text("Queue empty");
     }
