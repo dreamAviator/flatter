@@ -79,6 +79,7 @@ dependencies:
   intrinsic_size_builder: ^2.0.2
   s_disabled: ^3.1.0
   scroll_pos: ^0.5.0
+  scrollview_observer: ^1.27.2
 
 
   #flutter_staggered_grid_view_fix_branch:
