@@ -12,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:s_disabled/s_disabled.dart';
+import 'package:scroll_pos/scroll_pos.dart';
 
 import '../../Riverpod/riverpod_manager.dart';
 import '../settings_screen/settings_screen.dart';
@@ -27,6 +28,8 @@ class QueueScreen extends StatefulWidget {//TODO:queue screen rework, so dass de
 }
 
 class _QueueScreenState extends State<QueueScreen> {
+  ScrollPosController scrollController = ScrollPosController(itemCount: 0);
+  double scrollOffset = 0;
 
   Widget buildQueue(BuildContext context, List<MediaItem> queue) {//TODO:wenn alle items gleichgroß sind, kannst du das einfach mit der item höhe ausrechnen
     if (queue.isEmpty) {
@@ -44,6 +47,7 @@ class _QueueScreenState extends State<QueueScreen> {
     }
 
     return ReorderableListView.builder(
+      scrollController: scrollController,
       itemCount: queue.length,
       onReorder: (int oldIndex,int newIndex) {
         if (oldIndex < newIndex) {
@@ -133,7 +137,6 @@ class _QueueScreenState extends State<QueueScreen> {
                       ),
                     ],
                   ),
-
                   child: ListTile(
                     title: Text(queue[index].title),
                     subtitle: Text(queue[index].artist!),
@@ -150,6 +153,7 @@ class _QueueScreenState extends State<QueueScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("widget build executed");
     return Scaffold(
       appBar: AppBar(
         title: const Text("Queue"),
@@ -165,10 +169,15 @@ class _QueueScreenState extends State<QueueScreen> {
       body: StreamBuilder(
         stream: playerControl.queueStream,
         builder: (context, snapshot) {
+          print('stream builder executed');
           bool queueEmpty = false;
           final queue = snapshot.data ?? [];
           if (queue.isEmpty) {
             queueEmpty = true;
+          }
+          scrollController.itemCount = queue.length;
+          if (queueEmpty != true) {
+            scrollController.scrollToItem(playerControl.getCurrentIndex());
           }
           return Column(
             mainAxisSize: MainAxisSize.min,
@@ -202,7 +211,7 @@ class _QueueScreenState extends State<QueueScreen> {
                       ),
                       IconButton(
                         onPressed: () {
-
+                          
                         },
                         icon: const Icon(Icons.loop_outlined),//hier halt single und ganze queue
                       ),

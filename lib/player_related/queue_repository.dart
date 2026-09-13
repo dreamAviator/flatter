@@ -7,6 +7,7 @@ class QueueRepository {
 
   final queueStream = BehaviorSubject<List<MediaItem>>.seeded([]);
 
+
   void insertItem(MediaItem item,int position) {
     _queue.insert(position, item);
     queueStream.add(_queue);

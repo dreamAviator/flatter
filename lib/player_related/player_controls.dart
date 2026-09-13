@@ -4,6 +4,7 @@ import 'package:flatter/main.dart';
 import 'package:flatter/player_related/audio_player.dart';
 import 'package:flatter/storage/local_not_database_storage_controller.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../useful_scripts.dart';
 
@@ -12,7 +13,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final _player = MyPlayer();
   final localNotDatabaseStorageController = LocalNotDatabaseStorageController();
   Stream<PlayerState> get playerState => _player.playerStateStream;
-  Stream<List<MediaItem>> get queueStream => _queueRepository.queueStream;
+  BehaviorSubject<List<MediaItem>> get queueStream => _queueRepository.queueStream;
 
   PlayerControls() {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
@@ -246,6 +247,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     _queueRepository.removeItem(index);
     localNotDatabaseStorageController.saveQueue();
     return;
+  }
+  int getCurrentIndex() {
+    return _queueRepository.getCurrentIndex();
   }
 
 

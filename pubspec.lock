@@ -1147,6 +1147,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.6"
+  scroll_pos:
+    dependency: "direct main"
+    description:
+      name: scroll_pos
+      sha256: cebf602b2dd939de6832bb902ffefb574608d1b84f420b82b381a4007d3c1e1b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
   shared_preferences:
     dependency: transitive
     description:
