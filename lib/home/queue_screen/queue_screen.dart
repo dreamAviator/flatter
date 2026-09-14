@@ -12,7 +12,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:s_disabled/s_disabled.dart';
-import 'package:scroll_pos/scroll_pos.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../Riverpod/riverpod_manager.dart';
