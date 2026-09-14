@@ -35,11 +35,10 @@ class _QueueScreenState extends State<QueueScreen> {
   bool hasRun = false;
 
   Widget buildQueue(BuildContext context, List<MediaItem> queue,ListObserverController observerController) {//TODO:wenn alle items gleichgroß sind, kannst du das einfach mit der item höhe ausrechnen
-    if (queue.isEmpty) {
-      return const Text("Queue empty");
-    }
 
-    hasRun = true;
+    if (queue.isNotEmpty) {
+      hasRun = true;
+    }
     void removeFromQueue(int index) {
       playerControl.removeQueueItemAt(index);
     }
@@ -50,117 +49,124 @@ class _QueueScreenState extends State<QueueScreen> {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: id)));
     }
 
-    return ListViewObserver(
-      controller: observerController,
-      child: ReorderableListView.builder(
-        scrollController: scrollController,
-        itemCount: queue.length,
-        onReorder: (int oldIndex,int newIndex) {
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-          }
-          playerControl.customAction("moveQueueItem",{'moveQueueItem':{'oldIndex':oldIndex,'newIndex':newIndex}});
-        },
-        itemBuilder: (BuildContext context,int index) {
-          if (queue[index].extras!['current'] == true) {
-            return Card.filled(
-              key: Key('$index'),
-              child: Column(
-                children: [
-                  Slidable(
-                    startActionPane: ActionPane(//farben überlegen
-                      motion: DrawerMotion(),
+    return Column(
+      children: [
+        if (queue.isEmpty) const Text("Queue empty"),
+        Expanded(
+          child: ListViewObserver(
+            controller: observerController,
+            child: ReorderableListView.builder(
+              scrollController: scrollController,
+              itemCount: queue.length,
+              onReorder: (int oldIndex,int newIndex) {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
+                playerControl.customAction("moveQueueItem",{'moveQueueItem':{'oldIndex':oldIndex,'newIndex':newIndex}});
+              },
+              itemBuilder: (BuildContext context,int index) {
+                if (queue[index].extras!['current'] == true) {
+                  return Card.filled(
+                    key: Key('$index'),
+                    child: Column(
                       children: [
-                        SlidableAction(
-                          onPressed: (_) => (goToAlbum(context, queue[index].extras!['albumID'])),
-                          icon: Icons.album,
-                          label: 'Album',
-                        ),
-                        SlidableAction(
-                          onPressed: (_) => (goToArtist(context, queue[index].extras!['artistID'])),
-                          icon: Icons.person,
-                          label: 'Artist',
-                        )
-                      ],
-                    ),
-                    endActionPane: ActionPane(
-                      motion: DrawerMotion(),
-                      children: [
-                        SlidableAction(
-                          onPressed: (_) => (removeFromQueue(index)),
-                          icon: Icons.delete,
-                          label: 'Delete',
-                          backgroundColor: Colors.red,
-                        ),
-                      ],
-                    ),
-                    child: ListTile(
-                      title: Text(queue[index].title),
-                      subtitle: Text(queue[index].artist!),
-                      trailing: ItemMenus(context).songMenuQueue(queue[index]),
-                      onTap: () {
-                        playerControl.skipToQueueItem(index);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return Card(
-              key: Key('$index'),
-              child: Column(
-                children: [
-                  Slidable(
-                    startActionPane: ActionPane(//farben überlegen
-                      motion: DrawerMotion(),
-                      children: [
-                        SlidableAction(
-                          onPressed: (_) => (goToAlbum(context, queue[index].extras!['albumID'])),
-                          icon: Icons.album,
-                          label: 'Album',
-                        ),
-                        SlidableAction(
-                          onPressed: (_) => (goToArtist(context, queue[index].extras!['artistID'])),
-                          icon: Icons.person,
-                          label: 'Artist',
-                        )
-                      ],
-                    ),
-                    endActionPane: ActionPane(
-                      motion: DrawerMotion(),
-                      /*
-                      dismissible: DismissiblePane(
-                        onDismissed: () {
-                          removeFromQueue(index);
-                        },
-                      ),
-                      benötigt einen key um dismissable zu sein
-                       */
-                      children: [
-                        SlidableAction(
-                          onPressed: (_) => (removeFromQueue(index)),
-                          icon: Icons.delete,
-                          label: 'Delete',
-                          backgroundColor: Colors.red,
+                        Slidable(
+                          startActionPane: ActionPane(//farben überlegen
+                            motion: DrawerMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (_) => (goToAlbum(context, queue[index].extras!['albumID'])),
+                                icon: Icons.album,
+                                label: 'Album',
+                              ),
+                              SlidableAction(
+                                onPressed: (_) => (goToArtist(context, queue[index].extras!['artistID'])),
+                                icon: Icons.person,
+                                label: 'Artist',
+                              )
+                            ],
+                          ),
+                          endActionPane: ActionPane(
+                            motion: DrawerMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (_) => (removeFromQueue(index)),
+                                icon: Icons.delete,
+                                label: 'Delete',
+                                backgroundColor: Colors.red,
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            title: Text(queue[index].title),
+                            subtitle: Text(queue[index].artist!),
+                            trailing: ItemMenus(context).songMenuQueue(queue[index]),
+                            onTap: () {
+                              playerControl.skipToQueueItem(index);
+                            },
+                          ),
                         ),
                       ],
                     ),
-                    child: ListTile(
-                      title: Text(queue[index].title),
-                      subtitle: Text(queue[index].artist!),
-                      trailing: ItemMenus(context).songMenuQueue(queue[index]),
-                      onTap: () {
-                        playerControl.skipToQueueItem(index);
-                      },
+                  );
+                } else {
+                  return Card(
+                    key: Key('$index'),
+                    child: Column(
+                      children: [
+                        Slidable(
+                          startActionPane: ActionPane(//farben überlegen
+                            motion: DrawerMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (_) => (goToAlbum(context, queue[index].extras!['albumID'])),
+                                icon: Icons.album,
+                                label: 'Album',
+                              ),
+                              SlidableAction(
+                                onPressed: (_) => (goToArtist(context, queue[index].extras!['artistID'])),
+                                icon: Icons.person,
+                                label: 'Artist',
+                              )
+                            ],
+                          ),
+                          endActionPane: ActionPane(
+                            motion: DrawerMotion(),
+                            /*
+                            dismissible: DismissiblePane(
+                              onDismissed: () {
+                                removeFromQueue(index);
+                              },
+                            ),
+                            benötigt einen key um dismissable zu sein
+                             */
+                            children: [
+                              SlidableAction(
+                                onPressed: (_) => (removeFromQueue(index)),
+                                icon: Icons.delete,
+                                label: 'Delete',
+                                backgroundColor: Colors.red,
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            title: Text(queue[index].title),
+                            subtitle: Text(queue[index].artist!),
+                            trailing: ItemMenus(context).songMenuQueue(queue[index]),
+                            onTap: () {
+                              playerControl.skipToQueueItem(index);
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            );
-          }
-        },
-      ),
+                  );
+                }
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -197,6 +203,7 @@ class _QueueScreenState extends State<QueueScreen> {
           if (hasRun == false && queueEmpty == false) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               print("should jump to item now");
+
               //scrollController.scrollToItem(playerControl.getCurrentIndex(),animate: false,center: true);
               observerController.jumpTo(index: playerControl.getCurrentIndex());//TODO:das hier funktioniert nicht, wenn das nicht gefixed wird dann zum anderen package wieder zurück wechseln. das ist eigentlich schöner, weil es das item oben ranbringt und noch aktiv maintained wird
             });

@@ -78,7 +78,7 @@ dependencies:
   extended_sliver: ^2.1.3
   intrinsic_size_builder: ^2.0.2
   s_disabled: ^3.1.0
-  scroll_pos: ^0.5.0
+  #scroll_pos: ^0.5.0 #nicht benötigt, da scrollview_observer stattdessen verwendet wird
   scrollview_observer: ^1.27.2
 
 
