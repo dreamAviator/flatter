@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flatter/main.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:toml/toml.dart';
 
 import '../useful_scripts.dart';
@@ -82,8 +81,7 @@ class SettingsController {
 
   Future<void> loadSettings() async {
     TomlDocument settingsDocument;
-    Directory dataDirectory = await getApplicationSupportDirectory();
-    String path = dataDirectory.path;
+    String path = pathProvider.dataDirectory;
     path = "${path}/flatter_settings.toml";
     if (await File(path).exists() == false) {
       print("file does not exist");
@@ -94,12 +92,14 @@ class SettingsController {
     settingsMap = settingsDocument.toMap();
     defaultSettingsMap.forEach((key,value) {
       if (settingsMap[key] == null) {
+        print("key $key does not exist");
         settingsMap[key] = value;
       }
     });
     List keysToRemove = [];
     settingsMap.forEach((key,value) {
       if (defaultSettingsMap[key] == null) {
+        print("key $key is too much");
         keysToRemove.add(key);
       }
     });
@@ -137,6 +137,7 @@ class SettingsController {
   }
 
   void saveSettings() async {
+    print("saving");
     String dataDirectory = pathProvider.dataDirectory;
     String path = "${dataDirectory}/flatter_settings.toml";
     TomlDocument settingsDocument = TomlDocument.fromMap(settingsMap);

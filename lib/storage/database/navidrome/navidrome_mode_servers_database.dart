@@ -12,7 +12,6 @@ class ServersDatabase {
   Future<void> openDatabase() async {
     String path = pathProvider.dataDirectory;//passwort später irgendwie sicher speichern
     path = "${path}/navidrome_mode/flatter_navidrome_mode_servers.sqlite";
-    print("path");
     db = sqlite3.open(path);
     createTables();
     return;
