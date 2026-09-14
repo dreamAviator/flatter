@@ -1,4 +1,5 @@
 import 'package:flatter/home/settings_screen/behavior_settings/search_settings/clear_search_setting.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/search_settings/search_result_count_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
 
@@ -25,7 +26,20 @@ class SearchSettingsScreen extends StatelessWidget {
             trailing: ClearSearchSetting(),
             subtitle: Text("Clear the search input after leaving the search screen"),
           ),
-          //TODO:search results number setting, mit dem gleichen number picker package auch die anderen settings mit zahlen einrichten :3
+          //TODO:search results number setting (für alles einzeln (artist, song), mit dem gleichen number picker package auch die anderen settings mit zahlen einrichten :3
+          Divider(),
+          ListTile(
+            title: Text("Song search results count"),
+            trailing: SongSearchResultCountSetting(),
+          ),
+          ListTile(
+            title: Text("Album search results count"),
+            trailing: SongSearchResultCountSetting(),
+          ),
+          ListTile(
+            title: Text("Artist search results count"),
+            trailing: SongSearchResultCountSetting(),
+          )
         ],
       ),
     );

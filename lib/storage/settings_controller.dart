@@ -33,9 +33,9 @@ class SettingsController {
     'landscapeMode':true,//TODO:needs to override automatic change of layout, extra setting added below
     'automaticRotationOverride':false,
     'firstStart':true,//einstellung für stern oder herz für das favouriten der songs vlt
-    'searchArtistCount':10,
-    'searchAlbumCount':10,
-    'searchSongCount':30,
+    'songSearchResultsCount':10,
+    'albumSearchResultsCount':10,
+    'artistSearchResultsCount':30,
     'mode':"navidrome",
     'songMenuActionOrder':{
       'mainMenu':['playNow','addNext','enqueue','addToPlaylist','removeFromPlaylist'],
@@ -124,7 +124,6 @@ class SettingsController {
     print(key);
     print(value);
     settingsMap[key] = value;
-    print(settingsMap);
     saveSettings();
   }
 
@@ -137,7 +136,6 @@ class SettingsController {
   }
 
   void saveSettings() async {
-    print("saving");
     String dataDirectory = pathProvider.dataDirectory;
     String path = "${dataDirectory}/flatter_settings.toml";
     TomlDocument settingsDocument = TomlDocument.fromMap(settingsMap);

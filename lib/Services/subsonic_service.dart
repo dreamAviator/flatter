@@ -322,9 +322,9 @@ class SubsonicService {
 
   Future<Map<dynamic,dynamic>> search(String query,int artistOffset,int albumOffset,int songOffset) async {//hier search2 machen wenn opensubsonic nicht verfügbar ist
     List<String> url = getURL(null, null, null);
-    int searchArtistCount = settingsControl.loadSetting('searchArtistCount');
-    int searchAlbumCount = settingsControl.loadSetting('searchAlbumCount');
-    int searchSongCount = settingsControl.loadSetting('searchSongCount');
+    int searchArtistCount = settingsControl.loadSetting('artistSearchResultsCount');
+    int searchAlbumCount = settingsControl.loadSetting('albumSearchResultsCount');
+    int searchSongCount = settingsControl.loadSetting('songSearchResultsCount');
     artistOffset = searchArtistCount * artistOffset;
     albumOffset = searchAlbumCount * albumOffset;
     songOffset = searchSongCount * songOffset;

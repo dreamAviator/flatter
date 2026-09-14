@@ -284,7 +284,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   Duration? getDuration() {
     return _player.duration;
   }
-  Duration getPosition() {//TODO:das hier für das spulen
+  Duration getPosition() {
     return _player.position;
   }
   Duration getBufferedPosition() {
