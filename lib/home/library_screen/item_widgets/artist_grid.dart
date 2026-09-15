@@ -5,7 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../main.dart';
 import '../artist_screen/artist_screen.dart';
-import 'per_item/item_menus.dart';//TODO:add item menus for that
+import 'per_item/item_menus.dart';
 
 class ArtistGrid extends StatelessWidget {
   const ArtistGrid({super.key,required this.artistListNullable,required this.crossAxisCount,required this.sliver,this.filterNotifier,required this.withIndexesGiven});
@@ -86,7 +86,10 @@ class ArtistGrid extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Text(item['name']),
+                        ListTile(
+                          title: Text((item['name'])),
+                          trailing: ItemMenus(context).artistMenuList(item),
+                        ),
                       ],
                     ),
                   ),

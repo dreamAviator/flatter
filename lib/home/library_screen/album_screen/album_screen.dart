@@ -40,7 +40,7 @@ class AlbumScreen extends StatelessWidget {
             },
             actions: switch (albumDetails) {
               AsyncValue(:final value?) => [//TODO:(bei den anderen screens auch) evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
-                IconButton(//TODO:überall diese knöpfe richtig machen
+                IconButton(
                   onPressed: () {
                     String action = settingsControl.settingsMap['albumPlayButtonAction'];
                     List<dynamic>? subsonicSongList = value['song'];
@@ -48,7 +48,7 @@ class AlbumScreen extends StatelessWidget {
                       return;
                     }
                     List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList);
-                    switch (action) {//die sachen so implementieren, dass sich dieses ding hier die dinger holt oder ein anderer teil und dann die sahcne an die playercontrol weitergegeben werden, die playercontrol sollte nicht die sachen holen müssen
+                    switch (action) {
                       case "playNow":
                         playerControl.customAction('clearQueue');
                         playerControl.customAction('addMultiple',{'addMultiple': {
