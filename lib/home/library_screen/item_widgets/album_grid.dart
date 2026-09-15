@@ -24,10 +24,10 @@ class AlbumGrid extends StatelessWidget {
     } else {
       if (sliver == true) {
         return const SliverToBoxAdapter(
-          child: Center(child: Text("No songs")),
+          child: Center(child: Text("No albums")),
         );
       } else {
-        return const Center(child: Text("No songs"));
+        return const Center(child: Text("No albums"));
       }
     }
     if (sliver == true) {

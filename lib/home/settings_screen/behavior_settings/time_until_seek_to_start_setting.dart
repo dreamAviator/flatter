@@ -56,8 +56,10 @@ class TimeUntilSeekToStartSetting extends StatelessWidget {
       minValue: 0,
       step: 1,
       maxValue: 999,
-      onValue: (int value) {
-        settingsControl.changeSetting('timeUntilSeekToStart', value);
+      onValue: (num value) {
+        if (value.runtimeType == int) {
+          settingsControl.changeSetting('timeUntilSeekToStart', value);
+        }
       },
     );
   }

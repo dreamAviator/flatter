@@ -12,8 +12,10 @@ class AlbumSearchResultCountSetting extends StatelessWidget {
       minValue: 1,
       step: 1,
       maxValue: 999,
-      onValue: (int value) {
-        settingsControl.changeSetting('albumSearchResultsCount', value);
+      onValue: (num value) {
+        if (value.runtimeType == int) {
+          settingsControl.changeSetting('albumSearchResultsCount', value);
+        }
       },
     );
   }

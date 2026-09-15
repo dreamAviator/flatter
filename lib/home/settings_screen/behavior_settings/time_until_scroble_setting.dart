@@ -56,8 +56,10 @@ class TimeUntilScrobleSetting extends StatelessWidget {
       minValue: 0,
       step: 1,
       maxValue: 999,
-      onValue: (int value) {
-        settingsControl.changeSetting('timeUntilScrobble', value);
+      onValue: (num value) {
+        if (value.runtimeType == int) {
+          settingsControl.changeSetting('timeUntilScrobble', value);
+        }
       },
     );
   }

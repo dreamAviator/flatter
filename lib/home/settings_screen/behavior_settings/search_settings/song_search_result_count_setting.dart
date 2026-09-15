@@ -12,8 +12,10 @@ class SongSearchResultCountSetting extends StatelessWidget {
       minValue: 1,
       step: 1,
       maxValue: 999,
-      onValue: (int value) {
-        settingsControl.changeSetting('songSearchResultsCount', value);
+      onValue: (num value) {
+        if (value.runtimeType == int) {
+          settingsControl.changeSetting('songSearchResultsCount', value);
+        }
       },
     );
   }
