@@ -7,15 +7,14 @@ import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/material.dart';
 import 'package:deepcopy/deepcopy.dart';
 
-import '../../popups/artist_select_popup.dart';//TODO:add to playlist fehlt
+import '../../popups/artist_select_popup.dart';
 
 class ItemMenus {//man muss hier halt später einstellen können, welche aktionen hier und welche im bottom sheet angezeigt werden sollen
   ItemMenus(this.context);
   final BuildContext context;
   final SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
 
-  //Pop Up Menu Entry actions//TODO:noch die by id dinger hinzufügen, dafür gibt's ja was in den player controls
-  //mal schauen, ob ich die anderen actions als bottom sheet behalte, oder als untermenü. bei einem untermenü könnte ich diesen code so wie er ist wiederverwenden. aber eig finde ich ein bottom sheet schöner dafür
+  //Pop Up Menu Entry actions
   PopupMenuEntry playNow(List<MediaItem> items) {
     return PopupMenuItem(
       onTap: () {
@@ -697,7 +696,72 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: const Icon(Icons.more_vert),
     );
   }
-  //TODO:artistMenuList//TODO:addToPlaylist
+  //TODO:addToPlaylist
+  Widget artistMenuList(Map<dynamic,dynamic> artist) {//TODO:addToPlaylist
+    Map actionOrder = settingsControl.loadSetting('artistMenuActionOrder');
+    List<PopupMenuEntry> menuEntryList = [];
+    List<ListTile> moreSheetEntryList = [];
+    for (String action in actionOrder['mainMenu']) {
+      switch (action) {
+        case 'playNow':
+          menuEntryList.add(playNowByID({'artistID':artist['id']}));
+        case 'addNext':
+          menuEntryList.add(addNextByID({'artistID':artist['id']}));
+        case 'enqueue':
+          menuEntryList.add(enqueueByID({'artistID':artist['id']}));
+        case 'playNowShuffled':
+          menuEntryList.add(playNowShuffledByID({'artistID':artist['id']}));
+        case 'addNextShuffled':
+          menuEntryList.add(addNextShuffledByID({'artistID':artist['id']}));
+        case 'enqueueShuffled':
+          menuEntryList.add(enqueueShuffledByID({'artistID':artist['id']}));
+        case 'unFavorite':
+          menuEntryList.add(unFavorite(null, null, artist['id']));
+      }
+    }
+    for (String action in actionOrder['moreSheet']) {
+      switch (action) {
+        case 'playNow':
+          moreSheetEntryList.add(playNowByIDMoreSheet({'artistID':artist['id']}));
+        case 'addNext':
+          moreSheetEntryList.add(addNextByIDMoreSheet({'artistID':artist['id']}));
+        case 'enqueue':
+          moreSheetEntryList.add(enqueueByIDMoreSheet({'artistID':artist['id']}));
+        case 'playNowShuffled':
+          moreSheetEntryList.add(playNowShuffledByIDMoreSheet({'artistID':artist['id']}));
+        case 'addNextShuffled':
+          moreSheetEntryList.add(addNextShuffledByIDMoreSheet({'artistID':artist['id']}));
+        case 'enqueueShuffled':
+          moreSheetEntryList.add(enqueueShuffledByIDMoreSheet({'artistID':artist['id']}));
+        case 'unFavorite':
+          moreSheetEntryList.add(unFavoriteMoreSheet(null, null, artist['id']));
+      }
+    }
+    if (actionOrder['moreSheet'].isNotEmpty) {
+      menuEntryList.add(PopupMenuItem(
+        onTap: () {
+          showModalBottomSheet(
+              context: context,
+              showDragHandle: true,
+              builder: (BuildContext context) {
+                return SafeArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: moreSheetEntryList,
+                  ),
+                );
+              }
+          );
+        },
+        child: const Text("More"),
+      ));
+    }
+    return PopupMenuButton(
+      itemBuilder: (BuildContext context) => menuEntryList,
+      child: const Icon(Icons.more_vert),
+    );
+  }
+
   Widget playlistMenu(Map<dynamic,dynamic> playlistOld) {//vlt noch ein show playlists by user, hast du ja im playlist screen an sich auch schon vor glaube ich
     Map<dynamic,dynamic> playlist = playlistOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('playlistMenuActionOrder');

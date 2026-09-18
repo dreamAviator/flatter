@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/popups/artist_select_popup.dart';
@@ -17,6 +18,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marqueer/marqueer.dart';
 
 import '../../../Riverpod/riverpod_manager.dart';
+import '../../../useful_scripts.dart';
 import '../album_screen/album_screen.dart';
 import '../filter_widgets/search_string_filter_widget.dart';
 
@@ -27,6 +29,7 @@ class PlaylistScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
+    final usefulScripts = SubsonicJustAudioCompatibility();
     ItemMenus itemMenus = ItemMenus(context);
     final Size screenSize = MediaQuery.sizeOf(context);
     final filterNotifier = ValueNotifier<String>('');
@@ -46,17 +49,41 @@ class PlaylistScreen extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     String action = settingsControl.settingsMap['playlistPlayButtonAction'];
-                    switch (action) {//die sachen so implementieren, dass sich dieses ding hier die dinger holt oder ein anderer teil und dann die sahcne an die playercontrol weitergegeben werden, die playercontrol sollte nicht die sachen holen müssen
+                    List<dynamic>? subsonicSongList = value['entry'];
+                    if (subsonicSongList == null) {
+                      return;
+                    }
+                    List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList);
+                    switch (action) {
                       case "playNow":
                         playerControl.customAction('clearQueue');
                         playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':value['id'],
+                          'tracks':songList,
                         }});
                       case "playNext":
-                        playerControl.customAction('addNextByID',{'addNextByID':value['id']});
+                        playerControl.customAction('addNext',{'addNext': {
+                          'tracks':songList,
+                        }});
                       case "enqueue":
-                        playerControl.customAction('addByID',{'addByID':value['id']});
-                    //muss noch was für die shuffled dinger machen
+                        playerControl.customAction('addMultiple',{'addMultiple': {
+                          'tracks':songList,
+                        }});
+                      case "playNowShuffled":
+                        playerControl.customAction('clearQueue');
+                        playerControl.customAction('addMultiple',{'addMultiple': {
+                          'tracks':songList,
+                          'shuffled':true,
+                        }});
+                      case "playNextShuffled":
+                        playerControl.customAction('addNext',{'addNext': {
+                          'tracks':songList,
+                          'shuffled':true,
+                        }});
+                      case "enqueueShuffled":
+                        playerControl.customAction('addMultiple',{'addMultiple': {
+                          'tracks':songList,
+                          'shuffled':true,
+                        }});
                     }
                   },
                   icon: const Icon(Icons.play_arrow),
