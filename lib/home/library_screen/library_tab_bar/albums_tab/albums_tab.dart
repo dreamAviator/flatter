@@ -115,7 +115,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                   ],
                   initialSelection: settingsControl.loadSetting('albumDropDownFilterSelection'),
                   onSelected: (value) {
-                    filterSortList[0] = value;
+                    filterSortList[0] = value;//is tweaking and says is not string, however value.runtimetype says it is string
                     ref.invalidate(riverpodManager.albumListProvider);
                     settingsControl.changeSetting('albumDropDownFilterSelection', value);
                   },
