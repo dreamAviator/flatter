@@ -2,11 +2,12 @@ import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/item_widgets/artist_grid.dart';
 import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/artists_tab/artists_tab_ViewModel.dart';
-import 'package:flatter/home/library_screen/search_filter_widget.dart';
+import 'package:flatter/home/library_screen/filter_widgets/search_string_filter_widget.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intrinsic_size_builder/intrinsic_size_builder.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
@@ -100,36 +101,39 @@ class _ArtistsTabState extends State<ArtistsTab> {
       child: Consumer(
         builder: (context, ref, child) {
           final artistList = ref.watch(riverpodManager.artistListProvider);
-          return CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    SearchFilterWidget(filterNotifier: filterNotifier),
-                    Row(
-                      children: [
-                        Text("hier drop down menü"),
-                        IconButton(
-                          onPressed: () {
-                            reverseSort();
-                            ref.invalidate(riverpodManager.artistListProvider);
-                          },
-                          icon: (ascending
-                              ? Icon(Icons.arrow_upward)
-                              : Icon(Icons.arrow_downward)),
-                        )
-                      ],
+          return IntrinsicSizeBuilder(
+            subject: SearchStringFilterWidget(filterNotifier: filterNotifier),
+            builder: (context, subjectSize,subject) {
+              return CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    primary: false,
+                    floating: true,
+                    snap: true,
+                    expandedHeight: subjectSize.height,
+                    flexibleSpace: Expanded(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          bool visible = true;
+                          print(constraints.maxHeight);
+                          print(subjectSize.height);
+                          if (constraints.heightConstraints().maxHeight < subjectSize.height) {
+                            visible = false;
+                          }
+                          return Visibility(visible: visible,child: subject);
+                        },
+                      ),
                     ),
-                  ],
-                ),
-              ),
-              switch (artistList) {
-                AsyncValue(:final value?) => ArtistGrid(artistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: true,),//noch schauen wie ich die index buchstaben einfügen kann
-                //AsyncValue(:final value?) => SliverToBoxAdapter(child: buildListView(value, context, screenSize.width)),
-                AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("Error"))),
-                AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
-              },
-            ],
+                  ),
+                  switch (artistList) {
+                    AsyncValue(:final value?) => ArtistGrid(artistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: true,),//noch schauen wie ich die index buchstaben einfügen kann
+                    //AsyncValue(:final value?) => SliverToBoxAdapter(child: buildListView(value, context, screenSize.width)),
+                    AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("Error"))),
+                    AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
+                  },
+                ],
+              );
+            }
           );
         },
       ),

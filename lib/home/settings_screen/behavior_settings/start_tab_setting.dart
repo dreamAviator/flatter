@@ -19,7 +19,7 @@ class _StartTabSettingState extends State<StartTabSetting> {
         DropdownMenuEntry(value: 1, label: "Player"),
         DropdownMenuEntry(value: 2, label: "Queue"),
       ],
-      initialSelection: settingsControl.settingsMap['startTab'],
+      initialSelection: settingsControl.loadSetting('startTab'),
       onSelected: (value) {
         settingsControl.changeSetting('startTab', value);
       },

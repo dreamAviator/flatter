@@ -18,7 +18,7 @@ import 'package:marqueer/marqueer.dart';
 
 import '../../../Riverpod/riverpod_manager.dart';
 import '../album_screen/album_screen.dart';
-import '../search_filter_widget.dart';
+import '../filter_widgets/search_string_filter_widget.dart';
 
 class PlaylistScreen extends StatelessWidget {
   const PlaylistScreen({super.key,required this.playlistID});
@@ -314,7 +314,7 @@ class PlaylistScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SliverToBoxAdapter(child: SearchFilterWidget(filterNotifier: filterNotifier),),
+              SliverToBoxAdapter(child: SearchStringFilterWidget(filterNotifier: filterNotifier),),
               switch (playlistDetails) {
                 AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: value['id'],),
                 AsyncValue(error: != null) => const Text("Error"),

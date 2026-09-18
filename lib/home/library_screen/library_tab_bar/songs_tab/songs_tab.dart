@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../../search_filter_widget.dart';
+import '../../filter_widgets/search_string_filter_widget.dart';
 
 class SongsTab extends StatelessWidget {
   const SongsTab({super.key,required this.viewModel});
@@ -15,7 +15,6 @@ class SongsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
-    final filterNotifier = ValueNotifier<String>('');
     bool ascending = true;
     List<dynamic> filterSortList = [500,null,null,null];
     return Expanded(
@@ -25,26 +24,21 @@ class SongsTab extends StatelessWidget {
           return CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
-                child: Column(
+                child: Row(
                   children: [
-                    SearchFilterWidget(filterNotifier: filterNotifier),
-                    Row(
-                      children: [
-                        Text("hier drop down menü"),
-                        IconButton(
-                          onPressed: () {
-                          },
-                          icon: (ascending
-                              ? Icon(Icons.arrow_upward)
-                              : Icon(Icons.arrow_downward)),
-                        )
-                      ],
-                    ),
+                    Text("hier drop down menü"),
+                    IconButton(
+                      onPressed: () {
+                      },
+                      icon: (ascending
+                          ? Icon(Icons.arrow_upward)
+                          : Icon(Icons.arrow_downward)),
+                    )
                   ],
                 ),
               ),
               switch (randomSongList) {
-                AsyncValue(:final value?) => SongList(listView: true,sliver: true,songListNullable: value,filterNotifier: filterNotifier,playlistID: null,),
+                AsyncValue(:final value?) => SongList(listView: true,sliver: true,songListNullable: value,playlistID: null,),
                 AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("error"),)),
                 AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),),
               }

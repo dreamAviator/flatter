@@ -3,7 +3,7 @@ import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
 import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
-import 'package:flatter/home/library_screen/search_filter_widget.dart';
+import 'package:flatter/home/library_screen/filter_widgets/search_string_filter_widget.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -93,29 +93,42 @@ class _AlbumsTabState extends State<AlbumsTab> {
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
-    final filterNotifier = ValueNotifier<String>('');
     return Expanded(
       child: Consumer(
         builder: (context, ref, child) {
           final albumList = ref.watch(riverpodManager.albumListProvider(filterSortList));
           return IntrinsicSizeBuilder(
-            subject: Column(
+            subject: Row(
               children: [
-                SearchFilterWidget(filterNotifier: filterNotifier),
-                Row(
-                  children: [
-                    Text("hier drop down menü"),
-                    IconButton(
-                      onPressed: () {
-                        reverseSort();
-                        ref.invalidate(riverpodManager.albumListProvider);
-                      },
-                      icon: (ascending
-                          ? Icon(Icons.arrow_upward)
-                          : Icon(Icons.arrow_downward)),
-                    )
+                DropdownMenu(
+                  selectOnly: true,
+                  dropdownMenuEntries: const [
+                    DropdownMenuEntry(value: "random", label: "Random"),
+                    DropdownMenuEntry(value: "newest", label: "Newest"),
+                    DropdownMenuEntry(value: "highest", label: "Highest"),
+                    DropdownMenuEntry(value: "frequent", label: "Frequent"),
+                    DropdownMenuEntry(value: "Recent", label: "Recent"),
+                    DropdownMenuEntry(value: "alphabeticalByName", label: "Alphabetical by name"),
+                    DropdownMenuEntry(value: "alphabeticalByArtist", label: "Alphabetical by artist"),
+                    DropdownMenuEntry(value: "byYear", label: "byYear"),
+                    DropdownMenuEntry(value: "byGenre", label: "byGenre"),
                   ],
+                  initialSelection: settingsControl.loadSetting('albumDropDownFilterSelection'),
+                  onSelected: (value) {
+                    filterSortList[0] = value;
+                    ref.invalidate(riverpodManager.albumListProvider);
+                    settingsControl.changeSetting('albumDropDownFilterSelection', value);
+                  },
                 ),
+                IconButton(
+                  onPressed: () {
+                    reverseSort();
+                    ref.invalidate(riverpodManager.albumListProvider);
+                  },
+                  icon: (ascending
+                      ? Icon(Icons.arrow_upward)
+                      : Icon(Icons.arrow_downward)),
+                )
               ],
             ),
             builder: (context,subjectSize,subject) {
@@ -139,7 +152,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                     )),
                   ),
                   switch (albumList) {
-                    AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,filterNotifier: filterNotifier,),
+                    AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true),
                     AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("Error"))),
                     AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
                   },
