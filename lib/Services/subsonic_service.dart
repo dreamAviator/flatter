@@ -65,8 +65,8 @@ class SubsonicService {
   //get things
   Future<List<dynamic>> getAlbums(List<String> filterSortOptions) async {
     List<String> url = getURL(null, null, null);//das offset mit der anzahl der results probably multiplizieren, das muss ma zumindest bei der search machen
-    String offset = filterSortOptions[2];//ehemalstodo:herausfinden waurm und dann später wegmachen wenn es keinen grung gibt. wenn es einen grund gibt dann grund hier hinschreiben------habe ich mich einfach nur gefragt was das offset ist? die seiten
-    final uri = Uri.parse("${url[0]}getAlbumList2${url[1]}&type=${filterSortOptions[0]}&size=${filterSortOptions[1]}&offset=$offset&order=${filterSortOptions[3]}");//from year, to year und genre filtered fehlt da noch
+    String offset = filterSortOptions[2];//ehemalstodo:herausfinden waurm und dann später wegmachen wenn es keinen grung gibt. wenn es einen grund gibt dann grund hier hinschreiben------habe ich mich einfach nur gefragt was das offset ist? die seiten//wieso ist das da? ich kann unten einfach die sache einfügen, ohne, dass ich dafür eine variable erstellen muss
+    final uri = Uri.parse("${url[0]}getAlbumList2${url[1]}&type=${filterSortOptions[0]}&size=${filterSortOptions[1]}&offset=$offset");//from year, to year und genre filtered fehlt da noch
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {

@@ -26,24 +26,9 @@ class AlbumsTab extends StatefulWidget {
 
 class _AlbumsTabState extends State<AlbumsTab> {
   String type = "random";
-  bool ascending = true;
   int elementCount = 10;
   int offset = 0;
-  List<String> filterSortList = ["random","50","0","ASC"];
-
-  void reverseSort() {
-    if (ascending == true) {
-      setState(() {
-        filterSortList = [type,elementCount.toString(),offset.toString(),"DESC"];
-        ascending = false;
-      });
-    } else {
-      setState(() {
-        filterSortList = [type,elementCount.toString(),offset.toString(),"ASC"];
-        ascending = true;
-      });
-    }
-  }
+  List<String> filterSortList = ["random","50","0"];
 
   Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
     List<Widget> widgetList = [];
@@ -96,11 +81,13 @@ class _AlbumsTabState extends State<AlbumsTab> {
     return Expanded(
       child: Consumer(
         builder: (context, ref, child) {
+          print("filtersortlist");
+          print(filterSortList);
           final albumList = ref.watch(riverpodManager.albumListProvider(filterSortList));
           return IntrinsicSizeBuilder(
             subject: Row(
               children: [
-                DropdownMenu(
+                DropdownMenu<String>(
                   selectOnly: true,
                   dropdownMenuEntries: const [
                     DropdownMenuEntry(value: "random", label: "Random"),
@@ -115,20 +102,16 @@ class _AlbumsTabState extends State<AlbumsTab> {
                   ],
                   initialSelection: settingsControl.loadSetting('albumDropDownFilterSelection'),
                   onSelected: (value) {
-                    filterSortList[0] = value;//is tweaking and says is not string, however value.runtimetype says it is string
-                    ref.invalidate(riverpodManager.albumListProvider);
-                    settingsControl.changeSetting('albumDropDownFilterSelection', value);
+                    if (value == null) {
+                      return;
+                    }
+                    setState(() {
+                      filterSortList[0] = value;
+                      settingsControl.changeSetting('albumDropDownFilterSelection', value);
+                    });
+
                   },
                 ),
-                IconButton(
-                  onPressed: () {
-                    reverseSort();
-                    ref.invalidate(riverpodManager.albumListProvider);
-                  },
-                  icon: (ascending
-                      ? Icon(Icons.arrow_upward)
-                      : Icon(Icons.arrow_downward)),
-                )
               ],
             ),
             builder: (context,subjectSize,subject) {
