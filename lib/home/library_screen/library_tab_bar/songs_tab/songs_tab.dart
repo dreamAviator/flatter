@@ -8,10 +8,15 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../filter_widgets/search_string_filter_widget.dart';
 
-class SongsTab extends StatelessWidget {
+class SongsTab extends StatefulWidget {
   const SongsTab({super.key,required this.viewModel});
   final SongsTabViewModel viewModel;
 
+  @override
+  State<SongsTab> createState() => _SongsTabState();
+}
+
+class _SongsTabState extends State<SongsTab> {//TODO:favorite status hier
   @override
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();

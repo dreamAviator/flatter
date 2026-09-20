@@ -1,6 +1,6 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/item_widgets/artist_grid.dart';
-import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
+import 'package:flatter/home/library_screen/screens/artist_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/artists_tab/artists_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/filter_widgets/search_string_filter_widget.dart';
 import 'package:flatter/main.dart';
@@ -12,6 +12,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
 import '../../../../Riverpod/riverpod_manager.dart';
+import '../../../../useful_scripts.dart';
 
 class ArtistsTab extends StatefulWidget {
   const ArtistsTab({super.key,required this.viewModel});
@@ -22,31 +23,15 @@ class ArtistsTab extends StatefulWidget {
 }
 
 class _ArtistsTabState extends State<ArtistsTab> {
-  String type = "random";
-  bool ascending = true;
-  int elementCount = 10;
-  int offset = 0;
-  List<String> filterSortList = ["random","50","0","ASC"];
-
-  void reverseSort() {
-    if (ascending == true) {
-      setState(() {
-        filterSortList = [type,elementCount.toString(),offset.toString(),"DESC"];
-        ascending = false;
-      });
-    } else {
-      setState(() {
-        filterSortList = [type,elementCount.toString(),offset.toString(),"ASC"];
-        ascending = true;
-      });
-    }
-  }
+  bool onlyFavorites = false;
 
   Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
     List<Widget> outerWidgetList = [];
     List<Widget> innerWidgetList = [];
     print(items.length);
     int index = 0;
+    print(items);
+    print("this was items");
     while (index < items.length) {
       outerWidgetList.add(Text(items[index]['name']));
       outerWidgetList.add(Divider());
@@ -100,9 +85,22 @@ class _ArtistsTabState extends State<ArtistsTab> {
     return Expanded(
       child: Consumer(
         builder: (context, ref, child) {
-          final artistList = ref.watch(riverpodManager.artistListProvider);
+          final artistList = ref.watch(riverpodManager.artistListProvider(onlyFavorites));
           return IntrinsicSizeBuilder(
-            subject: SearchStringFilterWidget(filterNotifier: filterNotifier),
+            subject: Row(
+              children: [
+                FilterChip(
+                  label: Text("Favorites"),
+                  selected: onlyFavorites,
+                  onSelected: (bool selected) {
+                    setState(() {
+                      onlyFavorites = selected;
+                    });
+                  },
+                ),
+                Expanded(child: SearchStringFilterWidget(filterNotifier: filterNotifier)),
+              ],
+            ),
             builder: (context, subjectSize,subject) {
               return CustomScrollView(
                 slivers: [
@@ -126,7 +124,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
                     ),
                   ),
                   switch (artistList) {
-                    AsyncValue(:final value?) => ArtistGrid(artistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: true,),//noch schauen wie ich die index buchstaben einfügen kann
+                    AsyncValue(:final value?) => ArtistGrid(artistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: onlyFavorites.opposite,),//noch schauen wie ich die index buchstaben einfügen kann
                     //AsyncValue(:final value?) => SliverToBoxAdapter(child: buildListView(value, context, screenSize.width)),
                     AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("Error"))),
                     AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),

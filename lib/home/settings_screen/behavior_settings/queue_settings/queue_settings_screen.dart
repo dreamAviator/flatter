@@ -39,7 +39,7 @@ class _QueueSettingsScreenState extends State<QueueSettingsScreen> {
             valueListenable: widgetDisabledNotifier,
             builder: (BuildContext context,bool value,Widget? child) {
               return SDisabled(
-                isDisabled: value.opposite(),
+                isDisabled: value.opposite,
                 child: ListTile(
                   title: const Text("Sync queue with server"),
                   trailing: SyncQueueWithServerSetting(),

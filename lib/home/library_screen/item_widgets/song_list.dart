@@ -6,8 +6,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
 
 import '../../../main.dart';
-import '../album_screen/album_screen.dart';
-import '../artist_screen/artist_screen.dart';
+import '../screens/album_screen.dart';
+import '../screens/artist_screen.dart';
 
 class SongList extends StatelessWidget {
   const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver, this.filterNotifier,required this.playlistID});

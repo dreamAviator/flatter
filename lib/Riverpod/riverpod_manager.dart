@@ -26,7 +26,13 @@ class RiverpodManager {
   });
 
   final albumListProvider = FutureProvider.family<List<dynamic>,List<String>>((ref,List<String> filterSortOptions) async {
-    List<dynamic> albumMapList = await subsonicService.getAlbums(filterSortOptions);
+    List<dynamic> albumMapList = [];
+    if (filterSortOptions[0] == "favorites") {
+      Map<dynamic,dynamic> starred = await subsonicService.getStarred();
+      albumMapList = starred['album'];
+    } else {
+      albumMapList = await subsonicService.getAlbums(filterSortOptions);
+    }
     return albumMapList;
   });
 
@@ -35,9 +41,15 @@ class RiverpodManager {
     return albumDetails;
   });
 
-  final artistListProvider = FutureProvider<List<dynamic>>((ref) async {
-    List<dynamic> albumMapList = await subsonicService.getArtists();
-    return albumMapList;
+  final artistListProvider = FutureProvider.family<List<dynamic>,bool>((ref,bool onlyFavorites) async {
+    List<dynamic> artistMapList = [];
+    if (onlyFavorites == true) {
+      Map<dynamic,dynamic> starred = await subsonicService.getStarred();
+      artistMapList = starred['artist'];
+    } else {
+      artistMapList = await subsonicService.getArtists();
+    }
+    return artistMapList;
   });
 
   final artistDetailsProvider = FutureProvider.family<Map<dynamic,dynamic>,String>((ref,String id) async {

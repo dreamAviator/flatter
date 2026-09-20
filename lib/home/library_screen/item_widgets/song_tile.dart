@@ -7,8 +7,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:marqueer/marqueer.dart';
 
 import '../../../useful_scripts.dart';
-import '../album_screen/album_screen.dart';
-import '../artist_screen/artist_screen.dart';
+import '../screens/album_screen.dart';
+import '../screens/artist_screen.dart';
 import '../popups/artist_select_popup.dart';
 
 class SongTile extends StatelessWidget {

@@ -9,7 +9,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
 import '../../../main.dart';
-import '../artist_screen/artist_screen.dart';
+import '../screens/artist_screen.dart';
 
 class ArtistSelectWindow {//TODO:setting for going to main artist instead of opening popup
   static void showArtistSelectWindow(BuildContext context,List<dynamic> artistInfosLite) {

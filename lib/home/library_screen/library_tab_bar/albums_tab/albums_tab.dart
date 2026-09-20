@@ -1,7 +1,7 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
-import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
+import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/filter_widgets/search_string_filter_widget.dart';
 import 'package:flatter/main.dart';
@@ -25,8 +25,8 @@ class AlbumsTab extends StatefulWidget {
 }
 
 class _AlbumsTabState extends State<AlbumsTab> {
-  String type = "random";
-  int elementCount = 10;
+  String type = settingsControl.loadSetting('albumDropDownFilterSelection');
+  int elementCount = 50;
   int offset = 0;
   List<String> filterSortList = ["random","50","0"];
 
@@ -76,6 +76,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
 
   @override
   Widget build(BuildContext context) {
+    filterSortList = [type,"$elementCount","$offset"];
     final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
     return Expanded(
@@ -90,6 +91,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                 DropdownMenu<String>(
                   selectOnly: true,
                   dropdownMenuEntries: const [
+                    DropdownMenuEntry(value: "favorites", label: "Favorites"),
                     DropdownMenuEntry(value: "random", label: "Random"),
                     DropdownMenuEntry(value: "newest", label: "Newest"),
                     DropdownMenuEntry(value: "highest", label: "Highest"),
@@ -106,7 +108,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                       return;
                     }
                     setState(() {
-                      filterSortList[0] = value;
+                      type = value;
                       settingsControl.changeSetting('albumDropDownFilterSelection', value);
                     });
 

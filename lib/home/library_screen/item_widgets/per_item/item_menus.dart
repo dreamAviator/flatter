@@ -1,6 +1,6 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
-import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
+import 'package:flatter/home/library_screen/screens/album_screen.dart';
+import 'package:flatter/home/library_screen/screens/artist_screen.dart';
 import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';

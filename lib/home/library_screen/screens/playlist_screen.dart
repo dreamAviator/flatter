@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
-import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
+import 'package:flatter/home/library_screen/screens/artist_screen.dart';
 import 'package:flatter/home/library_screen/popups/artist_select_popup.dart';
 import 'package:flatter/home/library_screen/popups/edit_playlist_popup.dart';
 import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
@@ -19,7 +19,7 @@ import 'package:marqueer/marqueer.dart';
 
 import '../../../Riverpod/riverpod_manager.dart';
 import '../../../useful_scripts.dart';
-import '../album_screen/album_screen.dart';
+import 'album_screen.dart';
 import '../filter_widgets/search_string_filter_widget.dart';
 
 class PlaylistScreen extends StatelessWidget {

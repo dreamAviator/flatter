@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
-import 'package:flatter/home/library_screen/artist_screen/artist_screen.dart';
+import 'package:flatter/home/library_screen/screens/artist_screen.dart';
 import 'package:flatter/home/library_screen/popups/artist_select_popup.dart';
 import 'package:flatter/home/library_screen/item_widgets/per_item/favorite_button.dart';
 import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
-import 'package:flatter/home/library_screen/album_screen/album_screen.dart';
+import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';

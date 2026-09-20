@@ -73,7 +73,14 @@ class OtherScripts {
 // Posted by eamirho3ein, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-09-08, License - CC BY-SA 4.0
 extension BoolOpposite on bool {
+  /*
   bool opposite() {
+    return this ? false : true;
+  }
+
+   */
+
+  bool get opposite {
     return this ? false : true;
   }
 }

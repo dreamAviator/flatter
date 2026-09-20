@@ -4,7 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../main.dart';
-import '../artist_screen/artist_screen.dart';
+import '../screens/artist_screen.dart';
 import 'per_item/item_menus.dart';
 
 class ArtistGrid extends StatelessWidget {
@@ -19,7 +19,6 @@ class ArtistGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     List<dynamic> artistList = [];
     if (artistListNullable != null && artistListNullable?.isEmpty == false) {
-      print(artistListNullable);
       if (withIndexesGiven == true) {
         for (Map index in artistListNullable!) {
           artistList.addAll(index['artist']);
