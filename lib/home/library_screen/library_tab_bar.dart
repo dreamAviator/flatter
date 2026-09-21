@@ -1,19 +1,19 @@
-import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/artists_tab/artists_tab.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/artists_tab/artists_tab_ViewModel.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/folders_tab/folders_tab.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/folders_tab/folders_tab_ViewModel.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playlists_tab.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playlists_tab_ViewModel.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/songs_tab/songs_tab.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/songs_tab/songs_tab_viewModel.dart';
+import 'package:flatter/home/library_screen/tabs/albums_tab/albums_tab.dart';
+import 'package:flatter/home/library_screen/tabs/albums_tab/albums_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/tabs/artists_tab/artists_tab.dart';
+import 'package:flatter/home/library_screen/tabs/artists_tab/artists_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/tabs/folders_tab/folders_tab.dart';
+import 'package:flatter/home/library_screen/tabs/folders_tab/folders_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/tabs/playlists_tab/playlists_tab.dart';
+import 'package:flatter/home/library_screen/tabs/playlists_tab/playlists_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/tabs/songs_tab/songs_tab.dart';
+import 'package:flatter/home/library_screen/tabs/songs_tab/songs_tab_viewModel.dart';
 import 'package:flatter/home/search_screen/search_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/material.dart';
 
-import '../../settings_screen/settings_screen.dart';
-import '../../settings_screen/settings_screen_ViewModel.dart';
+import '../settings_screen/settings_screen.dart';
+import '../settings_screen/settings_screen_ViewModel.dart';
 
 class LibraryTabBar extends StatelessWidget {
   const LibraryTabBar({super.key});

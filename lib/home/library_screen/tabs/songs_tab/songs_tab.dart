@@ -1,5 +1,5 @@
 import 'package:flatter/Riverpod/riverpod_manager.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/songs_tab/songs_tab_viewModel.dart';
+import 'package:flatter/home/library_screen/tabs/songs_tab/songs_tab_viewModel.dart';
 import 'package:flatter/home/library_screen/item_widgets/song_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

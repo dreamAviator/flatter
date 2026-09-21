@@ -1,7 +1,7 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/item_widgets/artist_grid.dart';
 import 'package:flatter/home/library_screen/screens/artist_screen.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/artists_tab/artists_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/tabs/artists_tab/artists_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/filter_widgets/search_string_filter_widget.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';

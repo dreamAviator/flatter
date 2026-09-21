@@ -1,8 +1,8 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/popups/edit_playlist_popup.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/albums_tab/albums_tab_ViewModel.dart';
-import 'package:flatter/home/library_screen/library_tab_bar/playlists_tab/playlists_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/tabs/albums_tab/albums_tab_ViewModel.dart';
+import 'package:flatter/home/library_screen/tabs/playlists_tab/playlists_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/item_widgets/playlist_grid.dart';
 import 'package:flatter/home/library_screen/screens/playlist_screen.dart';
 import 'package:flatter/home/library_screen/filter_widgets/search_string_filter_widget.dart';
@@ -162,52 +162,68 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
     final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
     final ValueNotifier<String> filterNotifier = ValueNotifier('');
-    return Expanded(
-      child: Consumer(
-        builder: (context, ref, child) {
-          final playlistList = ref.watch(riverpodManager.playlistListProvider);
-          return IntrinsicSizeBuilder(
-            subject: SearchStringFilterWidget(filterNotifier: filterNotifier),
-            builder: (context, subjectSize,subject) {
-              return CustomScrollView(
-                slivers: [
-                  SliverAppBar(
-                    primary: false,
-                    floating: true,
-                    snap: true,
-                    expandedHeight: subjectSize.height,
-                    flexibleSpace: Expanded(
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          bool visible = true;
-                          print(constraints.maxHeight);
-                          print(subjectSize.height);
-                          if (constraints.heightConstraints().maxHeight < subjectSize.height) {
-                            visible = false;
-                          }
-                          return Visibility(visible: visible,child: subject);
-                        },
+    return Stack(
+      children:[
+        Expanded(
+          child: Consumer(
+            builder: (context, ref, child) {
+              final playlistList = ref.watch(riverpodManager.playlistListProvider);
+              return IntrinsicSizeBuilder(
+                subject: SearchStringFilterWidget(filterNotifier: filterNotifier),
+                builder: (context, subjectSize,subject) {
+                  return CustomScrollView(
+                    slivers: [
+                      SliverAppBar(
+                        primary: false,
+                        floating: true,
+                        snap: true,
+                        expandedHeight: subjectSize.height,
+                        flexibleSpace: Expanded(
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              bool visible = true;
+                              print(constraints.maxHeight);
+                              print(subjectSize.height);
+                              if (constraints.heightConstraints().maxHeight < subjectSize.height) {
+                                visible = false;
+                              }
+                              return Visibility(visible: visible,child: subject);
+                            },
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: Text("Own"),),
-                  switch (playlistList) {
-                    AsyncValue(:final value?) => PlaylistGrid(playlistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: true,filterNotifier: filterNotifier,),
-                    AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("Error"))),
-                    AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
-                  },
-                  const SliverToBoxAdapter(child: Text("Shared with you"),),
-                  switch (playlistList) {
-                    AsyncValue(:final value?) => PlaylistGrid(playlistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: false,filterNotifier: filterNotifier,),
-                    AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("Error"))),
-                    AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
-                  },
-                ],
+                      const SliverToBoxAdapter(child: Text("Own"),),
+                      switch (playlistList) {
+                        AsyncValue(:final value?) => PlaylistGrid(playlistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: true,filterNotifier: filterNotifier,),
+                        AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("Error"))),
+                        AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
+                      },
+                      const SliverToBoxAdapter(child: Text("Shared with you"),),
+                      switch (playlistList) {
+                        AsyncValue(:final value?) => PlaylistGrid(playlistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: false,filterNotifier: filterNotifier,),
+                        AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("Error"))),
+                        AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
+                      },
+                    ],
+                  );
+                }
               );
-            }
-          );
-        },
-      ),
+            },
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () {
+                EditPlaylistPopup.showEditPlaylistPopUp(context, true, null, null, null, null, null);
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
