@@ -21,6 +21,10 @@ class _SongsTabState extends State<SongsTab> {//TODO:favorite status hier
   bool onlyFavorites = false;
   bool genreFilter = false;
 
+  DropdownMenu<String> buildGenreMenu(context,List<Map<dynamic,dynamic>> genres) {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
@@ -53,6 +57,16 @@ class _SongsTabState extends State<SongsTab> {//TODO:favorite status hier
                       });
                     },
                   ),
+                  if (genreFilter == true) Consumer(
+                    builder: (context, ref, child) {
+                      final genres = ref.watch(riverpodManager.genresProvider);
+                      return switch (genres) {
+                        AsyncValue(:final value?) => buildGenreMenu(context, value),
+                        AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("error"),)),
+                        AsyncValue() =>SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),),
+                      };
+                    },
+                  )
                 ],
               ),
             ),

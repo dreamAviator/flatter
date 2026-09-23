@@ -104,4 +104,9 @@ class RiverpodManager {
     print("this was riverpod manager");
     return searchResultsMap;
   });
+
+  final genresProvider = FutureProvider<List<Map<dynamic,dynamic>>>((ref) async {
+    List<Map<dynamic,dynamic>> genres = await subsonicService.getGenres();
+    return genres;
+  });
 }
