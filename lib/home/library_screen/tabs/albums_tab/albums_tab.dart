@@ -88,31 +88,34 @@ class _AlbumsTabState extends State<AlbumsTab> {
           return IntrinsicSizeBuilder(
             subject: Row(
               children: [
-                DropdownMenu<String>(
-                  selectOnly: true,
-                  dropdownMenuEntries: const [
-                    DropdownMenuEntry(value: "favorites", label: "Favorites"),
-                    DropdownMenuEntry(value: "random", label: "Random"),
-                    DropdownMenuEntry(value: "newest", label: "Newest"),
-                    DropdownMenuEntry(value: "highest", label: "Highest"),
-                    DropdownMenuEntry(value: "frequent", label: "Frequent"),
-                    DropdownMenuEntry(value: "Recent", label: "Recent"),
-                    DropdownMenuEntry(value: "alphabeticalByName", label: "Alphabetical by name"),
-                    DropdownMenuEntry(value: "alphabeticalByArtist", label: "Alphabetical by artist"),
-                    DropdownMenuEntry(value: "byYear", label: "byYear"),
-                    DropdownMenuEntry(value: "byGenre", label: "byGenre"),
-                  ],
-                  initialSelection: settingsControl.loadSetting('albumDropDownFilterSelection'),
-                  onSelected: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    setState(() {
-                      type = value;
-                      settingsControl.changeSetting('albumDropDownFilterSelection', value);
-                    });
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownMenu<String>(
+                    selectOnly: true,
+                    dropdownMenuEntries: const [
+                      DropdownMenuEntry(value: "favorites", label: "Favorites"),
+                      DropdownMenuEntry(value: "random", label: "Random"),
+                      DropdownMenuEntry(value: "newest", label: "Newest"),
+                      DropdownMenuEntry(value: "highest", label: "Highest"),
+                      DropdownMenuEntry(value: "frequent", label: "Frequent"),
+                      DropdownMenuEntry(value: "Recent", label: "Recent"),
+                      DropdownMenuEntry(value: "alphabeticalByName", label: "Alphabetical by name"),
+                      DropdownMenuEntry(value: "alphabeticalByArtist", label: "Alphabetical by artist"),
+                      DropdownMenuEntry(value: "byYear", label: "byYear"),
+                      DropdownMenuEntry(value: "byGenre", label: "byGenre"),
+                    ],
+                    initialSelection: settingsControl.loadSetting('albumDropDownFilterSelection'),
+                    onSelected: (value) {
+                      if (value == null) {
+                        return;
+                      }
+                      setState(() {
+                        type = value;
+                        settingsControl.changeSetting('albumDropDownFilterSelection', value);
+                      });
 
-                  },
+                    },
+                  ),
                 ),
               ],
             ),

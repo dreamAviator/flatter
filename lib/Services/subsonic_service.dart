@@ -403,6 +403,25 @@ class SubsonicService {
     }
   }
 
+  Future<List<Map<dynamic,dynamic>>> getGenres() async {
+    List<String> url = getURL(null, null, null);
+    final uri = Uri.parse("${url[0]}getGenres${url[1]}");
+    try {
+      final data = await http.get(uri);
+      if (data.statusCode != 200) {
+        return [];
+      }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        return [];
+      }
+      return subsonicResponse['genres']['genre'];
+    } catch(error) {
+      return [];
+    }
+  }
+
   //do something to server
   Future<Map<dynamic,dynamic>> createPlaylist(String name,List<dynamic>? songIDsToAdd) async {
     List<String> url = getURL(null,null,null);

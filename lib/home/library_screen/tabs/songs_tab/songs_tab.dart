@@ -24,34 +24,37 @@ class _SongsTabState extends State<SongsTab> {//TODO:favorite status hier
   @override
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
-    bool ascending = true;
     List<dynamic> filterSortList = [500,null,null,null,onlyFavorites];
     return Expanded(
       child: Consumer(
         builder: (context, ref, child) {
           final randomSongList = ref.watch(riverpodManager.randomSongListProvider(filterSortList));
           return IntrinsicSizeBuilder(
-            subject: Row(
-              children: [
-                if (genreFilter == false) FilterChip(
-                  label: Text("Favorites"),
-                  selected: onlyFavorites,
-                  onSelected: (bool selected) {
-                    setState(() {
-                      onlyFavorites = selected;
-                    });
-                  },
-                ),
-                if (onlyFavorites == false) FilterChip(
-                  label: Text("Genre:"),
-                  selected: genreFilter,
-                  onSelected: (bool selected) {
-                    setState(() {
-                      genreFilter = selected;
-                    });
-                  },
-                ),
-              ],
+            subject: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                spacing: 8,
+                children: [
+                  if (genreFilter == false) FilterChip(
+                    label: Text("Favorites"),
+                    selected: onlyFavorites,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        onlyFavorites = selected;
+                      });
+                    },
+                  ),
+                  if (onlyFavorites == false) FilterChip(
+                    label: Text("Genre:"),
+                    selected: genreFilter,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        genreFilter = selected;
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
             builder: (context, subjectSize,subject) {
               return CustomScrollView(
