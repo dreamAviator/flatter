@@ -5,7 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../main.dart';
 
-class RiverpodManager {
+class RiverpodManager {//TODO: alle riverpod dinger besser strukturieren und machen
   /*
   final playerUiProvider = FutureProvider<Map<dynamic,dynamic>>((ref) async {
     return {};
@@ -100,13 +100,13 @@ class RiverpodManager {
 
   final fullSearchProvider = FutureProvider.family<Map<dynamic,dynamic>,String>((ref,String searchQuery) async {
     Map<dynamic,dynamic> searchResultsMap = await subsonicService.fullSearch(searchQuery);
-    print(searchResultsMap);
-    print("this was riverpod manager");
     return searchResultsMap;
   });
 
-  final genresProvider = FutureProvider<List<Map<dynamic,dynamic>>>((ref) async {
-    List<Map<dynamic,dynamic>> genres = await subsonicService.getGenres();
+  final genresProvider = FutureProvider<List<dynamic>>((ref) async {
+    List<dynamic> genres = await subsonicService.getGenres();
     return genres;
   });
+
+
 }

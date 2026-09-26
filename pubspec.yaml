@@ -75,7 +75,6 @@ dependencies:
   flutter_number_picker:
     path: ./flutter_number_picker-master
     #TODO:das hier auf pub.dev hochladen, ist ein update weil die dependencies geupdatet wurden (flutter svg, außerdem kannst du das noch weiter entwickeln)
-  extended_sliver: ^2.1.3
   intrinsic_size_builder: ^2.0.2
   s_disabled: ^3.1.0
   #scroll_pos: ^0.5.0 #nicht benötigt, da scrollview_observer stattdessen verwendet wird

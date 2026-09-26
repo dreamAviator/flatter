@@ -21,8 +21,33 @@ class _SongsTabState extends State<SongsTab> {//TODO:favorite status hier
   bool onlyFavorites = false;
   bool genreFilter = false;
 
-  DropdownMenu<String> buildGenreMenu(context,List<Map<dynamic,dynamic>> genres) {
+  DropdownMenu<String> buildGenreMenu(BuildContext context,List<dynamic> genres) {
+    List<DropdownMenuEntry<String>> entryList = [];
+    for (Map genre in genres) {
+      entryList.add(
+        DropdownMenuEntry(
+          value: genre['value'],
+          label: genre['value'],
+        )
+      );
+    }
+    return DropdownMenu(
+      selectOnly: true,
+      dropdownMenuEntries: entryList,
+    );
+  }
 
+  Future<List<DropdownMenuEntry<String>>> buildGenreEntries(List<dynamic> genres) async {
+    List<DropdownMenuEntry<String>> entryList = [];
+    for (Map genre in genres) {
+      entryList.add(
+          DropdownMenuEntry(
+            value: genre['value'],
+            label: genre['value'],
+          )
+      );
+    }
+    return entryList;
   }
 
   @override
@@ -61,9 +86,9 @@ class _SongsTabState extends State<SongsTab> {//TODO:favorite status hier
                     builder: (context, ref, child) {
                       final genres = ref.watch(riverpodManager.genresProvider);
                       return switch (genres) {
-                        AsyncValue(:final value?) => buildGenreMenu(context, value),
-                        AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("error"),)),
-                        AsyncValue() =>SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),),
+                        AsyncValue(:final value?) => buildGenreMenu(context, value),//ich muss es in lazy loading umwandeln irgendwie, auf pub.dev suchen/auf linux tabs geöffnet
+                        AsyncValue(error: != null) => Center(child: Text("error"),),
+                        AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),
                       };
                     },
                   )

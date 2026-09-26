@@ -22,7 +22,6 @@ class SongList extends StatelessWidget {
     final SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
     List<dynamic> songList = [];
     if (songListNullable != null && songListNullable?.isEmpty == false) {
-      print(songListNullable);
       songList.addAll(songListNullable!);
     } else {
       if (sliver == true) {

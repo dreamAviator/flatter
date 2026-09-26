@@ -403,7 +403,7 @@ class SubsonicService {
     }
   }
 
-  Future<List<Map<dynamic,dynamic>>> getGenres() async {
+  Future<List<dynamic>> getGenres() async {
     List<String> url = getURL(null, null, null);
     final uri = Uri.parse("${url[0]}getGenres${url[1]}");
     try {
@@ -416,6 +416,7 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         return [];
       }
+      print("i was here");
       return subsonicResponse['genres']['genre'];
     } catch(error) {
       return [];
