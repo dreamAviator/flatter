@@ -30,8 +30,8 @@ class SettingsController {
     'libraryTab':0,
     'lastLibraryTab':0,
     'addToPlaylistsSkipDuplicates':true,
-    'landscapeMode':true,//TODO:needs to override automatic change of layout, extra setting added below
-    'automaticRotationOverride':false,
+    'landscapeMode':true,
+    'automaticRotationOverride':false,//wrong name, it only stops the app from changing its layout, not the rotation
     'firstStart':true,//einstellung für stern oder herz für das favouriten der songs vlt
     'songSearchResultsCount':10,
     'albumSearchResultsCount':10,

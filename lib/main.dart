@@ -15,7 +15,7 @@ import 'package:saf_util/saf_util.dart';
 
 late final PlayerControls playerControl;
 //DirectoryManager directoryControl = DirectoryManager();
-SafUtil safutil = SafUtil();
+//SafUtil safutil = SafUtil();
 SubsonicService subsonicService = SubsonicService();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
@@ -54,25 +54,47 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    if (screenSize.width >= screenSize.height) {//das darf nicht immer ausgeführt werden lol
-      settingsControl.changeSetting('landscapeMode', true);
-      return MaterialApp(
-        title: 'flatter',
-        theme: ThemeData(
-          useMaterial3: true,//in die settings packen
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-        ),
-        home: const HomeNavigationRail(),
-      );
+    if (settingsControl.loadSetting('automaticRotationOverride') == false) {
+      if (screenSize.width >= screenSize.height) {//das darf nicht immer ausgeführt werden lol
+        settingsControl.changeSetting('landscapeMode', true);
+        return MaterialApp(
+          title: 'flatter',
+          theme: ThemeData(
+            useMaterial3: true,//in die settings packen
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+          ),
+          home: const HomeNavigationRail(),
+        );
+      } else {
+        settingsControl.changeSetting('landscapeMode', false);
+        return MaterialApp(
+          title: 'flatter',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+          ),
+          home: const HomeNavigationBar(),
+        );
+      }
     } else {
-      settingsControl.changeSetting('landscapeMode', false);
-      return MaterialApp(
-        title: 'flatter',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-        ),
-        home: const HomeNavigationBar(),
-      );
+      if (settingsControl.loadSetting('landscapeMode') == true) {
+        return MaterialApp(
+          title: 'flatter',
+          theme: ThemeData(
+            useMaterial3: true,//in die settings packen
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+          ),
+          home: const HomeNavigationRail(),
+        );
+      } else {
+        return MaterialApp(
+          title: 'flatter',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+          ),
+          home: const HomeNavigationBar(),
+        );
+      }
     }
+
   }
 }

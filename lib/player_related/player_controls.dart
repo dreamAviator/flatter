@@ -46,9 +46,10 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     _player.pause();
   }
   @override
-  Future<void> stop() async {//TODO:hier player clearen oder so idk
+  Future<void> stop() async {
     _player.stop();
-
+    mediaItem.add(null);
+    _player.clearAudioSources();
     return;
   }
   @override
