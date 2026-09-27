@@ -20,6 +20,7 @@ class SongsTab extends StatefulWidget {
 class _SongsTabState extends State<SongsTab> {//TODO:favorite status hier
   bool onlyFavorites = false;
   bool genreFilter = false;
+  String? genre = null;
 
   DropdownMenu<String> buildGenreMenu(BuildContext context,List<dynamic> genres) {
     List<DropdownMenuEntry<String>> entryList = [];
@@ -34,6 +35,11 @@ class _SongsTabState extends State<SongsTab> {//TODO:favorite status hier
     return DropdownMenu(
       selectOnly: true,
       dropdownMenuEntries: entryList,
+      onSelected: (String? value) {
+        setState(() {
+          genre = value;
+        });
+      },
     );
   }
 
@@ -53,7 +59,7 @@ class _SongsTabState extends State<SongsTab> {//TODO:favorite status hier
   @override
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
-    List<dynamic> filterSortList = [500,null,null,null,onlyFavorites];
+    List<dynamic> filterSortList = [500,genre,null,null,onlyFavorites];
     return Expanded(
       child: Consumer(
         builder: (context, ref, child) {
@@ -84,9 +90,79 @@ class _SongsTabState extends State<SongsTab> {//TODO:favorite status hier
                   ),
                   if (genreFilter == true) Consumer(
                     builder: (context, ref, child) {
+                      String genreName = genre ?? "Genre";
                       final genres = ref.watch(riverpodManager.genresProvider);
                       return switch (genres) {
-                        AsyncValue(:final value?) => buildGenreMenu(context, value),//ich muss es in lazy loading umwandeln irgendwie, auf pub.dev suchen/auf linux tabs geöffnet
+                        AsyncValue(:final value?) => FilledButton(
+                          child: Text(genreName),
+                          onPressed: () {
+                            showModalBottomSheet(
+                              showDragHandle: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                ValueNotifier<String> filterNotifier = ValueNotifier("");
+                                return Column(
+                                  children: [
+                                    SearchStringFilterWidget(filterNotifier: filterNotifier),
+                                    ValueListenableBuilder(
+                                      valueListenable: filterNotifier,
+                                      builder: (context, String filter, child) {
+                                        List<dynamic> filteredSongList = new List.from(value);
+                                        if (filter.isNotEmpty) {
+                                          filter.toLowerCase();
+                                          filteredSongList.removeWhere((item) {
+                                            if (item is Map) {
+                                              for (var value in item.values) {
+                                                if (value is String) {
+                                                  if (value.toLowerCase().contains(filter.toLowerCase())) {
+                                                    return false;
+                                                  }
+                                                } else if (value is List) {
+                                                  for (var underValue in value) {
+                                                    if (underValue is Map) {
+                                                      for (var underUnderValue in underValue.values) {
+                                                        if (underUnderValue is String) {
+                                                          if (underUnderValue.toLowerCase().contains(filter.toLowerCase())) {
+                                                            return false;
+                                                          }
+                                                        }
+                                                      }
+                                                    } else if (underValue is String) {
+                                                      if (underValue.toLowerCase().contains(filter.toLowerCase())) {
+                                                        return false;
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                            return true;
+                                          });
+                                        }
+                                        return Expanded(
+                                          child: ListView.builder(
+                                            itemCount: filteredSongList.length,
+                                            itemBuilder: (BuildContext context,int index) {
+                                              return ListTile(
+                                                title: Text(filteredSongList[index]['value']),
+                                                onTap: () {
+                                                  Navigator.of(context).pop();
+                                                  setState(() {
+                                                    genre = filteredSongList[index]['value'];
+                                                  });
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      }
+                                    ),
+                                  ],
+                                );
+                              }
+                            );
+                          },
+                        ),//ich muss es in lazy loading umwandeln irgendwie, auf pub.dev suchen/auf linux tabs geöffnet
                         AsyncValue(error: != null) => Center(child: Text("error"),),
                         AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),
                       };
