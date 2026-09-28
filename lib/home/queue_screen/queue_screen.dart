@@ -20,7 +20,7 @@ import '../settings_screen/settings_screen_ViewModel.dart';
 import '../library_screen/screens/artist_screen.dart';
 import '../library_screen/item_widgets/per_item/item_menus.dart';
 
-class QueueScreen extends StatefulWidget {//TODO:queue screen rework, so dass der screen aktualisiert wird wenn ein element entfernt wird oder zum nächsten element gegangen wird
+class QueueScreen extends StatefulWidget {
   const QueueScreen({super.key});
 
   @override
@@ -32,8 +32,9 @@ class _QueueScreenState extends State<QueueScreen> {
   ScrollController scrollController = ScrollController();
   double scrollOffset = 0;
   bool hasRun = false;
+  bool dontScroll = false;//soll umegelgt werden, wenn vom nutzer gescrollt wurde oder die queue irgendwie verändert wurde
 
-  Widget buildQueue(BuildContext context, List<MediaItem> queue,ListObserverController observerController) {//TODO:wenn alle items gleichgroß sind, kannst du das einfach mit der item höhe ausrechnen
+  Widget buildQueue(BuildContext context, List<MediaItem> queue,ListObserverController observerController) {
 
     if (queue.isNotEmpty) {
       hasRun = true;
@@ -194,18 +195,19 @@ class _QueueScreenState extends State<QueueScreen> {
           if (queue.isEmpty) {
             queueEmpty = true;
           }
-          //scrollController.itemCount = queue.length;
-          if (queueEmpty != true && hasRun == true) {//TODO:nicht wenn nach unten gescrolled wurde
-            //scrollController.scrollToItem(playerControl.getCurrentIndex(),center: true);
-            observerController.animateTo(index: playerControl.getCurrentIndex(), duration: Duration(seconds: 1), curve: Curves.ease);
-          }
-          if (hasRun == false && queueEmpty == false) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              print("should jump to item now");
+          if (dontScroll == false) {
+            if (queueEmpty != true && hasRun == true) {//TODO:nicht wenn etwas gemacht wurde (wie entfernen, etc, sodass die queue dann halt nicht nach oben springt //dafür wurde jetzt die dontscroll variable hinzugefügt, noch implementieren
+              //scrollController.scrollToItem(playerControl.getCurrentIndex(),center: true);
+              observerController.animateTo(index: playerControl.getCurrentIndex(), duration: Duration(seconds: 1), curve: Curves.ease);
+            }
+            if (hasRun == false && queueEmpty == false) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                print("should jump to item now");
 
-              //scrollController.scrollToItem(playerControl.getCurrentIndex(),animate: false,center: true);
-              observerController.jumpTo(index: playerControl.getCurrentIndex());//TODO:das hier funktioniert nicht, wenn das nicht gefixed wird dann zum anderen package wieder zurück wechseln. das ist eigentlich schöner, weil es das item oben ranbringt und noch aktiv maintained wird
-            });
+                //scrollController.scrollToItem(playerControl.getCurrentIndex(),animate: false,center: true);
+                observerController.jumpTo(index: playerControl.getCurrentIndex());//TODO:das hier funktioniert nicht, wenn das nicht gefixed wird dann zum anderen package wieder zurück wechseln. das ist eigentlich schöner, weil es das item oben ranbringt und noch aktiv maintained wird
+              });
+            }
           }
           return Column(
             mainAxisSize: MainAxisSize.min,

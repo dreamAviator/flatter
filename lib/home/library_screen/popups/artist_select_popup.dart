@@ -11,7 +11,7 @@ import 'package:masonry_grid/masonry_grid.dart';
 import '../../../main.dart';
 import '../screens/artist_screen.dart';
 
-class ArtistSelectWindow {//TODO:setting for going to main artist instead of opening popup
+class ArtistSelectWindow {//TODO:setting for going to main artist instead of opening popup //wert in der map existiert, noch überall implementieren
   static void showArtistSelectWindow(BuildContext context,List<dynamic> artistInfosLite) {
     final riverpodManager = RiverpodManager();
     Size screenSize = MediaQuery.of(context).size;

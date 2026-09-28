@@ -17,10 +17,10 @@ class SongsTab extends StatefulWidget {
   State<SongsTab> createState() => _SongsTabState();
 }
 
-class _SongsTabState extends State<SongsTab> {//TODO:favorite status hier
+class _SongsTabState extends State<SongsTab> {
   bool onlyFavorites = false;
   bool genreFilter = false;
-  String? genre = null;
+  String? genre;
 
   DropdownMenu<String> buildGenreMenu(BuildContext context,List<dynamic> genres) {
     List<DropdownMenuEntry<String>> entryList = [];

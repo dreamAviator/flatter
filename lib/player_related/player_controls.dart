@@ -3,6 +3,7 @@ import 'package:flatter/player_related/queue_repository.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/player_related/audio_player.dart';
 import 'package:flatter/storage/local_not_database_storage_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -258,7 +259,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     return PlaybackState(
       controls: [
         MediaControl.rewind,
-        if (_player.playerState.playing) MediaControl.pause else MediaControl.play,//TODO:decide what to show in media noticiation
+        if (_player.playerState.playing) MediaControl.pause else MediaControl.play,
         MediaControl.fastForward,
       ],
       systemActions: const {

@@ -29,7 +29,6 @@ class SearchSettingsScreen extends StatelessWidget {
             trailing: ClearSearchSetting(),
             subtitle: Text("Clear the search input after leaving the search screen"),
           ),
-          //TODO:search results number setting (für alles einzeln (artist, song), mit dem gleichen number picker package auch die anderen settings mit zahlen einrichten :3
           Divider(),
           ListTile(
             title: Text("Song search results count"),

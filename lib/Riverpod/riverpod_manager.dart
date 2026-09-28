@@ -5,7 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../main.dart';
 
-class RiverpodManager {//TODO: alle riverpod dinger besser strukturieren und machen, eventuell kannst du an vielen stellen riverpod austauschen
+class RiverpodManager {
   /*
   final playerUiProvider = FutureProvider<Map<dynamic,dynamic>>((ref) async {
     return {};

@@ -1,3 +1,5 @@
+/*
+
 import 'dart:collection';
 
 import 'package:audio_service/audio_service.dart';
@@ -17,7 +19,7 @@ import '../settings_screen/settings_screen_ViewModel.dart';
 import '../library_screen/screens/artist_screen.dart';
 import '../library_screen/item_widgets/per_item/item_menus.dart';
 
-class QueueScreen extends StatefulWidget {//TODO:queue screen rework, so dass der screen aktualisiert wird wenn ein element entfernt wird oder zum nächsten element gegangen wird
+class QueueScreen extends StatefulWidget {//queue screen rework, so dass der screen aktualisiert wird wenn ein element entfernt wird oder zum nächsten element gegangen wird //in neuer klasse implementiert
   const QueueScreen({super.key});
 
   @override
@@ -215,3 +217,5 @@ class _QueueScreenState extends State<QueueScreen> {
     );
   }
 }
+
+ */
