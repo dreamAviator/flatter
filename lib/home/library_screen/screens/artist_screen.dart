@@ -200,6 +200,16 @@ class ArtistScreen extends StatelessWidget {
                     //also ja hier actions
                     //diese diablen bis ergebnis da ist
                     Text("hier sollen actions hin")
+                    ElevatedButton(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text("All songs"),
+                          Icon(Icons.arrow_forward),
+                        ],
+                      ),
+                      onPressed: ,
+                    )
                   ],
                 ),
               ),
