@@ -70,6 +70,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'flatter',
           theme: ThemeData(
+            useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
           ),
           home: const HomeNavigationBar(),
@@ -89,6 +90,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'flatter',
           theme: ThemeData(
+            useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
           ),
           home: const HomeNavigationBar(),
