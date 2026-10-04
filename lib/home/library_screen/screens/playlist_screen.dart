@@ -88,7 +88,7 @@ class PlaylistScreen extends StatelessWidget {
                   },
                   icon: const Icon(Icons.play_arrow),
                 ),
-                IconButton(
+                if (value['owner'] == databaseControl.getCurrentUsername()) IconButton(
                   onPressed: () {
                     //hier bearbeiten
                     //wär babo wenn du das nur anzeigen würdest, wenn du der owner bist
