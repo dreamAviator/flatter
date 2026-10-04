@@ -172,15 +172,15 @@ class AlbumScreen extends StatelessWidget {
           ),
 
            */
-          body: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
-                    //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-                    if (settingsControl.settingsMap['landscapeMode'] == false) switch (albumDetails) {
-                      AsyncValue(:final value?) => CachedNetworkImage(
+          body: switch (albumDetails) {
+            AsyncValue(:final value?) => CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
+                      //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
+                      if (settingsControl.settingsMap['landscapeMode'] == false) CachedNetworkImage(
                         imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                             LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
@@ -192,31 +192,23 @@ class AlbumScreen extends StatelessWidget {
                         ),
                         height: screenSize.width,
                       ),
-                      AsyncValue(error: != null) => const Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                    },
-                    if (settingsControl.settingsMap['landscapeMode'] == false) switch (albumDetails) {
-                      AsyncValue(:final value?) => TextButton(
+                      if (settingsControl.settingsMap['landscapeMode'] == false) TextButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: value['artistId'])));
                         },
                         child: Text(value['artist']),
                       ),
-                      AsyncValue(error: != null) => const Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                    },
-                    if (settingsControl.settingsMap['landscapeMode'] == false) Row(
-                      children: [
-                        //also ja hier actions
-                        //diese diablen bis ergebnis da ist
-                        Text("hier sollen actions hin")
-                      ],
-                    ),
-                    if (settingsControl.settingsMap['landscapeMode'] == true) Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        switch (albumDetails) {
-                          AsyncValue(:final value?) => CachedNetworkImage(
+                      if (settingsControl.settingsMap['landscapeMode'] == false) Row(
+                        children: [
+                          //also ja hier actions
+                          //diese diablen bis ergebnis da ist
+                          Text("hier sollen actions hin")
+                        ],
+                      ),
+                      if (settingsControl.settingsMap['landscapeMode'] == true) Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          CachedNetworkImage(
                             imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                             progressIndicatorBuilder: (context, url, downloadProgress) =>
                                 LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
@@ -229,32 +221,28 @@ class AlbumScreen extends StatelessWidget {
                             width: screenSize.width / 3,
                             height: screenSize.width / 3,
                           ),
-                          AsyncValue(error: != null) => const Text("Error"),
-                          AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                        },
-                        Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text("hier"),
-                              Text("sollen"),
-                              Text("actions"),
-                              Text("hin"),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
+                          Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text("hier"),
+                                Text("sollen"),
+                                Text("actions"),
+                                Text("hin"),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              switch (albumDetails) {
-                AsyncValue(:final value?) => SongList(songListNullable: value['song'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: null,),
-                AsyncValue(error: != null) => const Text("Error"),
-                AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
-              },
-            ],
-          ),
+                SongList(songListNullable: value['song'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: null,),
+              ],
+            ),
+            AsyncValue(error: != null) => Center(child: Text("Error")),
+            AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),)
+          }
         );
       },
     );

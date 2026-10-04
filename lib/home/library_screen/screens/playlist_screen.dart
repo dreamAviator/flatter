@@ -198,15 +198,15 @@ class PlaylistScreen extends StatelessWidget {
           ),
           
            */
-          body: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
-                    //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-                    if (settingsControl.settingsMap['landscapeMode'] == false) switch (playlistDetails) {
-                      AsyncValue(:final value?) => AspectRatio(
+          body: switch (playlistDetails) {
+            AsyncValue(:final value?) => CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
+                      //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
+                      if (settingsControl.settingsMap['landscapeMode'] == false) AspectRatio(
                         aspectRatio: 1,
                         child: PageView(
                           scrollBehavior: MaterialScrollBehavior().copyWith(
@@ -215,91 +215,83 @@ class PlaylistScreen extends StatelessWidget {
                           controller: pageController,
                           children: [
                             Stack(
-                              alignment: Alignment.centerRight,
-                              children: [
-                                CachedNetworkImage(
-                                  imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
-                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                    LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                                  errorWidget: (context, url, error) => IconButton(
-                                    onPressed: () {
-                                    //hier retry
-                                    },
-                                    icon: const Icon(Icons.error),
+                                alignment: Alignment.centerRight,
+                                children: [
+                                  CachedNetworkImage(
+                                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
+                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                        LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                    errorWidget: (context, url, error) => IconButton(
+                                      onPressed: () {
+                                        //hier retry
+                                      },
+                                      icon: const Icon(Icons.error),
+                                    ),
+                                    height: screenSize.width,
                                   ),
-                                  height: screenSize.width,
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    pageController.jumpToPage(1);
-                                  },
-                                  icon: const Icon(Icons.arrow_forward_ios),
-                                  color: Colors.white,//TODO:die Farbe hier dynamisch auswählen
-                                ),
-                              ]
+                                  IconButton(
+                                    onPressed: () {
+                                      pageController.jumpToPage(1);
+                                    },
+                                    icon: const Icon(Icons.arrow_forward_ios),
+                                    color: Colors.white,//TODO:die Farbe hier dynamisch auswählen
+                                  ),
+                                ]
                             ),
                             if (value['comment'] == "")
                               Stack(
-                                alignment: Alignment.centerLeft,
-                                children: [
-                                  Center(
-                                    child: const Text("No comment"),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      pageController.jumpToPage(0);
-                                    },
-                                    icon: const Icon(Icons.arrow_back_ios_new),
-                                  ),
-                                ]
+                                  alignment: Alignment.centerLeft,
+                                  children: [
+                                    Center(
+                                      child: const Text("No comment"),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        pageController.jumpToPage(0);
+                                      },
+                                      icon: const Icon(Icons.arrow_back_ios_new),
+                                    ),
+                                  ]
                               )
                             else
                               Stack(
-                                alignment: Alignment.centerLeft,
-                                children: [
-                                  Center(
-                                    child: SingleChildScrollView(child: Text(value['comment']),),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      pageController.jumpToPage(0);
-                                    },
-                                    icon: const Icon(Icons.arrow_back_ios_new),
-                                  ),
-                                ]
+                                  alignment: Alignment.centerLeft,
+                                  children: [
+                                    Center(
+                                      child: SingleChildScrollView(child: Text(value['comment']),),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        pageController.jumpToPage(0);
+                                      },
+                                      icon: const Icon(Icons.arrow_back_ios_new),
+                                    ),
+                                  ]
                               )
                           ],
 
                         ),
                       ),
-                      AsyncValue(error: != null) => const Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                    },
-                    if (settingsControl.settingsMap['landscapeMode'] == false) switch (playlistDetails) {
-                      AsyncValue(:final value?) => TextButton(
+                      if (settingsControl.settingsMap['landscapeMode'] == false) TextButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: value['artistId'])));
                         },
                         child: Text(value['owner']),
                       ),
-                      AsyncValue(error: != null) => const Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                    },
-                    if (settingsControl.settingsMap['landscapeMode'] == false) Row(
-                      children: [
-                        //also ja hier actions
-                        //diese diablen bis ergebnis da ist
-                        Text("hier sollen actions hin")
-                      ],
-                    ),
-                    if (settingsControl.settingsMap['landscapeMode'] == true) Container(
-                      height: screenSize.width / 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        spacing: 8,
+                      if (settingsControl.settingsMap['landscapeMode'] == false) Row(
                         children: [
-                          switch (playlistDetails) {
-                            AsyncValue(:final value?) => CachedNetworkImage(
+                          //also ja hier actions
+                          //diese diablen bis ergebnis da ist
+                          Text("hier sollen actions hin")
+                        ],
+                      ),
+                      if (settingsControl.settingsMap['landscapeMode'] == true) Container(
+                        height: screenSize.width / 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          spacing: 8,
+                          children: [
+                            CachedNetworkImage(
                               imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                               progressIndicatorBuilder: (context, url, downloadProgress) =>
                                   LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
@@ -312,43 +304,36 @@ class PlaylistScreen extends StatelessWidget {
                               width: screenSize.width / 3,
                               height: screenSize.width / 3,
                             ),
-                            AsyncValue(error: != null) => const Text("Error"),
-                            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                          },
-                          Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text("hier"),
-                                Text("sollen"),
-                                Text("actions"),
-                                Text("hin"),
-                              ],
+                            Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text("hier"),
+                                  Text("sollen"),
+                                  Text("actions"),
+                                  Text("hin"),
+                                ],
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: switch (playlistDetails) {
-                                AsyncValue(:final value?) => Text(value['comment']),
-                                AsyncValue(error: != null) => const Text("error"),
-                                AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                              },
-                            ),
-                          )
-                        ],
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Text(value['comment']),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SliverToBoxAdapter(child: SearchStringFilterWidget(filterNotifier: filterNotifier),),
-              switch (playlistDetails) {
-                AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: value['id'],),
-                AsyncValue(error: != null) => const Text("Error"),
-                AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
-              },
-            ],
-          ),
+                SliverToBoxAdapter(child: SearchStringFilterWidget(filterNotifier: filterNotifier),),
+                SongList(songListNullable: value['entry'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: value['id'],),
+              ],
+            ),
+            AsyncValue(error: != null) => Center(child: Text("Error")),
+            AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),)
+          }
+
         );
       },
     );

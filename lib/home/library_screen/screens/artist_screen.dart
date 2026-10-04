@@ -4,6 +4,7 @@ import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
 import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
+import 'package:flatter/home/search_screen/search_song_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -173,11 +174,11 @@ class ArtistScreen extends StatelessWidget {
               AsyncValue() => [LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)],
             },
           ),
-          body: CustomScrollView(
-            slivers: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
-              //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-              if (settingsControl.settingsMap['landscapeMode'] == false) switch (artistDetails) {
-                AsyncValue(:final value?) => SliverToBoxAdapter(
+          body: switch (artistDetails) {
+            AsyncValue(:final value?) => CustomScrollView(
+              slivers: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
+                //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
+                if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
                   child: CachedNetworkImage(
                     imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                     progressIndicatorBuilder: (context, url, downloadProgress) =>
@@ -191,34 +192,31 @@ class ArtistScreen extends StatelessWidget {
                     height: screenSize.width,
                   ),
                 ),
-                AsyncValue(error: != null) => SliverToBoxAdapter(child: const Text("Error")),
-                AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
-              },
-              if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
-                child: Row(
-                  children: [
-                    //also ja hier actions
-                    //diese diablen bis ergebnis da ist
-                    Text("hier sollen actions hin")
-                    ElevatedButton(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text("All songs"),
-                          Icon(Icons.arrow_forward),
-                        ],
+                if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("hier sollen actions hin"),
+                      ElevatedButton(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("All songs"),
+                            Icon(Icons.arrow_forward),
+                          ],
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: value['name'])));
+                        },
                       ),
-                      onPressed: ,
-                    )
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              if (settingsControl.settingsMap['landscapeMode'] == true) SliverToBoxAdapter(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    switch (artistDetails) {
-                      AsyncValue(:final value?) => CachedNetworkImage(
+                if (settingsControl.settingsMap['landscapeMode'] == true) SliverToBoxAdapter(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CachedNetworkImage(
                         imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                             LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
@@ -231,39 +229,42 @@ class ArtistScreen extends StatelessWidget {
                         width: screenSize.width / 3,
                         height: screenSize.width / 3,
                       ),
-                      AsyncValue(error: != null) => const Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                    },
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text("hier"),
-                          Text("sollen"),
-                          Text("actions"),
-                          Text("hin"),
-                        ],
-                      ),
-                    )
-                  ],
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text("hier"),
+                            Text("sollen"),
+                            Text("actions"),
+                            Text("hin"),
+                            ElevatedButton(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text("All songs"),
+                                  Icon(Icons.arrow_forward),
+                                ],
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: value['name'])));
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              const SliverToBoxAdapter(child: Text("Albums")),
-              switch (artistDetails) {
-                //AsyncValue(:final value?) => buildAlbumGrid(context, value['album'],screenSize.width),
-                AsyncValue(:final value?) => AlbumGrid(albumListNullable: value['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
-                AsyncValue(error: != null) => const SliverToBoxAdapter(child: Text("error")),
-                AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
-              },
-              const SliverToBoxAdapter(child: Divider()),
-              const SliverToBoxAdapter(child: Text("Appears in:")),
-              switch (artistDetails) {
-                AsyncValue(:final value?) => buildArtistAppearances(context, value['name'], screenSize.width),
-                AsyncValue(error: != null) => const SliverToBoxAdapter(child: Text("error1")),
-                AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))
-              },
-            ],
-          ),
+                const SliverToBoxAdapter(child: Text("Albums")),
+                AlbumGrid(albumListNullable: value['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
+                const SliverToBoxAdapter(child: Divider()),
+                const SliverToBoxAdapter(child: Text("Appears in:")),
+                buildArtistAppearances(context, value['name'], screenSize.width),
+              ],
+            ),
+            AsyncValue(error: != null) => Center(child: Text("Error")),
+            AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),)
+          }
         );
       },
     );
