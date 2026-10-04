@@ -140,7 +140,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     return PopupMenuItem(
       onTap: () {
         Navigator.of(context).pop();
-        if (artists?.length == 1 || artists == null) {
+        if (artists?.length == 1 || artists == null || settingsControl.loadSetting('skipArtistSelectionOnPlayerScreen') == true) {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
         } else {
           ArtistSelectWindow.showArtistSelectWindow(context, artists);
@@ -307,7 +307,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     return ListTile(
       onTap: () {
         Navigator.of(context).pop();
-        if (artists?.length == 1 || artists == null) {
+        if (artists?.length == 1 || artists == null || settingsControl.loadSetting('skipArtistSelectionOnPlayerScreen') == true) {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
         } else {
           ArtistSelectWindow.showArtistSelectWindow(context, artists);

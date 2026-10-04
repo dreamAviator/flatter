@@ -44,6 +44,19 @@ class PathProvider {
         dataDirectory = dataDirectoryDirectory.path;
       }
     }
+
+    String readmeFilePath = "$dataDirectory/readme.txt";
+    if (await File(readmeFilePath).exists() == false) {
+      File(readmeFilePath).writeAsString("""
+        flatter stores both config files and AppData in this directory.
+        
+        On Linux for example, this is not best practice,
+        config files should be stored elsewhere (.config/appname),
+        however, the package I use to dynamically get the directory paths,
+        does not support that on linux yet, which is why all files are in
+        this directory.
+      """);
+    }
   }
 
   Future<void> getTempDir() async {

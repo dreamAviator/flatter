@@ -96,7 +96,7 @@ class ArtistScreen extends StatelessWidget {
       builder: (context,ref,child) {
         final artistDetails = ref.watch(riverpodManager.artistDetailsProvider(artistID));
         return Scaffold(
-          appBar: AppBar(//TODO:auf einer zweiten seite eine artist description aus dem internet
+          appBar: AppBar(
             title: switch (artistDetails) {
               AsyncValue(:final value?) => Text(value['name']),
               AsyncValue(error: != null) => const Text("Error"),

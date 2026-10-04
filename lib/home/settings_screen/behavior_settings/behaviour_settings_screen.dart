@@ -2,6 +2,8 @@ import 'package:flatter/home/settings_screen/behavior_settings/library_start_tab
 import 'package:flatter/home/settings_screen/behavior_settings/play_actions_settings/play_actions_settings_screen.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/queue_settings/queue_settings_screen.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/search_settings/search_settings_screen.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/skip_artist_selection_everywhere_else_setting.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/skip_artist_selection_player_screen_setting.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/start_tab_setting.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/time_until_scroble_setting.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/time_until_seek_to_start_setting.dart';
@@ -67,7 +69,17 @@ class BehaviourSettingsScreen extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSettingsScreen()));
             },
-          )
+          ),
+          const ListTile(
+            title: Text("Skip artist selection"),
+            trailing: SkipArtistSelectionEverywhereElseSetting(),
+            subtitle: Text("Skip the artist selection go directly to the main artist. Everywhere but the player screen."),
+          ),
+          const ListTile(
+            title: Text("Skip artist selection on player screen"),
+            trailing: SkipArtistSelectionPlayerScreenSetting(),
+            subtitle: Text("Skip the artist selection go directly to the main artist. Only on the player screen."),
+          ),
         ],
       ),
     );

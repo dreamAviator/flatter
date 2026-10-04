@@ -45,6 +45,7 @@ class PlayerScreen extends StatelessWidget {
                             TextButton(
                               onPressed: () {
                                 //hier vlt noch was hinzufügen
+                                // TODO:oder das hier wegmachen
                               },
                               child: Text(title),
                             ),
@@ -58,7 +59,7 @@ class PlayerScreen extends StatelessWidget {
                             if (artistID == null) Text(album),
                             if (artistID != null) TextButton(
                               onPressed: () {
-                                if (artists?.length == 1 || artists == null) {
+                                if (artists?.length == 1 || artists == null || settingsControl.loadSetting('skipArtistSelectionOnPlayerScreen') == true) {
                                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artistID)));
                                 } else {
                                   ArtistSelectWindow.showArtistSelectWindow(context, artists);
