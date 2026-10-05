@@ -9,6 +9,7 @@ import audio_service
 import audio_session
 import connectivity_plus
 import desktop_webview_window
+import dynamic_color
 import file_saver
 import just_audio
 import nb_utils
@@ -22,6 +23,7 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   AudioSessionPlugin.register(with: registry.registrar(forPlugin: "AudioSessionPlugin"))
   ConnectivityPlusPlugin.register(with: registry.registrar(forPlugin: "ConnectivityPlusPlugin"))
   DesktopWebviewWindowPlugin.register(with: registry.registrar(forPlugin: "DesktopWebviewWindowPlugin"))
+  DynamicColorPlugin.register(with: registry.registrar(forPlugin: "DynamicColorPlugin"))
   FileSaverPlugin.register(with: registry.registrar(forPlugin: "FileSaverPlugin"))
   JustAudioPlugin.register(with: registry.registrar(forPlugin: "JustAudioPlugin"))
   NbUtilsPlugin.register(with: registry.registrar(forPlugin: "NbUtilsPlugin"))

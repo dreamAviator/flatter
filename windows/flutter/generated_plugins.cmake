@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   desktop_webview_window
+  dynamic_color
   file_saver
   media_kit_libs_windows_audio
   nb_utils

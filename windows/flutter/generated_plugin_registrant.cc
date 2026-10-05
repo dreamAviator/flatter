@@ -8,6 +8,7 @@
 
 #include <connectivity_plus/connectivity_plus_windows_plugin.h>
 #include <desktop_webview_window/desktop_webview_window_plugin.h>
+#include <dynamic_color/dynamic_color_plugin_c_api.h>
 #include <file_saver/file_saver_plugin.h>
 #include <media_kit_libs_windows_audio/media_kit_libs_windows_audio_plugin_c_api.h>
 #include <nb_utils/nb_utils_plugin_c_api.h>
@@ -18,6 +19,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
   DesktopWebviewWindowPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("DesktopWebviewWindowPlugin"));
+  DynamicColorPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("DynamicColorPluginCApi"));
   FileSaverPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FileSaverPlugin"));
   MediaKitLibsWindowsAudioPluginCApiRegisterWithRegistrar(
