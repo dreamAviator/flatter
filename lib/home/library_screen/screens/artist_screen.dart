@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image_ce/cached_network_image.dart';
+import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
 import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
@@ -16,10 +17,196 @@ import 'package:masonry_grid/masonry_grid.dart';
 import '../../../Riverpod/riverpod_manager.dart';
 import '../item_widgets/per_item/favorite_button.dart';
 
-class ArtistScreen extends StatelessWidget {
+class ArtistScreen extends StatefulWidget {
   const ArtistScreen({super.key,required this.artistID});
   final String artistID;
 
+  @override
+  State<ArtistScreen> createState() => _ArtistScreenState();
+}
+
+class _ArtistScreenState extends State<ArtistScreen> {
+  SubsonicService subsonicService = SubsonicService();
+
+  @override
+  Widget build(BuildContext context) {
+    ItemMenus itemMenus = ItemMenus(context);
+    final Size screenSize = MediaQuery.sizeOf(context);
+
+    Widget buildArtistAppearances(BuildContext context,String name,double screenWidth) {
+      return FutureBuilder(
+        future: subsonicService.getArtistAppearances(widget.artistID, name),
+        builder: (context, asyncSnapshot) {
+          if (asyncSnapshot.hasData) {
+            return AlbumGrid(albumListNullable: asyncSnapshot.data!,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,);
+          } else if (asyncSnapshot.hasError) {
+            return SliverToBoxAdapter(child: Text(asyncSnapshot.error.toString()));
+          } else {
+            return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25));
+          }
+        }
+      );
+    }
+
+    return FutureBuilder(
+      future: subsonicService.getArtistDetails(widget.artistID),
+      builder: (context, asyncSnapshot) {
+        if (asyncSnapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(asyncSnapshot.data!['name']),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    String action = settingsControl.loadSetting('artistPlayButtonAction');
+                    switch (action) {
+                      case "playNow":
+                        playerControl.customAction('clearQueue');
+                        playerControl.customAction('addByID', {'addByID': {
+                          'artistID':asyncSnapshot.data!['id'],
+                        }});
+                      case "playNext":
+                        playerControl.customAction('addNextByID', {'addByID': {
+                          'artistID':asyncSnapshot.data!['id'],
+                        }});
+                      case "enqueue":
+                        playerControl.customAction('addByID', {'addByID': {
+                          'artistID':asyncSnapshot.data!['id'],
+                        }});
+                      case "playNowShuffled":
+                        playerControl.customAction('clearQueue');
+                        playerControl.customAction('addByID', {'addByID': {
+                          'artistID':asyncSnapshot.data!['id'],
+                          'shuffled':true,
+                        }});
+                      case "playNextShuffled":
+                        playerControl.customAction('addNextByID', {'addByID': {
+                          'artistID':asyncSnapshot.data!['id'],
+                          'shuffled':true,
+                        }});
+                      case "enqueueShuffled":
+                        playerControl.customAction('addByID', {'addByID': {
+                          'artistID':asyncSnapshot.data!['id'],
+                          'shuffled':true,
+                        }});
+                    }
+                  },
+                  icon: Icon(Icons.play_arrow),
+                ),
+                FavoriteButton(songID: null, albumID: null, artistID: widget.artistID),
+                itemMenus.artistMenu(asyncSnapshot.data!),
+              ],
+            ),
+            body: CustomScrollView(
+              slivers: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
+                //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
+                if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
+                  child: CachedNetworkImage(
+                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
+                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                        LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                    errorWidget: (context, url, error) => IconButton(
+                      onPressed: () {
+                        //hier retry
+                      },
+                      icon: Icon(Icons.error),
+                    ),
+                    height: screenSize.width,
+                  ),
+                ),
+                if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("hier sollen actions hin"),
+                      ElevatedButton(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("All songs"),
+                            Icon(Icons.arrow_forward),
+                          ],
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                if (settingsControl.settingsMap['landscapeMode'] == true) SliverToBoxAdapter(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
+                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                        errorWidget: (context, url, error) => IconButton(
+                          onPressed: () {
+                            //hier retry
+                          },
+                          icon: Icon(Icons.error),
+                        ),
+                        width: screenSize.width / 3,
+                        height: screenSize.width / 3,
+                      ),
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text("hier"),
+                            Text("sollen"),
+                            Text("actions"),
+                            Text("hin"),
+                            ElevatedButton(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text("All songs"),
+                                  Icon(Icons.arrow_forward),
+                                ],
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SliverToBoxAdapter(child: Text("Albums")),
+                AlbumGrid(albumListNullable: asyncSnapshot.data!['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
+                const SliverToBoxAdapter(child: Divider()),
+                const SliverToBoxAdapter(child: Text("Appears in:")),
+                buildArtistAppearances(context, asyncSnapshot.data!['name'], screenSize.width),
+              ],
+            ),
+          );
+        } else if (asyncSnapshot.hasError) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("Error"),
+            ),
+            body: Center(child: Text("Error"),),
+          );
+        } else {
+          return Scaffold(
+            appBar: AppBar(
+              title: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+            ),
+            body: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),
+          );
+        }
+      }
+    );
+  }
+}
+
+//old build album grid
+/*
   Widget buildAlbumGrid(BuildContext context,List<dynamic>? albumsNullable,double screenWidth) {
     //hier halt das gridview, evt aus diesen imagecards
     //idk ob gridview.builder der call ist oder besser gesagt wann das nicht der call ist :shrug:
@@ -71,202 +258,4 @@ class ArtistScreen extends StatelessWidget {
     return SliverToBoxAdapter(child: MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetList));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final riverpodManager = RiverpodManager();
-    ItemMenus itemMenus = ItemMenus(context);
-    final Size screenSize = MediaQuery.sizeOf(context);
-
-    Widget buildArtistAppearances(BuildContext context,String name,double screenWidth) {
-      List<String> nameAndId = [artistID,name];
-      return Consumer(
-        builder: (context,ref,child) {
-          final artistAppearances = ref.watch(riverpodManager.artistAppearancesProvider(nameAndId));
-          return switch (artistAppearances) {
-            //AsyncValue(:final value?) => buildAlbumGrid(context, value, screenSize.width),
-            AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
-            AsyncValue(error: != null) => SliverToBoxAdapter(child: Text(artistAppearances.error.toString())),
-            AsyncValue() => SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
-          };
-        },
-      );
-    }
-
-    return Consumer(
-      builder: (context,ref,child) {
-        final artistDetails = ref.watch(riverpodManager.artistDetailsProvider(artistID));
-        return Scaffold(
-          appBar: AppBar(
-            title: switch (artistDetails) {
-              AsyncValue(:final value?) => Text(value['name']),
-              AsyncValue(error: != null) => const Text("Error"),
-              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-            },
-            actions: switch (artistDetails) {
-              AsyncValue(:final value?) => [
-              //evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
-                IconButton(
-                  onPressed: () {
-                    //hier eine aktion auswählen, kann man in den settings einstellen. entweder abspielen, enqueue oder play next
-                    String action = settingsControl.loadSetting('artistPlayButtonAction');
-                    switch (action) {
-                      case "playNow":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addByID',
-                          {'addByID':
-                            {
-                              'artistID':value['id'],
-                            }
-                          }
-                        );
-                      case "playNext":
-                        playerControl.customAction('addNextByID',
-                          {'addByID':
-                            {
-                              'artistID':value['id'],
-                            }
-                          }
-                        );
-                      case "enqueue":
-                        playerControl.customAction('addByID',
-                          {'addByID':
-                            {
-                              'artistID':value['id'],
-                            }
-                          }
-                        );
-                      case "playNowShuffled":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addByID',
-                          {'addByID':
-                            {
-                              'artistID':value['id'],
-                              'shuffled':true,
-                            }
-                          }
-                        );
-                      case "playNextShuffled":
-                        playerControl.customAction('addNextByID',
-                          {'addByID':
-                            {
-                              'artistID':value['id'],
-                              'shuffled':true,
-                            }
-                          }
-                        );
-                      case "enqueueShuffled":
-                        playerControl.customAction('addByID',
-                          {'addByID':
-                            {
-                              'artistID':value['id'],
-                              'shuffled':true,
-                            }
-                          }
-                        );
-                    }
-                  },
-                  icon: Icon(Icons.play_arrow),
-                ),
-                FavoriteButton(songID: null, albumID: null, artistID: artistID),
-                itemMenus.artistMenu(value),
-              ],
-              AsyncValue(error: != null) => [const Text("Error")],
-              AsyncValue() => [LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)],
-            },
-          ),
-          body: switch (artistDetails) {
-            AsyncValue(:final value?) => CustomScrollView(
-              slivers: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
-                //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-                if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
-                  child: CachedNetworkImage(
-                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
-                    progressIndicatorBuilder: (context, url, downloadProgress) =>
-                        LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                    errorWidget: (context, url, error) => IconButton(
-                      onPressed: () {
-                        //hier retry
-                      },
-                      icon: Icon(Icons.error),
-                    ),
-                    height: screenSize.width,
-                  ),
-                ),
-                if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("hier sollen actions hin"),
-                      ElevatedButton(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text("All songs"),
-                            Icon(Icons.arrow_forward),
-                          ],
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: value['name'])));
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                if (settingsControl.settingsMap['landscapeMode'] == true) SliverToBoxAdapter(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                        errorWidget: (context, url, error) => IconButton(
-                          onPressed: () {
-                            //hier retry
-                          },
-                          icon: Icon(Icons.error),
-                        ),
-                        width: screenSize.width / 3,
-                        height: screenSize.width / 3,
-                      ),
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("hier"),
-                            Text("sollen"),
-                            Text("actions"),
-                            Text("hin"),
-                            ElevatedButton(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text("All songs"),
-                                  Icon(Icons.arrow_forward),
-                                ],
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: value['name'])));
-                              },
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SliverToBoxAdapter(child: Text("Albums")),
-                AlbumGrid(albumListNullable: value['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
-                const SliverToBoxAdapter(child: Divider()),
-                const SliverToBoxAdapter(child: Text("Appears in:")),
-                buildArtistAppearances(context, value['name'], screenSize.width),
-              ],
-            ),
-            AsyncValue(error: != null) => Center(child: Text("Error")),
-            AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),)
-          }
-        );
-      },
-    );
-  }
-}
+   */
