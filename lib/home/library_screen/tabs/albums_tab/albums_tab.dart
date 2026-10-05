@@ -1,4 +1,5 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
+import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
 import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/tabs/albums_tab/albums_tab_ViewModel.dart';
@@ -28,7 +29,9 @@ class _AlbumsTabState extends State<AlbumsTab> {
   int elementCount = 50;
   int offset = 0;
   List<String> filterSortList = ["random","50","0"];
+  SubsonicService subsonicService = SubsonicService();
 
+  /*
   Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
     List<Widget> widgetList = [];
     int index = 0;
@@ -72,83 +75,83 @@ class _AlbumsTabState extends State<AlbumsTab> {
     }
     return Expanded(child: SingleChildScrollView(child: MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetList,)));
   }
+  
+   */
 
   @override
   Widget build(BuildContext context) {
     filterSortList = [type,"$elementCount","$offset"];
-    final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
-    return Expanded(
-      child: Consumer(
-        builder: (context, ref, child) {
-          print("filtersortlist");
-          print(filterSortList);
-          final albumList = ref.watch(riverpodManager.albumListProvider(filterSortList));
-          return IntrinsicSizeBuilder(
-            subject: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DropdownMenu<String>(
-                    selectOnly: true,
-                    dropdownMenuEntries: const [
-                      DropdownMenuEntry(value: "favorites", label: "Favorites"),
-                      DropdownMenuEntry(value: "random", label: "Random"),
-                      DropdownMenuEntry(value: "newest", label: "Newest"),
-                      DropdownMenuEntry(value: "highest", label: "Highest"),
-                      DropdownMenuEntry(value: "frequent", label: "Frequent"),
-                      DropdownMenuEntry(value: "Recent", label: "Recent"),
-                      DropdownMenuEntry(value: "alphabeticalByName", label: "Alphabetical by name"),
-                      DropdownMenuEntry(value: "alphabeticalByArtist", label: "Alphabetical by artist"),
-                      DropdownMenuEntry(value: "byYear", label: "byYear"),
-                      DropdownMenuEntry(value: "byGenre", label: "byGenre"),
-                    ],
-                    initialSelection: settingsControl.loadSetting('albumDropDownFilterSelection'),
-                    onSelected: (value) {
-                      if (value == null) {
-                        return;
-                      }
-                      setState(() {
-                        type = value;
-                        settingsControl.changeSetting('albumDropDownFilterSelection', value);
-                      });
-
-                    },
-                  ),
-                ),
-              ],
-            ),
-            builder: (context,subjectSize,subject) {
-              return CustomScrollView(
-                slivers: [
-                  SliverAppBar(
-                    primary: false,
-                    floating: true,
-                    snap: true,
-                    expandedHeight: subjectSize.height,
-                    flexibleSpace: Expanded(child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        bool visible = true;
-                        print(constraints.maxHeight);
-                        print(subjectSize.height);
-                        if (constraints.heightConstraints().maxHeight < subjectSize.height) {
-                          visible = false;
+    return FutureBuilder(
+      future: subsonicService.getAlbums(filterSortList),
+      builder: (context, asyncSnapshot) {
+        if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {//TODO:(bei reload sollte das dropdown menü dableiben) favorites noch nicht
+          return Expanded(
+            child: IntrinsicSizeBuilder(
+              subject: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownMenu<String>(
+                      selectOnly: true,
+                      dropdownMenuEntries: const [
+                        DropdownMenuEntry(value: "favorites", label: "Favorites"),
+                        DropdownMenuEntry(value: "random", label: "Random"),
+                        DropdownMenuEntry(value: "newest", label: "Newest"),
+                        DropdownMenuEntry(value: "highest", label: "Highest"),
+                        DropdownMenuEntry(value: "frequent", label: "Frequent"),
+                        DropdownMenuEntry(value: "Recent", label: "Recent"),
+                        DropdownMenuEntry(value: "alphabeticalByName", label: "Alphabetical by name"),
+                        DropdownMenuEntry(value: "alphabeticalByArtist", label: "Alphabetical by artist"),
+                        DropdownMenuEntry(value: "byYear", label: "byYear"),
+                        DropdownMenuEntry(value: "byGenre", label: "byGenre"),
+                      ],
+                      initialSelection: settingsControl.loadSetting('albumDropDownFilterSelection'),
+                      onSelected: (value) {
+                        if (value == null) {
+                          return;
                         }
-                        return Visibility(visible: visible,child: subject);
-                      }
-                    )),
+                        setState(() {
+                          type = value;
+                          settingsControl.changeSetting('albumDropDownFilterSelection', value);
+                        });
+                      },
+                    ),
                   ),
-                  switch (albumList) {
-                    AsyncValue(:final value?) => AlbumGrid(albumListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true),
-                    AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("Error"))),
-                    AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
-                  },
                 ],
-              );
-            },
+              ),
+              builder: (context,subjectSize,subject) {
+                return CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      primary: false,
+                      floating: true,
+                      snap: true,
+                      expandedHeight: subjectSize.height,
+                      flexibleSpace: Expanded(child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          bool visible = true;
+                          print(constraints.maxHeight);
+                          print(subjectSize.height);
+                          if (constraints.heightConstraints().maxHeight < subjectSize.height) {
+                            visible = false;
+                          }
+                          return Visibility(visible: visible,child: subject);
+                        }
+                      )),
+                    ),
+                    AlbumGrid(albumListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true),
+                  ],
+                );
+              },
+            ),
           );
-        },
-      ),
+        } else if (asyncSnapshot.hasError) {
+          return Center(child: Text("Error"),);
+        } else {
+          return Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
+        }
+      }
     );
   }
 }
