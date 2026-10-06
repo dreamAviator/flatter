@@ -35,6 +35,9 @@ class EditPlaylistPopup {
                   if (id != null) IconButton(
                     onPressed: () {
                       subsonicService.deletePlaylist(id);
+                      if (playlistChangedNotifier != null) {
+                        playlistChangedNotifier.notify();
+                      }
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     },

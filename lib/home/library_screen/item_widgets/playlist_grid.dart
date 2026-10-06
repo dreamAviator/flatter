@@ -5,15 +5,17 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../main.dart';
+import '../../../useful_scripts.dart';
 import 'per_item/item_menus.dart';
 
 class PlaylistGrid extends StatelessWidget {
-  const PlaylistGrid({super.key,required this.playlistListNullable,required this.crossAxisCount,required this.sliver,this.onlyOwn,this.filterNotifier});
+  const PlaylistGrid({super.key,required this.playlistListNullable,required this.crossAxisCount,required this.sliver,this.onlyOwn,this.filterNotifier,this.playlistChangedNotifier});
   final List<dynamic>? playlistListNullable;
   final int crossAxisCount;
   final bool sliver;
   final bool? onlyOwn;
   final ValueNotifier<String>? filterNotifier;
+  final UpdateNotifier? playlistChangedNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +96,7 @@ class PlaylistGrid extends StatelessWidget {
                         print("playlost tapped");
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) =>
-                                PlaylistScreen(playlistID: item['id'])));
+                                PlaylistScreen(playlistID: item['id'],playlistChangedNotifier: playlistChangedNotifier,)));
                       },
                       child: Column(
                         children: [

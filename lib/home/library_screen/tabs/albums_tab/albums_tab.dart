@@ -29,7 +29,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
   int elementCount = 50;
   int offset = 0;
   List<String> filterSortList = ["random","50","0"];
-  SubsonicService subsonicService = SubsonicService();
+  final SubsonicService subsonicService = SubsonicService();
 
   /*
   Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
@@ -82,76 +82,76 @@ class _AlbumsTabState extends State<AlbumsTab> {
   Widget build(BuildContext context) {
     filterSortList = [type,"$elementCount","$offset"];
     final Size screenSize = MediaQuery.sizeOf(context);
-    return FutureBuilder(
-      future: subsonicService.getAlbums(filterSortList),
-      builder: (context, asyncSnapshot) {
-        if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {//TODO:(bei reload sollte das dropdown menü dableiben) favorites noch nicht
-          return Expanded(
-            child: IntrinsicSizeBuilder(
-              subject: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DropdownMenu<String>(
-                      selectOnly: true,
-                      dropdownMenuEntries: const [
-                        DropdownMenuEntry(value: "favorites", label: "Favorites"),
-                        DropdownMenuEntry(value: "random", label: "Random"),
-                        DropdownMenuEntry(value: "newest", label: "Newest"),
-                        DropdownMenuEntry(value: "highest", label: "Highest"),
-                        DropdownMenuEntry(value: "frequent", label: "Frequent"),
-                        DropdownMenuEntry(value: "Recent", label: "Recent"),
-                        DropdownMenuEntry(value: "alphabeticalByName", label: "Alphabetical by name"),
-                        DropdownMenuEntry(value: "alphabeticalByArtist", label: "Alphabetical by artist"),
-                        DropdownMenuEntry(value: "byYear", label: "byYear"),
-                        DropdownMenuEntry(value: "byGenre", label: "byGenre"),
-                      ],
-                      initialSelection: settingsControl.loadSetting('albumDropDownFilterSelection'),
-                      onSelected: (value) {
-                        if (value == null) {
-                          return;
-                        }
-                        setState(() {
-                          type = value;
-                          settingsControl.changeSetting('albumDropDownFilterSelection', value);
-                        });
-                      },
-                    ),
-                  ),
+    return Expanded(
+      child: IntrinsicSizeBuilder(
+        subject: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownMenu<String>(
+                selectOnly: true,
+                dropdownMenuEntries: const [
+                  DropdownMenuEntry(value: "favorites", label: "Favorites"),
+                  DropdownMenuEntry(value: "random", label: "Random"),
+                  DropdownMenuEntry(value: "newest", label: "Newest"),
+                  DropdownMenuEntry(value: "highest", label: "Highest"),
+                  DropdownMenuEntry(value: "frequent", label: "Frequent"),
+                  DropdownMenuEntry(value: "Recent", label: "Recent"),
+                  DropdownMenuEntry(value: "alphabeticalByName", label: "Alphabetical by name"),
+                  DropdownMenuEntry(value: "alphabeticalByArtist", label: "Alphabetical by artist"),
+                  DropdownMenuEntry(value: "byYear", label: "byYear"),
+                  DropdownMenuEntry(value: "byGenre", label: "byGenre"),
                 ],
+                initialSelection: settingsControl.loadSetting('albumDropDownFilterSelection'),
+                onSelected: (value) {
+                  if (value == null) {
+                    return;
+                  }//TODO:favorites hinzufügen (in riverpod provider reinschauen)
+                  setState(() {
+                    type = value;
+                    settingsControl.changeSetting('albumDropDownFilterSelection', value);
+                  });
+                },
               ),
-              builder: (context,subjectSize,subject) {
-                return CustomScrollView(
-                  slivers: [
-                    SliverAppBar(
-                      primary: false,
-                      floating: true,
-                      snap: true,
-                      expandedHeight: subjectSize.height,
-                      flexibleSpace: Expanded(child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          bool visible = true;
-                          print(constraints.maxHeight);
-                          print(subjectSize.height);
-                          if (constraints.heightConstraints().maxHeight < subjectSize.height) {
-                            visible = false;
-                          }
-                          return Visibility(visible: visible,child: subject);
-                        }
-                      )),
-                    ),
-                    AlbumGrid(albumListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true),
-                  ],
-                );
-              },
             ),
+          ],
+        ),
+        builder: (context,subjectSize,subject) {
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                primary: false,
+                floating: true,
+                snap: true,
+                expandedHeight: subjectSize.height,
+                flexibleSpace: Expanded(child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      bool visible = true;
+                      print(constraints.maxHeight);
+                      print(subjectSize.height);
+                      if (constraints.heightConstraints().maxHeight < subjectSize.height) {
+                        visible = false;
+                      }
+                      return Visibility(visible: visible,child: subject);
+                    }
+                )),
+              ),
+              FutureBuilder(
+                future: subsonicService.getAlbums(filterSortList),
+                builder: (context, asyncSnapshot) {
+                  if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+                    return AlbumGrid(albumListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true);
+                  } else if (asyncSnapshot.hasError) {
+                    return SliverToBoxAdapter(child: Text("Error"),);
+                  } else {
+                    return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
+                  }
+                }
+              ),
+            ],
           );
-        } else if (asyncSnapshot.hasError) {
-          return Center(child: Text("Error"),);
-        } else {
-          return Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
-        }
-      }
+        },
+      ),
     );
   }
 }

@@ -24,8 +24,9 @@ import 'album_screen.dart';
 import '../filter_widgets/search_string_filter_widget.dart';
 
 class PlaylistScreen extends StatefulWidget {
-  const PlaylistScreen({super.key,required this.playlistID});
+  const PlaylistScreen({super.key,required this.playlistID,this.playlistChangedNotifier});
   final String playlistID;
+  final UpdateNotifier? playlistChangedNotifier;
 
   @override
   State<PlaylistScreen> createState() => _PlaylistScreenState();
@@ -41,7 +42,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     final Size screenSize = MediaQuery.sizeOf(context);
     final filterNotifier = ValueNotifier<String>('');
     final PageController pageController = PageController();
-    final UpdateNotifier playlistChangedNotifier = UpdateNotifier();
+    late UpdateNotifier playlistChangedNotifier;
+    if (widget.playlistChangedNotifier != null) {
+      playlistChangedNotifier = widget.playlistChangedNotifier!;
+    } else {
+      playlistChangedNotifier = UpdateNotifier();
+    }
     return ListenableBuilder(
       listenable: playlistChangedNotifier,
       builder: (context, child) {

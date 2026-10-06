@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:toml/toml.dart';
 
 class SubsonicJustAudioCompatibility {
@@ -88,5 +89,11 @@ extension BoolOpposite on bool {
 extension TomlDocumentSave on TomlDocument {
   Future<void> save(String filename) {
     return File(filename).writeAsString(toString());
+  }
+}
+
+class UpdateNotifier with ChangeNotifier {
+  void notify() {
+    notifyListeners();
   }
 }

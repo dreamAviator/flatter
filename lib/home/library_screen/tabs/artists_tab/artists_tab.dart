@@ -1,4 +1,5 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
+import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/library_screen/item_widgets/artist_grid.dart';
 import 'package:flatter/home/library_screen/screens/artist_screen.dart';
 import 'package:flatter/home/library_screen/tabs/artists_tab/artists_tab_ViewModel.dart';
@@ -24,7 +25,9 @@ class ArtistsTab extends StatefulWidget {
 
 class _ArtistsTabState extends State<ArtistsTab> {
   bool onlyFavorites = false;
+  final SubsonicService subsonicService = SubsonicService();
 
+  /*
   Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
     List<Widget> outerWidgetList = [];
     List<Widget> innerWidgetList = [];
@@ -77,63 +80,65 @@ class _ArtistsTabState extends State<ArtistsTab> {
     return Expanded(child: SingleChildScrollView(child: Column(children: outerWidgetList,)));
   }
 
+   */
+
   @override
   Widget build(BuildContext context) {
-    final riverpodManager = RiverpodManager();
     final Size screenSize = MediaQuery.sizeOf(context);
     final ValueNotifier<String> filterNotifier = ValueNotifier('');
     return Expanded(
-      child: Consumer(
-        builder: (context, ref, child) {
-          final artistList = ref.watch(riverpodManager.artistListProvider(onlyFavorites));
-          return IntrinsicSizeBuilder(
-            subject: Row(
-              children: [
-                FilterChip(
-                  label: Text("Favorites"),
-                  selected: onlyFavorites,
-                  onSelected: (bool selected) {
-                    setState(() {
-                      onlyFavorites = selected;
-                    });
-                  },
-                ),
-                Expanded(child: SearchStringFilterWidget(filterNotifier: filterNotifier)),
-              ],
+      child: IntrinsicSizeBuilder(
+        subject: Row(
+          children: [
+            FilterChip(
+              label: Text("Favorites"),
+              selected: onlyFavorites,
+              onSelected: (bool selected) {
+                setState(() {
+                  onlyFavorites = selected;//TODO:favorites (in riverpod provider reinschauen)
+                });
+              },
             ),
-            builder: (context, subjectSize,subject) {
-              return CustomScrollView(
-                slivers: [
-                  SliverAppBar(
-                    primary: false,
-                    floating: true,
-                    snap: true,
-                    expandedHeight: subjectSize.height,
-                    flexibleSpace: Expanded(
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          bool visible = true;
-                          print(constraints.maxHeight);
-                          print(subjectSize.height);
-                          if (constraints.heightConstraints().maxHeight < subjectSize.height) {
-                            visible = false;
-                          }
-                          return Visibility(visible: visible,child: subject);
-                        },
-                      ),
-                    ),
+            Expanded(child: SearchStringFilterWidget(filterNotifier: filterNotifier)),
+          ],
+        ),
+        builder: (context, subjectSize,subject) {
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                primary: false,
+                floating: true,
+                snap: true,
+                expandedHeight: subjectSize.height,
+                flexibleSpace: Expanded(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      bool visible = true;
+                      print(constraints.maxHeight);
+                      print(subjectSize.height);
+                      if (constraints.heightConstraints().maxHeight < subjectSize.height) {
+                        visible = false;
+                      }
+                      return Visibility(visible: visible,child: subject);
+                    },
                   ),
-                  switch (artistList) {
-                    AsyncValue(:final value?) => ArtistGrid(artistListNullable: value,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: onlyFavorites.opposite,),//noch schauen wie ich die index buchstaben einfügen kann
-                    //AsyncValue(:final value?) => SliverToBoxAdapter(child: buildListView(value, context, screenSize.width)),
-                    AsyncValue(error: != null) => const SliverToBoxAdapter(child: Center(child: Text("Error"))),
-                    AsyncValue() => SliverToBoxAdapter(child: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))),
-                  },
-                ],
-              );
-            }
+                ),
+              ),
+              FutureBuilder(
+                future: subsonicService.getArtists(),
+                builder: (context, asyncSnapshot) {
+                  if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+                    return ArtistGrid(artistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: onlyFavorites.opposite,);
+                  } else if (asyncSnapshot.hasError) {
+                    return SliverToBoxAdapter(child: Text("Error"),);
+                  } else {
+                    return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
+                  }
+                }
+              ),//noch schauen wie ich die index buchstaben einfügen kann
+            ],
           );
-        },
+        }
       ),
     );
   }
