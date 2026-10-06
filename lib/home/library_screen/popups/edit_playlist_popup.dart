@@ -1,9 +1,10 @@
 import 'package:flatter/main.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EditPlaylistPopup {
-  static void showEditPlaylistPopUp(BuildContext context,bool newCreate,String? id,String? name,String? comment,bool? public,List<dynamic>? songIDsToAdd) {
+  static void showEditPlaylistPopUp(BuildContext context,bool newCreate,String? id,String? name,String? comment,bool? public,List<dynamic>? songIDsToAdd, [UpdateNotifier? playlistChangedNotifier]) {
     if (newCreate == false && id == null) {
       return;
     }
@@ -116,6 +117,9 @@ class EditPlaylistPopup {
                               if (playlistCommentController.text != "") {
                                 //hier den kommentar updaten irgendwie, idk warum das nicht im create request geht
                               }
+                            }
+                            if (playlistChangedNotifier != null) {
+                              playlistChangedNotifier.notify();
                             }
                             Navigator.of(context).pop();
                           }

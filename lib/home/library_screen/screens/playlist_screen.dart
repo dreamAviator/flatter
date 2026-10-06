@@ -36,220 +36,225 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final riverpodManager = RiverpodManager();
     final usefulScripts = SubsonicJustAudioCompatibility();
     ItemMenus itemMenus = ItemMenus(context);
     final Size screenSize = MediaQuery.sizeOf(context);
     final filterNotifier = ValueNotifier<String>('');
     final PageController pageController = PageController();
-    return FutureBuilder(
-      future: subsonicService.getPlaylistDetails(widget.playlistID),
-      builder: (context, asyncSnapshot) {
-        if (asyncSnapshot.hasData) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(asyncSnapshot.data!['name']),),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    String action = settingsControl.settingsMap['playlistPlayButtonAction'];
-                    List<dynamic>? subsonicSongList = asyncSnapshot.data!['entry'];
-                    if (subsonicSongList == null) {
-                      return;
-                    }
-                    List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList);
-                    switch (action) {
-                      case "playNow":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                        }});
-                      case "playNext":
-                        playerControl.customAction('addNext',{'addNext': {
-                          'tracks':songList,
-                        }});
-                      case "enqueue":
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                        }});
-                      case "playNowShuffled":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                          'shuffled':true,
-                        }});
-                      case "playNextShuffled":
-                        playerControl.customAction('addNext',{'addNext': {
-                          'tracks':songList,
-                          'shuffled':true,
-                        }});
-                      case "enqueueShuffled":
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                          'shuffled':true,
-                        }});
-                    }
-                  },
-                  icon: const Icon(Icons.play_arrow),
+    final UpdateNotifier playlistChangedNotifier = UpdateNotifier();
+    return ListenableBuilder(
+      listenable: playlistChangedNotifier,
+      builder: (context, child) {
+        return FutureBuilder(
+          future: subsonicService.getPlaylistDetails(widget.playlistID),
+          builder: (context, asyncSnapshot) {
+            if (asyncSnapshot.hasData) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(asyncSnapshot.data!['name']),),
+                  actions: [
+                    IconButton(
+                      onPressed: () {
+                        String action = settingsControl.settingsMap['playlistPlayButtonAction'];
+                        List<dynamic>? subsonicSongList = asyncSnapshot.data!['entry'];
+                        if (subsonicSongList == null) {
+                          return;
+                        }
+                        List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList);
+                        switch (action) {
+                          case "playNow":
+                            playerControl.customAction('clearQueue');
+                            playerControl.customAction('addMultiple',{'addMultiple': {
+                              'tracks':songList,
+                            }});
+                          case "playNext":
+                            playerControl.customAction('addNext',{'addNext': {
+                              'tracks':songList,
+                            }});
+                          case "enqueue":
+                            playerControl.customAction('addMultiple',{'addMultiple': {
+                              'tracks':songList,
+                            }});
+                          case "playNowShuffled":
+                            playerControl.customAction('clearQueue');
+                            playerControl.customAction('addMultiple',{'addMultiple': {
+                              'tracks':songList,
+                              'shuffled':true,
+                            }});
+                          case "playNextShuffled":
+                            playerControl.customAction('addNext',{'addNext': {
+                              'tracks':songList,
+                              'shuffled':true,
+                            }});
+                          case "enqueueShuffled":
+                            playerControl.customAction('addMultiple',{'addMultiple': {
+                              'tracks':songList,
+                              'shuffled':true,
+                            }});
+                        }
+                      },
+                      icon: const Icon(Icons.play_arrow),
+                    ),
+                    if (asyncSnapshot.data!['owner'] == databaseControl.getCurrentUsername()) IconButton(
+                      onPressed: () {
+                        //hier bearbeiten
+                        //wär babo wenn du das nur anzeigen würdest, wenn du der owner bist
+                        EditPlaylistPopup.showEditPlaylistPopUp(context, false, asyncSnapshot.data!['id'], asyncSnapshot.data!['name'], asyncSnapshot.data!['comment'], asyncSnapshot.data!['public'],null,playlistChangedNotifier);
+                      },
+                      icon: const Icon(Icons.edit),//probably damit sich das ändert hier ein eigenes widget bauen
+                    ),
+                    itemMenus.playlistMenu(asyncSnapshot.data!),
+                  ],
                 ),
-                if (asyncSnapshot.data!['owner'] == databaseControl.getCurrentUsername()) IconButton(
-                  onPressed: () {
-                    //hier bearbeiten
-                    //wär babo wenn du das nur anzeigen würdest, wenn du der owner bist
-                    EditPlaylistPopup.showEditPlaylistPopUp(context, false, asyncSnapshot.data!['id'], asyncSnapshot.data!['name'], asyncSnapshot.data!['comment'], asyncSnapshot.data!['public'],null);
-                  },
-                  icon: const Icon(Icons.edit),//probably damit sich das ändert hier ein eigenes widget bauen
-                ),
-                itemMenus.playlistMenu(asyncSnapshot.data!),
-              ],
-            ),
-            body: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
-                      //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-                      if (settingsControl.settingsMap['landscapeMode'] == false) AspectRatio(
-                        aspectRatio: 1,
-                        child: PageView(
-                          scrollBehavior: MaterialScrollBehavior().copyWith(
-                            dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch, PointerDeviceKind.stylus, PointerDeviceKind.trackpad, PointerDeviceKind.unknown},
-                          ),
-                          controller: pageController,
-                          children: [
-                            Stack(
-                                alignment: Alignment.centerRight,
-                                children: [
-                                  CachedNetworkImage(
-                                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
-                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                        LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                                    errorWidget: (context, url, error) => IconButton(
-                                      onPressed: () {
-                                        //hier retry
-                                      },
-                                      icon: const Icon(Icons.error),
-                                    ),
-                                    height: screenSize.width,
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      pageController.jumpToPage(1);
-                                    },
-                                    icon: const Icon(Icons.arrow_forward_ios),
-                                    color: Colors.white,//TODO:die Farbe hier dynamisch auswählen
-                                  ),
-                                ]
-                            ),
-                            if (asyncSnapshot.data!['comment'] == "")
-                              Stack(
-                                  alignment: Alignment.centerLeft,
-                                  children: [
-                                    Center(
-                                      child: const Text("No comment"),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        pageController.jumpToPage(0);
-                                      },
-                                      icon: const Icon(Icons.arrow_back_ios_new),
-                                    ),
-                                  ]
-                              )
-                            else
-                              Stack(
-                                  alignment: Alignment.centerLeft,
-                                  children: [
-                                    Center(
-                                      child: SingleChildScrollView(child: Text(asyncSnapshot.data!['comment']),),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        pageController.jumpToPage(0);
-                                      },
-                                      icon: const Icon(Icons.arrow_back_ios_new),
-                                    ),
-                                  ]
-                              )
-                          ],
+                body: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
+                          //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
+                          if (settingsControl.settingsMap['landscapeMode'] == false) AspectRatio(
+                            aspectRatio: 1,
+                            child: PageView(
+                              scrollBehavior: MaterialScrollBehavior().copyWith(
+                                dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch, PointerDeviceKind.stylus, PointerDeviceKind.trackpad, PointerDeviceKind.unknown},
+                              ),
+                              controller: pageController,
+                              children: [
+                                Stack(
+                                    alignment: Alignment.centerRight,
+                                    children: [
+                                      CachedNetworkImage(
+                                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
+                                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                        errorWidget: (context, url, error) => IconButton(
+                                          onPressed: () {
+                                            //hier retry
+                                          },
+                                          icon: const Icon(Icons.error),
+                                        ),
+                                        height: screenSize.width,
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          pageController.jumpToPage(1);
+                                        },
+                                        icon: const Icon(Icons.arrow_forward_ios),
+                                        color: Colors.white,//TODO:die Farbe hier dynamisch auswählen
+                                      ),
+                                    ]
+                                ),
+                                if (asyncSnapshot.data!['comment'] == "")
+                                  Stack(
+                                      alignment: Alignment.centerLeft,
+                                      children: [
+                                        Center(
+                                          child: const Text("No comment"),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            pageController.jumpToPage(0);
+                                          },
+                                          icon: const Icon(Icons.arrow_back_ios_new),
+                                        ),
+                                      ]
+                                  )
+                                else
+                                  Stack(
+                                      alignment: Alignment.centerLeft,
+                                      children: [
+                                        Center(
+                                          child: SingleChildScrollView(child: Text(asyncSnapshot.data!['comment']),),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            pageController.jumpToPage(0);
+                                          },
+                                          icon: const Icon(Icons.arrow_back_ios_new),
+                                        ),
+                                      ]
+                                  )
+                              ],
 
-                        ),
-                      ),
-                      if (settingsControl.settingsMap['landscapeMode'] == false) TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: asyncSnapshot.data!['artistId'])));
-                        },
-                        child: Text(asyncSnapshot.data!['owner']),
-                      ),
-                      if (settingsControl.settingsMap['landscapeMode'] == false) Row(
-                        children: [
-                          //also ja hier actions
-                          //diese diablen bis ergebnis da ist
-                          Text("hier sollen actions hin")
+                            ),
+                          ),
+                          if (settingsControl.settingsMap['landscapeMode'] == false) TextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: asyncSnapshot.data!['artistId'])));
+                            },
+                            child: Text(asyncSnapshot.data!['owner']),
+                          ),
+                          if (settingsControl.settingsMap['landscapeMode'] == false) Row(
+                            children: [
+                              //also ja hier actions
+                              //diese diablen bis ergebnis da ist
+                              Text("hier sollen actions hin")
+                            ],
+                          ),
+                          if (settingsControl.settingsMap['landscapeMode'] == true) Container(
+                            height: screenSize.width / 3,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              spacing: 8,
+                              children: [
+                                CachedNetworkImage(
+                                  imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
+                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                      LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                  errorWidget: (context, url, error) => IconButton(
+                                    onPressed: () {
+                                      //hier retry
+                                    },
+                                    icon: Icon(Icons.error),
+                                  ),
+                                  width: screenSize.width / 3,
+                                  height: screenSize.width / 3,
+                                ),
+                                Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Text("hier"),
+                                      Text("sollen"),
+                                      Text("actions"),
+                                      Text("hin"),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Text(asyncSnapshot.data!['comment']),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                      if (settingsControl.settingsMap['landscapeMode'] == true) Container(
-                        height: screenSize.width / 3,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          spacing: 8,
-                          children: [
-                            CachedNetworkImage(
-                              imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
-                              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                              errorWidget: (context, url, error) => IconButton(
-                                onPressed: () {
-                                  //hier retry
-                                },
-                                icon: Icon(Icons.error),
-                              ),
-                              width: screenSize.width / 3,
-                              height: screenSize.width / 3,
-                            ),
-                            Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text("hier"),
-                                  Text("sollen"),
-                                  Text("actions"),
-                                  Text("hin"),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                child: Text(asyncSnapshot.data!['comment']),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    SliverToBoxAdapter(child: SearchStringFilterWidget(filterNotifier: filterNotifier),),
+                    SongList(songListNullable: asyncSnapshot.data!['entry'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: asyncSnapshot.data!['id'],),
+                  ],
                 ),
-                SliverToBoxAdapter(child: SearchStringFilterWidget(filterNotifier: filterNotifier),),
-                SongList(songListNullable: asyncSnapshot.data!['entry'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: asyncSnapshot.data!['id'],),
-              ],
-            ),
-          );
-        } else if (asyncSnapshot.hasError) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text("Error"),
-            ),
-            body: Center(child: Text("Error"),),
-          );
-        } else {
-          return Scaffold(
-            appBar: AppBar(
-              title: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-            ),
-            body: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),
-          );
-        }
+              );
+            } else if (asyncSnapshot.hasError) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text("Error"),
+                ),
+                body: Center(child: Text("Error"),),
+              );
+            } else {
+              return Scaffold(
+                appBar: AppBar(
+                  title: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                ),
+                body: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),
+              );
+            }
+          }
+        );
       }
     );
   }
