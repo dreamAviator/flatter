@@ -206,6 +206,7 @@ class _QueueScreenState extends State<QueueScreen> {
 
                 //scrollController.scrollToItem(playerControl.getCurrentIndex(),animate: false,center: true);
                 observerController.jumpTo(index: playerControl.getCurrentIndex());//TODO:das hier funktioniert nicht, wenn das nicht gefixed wird dann zum anderen package wieder zurück wechseln. das ist eigentlich schöner, weil es das item oben ranbringt und noch aktiv maintained wird
+                //observerController.animateTo(index: playerControl.getCurrentIndex(), duration: Duration.zero, curve: Curves.ease);T//TODO:auch nicht besser
               });
             }
           }
