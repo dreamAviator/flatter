@@ -82,6 +82,17 @@ class _ArtistsTabState extends State<ArtistsTab> {
 
    */
 
+  Future<List> getArtists() async {
+    List<dynamic> artistMapList = [];
+    if (onlyFavorites == true) {
+      Map<dynamic,dynamic> starred = await subsonicService.getStarred();
+      artistMapList = starred['artist'];
+    } else {
+      artistMapList = await subsonicService.getArtists();
+    }
+    return artistMapList;
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.sizeOf(context);
@@ -125,10 +136,10 @@ class _ArtistsTabState extends State<ArtistsTab> {
                 ),
               ),
               FutureBuilder(
-                future: subsonicService.getArtists(),
+                future: getArtists(),
                 builder: (context, asyncSnapshot) {
                   if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
-                    return ArtistGrid(artistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: onlyFavorites.opposite,);
+                    return ArtistGrid(artistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: onlyFavorites.opposite);
                   } else if (asyncSnapshot.hasError) {
                     return SliverToBoxAdapter(child: Text("Error"),);
                   } else {

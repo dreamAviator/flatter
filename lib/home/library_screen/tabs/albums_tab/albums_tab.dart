@@ -77,6 +77,17 @@ class _AlbumsTabState extends State<AlbumsTab> {
   }
   
    */
+  
+  Future<List> getAlbums(List<String> filterSortList) async {
+    List<dynamic> albumMapList = [];
+    if (filterSortList[0] == "favorites") {
+      Map<dynamic,dynamic> starred = await subsonicService.getStarred();
+      albumMapList = starred['album'];
+    } else {
+      albumMapList = await subsonicService.getAlbums(filterSortList);
+    }
+    return albumMapList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +148,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                 )),
               ),
               FutureBuilder(
-                future: subsonicService.getAlbums(filterSortList),
+                future: getAlbums(filterSortList),//TODO:durch einzelne argumente ersetzen
                 builder: (context, asyncSnapshot) {
                   if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
                     return AlbumGrid(albumListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true);

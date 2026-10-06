@@ -58,6 +58,17 @@ class _SongsTabState extends State<SongsTab> {
     return entryList;
   }
 
+  Future<List> getSongs(int size, String? genre, int? fromYear, int? toYear,bool onlyFavorites) async {
+    List<dynamic> randomSongList = [];
+    if (onlyFavorites == true) {
+      Map<dynamic,dynamic> starred = await subsonicService.getStarred();
+      randomSongList = starred['song'];
+    } else {
+      randomSongList = await subsonicService.getRandomSongs(size, genre, fromYear, toYear);
+    }
+    return randomSongList;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -196,7 +207,7 @@ class _SongsTabState extends State<SongsTab> {
                 ),
               ),
               FutureBuilder(
-                  future: subsonicService.getRandomSongs(500, genre, null, null),//TODO:favorites (in riverpod provider gucken)
+                  future: getSongs(500, genre, null, null,onlyFavorites),//TODO:favorites (in riverpod provider gucken)
                   builder: (context, asyncSnapshot) {
                     if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
                       return SongList(listView: true,sliver: true,songListNullable: asyncSnapshot.data,playlistID: null,);
