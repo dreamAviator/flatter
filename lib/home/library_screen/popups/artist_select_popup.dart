@@ -1,10 +1,7 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:image_card/image_card.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 

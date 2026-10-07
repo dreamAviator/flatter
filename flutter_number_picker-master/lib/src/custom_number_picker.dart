@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_number_picker/src/res.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -98,7 +98,7 @@ class CustomNumberPickerState extends State<CustomNumberPicker<num>> {
                     ),
                   ),
             ),
-            Container(
+            SizedBox(
               width: _textSize(widget.valueTextStyle ?? TextStyle(fontSize: 14))
                   .width,
               child: Text(

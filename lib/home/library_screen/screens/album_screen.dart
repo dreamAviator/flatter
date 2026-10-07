@@ -1,21 +1,14 @@
-import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
-import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/library_screen/screens/artist_screen.dart';
-import 'package:flatter/home/library_screen/popups/artist_select_popup.dart';
 import 'package:flatter/home/library_screen/item_widgets/per_item/favorite_button.dart';
 import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
 import 'package:flatter/home/library_screen/item_widgets/song_list.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AlbumScreen extends StatefulWidget {

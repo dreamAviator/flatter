@@ -5,7 +5,7 @@ import 'package:examples/examples/quilted.dart';
 import 'package:examples/examples/staggered.dart';
 import 'package:examples/examples/staired.dart';
 import 'package:examples/examples/woven.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   runApp(const MyApp());
@@ -114,7 +114,7 @@ class MenuEntry extends StatelessWidget {
                 heightFactor: 0.25,
                 alignment: Alignment.bottomCenter,
                 child: ColoredBox(
-                  color: Colors.black.withOpacity(0.75),
+                  color: Colors.black.withValues(alpha: 0.75),
                   child: Center(
                     child: Text(
                       title,

@@ -1,5 +1,5 @@
 import 'package:flatter/home/settings_screen/server_settings/server_settings_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class FirstStartPopup {
   static void showFirstStartPopup(BuildContext context) {

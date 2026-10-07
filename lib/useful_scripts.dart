@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:toml/toml.dart';
 
 class SubsonicJustAudioCompatibility {

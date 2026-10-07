@@ -1,18 +1,13 @@
-import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
-import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/item_widgets/artist_grid.dart';
-import 'package:flatter/home/library_screen/screens/artist_screen.dart';
 import 'package:flatter/home/library_screen/item_widgets/song_list.dart';
 import 'package:flatter/home/search_screen/search_album_screen.dart';
 import 'package:flatter/home/search_screen/search_artist_screen.dart';
 import 'package:flatter/home/search_screen/search_song_screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:masonry_grid/masonry_grid.dart';
 
 import '../../main.dart';
 

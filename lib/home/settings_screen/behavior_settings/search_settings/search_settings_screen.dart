@@ -1,7 +1,6 @@
 import 'package:flatter/home/settings_screen/behavior_settings/search_settings/clear_search_setting.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/search_settings/song_search_result_count_setting.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_number_picker/flutter_number_picker.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'album_search_result_count_setting.dart';
 import 'artist_search_result_count_setting.dart';

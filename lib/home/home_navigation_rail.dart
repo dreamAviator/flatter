@@ -3,12 +3,10 @@ import 'package:flatter/home/player_screen/player_screen.dart';
 import 'package:flatter/home/queue_screen/queue_screen.dart';
 import 'package:flatter/home/search_screen/search_screen.dart';
 import 'package:flatter/main.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'settings_screen/settings_screen.dart';
 import 'settings_screen/settings_screen_ViewModel.dart';
-import 'first_start_popup.dart';
 import 'library_screen/library_screen.dart';
 
 class HomeNavigationRail extends StatefulWidget {

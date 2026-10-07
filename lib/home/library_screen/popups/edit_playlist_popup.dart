@@ -1,7 +1,6 @@
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class EditPlaylistPopup {
   static void showEditPlaylistPopUp(BuildContext context,bool newCreate,String? id,String? name,String? comment,bool? public,List<dynamic>? songIDsToAdd, [UpdateNotifier? playlistChangedNotifier]) {
@@ -10,7 +9,7 @@ class EditPlaylistPopup {
     }
     print("builder executed");
     String title = "Create playlist";
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     TextEditingController playlistNameController = TextEditingController();
     TextEditingController playlistCommentController = TextEditingController();
     if (name != null) {
@@ -47,7 +46,7 @@ class EditPlaylistPopup {
               ),
               content: SingleChildScrollView(
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: Column(
                     spacing: 8,
                     children: [
@@ -112,7 +111,7 @@ class EditPlaylistPopup {
                         ),
                       FilledButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (formKey.currentState!.validate()) {
                             if (newCreate == false) {
                               subsonicService.updatePlaylist(id!, playlistNameController.text, playlistCommentController.text, public!.toString(), null, null);
                             } else {

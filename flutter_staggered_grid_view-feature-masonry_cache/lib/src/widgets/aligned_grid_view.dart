@@ -1,5 +1,5 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_staggered_grid_view/src/rendering/sliver_simple_grid_delegate.dart';
 import 'package:flutter_staggered_grid_view/src/widgets/sliver_aligned_grid.dart';
 

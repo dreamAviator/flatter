@@ -1,10 +1,7 @@
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/settings_screen/server_settings/add_server_popup.dart';
 import 'package:flatter/home/settings_screen/server_settings/server_list.dart';
-import 'package:flatter/home/settings_screen/settings_screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:iconify_flutter_plus/icons/ri.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ServerSettingsScreen extends StatelessWidget {
   const ServerSettingsScreen({super.key});

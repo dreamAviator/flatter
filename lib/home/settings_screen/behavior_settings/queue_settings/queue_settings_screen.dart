@@ -1,10 +1,9 @@
 import 'package:flatter/main.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/queue_settings/persistent_queue_setting.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/queue_settings/sync_with_server_setting.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:s_disabled/s_disabled.dart';
+import 'package:s_packages/s_disabled/s_disabled.dart';
 import 'package:flatter/useful_scripts.dart';
+import 'package:material_ui/material_ui.dart';
 
 class QueueSettingsScreen extends StatefulWidget {
   const QueueSettingsScreen({super.key});

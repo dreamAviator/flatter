@@ -1,6 +1,5 @@
 import 'package:flatter/main.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class SkipArtistSelectionEverywhereElseSetting extends StatefulWidget {
   const SkipArtistSelectionEverywhereElseSetting({super.key});

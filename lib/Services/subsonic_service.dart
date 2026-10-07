@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flatter/main.dart';
 
@@ -427,9 +426,9 @@ class SubsonicService {
     List<String> url = getURL(null,null,null);
     String request = "${url[0]}createPlaylist${url[1]}&name=$name";
     if (songIDsToAdd != null) {
-      songIDsToAdd.forEach((value) {
+      for (var value in songIDsToAdd) {
         request = "$request&songId=${value.toString()}";
-      });
+      }
     }
     final uri = Uri.parse(request);
     try {

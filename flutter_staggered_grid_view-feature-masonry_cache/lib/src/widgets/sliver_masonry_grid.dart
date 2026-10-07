@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_staggered_grid_view/src/rendering/sliver_masonry_grid.dart';
 import 'package:flutter_staggered_grid_view/src/rendering/sliver_simple_grid_delegate.dart';
 

@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_staggered_grid_view/src/rendering/uniform_track.dart';
 
 class UniformTrack extends MultiChildRenderObjectWidget {

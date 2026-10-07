@@ -19,7 +19,7 @@ class DatabaseController {
     return;
   }
 
-  void addFolder(String path,String name) {;
+  void addFolder(String path,String name) {
     _folder_db.addFolder(path, name);
   }
 

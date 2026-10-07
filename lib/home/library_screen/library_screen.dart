@@ -1,6 +1,6 @@
 import 'package:flatter/home/library_screen/library_screen_ViewModel.dart';
 import 'package:flatter/home/library_screen/library_tab_bar.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 
 class LibraryScreen extends StatelessWidget {
   const LibraryScreen({super.key,required this.viewModel});

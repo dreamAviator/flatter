@@ -1,6 +1,4 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:cached_network_image_ce/cached_network_image.dart';
-import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
 import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/screens/artist_screen.dart';
@@ -10,7 +8,7 @@ import 'package:flatter/home/player_screen/player_image.dart';
 import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/home/player_screen/progess_slider.dart';
 import 'package:flatter/main.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({super.key});

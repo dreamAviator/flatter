@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  meta: any
+  material_ui: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

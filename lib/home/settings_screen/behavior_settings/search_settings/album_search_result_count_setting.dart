@@ -1,5 +1,5 @@
 import 'package:flatter/main.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
 
 class AlbumSearchResultCountSetting extends StatelessWidget {

@@ -83,7 +83,7 @@ class SettingsController {
   Future<void> loadSettings() async {
     TomlDocument settingsDocument;
     String path = pathProvider.dataDirectory;
-    path = "${path}/flatter_settings.toml";
+    path = "$path/flatter_settings.toml";
     if (await File(path).exists() == false) {
       print("file does not exist");
       settingsDocument = TomlDocument.fromMap(defaultSettingsMap);
@@ -138,7 +138,7 @@ class SettingsController {
 
   void saveSettings() async {
     String dataDirectory = pathProvider.dataDirectory;
-    String path = "${dataDirectory}/flatter_settings.toml";
+    String path = "$dataDirectory/flatter_settings.toml";
     TomlDocument settingsDocument = TomlDocument.fromMap(settingsMap);
     await settingsDocument.save(path);
   }

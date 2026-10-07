@@ -1,6 +1,6 @@
 import 'package:flatter/main.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
 
 class TimeUntilScrobleSetting extends StatelessWidget {

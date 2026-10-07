@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_staggered_grid_view/src/rendering/staggered_grid.dart';
 import 'package:flutter_staggered_grid_view/src/widgets/staggered_grid_tile.dart';
 

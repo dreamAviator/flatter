@@ -1,5 +1,5 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -40,7 +40,7 @@ class ArtistGrid extends StatelessWidget {
         return ValueListenableBuilder(
           valueListenable: filterNotifier!,
           builder: (context,String filter,child) {
-            List<dynamic> filteredArtistList = new List.from(artistList);
+            List<dynamic> filteredArtistList = List.from(artistList);
             if (filter.isNotEmpty) {
               filteredArtistList.removeWhere((item) {
                 if (item is Map) {
@@ -140,7 +140,7 @@ class ArtistGrid extends StatelessWidget {
         return ValueListenableBuilder(
           valueListenable: filterNotifier!,
           builder: (context,String filter,child) {
-            List<dynamic> filteredArtistList = new List.from(artistList);
+            List<dynamic> filteredArtistList = List.from(artistList);
             if (filter.isNotEmpty) {
               filteredArtistList.removeWhere((item) {
                 if (item is Map) {

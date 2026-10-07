@@ -4,10 +4,8 @@ import 'package:flatter/home/settings_screen/behavior_settings/behaviour_setting
 import 'package:flatter/home/settings_screen/info_screen/info_screen.dart';
 import 'package:flatter/home/settings_screen/server_settings/server_settings_screen.dart';
 import 'package:flatter/home/settings_screen/settings_screen_ViewModel.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
-import 'behavior_settings/behaviour_settings_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key,required this.viewModel});

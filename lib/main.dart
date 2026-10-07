@@ -1,8 +1,6 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:audio_service_mpris/audio_service_mpris.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/home_navigation_bar.dart';
 import 'package:flatter/home/home_navigation_rail.dart';
@@ -10,9 +8,8 @@ import 'package:flatter/player_related/player_controls.dart';
 import 'package:flatter/storage/database/database_controller.dart';
 import 'package:flatter/storage/settings_controller.dart';
 import 'package:flatter/storage/paths.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:saf_util/saf_util.dart';
 
 late final PlayerControls playerControl;
 //DirectoryManager directoryControl = DirectoryManager();

@@ -1,10 +1,7 @@
-import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/library_screen/tabs/songs_tab/songs_tab_viewModel.dart';
 import 'package:flatter/home/library_screen/item_widgets/song_list.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:intrinsic_size_builder/intrinsic_size_builder.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -118,7 +115,7 @@ class _SongsTabState extends State<SongsTab> {
                                     ValueListenableBuilder(
                                         valueListenable: filterNotifier,
                                         builder: (context, String filter, child) {
-                                          List<dynamic> filteredSongList = new List.from(asyncSnapshot.data!);
+                                          List<dynamic> filteredSongList = List.from(asyncSnapshot.data!);
                                           if (filter.isNotEmpty) {
                                             filter.toLowerCase();
                                             filteredSongList.removeWhere((item) {

@@ -1,23 +1,13 @@
-import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
-import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/popups/edit_playlist_popup.dart';
-import 'package:flatter/home/library_screen/tabs/albums_tab/albums_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/tabs/playlists_tab/playlists_tab_ViewModel.dart';
 import 'package:flatter/home/library_screen/item_widgets/playlist_grid.dart';
-import 'package:flatter/home/library_screen/screens/playlist_screen.dart';
 import 'package:flatter/home/library_screen/filter_widgets/search_string_filter_widget.dart';
-import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:intrinsic_size_builder/intrinsic_size_builder.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:masonry_grid/masonry_grid.dart';
 
-import '../../../../Riverpod/riverpod_manager.dart';
-import '../../item_widgets/per_item/item_menus.dart';
 
 class PlaylistsTab extends StatefulWidget {
   const PlaylistsTab({super.key,required this.viewModel});

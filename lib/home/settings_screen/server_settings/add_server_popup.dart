@@ -1,6 +1,5 @@
 import 'package:flatter/main.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -11,7 +10,7 @@ import '../../../Riverpod/riverpod_manager.dart';
 class AddServerPopup {
   static void showAddServerPopUp(BuildContext context,String? serverName,String? serverURL,String? serverUsername,String? serverPassword,int? id, RiverpodManager riverpodManager) {
     String title = "Add Server";
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     TextEditingController serverNameController = TextEditingController();
     TextEditingController serverURLcontroller = TextEditingController();
     TextEditingController serverUsernameController = TextEditingController();
@@ -36,7 +35,7 @@ class AddServerPopup {
             const Text("Connection successful"),
             ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
+                if (formKey.currentState!.validate()) {
                   ref.invalidate(riverpodManager.authenticateProvider);
                   if (id != null) {
                     databaseControl.deleteServer(id);
@@ -58,7 +57,7 @@ class AddServerPopup {
             ElevatedButton(
               onPressed: () {
                 authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
-                if (_formKey.currentState!.validate()) {
+                if (formKey.currentState!.validate()) {
                   ref.invalidate(riverpodManager.authenticateProvider);
                 }
               },
@@ -74,7 +73,7 @@ class AddServerPopup {
             ElevatedButton(
               onPressed: () {
                 authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
-                if (_formKey.currentState!.validate()) {
+                if (formKey.currentState!.validate()) {
                   ref.invalidate(riverpodManager.authenticateProvider);
                 }
               },
@@ -90,7 +89,7 @@ class AddServerPopup {
             ElevatedButton(
               onPressed: () {
                 authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
-                if (_formKey.currentState!.validate()) {
+                if (formKey.currentState!.validate()) {
                   ref.invalidate(riverpodManager.authenticateProvider);
                 }
               },
@@ -106,7 +105,7 @@ class AddServerPopup {
             ElevatedButton(
               onPressed: () {
                 authentificationInfos = [serverURLcontroller.text,serverUsernameController.text,serverPasswordController.text];
-                if (_formKey.currentState!.validate()) {
+                if (formKey.currentState!.validate()) {
                   ref.invalidate(riverpodManager.authenticateProvider);
                 }
               },
@@ -126,7 +125,7 @@ class AddServerPopup {
               title: Text(title),
               content: SingleChildScrollView(
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: Consumer(
                     builder: (context, ref, child) {
                       final serverValidStatus = ref.watch(riverpodManager.authenticateProvider(authentificationInfos));

@@ -2,9 +2,7 @@ import 'dart:io';
 
 //import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:saf_util/saf_util_platform_interface.dart';
 
-import '../main.dart';
 
 
 class PathProvider {

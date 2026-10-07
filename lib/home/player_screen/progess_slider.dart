@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/main.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ProgressSlider extends StatelessWidget {

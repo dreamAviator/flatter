@@ -1,13 +1,8 @@
 import 'package:flatter/home/library_screen/item_widgets/song_tile.dart';
 import 'package:flatter/useful_scripts.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 
-import '../../../main.dart';
-import '../screens/album_screen.dart';
-import '../screens/artist_screen.dart';
 
 class SongList extends StatelessWidget {
   const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver, this.filterNotifier,required this.playlistID});
@@ -40,7 +35,7 @@ class SongList extends StatelessWidget {
           return ValueListenableBuilder(//vlt einstellen wo der durchsuchen darf
             valueListenable: filterNotifier!,
             builder: (context,String filter,child) {
-              List<dynamic> filteredSongList = new List.from(songList);
+              List<dynamic> filteredSongList = List.from(songList);
               if (filter.isNotEmpty) {
                 filter.toLowerCase();
                 filteredSongList.removeWhere((item) {

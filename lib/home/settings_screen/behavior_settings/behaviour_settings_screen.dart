@@ -7,7 +7,7 @@ import 'package:flatter/home/settings_screen/behavior_settings/skip_artist_selec
 import 'package:flatter/home/settings_screen/behavior_settings/start_tab_setting.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/time_until_scroble_setting.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/time_until_seek_to_start_setting.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class BehaviourSettingsScreen extends StatelessWidget {
   const BehaviourSettingsScreen({super.key});

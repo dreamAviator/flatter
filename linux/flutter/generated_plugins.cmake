@@ -5,9 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_webview_window
   dynamic_color
-  file_saver
   media_kit_libs_linux
-  nb_utils
   url_launcher_linux
 )
 

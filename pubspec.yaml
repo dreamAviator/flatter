@@ -76,15 +76,18 @@ dependencies:
     path: ./flutter_number_picker-master
     #TODO:das hier auf pub.dev hochladen, ist ein update weil die dependencies geupdatet wurden (flutter svg, außerdem kannst du das noch weiter entwickeln)
   intrinsic_size_builder: ^2.0.2
-  s_disabled: ^3.1.0
+
+  s_packages: ^5.6.0
   #scroll_pos: ^0.5.0 #nicht benötigt, da scrollview_observer stattdessen verwendet wird
   scrollview_observer: ^1.27.2
-  dynamic_color: ^1.9.0
+  dynamic_color: ^2.1.0
 
 
   #flutter_staggered_grid_view_fix_branch:
   #  path: ./flutter_staggered_grid_view_fix_branch
 
+  cupertino_ui: any
+  material_ui: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

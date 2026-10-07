@@ -1,9 +1,7 @@
-import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/main.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 

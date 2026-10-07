@@ -1,9 +1,7 @@
-import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/main.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:rxdart/rxdart.dart';
 
 class PlayerImage extends StatelessWidget {
   const PlayerImage({super.key,required this.sidelength});

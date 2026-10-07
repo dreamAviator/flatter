@@ -2,7 +2,7 @@ import 'package:flatter/home/settings_screen/behavior_settings/play_actions_sett
 import 'package:flatter/home/settings_screen/behavior_settings/play_actions_settings/album_song_list_tap_action.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/play_actions_settings/playlist_song_list_tap_action.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/play_actions_settings/songs_tab_tap_action.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class PlayActionsSettingsScreen extends StatelessWidget {
   const PlayActionsSettingsScreen({super.key});
