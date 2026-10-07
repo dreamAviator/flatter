@@ -1,3 +1,4 @@
+import 'package:flatter/home/settings_screen/appearance_settings/accent_color_setting.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -20,6 +21,11 @@ class AppearanceSettingsScreen extends StatelessWidget {
       body: ListView(
         shrinkWrap: true,
         children: [
+          ListTile(
+            title: Text("Landscape"),
+            subtitle: Text("Changes the look and layout of some things. Needs a restart to take full effect"),
+            trailing: AccentColorSetting(),
+          ),
 //hier jtz bspw wie viele spalten das album gridview haben soll
         /*//landscape
           ListTile(

@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
     Size screenSize = MediaQuery.of(context).size;
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic,ColorScheme? darkDynamic) {
-        final ColorScheme lightScheme = lightDynamic ?? ColorScheme.fromSeed(seedColor: Colors.pink);
+        final ColorScheme lightScheme = lightDynamic ?? ColorScheme.fromSeed(seedColor: Colors.pink);//package zum farben auswählen ist schon drin
         final ColorScheme darkScheme = darkDynamic ?? ColorScheme.fromSeed(seedColor: Colors.pink,brightness: Brightness.dark);
         if (settingsControl.loadSetting('automaticRotationOverride') == false) {
           if (screenSize.width >= screenSize.height) {
