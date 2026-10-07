@@ -78,13 +78,13 @@ class _AlbumsTabState extends State<AlbumsTab> {
   
    */
   
-  Future<List> getAlbums(List<String> filterSortList) async {
+  Future<List> getAlbums(String type, int size, int offset) async {
     List<dynamic> albumMapList = [];
     if (filterSortList[0] == "favorites") {
       Map<dynamic,dynamic> starred = await subsonicService.getStarred();
       albumMapList = starred['album'];
     } else {
-      albumMapList = await subsonicService.getAlbums(filterSortList);
+      albumMapList = await subsonicService.getAlbums(type,size,offset);
     }
     return albumMapList;
   }
@@ -117,7 +117,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                 onSelected: (value) {
                   if (value == null) {
                     return;
-                  }//TODO:favorites hinzufügen (in riverpod provider reinschauen)
+                  }
                   setState(() {
                     type = value;
                     settingsControl.changeSetting('albumDropDownFilterSelection', value);
@@ -148,7 +148,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                 )),
               ),
               FutureBuilder(
-                future: getAlbums(filterSortList),//TODO:durch einzelne argumente ersetzen
+                future: getAlbums(type,elementCount,offset),
                 builder: (context, asyncSnapshot) {
                   if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
                     return AlbumGrid(albumListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true);

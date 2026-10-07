@@ -106,7 +106,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
               selected: onlyFavorites,
               onSelected: (bool selected) {
                 setState(() {
-                  onlyFavorites = selected;//TODO:favorites (in riverpod provider reinschauen)
+                  onlyFavorites = selected;
                 });
               },
             ),

@@ -7,7 +7,7 @@ class AlbumSearchResultCountSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNumberPicker(
+    return CustomNumberPicker<num>(
       initialValue: settingsControl.loadSetting('albumSearchResultsCount'),
       minValue: 1,
       step: 1,

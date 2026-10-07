@@ -51,7 +51,7 @@ class TimeUntilSeekToStartSetting extends StatelessWidget {
     );
 
      */
-    return CustomNumberPicker(
+    return CustomNumberPicker<num>(
       initialValue: settingsControl.loadSetting('timeUntilSeekToStart'),
       minValue: 0,
       step: 1,

@@ -7,7 +7,7 @@ class SongSearchResultCountSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNumberPicker(
+    return CustomNumberPicker<num>(
       initialValue: settingsControl.loadSetting('songSearchResultsCount'),
       minValue: 1,
       step: 1,

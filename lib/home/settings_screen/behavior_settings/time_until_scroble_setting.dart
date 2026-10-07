@@ -51,7 +51,7 @@ class TimeUntilScrobleSetting extends StatelessWidget {
     );
 
      */
-    return CustomNumberPicker(
+    return CustomNumberPicker<num>(
       initialValue: settingsControl.loadSetting('timeUntilScrobble'),
       minValue: 0,
       step: 1,

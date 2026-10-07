@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_service_mpris/audio_service_mpris.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/home_navigation_bar.dart';
@@ -54,49 +55,115 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    if (settingsControl.loadSetting('automaticRotationOverride') == false) {
-      if (screenSize.width >= screenSize.height) {//das darf nicht immer ausgeführt werden lol
-        settingsControl.changeSetting('landscapeMode', true);
-        return MaterialApp(
-          title: 'flatter',
-          theme: ThemeData(
-            useMaterial3: true,//in die settings packen
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-          ),
-          home: const HomeNavigationRail(),
-        );
-      } else {
-        settingsControl.changeSetting('landscapeMode', false);
-        return MaterialApp(
-          title: 'flatter',
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-          ),
-          home: const HomeNavigationBar(),
-        );
-      }
-    } else {
-      if (settingsControl.loadSetting('landscapeMode') == true) {
-        return MaterialApp(
-          title: 'flatter',
-          theme: ThemeData(
-            useMaterial3: true,//in die settings packen
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-          ),
-          home: const HomeNavigationRail(),
-        );
-      } else {
-        return MaterialApp(
-          title: 'flatter',
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-          ),
-          home: const HomeNavigationBar(),
-        );
-      }
-    }
-
+    return DynamicColorBuilder(
+      builder: (ColorScheme? lightDynamic,ColorScheme? darkDynamic) {
+        final ColorScheme lightScheme = lightDynamic ?? ColorScheme.fromSeed(seedColor: Colors.pink);
+        final ColorScheme darkScheme = darkDynamic ?? ColorScheme.fromSeed(seedColor: Colors.pink,brightness: Brightness.dark);
+        if (settingsControl.loadSetting('automaticRotationOverride') == false) {
+          if (screenSize.width >= screenSize.height) {
+            settingsControl.changeSetting('landscapeMode', true);
+            return MaterialApp(
+              title: 'flatter',
+              theme: ThemeData(
+                useMaterial3: true,//in die settings packen
+                colorScheme: lightScheme,
+              ),
+              darkTheme: ThemeData(
+                useMaterial3: true,//in die settings packen
+                colorScheme: darkScheme,
+              ),
+              home: const HomeNavigationRail(),
+            );
+          } else {
+            settingsControl.changeSetting('landscapeMode', false);
+            return MaterialApp(
+              title: 'flatter',
+              theme: ThemeData(
+                useMaterial3: true,//in die settings packen
+                colorScheme: lightScheme,
+              ),
+              darkTheme: ThemeData(
+                useMaterial3: true,//in die settings packen
+                colorScheme: darkScheme,
+              ),
+              home: const HomeNavigationBar(),
+            );
+          }
+        } else {
+          if (settingsControl.loadSetting('landscapeMode') == true) {
+            return MaterialApp(
+              title: 'flatter',
+              theme: ThemeData(
+                useMaterial3: true,//in die settings packen
+                colorScheme: lightScheme,
+              ),
+              darkTheme: ThemeData(
+                useMaterial3: true,//in die settings packen
+                colorScheme: darkScheme,
+              ),
+              home: const HomeNavigationRail(),
+            );
+          } else {
+            return MaterialApp(
+              title: 'flatter',
+              theme: ThemeData(
+                useMaterial3: true,//in die settings packen
+                colorScheme: lightScheme,
+              ),
+              darkTheme: ThemeData(
+                useMaterial3: true,//in die settings packen
+                colorScheme: darkScheme,
+              ),
+              home: const HomeNavigationBar(),
+            );
+          }
+        }
+        /*//altes mit festgelegter seed color
+        if (settingsControl.loadSetting('automaticRotationOverride') == false) {
+          if (screenSize.width >= screenSize.height) {
+            settingsControl.changeSetting('landscapeMode', true);
+            return MaterialApp(
+              title: 'flatter',
+              theme: ThemeData(
+                useMaterial3: true,//in die settings packen
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+              ),
+              home: const HomeNavigationRail(),
+            );
+          } else {
+            settingsControl.changeSetting('landscapeMode', false);
+            return MaterialApp(
+              title: 'flatter',
+              theme: ThemeData(
+                useMaterial3: true,
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+              ),
+              home: const HomeNavigationBar(),
+            );
+          }
+        } else {
+          if (settingsControl.loadSetting('landscapeMode') == true) {
+            return MaterialApp(
+              title: 'flatter',
+              theme: ThemeData(
+                useMaterial3: true,//in die settings packen
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+              ),
+              home: const HomeNavigationRail(),
+            );
+          } else {
+            return MaterialApp(
+              title: 'flatter',
+              theme: ThemeData(
+                useMaterial3: true,
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+              ),
+              home: const HomeNavigationBar(),
+            );
+          }
+        }
+        */
+      },
+    );
   }
 }

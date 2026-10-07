@@ -24,7 +24,7 @@ class RiverpodManager {
   final serverListProvider = FutureProvider<List<List>>((ref) async {
     return databaseControl.getServers();
   });
-
+  /*
   final albumListProvider = FutureProvider.family<List<dynamic>,List<String>>((ref,List<String> filterSortOptions) async {
     List<dynamic> albumMapList = [];
     if (filterSortOptions[0] == "favorites") {
@@ -35,6 +35,8 @@ class RiverpodManager {
     }
     return albumMapList;
   });
+
+   */
 
   final albumDetailsProvider = FutureProvider.family<Map<dynamic,dynamic>,String>((ref,String id) async {
     Map<dynamic,dynamic> albumDetails = await subsonicService.getAlbumDetails(id);
