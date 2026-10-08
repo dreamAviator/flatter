@@ -1,4 +1,4 @@
-display_name: flatter alpha
+display_name: flatter
 
 icon: lib/assets/icon/app_icon.png
 
@@ -8,7 +8,7 @@ keywords:
   - navidrome
   - flutter
 
-generic_name: flatter alpha
+generic_name: Navidrome Client
 
 
 categories:
