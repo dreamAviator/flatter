@@ -10,6 +10,13 @@ releases:
           pre: echo "Starting appimage packaging..."
           post: echo "appimage packaging complete!"
 
+      - name: linux-zip
+        package:
+          platform: linux
+          target: zip
+          pre: echo "Starting linux zip packaging..."
+          post: echo "linux zip packaging complete!"
+
 
   - name: dev-android
     jobs:

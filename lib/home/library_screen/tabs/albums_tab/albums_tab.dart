@@ -84,76 +84,74 @@ class _AlbumsTabState extends State<AlbumsTab> {
   Widget build(BuildContext context) {
     filterSortList = [type,"$elementCount","$offset"];
     final Size screenSize = MediaQuery.sizeOf(context);
-    return Expanded(
-      child: IntrinsicSizeBuilder(
-        subject: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DropdownMenu<String>(
-                selectOnly: true,
-                dropdownMenuEntries: const [
-                  DropdownMenuEntry(value: "favorites", label: "Favorites"),
-                  DropdownMenuEntry(value: "random", label: "Random"),
-                  DropdownMenuEntry(value: "newest", label: "Newest"),
-                  DropdownMenuEntry(value: "highest", label: "Highest"),
-                  DropdownMenuEntry(value: "frequent", label: "Frequent"),
-                  DropdownMenuEntry(value: "Recent", label: "Recent"),
-                  DropdownMenuEntry(value: "alphabeticalByName", label: "Alphabetical by name"),
-                  DropdownMenuEntry(value: "alphabeticalByArtist", label: "Alphabetical by artist"),
-                  DropdownMenuEntry(value: "byYear", label: "byYear"),
-                  DropdownMenuEntry(value: "byGenre", label: "byGenre"),
-                ],
-                initialSelection: settingsControl.loadSetting('albumDropDownFilterSelection'),
-                onSelected: (value) {
-                  if (value == null) {
-                    return;
+    return IntrinsicSizeBuilder(
+      subject: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DropdownMenu<String>(
+              selectOnly: true,
+              dropdownMenuEntries: const [
+                DropdownMenuEntry(value: "favorites", label: "Favorites"),
+                DropdownMenuEntry(value: "random", label: "Random"),
+                DropdownMenuEntry(value: "newest", label: "Newest"),
+                DropdownMenuEntry(value: "highest", label: "Highest"),
+                DropdownMenuEntry(value: "frequent", label: "Frequent"),
+                DropdownMenuEntry(value: "Recent", label: "Recent"),
+                DropdownMenuEntry(value: "alphabeticalByName", label: "Alphabetical by name"),
+                DropdownMenuEntry(value: "alphabeticalByArtist", label: "Alphabetical by artist"),
+                DropdownMenuEntry(value: "byYear", label: "byYear"),
+                DropdownMenuEntry(value: "byGenre", label: "byGenre"),
+              ],
+              initialSelection: settingsControl.loadSetting('albumDropDownFilterSelection'),
+              onSelected: (value) {
+                if (value == null) {
+                  return;
+                }
+                setState(() {
+                  type = value;
+                  settingsControl.changeSetting('albumDropDownFilterSelection', value);
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+      builder: (context,subjectSize,subject) {
+        return CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              primary: false,
+              floating: true,
+              snap: true,
+              expandedHeight: subjectSize.height,
+              flexibleSpace: LayoutBuilder(
+                  builder: (context, constraints) {
+                    bool visible = true;
+                    print(constraints.maxHeight);
+                    print(subjectSize.height);
+                    if (constraints.heightConstraints().maxHeight < subjectSize.height) {
+                      visible = false;
+                    }
+                    return Visibility(visible: visible,child: subject);
                   }
-                  setState(() {
-                    type = value;
-                    settingsControl.changeSetting('albumDropDownFilterSelection', value);
-                  });
-                },
               ),
             ),
-          ],
-        ),
-        builder: (context,subjectSize,subject) {
-          return CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                primary: false,
-                floating: true,
-                snap: true,
-                expandedHeight: subjectSize.height,
-                flexibleSpace: Expanded(child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      bool visible = true;
-                      print(constraints.maxHeight);
-                      print(subjectSize.height);
-                      if (constraints.heightConstraints().maxHeight < subjectSize.height) {
-                        visible = false;
-                      }
-                      return Visibility(visible: visible,child: subject);
-                    }
-                )),
-              ),
-              FutureBuilder(
-                future: getAlbums(type,elementCount,offset),
-                builder: (context, asyncSnapshot) {
-                  if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
-                    return AlbumGrid(albumListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true);
-                  } else if (asyncSnapshot.hasError) {
-                    return SliverToBoxAdapter(child: Text("Error"),);
-                  } else {
-                    return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
-                  }
+            FutureBuilder(
+              future: getAlbums(type,elementCount,offset),
+              builder: (context, asyncSnapshot) {
+                if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+                  return AlbumGrid(albumListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true);
+                } else if (asyncSnapshot.hasError) {
+                  return SliverToBoxAdapter(child: Text("Error"),);
+                } else {
+                  return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
                 }
-              ),
-            ],
-          );
-        },
-      ),
+              }
+            ),
+          ],
+        );
+      },
     );
   }
 }

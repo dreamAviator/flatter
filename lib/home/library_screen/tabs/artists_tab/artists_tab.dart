@@ -90,60 +90,56 @@ class _ArtistsTabState extends State<ArtistsTab> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.sizeOf(context);
     final ValueNotifier<String> filterNotifier = ValueNotifier('');
-    return Expanded(
-      child: IntrinsicSizeBuilder(
-        subject: Row(
-          children: [
-            FilterChip(
-              label: Text("Favorites"),
-              selected: onlyFavorites,
-              onSelected: (bool selected) {
-                setState(() {
-                  onlyFavorites = selected;
-                });
-              },
-            ),
-            Expanded(child: SearchStringFilterWidget(filterNotifier: filterNotifier)),
-          ],
-        ),
-        builder: (context, subjectSize,subject) {
-          return CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                primary: false,
-                floating: true,
-                snap: true,
-                expandedHeight: subjectSize.height,
-                flexibleSpace: Expanded(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      bool visible = true;
-                      print(constraints.maxHeight);
-                      print(subjectSize.height);
-                      if (constraints.heightConstraints().maxHeight < subjectSize.height) {
-                        visible = false;
-                      }
-                      return Visibility(visible: visible,child: subject);
-                    },
-                  ),
-                ),
-              ),
-              FutureBuilder(
-                future: getArtists(),
-                builder: (context, asyncSnapshot) {
-                  if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
-                    return ArtistGrid(artistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: onlyFavorites.opposite);
-                  } else if (asyncSnapshot.hasError) {
-                    return SliverToBoxAdapter(child: Text("Error"),);
-                  } else {
-                    return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
-                  }
-                }
-              ),//noch schauen wie ich die index buchstaben einfügen kann
-            ],
-          );
-        }
+    return IntrinsicSizeBuilder(
+      subject: Row(
+        children: [
+          FilterChip(
+            label: Text("Favorites"),
+            selected: onlyFavorites,
+            onSelected: (bool selected) {
+              setState(() {
+                onlyFavorites = selected;
+              });
+            },
+          ),
+          Expanded(child: SearchStringFilterWidget(filterNotifier: filterNotifier)),
+        ],
       ),
+      builder: (context, subjectSize,subject) {
+        return CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              primary: false,
+              floating: true,
+              snap: true,
+              expandedHeight: subjectSize.height,
+              flexibleSpace: LayoutBuilder(
+                builder: (context, constraints) {
+                  bool visible = true;
+                  print(constraints.maxHeight);
+                  print(subjectSize.height);
+                  if (constraints.heightConstraints().maxHeight < subjectSize.height) {
+                    visible = false;
+                  }
+                  return Visibility(visible: visible,child: subject);
+                },
+              ),
+            ),
+            FutureBuilder(
+              future: getArtists(),
+              builder: (context, asyncSnapshot) {
+                if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+                  return ArtistGrid(artistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: onlyFavorites.opposite);
+                } else if (asyncSnapshot.hasError) {
+                  return SliverToBoxAdapter(child: Text("Error"),);
+                } else {
+                  return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
+                }
+              }
+            ),//noch schauen wie ich die index buchstaben einfügen kann
+          ],
+        );
+      }
     );
   }
 }

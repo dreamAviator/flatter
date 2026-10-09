@@ -68,157 +68,153 @@ class _SongsTabState extends State<SongsTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: IntrinsicSizeBuilder(
-        subject: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            spacing: 8,
-            children: [
-              if (genreFilter == false) FilterChip(
-                label: Text("Favorites"),
-                selected: onlyFavorites,
-                onSelected: (bool selected) {
-                  setState(() {
-                    onlyFavorites = selected;
-                  });
-                },
-              ),
-              if (onlyFavorites == false) FilterChip(
-                label: Text("Genre:"),
-                selected: genreFilter,
-                onSelected: (bool selected) {
-                  setState(() {
-                    if (selected == false) {
-                      genre = null;
-                    }
-                    genreFilter = selected;
-                  });
-                },
-              ),
-              if (genreFilter == true) FutureBuilder(
-                  future: subsonicService.getGenres(),
-                  builder: (context, asyncSnapshot) {
-                    String genreName = genre ?? "Genre";
-                    if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
-                      return FilledButton(
-                        child: Text(genreName),
-                        onPressed: () {
-                          showModalBottomSheet(
-                              showDragHandle: true,
-                              context: context,
-                              builder: (BuildContext context) {
-                                ValueNotifier<String> filterNotifier = ValueNotifier("");
-                                return Column(
-                                  children: [
-                                    SearchStringFilterWidget(filterNotifier: filterNotifier),
-                                    ValueListenableBuilder(
-                                        valueListenable: filterNotifier,
-                                        builder: (context, String filter, child) {
-                                          List<dynamic> filteredSongList = List.from(asyncSnapshot.data!);
-                                          if (filter.isNotEmpty) {
-                                            filter.toLowerCase();
-                                            filteredSongList.removeWhere((item) {
-                                              if (item is Map) {
-                                                for (var value in item.values) {
-                                                  if (value is String) {
-                                                    if (value.toLowerCase().contains(filter.toLowerCase())) {
-                                                      return false;
-                                                    }
-                                                  } else if (value is List) {
-                                                    for (var underValue in value) {
-                                                      if (underValue is Map) {
-                                                        for (var underUnderValue in underValue.values) {
-                                                          if (underUnderValue is String) {
-                                                            if (underUnderValue.toLowerCase().contains(filter.toLowerCase())) {
-                                                              return false;
-                                                            }
+    return IntrinsicSizeBuilder(
+      subject: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          spacing: 8,
+          children: [
+            if (genreFilter == false) FilterChip(
+              label: Text("Favorites"),
+              selected: onlyFavorites,
+              onSelected: (bool selected) {
+                setState(() {
+                  onlyFavorites = selected;
+                });
+              },
+            ),
+            if (onlyFavorites == false) FilterChip(
+              label: Text("Genre:"),
+              selected: genreFilter,
+              onSelected: (bool selected) {
+                setState(() {
+                  if (selected == false) {
+                    genre = null;
+                  }
+                  genreFilter = selected;
+                });
+              },
+            ),
+            if (genreFilter == true) FutureBuilder(
+                future: subsonicService.getGenres(),
+                builder: (context, asyncSnapshot) {
+                  String genreName = genre ?? "Genre";
+                  if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+                    return FilledButton(
+                      child: Text(genreName),
+                      onPressed: () {
+                        showModalBottomSheet(
+                            showDragHandle: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              ValueNotifier<String> filterNotifier = ValueNotifier("");
+                              return Column(
+                                children: [
+                                  SearchStringFilterWidget(filterNotifier: filterNotifier),
+                                  ValueListenableBuilder(
+                                      valueListenable: filterNotifier,
+                                      builder: (context, String filter, child) {
+                                        List<dynamic> filteredSongList = List.from(asyncSnapshot.data!);
+                                        if (filter.isNotEmpty) {
+                                          filter.toLowerCase();
+                                          filteredSongList.removeWhere((item) {
+                                            if (item is Map) {
+                                              for (var value in item.values) {
+                                                if (value is String) {
+                                                  if (value.toLowerCase().contains(filter.toLowerCase())) {
+                                                    return false;
+                                                  }
+                                                } else if (value is List) {
+                                                  for (var underValue in value) {
+                                                    if (underValue is Map) {
+                                                      for (var underUnderValue in underValue.values) {
+                                                        if (underUnderValue is String) {
+                                                          if (underUnderValue.toLowerCase().contains(filter.toLowerCase())) {
+                                                            return false;
                                                           }
                                                         }
-                                                      } else if (underValue is String) {
-                                                        if (underValue.toLowerCase().contains(filter.toLowerCase())) {
-                                                          return false;
-                                                        }
+                                                      }
+                                                    } else if (underValue is String) {
+                                                      if (underValue.toLowerCase().contains(filter.toLowerCase())) {
+                                                        return false;
                                                       }
                                                     }
                                                   }
                                                 }
                                               }
-                                              return true;
-                                            });
-                                          }
-                                          return Expanded(
-                                            child: ListView.builder(
-                                              itemCount: filteredSongList.length,
-                                              itemBuilder: (BuildContext context,int index) {
-                                                return ListTile(
-                                                  title: Text(filteredSongList[index]['value']),
-                                                  onTap: () {
-                                                    Navigator.of(context).pop();
-                                                    setState(() {
-                                                      genre = filteredSongList[index]['value'];
-                                                    });
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                          );
+                                            }
+                                            return true;
+                                          });
                                         }
-                                    ),
-                                  ],
-                                );
-                              }
-                          );
-                        },
-                      );
-                    } else if (asyncSnapshot.hasError) {
-                      return Text("Error");
-                    } else {
-                      return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
-                    }
+                                        return Expanded(
+                                          child: ListView.builder(
+                                            itemCount: filteredSongList.length,
+                                            itemBuilder: (BuildContext context,int index) {
+                                              return ListTile(
+                                                title: Text(filteredSongList[index]['value']),
+                                                onTap: () {
+                                                  Navigator.of(context).pop();
+                                                  setState(() {
+                                                    genre = filteredSongList[index]['value'];
+                                                  });
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      }
+                                  ),
+                                ],
+                              );
+                            }
+                        );
+                      },
+                    );
+                  } else if (asyncSnapshot.hasError) {
+                    return Text("Error");
+                  } else {
+                    return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
                   }
-              ),
-            ],
-          ),
+                }
+            ),
+          ],
         ),
-        builder: (context, subjectSize,subject) {
-          return CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                primary: false,
-                floating: true,
-                snap: true,
-                expandedHeight: subjectSize.height,
-                flexibleSpace: Expanded(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      bool visible = true;
-                      print(constraints.maxHeight);
-                      print(subjectSize.height);
-                      if (constraints.heightConstraints().maxHeight < subjectSize.height) {
-                        visible = false;
-                      }
-                      return Visibility(visible: visible,child: subject);
-                    },
-                  ),
-                ),
-              ),
-              FutureBuilder(
-                  future: getSongs(500, genre, null, null,onlyFavorites),
-                  builder: (context, asyncSnapshot) {
-                    if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
-                      return SongList(listView: true,sliver: true,songListNullable: asyncSnapshot.data,playlistID: null,);
-                    } else if (asyncSnapshot.hasError) {
-                      return SliverToBoxAdapter(child: Text("Error"),);
-                    } else {
-                      return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
-                    }
-                  }
-              ),
-            ],
-          );
-        }
       ),
+      builder: (context, subjectSize,subject) {
+        return CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              primary: false,
+              floating: true,
+              snap: true,
+              expandedHeight: subjectSize.height,
+              flexibleSpace: LayoutBuilder(
+                builder: (context, constraints) {
+                  bool visible = true;
+                  print(constraints.maxHeight);
+                  print(subjectSize.height);
+                  if (constraints.heightConstraints().maxHeight < subjectSize.height) {
+                    visible = false;
+                  }
+                  return Visibility(visible: visible,child: subject);
+                },
+              ),
+            ),
+            FutureBuilder(
+                future: getSongs(500, genre, null, null,onlyFavorites),
+                builder: (context, asyncSnapshot) {
+                  if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+                    return SongList(listView: true,sliver: true,songListNullable: asyncSnapshot.data,playlistID: null,);
+                  } else if (asyncSnapshot.hasError) {
+                    return SliverToBoxAdapter(child: Text("Error"),);
+                  } else {
+                    return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
+                  }
+                }
+            ),
+          ],
+        );
+      }
     );
   }
 }

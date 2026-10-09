@@ -159,71 +159,67 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
     final UpdateNotifier playlistChangedNotifier = UpdateNotifier();
     return Stack(
       children:[
-        Expanded(
-          child: IntrinsicSizeBuilder(
-              subject: SearchStringFilterWidget(filterNotifier: filterNotifier),
-              builder: (context, subjectSize,subject) {
-                return CustomScrollView(
-                  slivers: [
-                    SliverAppBar(
-                      primary: false,
-                      floating: true,
-                      snap: true,
-                      expandedHeight: subjectSize.height,
-                      flexibleSpace: Expanded(
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            bool visible = true;
-                            print(constraints.maxHeight);
-                            print(subjectSize.height);
-                            if (constraints.heightConstraints().maxHeight < subjectSize.height) {
-                              visible = false;
-                            }
-                            return Visibility(visible: visible,child: subject);
-                          },
-                        ),
-                      ),
-                    ),
-                    const SliverToBoxAdapter(child: Text("Own"),),
-                    ListenableBuilder(
-                      listenable: playlistChangedNotifier,
-                      builder: (context, child) {
-                        return FutureBuilder(
-                          future: subsonicService.getPlaylists(),
-                          builder: (context, asyncSnapshot) {
-                            if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
-                              return PlaylistGrid(playlistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: true,filterNotifier: filterNotifier,playlistChangedNotifier: playlistChangedNotifier,);
-                            } else if (asyncSnapshot.hasError) {
-                              return SliverToBoxAdapter(child: Text("Error"),);
-                            } else {
-                              return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
-                            }
-                          }
-                        );
+        IntrinsicSizeBuilder(
+          subject: SearchStringFilterWidget(filterNotifier: filterNotifier),
+          builder: (context, subjectSize,subject) {
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  primary: false,
+                  floating: true,
+                  snap: true,
+                  expandedHeight: subjectSize.height,
+                  flexibleSpace: LayoutBuilder(
+                    builder: (context, constraints) {
+                      bool visible = true;
+                      print(constraints.maxHeight);
+                      print(subjectSize.height);
+                      if (constraints.heightConstraints().maxHeight < subjectSize.height) {
+                        visible = false;
                       }
-                    ),
-                    const SliverToBoxAdapter(child: Text("Shared with you"),),
-                    ListenableBuilder(
-                      listenable: playlistChangedNotifier,
-                      builder: (context, child) {
-                        return FutureBuilder(
-                          future: subsonicService.getPlaylists(),
-                          builder: (context, asyncSnapshot) {
-                            if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
-                              return PlaylistGrid(playlistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: false,filterNotifier: filterNotifier,playlistChangedNotifier: playlistChangedNotifier,);
-                            } else if (asyncSnapshot.hasError) {
-                              return SliverToBoxAdapter(child: Text("Error"),);
-                            } else {
-                              return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
-                            }
-                          }
-                        );
+                      return Visibility(visible: visible,child: subject);
+                    },
+                  ),
+                ),
+                const SliverToBoxAdapter(child: Text("Own"),),
+                ListenableBuilder(
+                  listenable: playlistChangedNotifier,
+                  builder: (context, child) {
+                    return FutureBuilder(
+                      future: subsonicService.getPlaylists(),
+                      builder: (context, asyncSnapshot) {
+                        if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+                          return PlaylistGrid(playlistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: true,filterNotifier: filterNotifier,playlistChangedNotifier: playlistChangedNotifier,);
+                        } else if (asyncSnapshot.hasError) {
+                          return SliverToBoxAdapter(child: Text("Error"),);
+                        } else {
+                          return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
+                        }
                       }
-                    ),
-                  ],
-                );
-              }
-          ),
+                    );
+                  }
+                ),
+                const SliverToBoxAdapter(child: Text("Shared with you"),),
+                ListenableBuilder(
+                  listenable: playlistChangedNotifier,
+                  builder: (context, child) {
+                    return FutureBuilder(
+                      future: subsonicService.getPlaylists(),
+                      builder: (context, asyncSnapshot) {
+                        if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+                          return PlaylistGrid(playlistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: false,filterNotifier: filterNotifier,playlistChangedNotifier: playlistChangedNotifier,);
+                        } else if (asyncSnapshot.hasError) {
+                          return SliverToBoxAdapter(child: Text("Error"),);
+                        } else {
+                          return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
+                        }
+                      }
+                    );
+                  }
+                ),
+              ],
+            );
+          }
         ),
         Align(
           alignment: Alignment.bottomRight,
