@@ -32,7 +32,8 @@ void main() async {
     builder: () => PlayerControls(),
     config: AudioServiceConfig(
       androidNotificationChannelId: 'me.dreamaviator.flutter.channel.audio',
-      androidNotificationChannelName: 'flatter Music Playback'
+      androidNotificationChannelName: 'flatter Music Playback',
+      androidNotificationIcon:"drawable/ic_notification"
     ),
   );
   session = await AudioSession.instance;

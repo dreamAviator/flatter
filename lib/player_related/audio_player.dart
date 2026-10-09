@@ -10,6 +10,7 @@ class MyPlayer extends AudioPlayer{
   }
 
   Future<void> setSource(String id) async {//bei id lassen, i yt odus halt die yt id und beim lokalen modus den stuff in einer datenbank machen oder so
+    print("hello3.1");
     if (settingsControl.loadSetting('mode') == "navidrome" || settingsControl.loadSetting('mode') == "subsonic" || settingsControl.loadSetting("mode") == "opensubsonic") {
       List<String> baseUrl = subsonicService.getURL(null, null, null);
       Uri uriSource = Uri.parse("${baseUrl[0]}stream${baseUrl[1]}&id=$id");

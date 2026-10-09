@@ -77,12 +77,19 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   Future<void> skipToQueueItem(int index) async {
     print("skip to queue item");
     MediaItem item = _queueRepository.getItemAtPos(index);
+    print("hello1");
     _queueRepository.makeCurrent(index);
+    print("hello2");
     _player.seek(Duration.zero);
+    print("hello3");
     _player.setSource(item.id);
+    print("hello4");
     mediaItem.add(item);
+    print("hello5");
     play();
+    print("hello6");
     localNotDatabaseStorageController.saveQueue();
+    print("hello7");
   }
   /*
   @override

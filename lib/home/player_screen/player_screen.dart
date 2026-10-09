@@ -32,6 +32,7 @@ class PlayerScreen extends StatelessWidget {
                       stream: playerControl.mediaItem,
                       builder: (context, asyncSnapshot) {
                         print(asyncSnapshot.data);
+                        print("hello8");
                         final String title = asyncSnapshot.data?.title ?? "Unknown";
                         final String album = asyncSnapshot.data?.album ?? "Unknown";
                         final String artist = asyncSnapshot.data?.artist ?? "Unknown";
