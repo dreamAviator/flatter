@@ -28,6 +28,7 @@ releases:
           pre: echo "Starting apk packaging..."
           post: echo "apk packaging complete!"
 
+
   - name: dev-windows
     jobs:
 
@@ -38,6 +39,7 @@ releases:
           pre: echo "Starting msix packaging..."
           post: echo "msix packaging complete!"
 
+
   - name: dev-macos
     jobs:
 
@@ -47,3 +49,10 @@ releases:
           target: pkg
           pre: echo "Starting pkg packaging..."
           post: echo "pkg packaging complete!"
+
+      #- name: macos-dmg
+      #  package:
+      #    platform: macos
+      #    target: dmg
+      #    pre: echo "Starting dmg packaging..."
+      #    post: echo "dmg packaging complete!"
