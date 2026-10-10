@@ -58,9 +58,9 @@ releases:
           pre: echo "Starting pkg packaging..."
           post: echo "pkg packaging complete!"
 
-      #- name: macos-dmg
-      #  package:
-      #    platform: macos
-      #    target: dmg
-      #    pre: echo "Starting dmg packaging..."
-      #    post: echo "dmg packaging complete!"
+      - name: macos-dmg
+        package:
+          platform: macos
+          target: dmg
+          pre: echo "Starting dmg packaging..."
+          post: echo "dmg packaging complete!"

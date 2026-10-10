@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  audio_service_win
   desktop_webview_window
   dynamic_color
   media_kit_libs_windows_audio
