@@ -32,12 +32,13 @@ releases:
   - name: dev-windows
     jobs:
 
-      - name: windows-msix
-        package:
-          platform: windows
-          target: msix
-          pre: echo "Starting msix packaging..."
-          post: echo "msix packaging complete!"
+      #no certificate and right now no publishing through microsoft store, so no msix
+      #- name: windows-msix
+      #  package:
+      #    platform: windows
+      #    target: msix
+      #    pre: echo "Starting msix packaging..."
+      #    post: echo "msix packaging complete!"
 
       - name: windows-exe
         package:
