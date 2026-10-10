@@ -39,6 +39,13 @@ releases:
           pre: echo "Starting msix packaging..."
           post: echo "msix packaging complete!"
 
+      - name: windows-exe
+        package:
+          platform: windows
+          target: exe
+          pre: echo "Starting exe packaging..."
+          post: echo "exe packaging complete!"
+
 
   - name: dev-macos
     jobs:
