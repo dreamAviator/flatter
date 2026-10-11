@@ -33,6 +33,7 @@ class _QueueScreenState extends State<QueueScreen> {
   double scrollOffset = 0;
   bool hasRun = false;
   bool dontScroll = false;//soll umegelgt werden, wenn vom nutzer gescrollt wurde oder die queue irgendwie verändert wurde
+  bool dontScrollOverride = false;//so that if the ui scrolls automatically, it does not count as scrolling
 
   Widget buildQueue(BuildContext context, List<MediaItem> queue,ListObserverController observerController) {
 
@@ -40,6 +41,7 @@ class _QueueScreenState extends State<QueueScreen> {
       hasRun = true;
     }
     void removeFromQueue(int index) {
+      dontScroll = true;
       playerControl.removeQueueItemAt(index);
     }
     void goToAlbum(BuildContext context, String id) {
@@ -59,6 +61,7 @@ class _QueueScreenState extends State<QueueScreen> {
               scrollController: scrollController,
               itemCount: queue.length,
               onReorder: (int oldIndex,int newIndex) {
+                dontScroll = true;
                 if (oldIndex < newIndex) {
                   newIndex -= 1;
                 }
@@ -174,6 +177,8 @@ class _QueueScreenState extends State<QueueScreen> {
   Widget build(BuildContext context) {
     ListObserverController observerController = ListObserverController(controller: scrollController);
     print("widget build executed");
+    print(dontScroll);
+    print("this was dontScroll from start of widget build");
     return Scaffold(
       appBar: AppBar(
         title: const Text("Queue"),
@@ -186,85 +191,96 @@ class _QueueScreenState extends State<QueueScreen> {
           ),
         ],
       ),
-      body: StreamBuilder(
-        stream: playerControl.queueStream,
-        builder: (context, snapshot) {
-          print("streambuilder executed");
-          bool queueEmpty = false;
-          final queue = snapshot.data ?? [];
-          if (queue.isEmpty) {
-            queueEmpty = true;
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification is ScrollStartNotification && dontScrollOverride == false) {
+            dontScroll = true;
+          } else if (notification is ScrollEndNotification) {
+            dontScrollOverride = false;
           }
-          if (dontScroll == false) {
-            if (queueEmpty != true && hasRun == true) {//TODO:nicht wenn etwas gemacht wurde (wie entfernen, etc, sodass die queue dann halt nicht nach oben springt //dafür wurde jetzt die dontscroll variable hinzugefügt, noch implementieren
-              //scrollController.scrollToItem(playerControl.getCurrentIndex(),center: true);
-              observerController.animateTo(index: playerControl.getCurrentIndex(), duration: Duration(seconds: 1), curve: Curves.ease);
+          return true;
+        },
+        child: StreamBuilder(
+          stream: playerControl.queueStream,
+          builder: (context, snapshot) {
+            print("streambuilder executed");
+            bool queueEmpty = false;
+            final queue = snapshot.data ?? [];
+            if (queue.isEmpty) {
+              queueEmpty = true;
             }
-            if (hasRun == false && queueEmpty == false) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                print("should jump to item now");
+            if (dontScroll == false) {
+              if (queueEmpty != true && hasRun == true) {//TODO:nicht wenn etwas gemacht wurde (wie entfernen, etc, sodass die queue dann halt nicht nach oben springt //dafür wurde jetzt die dontscroll variable hinzugefügt, noch implementieren
+                //scrollController.scrollToItem(playerControl.getCurrentIndex(),center: true);
+                dontScrollOverride = true;
+                observerController.animateTo(index: playerControl.getCurrentIndex(), duration: Duration(seconds: 1), curve: Curves.ease);
+              }
+              if (hasRun == false && queueEmpty == false) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  dontScrollOverride = true;
 
-                //scrollController.scrollToItem(playerControl.getCurrentIndex(),animate: false,center: true);
-                observerController.jumpTo(index: playerControl.getCurrentIndex());//TODO:das hier funktioniert nicht, wenn das nicht gefixed wird dann zum anderen package wieder zurück wechseln. das ist eigentlich schöner, weil es das item oben ranbringt und noch aktiv maintained wird
-                //observerController.animateTo(index: playerControl.getCurrentIndex(), duration: Duration.zero, curve: Curves.ease);T//TODO:auch nicht besser
-              });
+                  //scrollController.scrollToItem(playerControl.getCurrentIndex(),animate: false,center: true);
+                  observerController.jumpTo(index: playerControl.getCurrentIndex());//TODO:das hier funktioniert nicht, wenn das nicht gefixed wird dann zum anderen package wieder zurück wechseln. das ist eigentlich schöner, weil es das item oben ranbringt und noch aktiv maintained wird
+                  //observerController.animateTo(index: playerControl.getCurrentIndex(), duration: Duration.zero, curve: Curves.ease);T//TODO:auch nicht besser
+                });
+              }
             }
-          }
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: buildQueue(context,queue,observerController),
-              ),
-              const Divider(),
-              SDisabled(
-                isDisabled: queueEmpty,
-                child: Container(
-                  color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          List<String> songIDlist = [];
-                          for (MediaItem mediaItem in queue) {
-                            songIDlist.add(mediaItem.id);
-                          }
-                          AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
-                        },
-                        icon: const Icon(Icons.playlist_add_outlined),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          playerControl.customAction('shuffleQueue');
-                        },
-                        icon: const Icon(Icons.shuffle_outlined),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          observerController.animateTo(index: 12, duration: Duration(seconds: 1), curve: Curves.ease);
-                        },
-                        icon: const Icon(Icons.loop_outlined),//hier halt single und ganze queue
-                      ),
-                      IconButton(
-                        onPressed: () {
-
-                        },
-                        icon: const Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
-                        },
-                        icon: const Icon(Icons.delete_outline),
-                      )
-                    ],
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: buildQueue(context,queue,observerController),
+                ),
+                const Divider(),
+                SDisabled(
+                  isDisabled: queueEmpty,
+                  child: Container(
+                    color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            List<String> songIDlist = [];
+                            for (MediaItem mediaItem in queue) {
+                              songIDlist.add(mediaItem.id);
+                            }
+                            AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
+                          },
+                          icon: const Icon(Icons.playlist_add_outlined),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            playerControl.customAction('shuffleQueue');
+                          },
+                          icon: const Icon(Icons.shuffle_outlined),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            //TODO:loop
+                          },
+                          icon: const Icon(Icons.loop_outlined),//hier halt single und ganze queue
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            //TODO:search
+                          },
+                          icon: const Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
+                          },
+                          icon: const Icon(Icons.delete_outline),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
-        }
+              ],
+            );
+          }
+        ),
       ),
     );
   }
