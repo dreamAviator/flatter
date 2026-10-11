@@ -2,6 +2,15 @@
 cmake_minimum_required(VERSION 3.14)
 project(flatter LANGUAGES CXX)
 
+# pasted from https://github.com/flutter/flutter/issues/186452
+set(CMAKE_POLICY_VERSION_MINIMUM 3.10)
+# ====================================================================
+# FIX / ERROR C2338 STL1011
+# ====================================================================
+add_compile_definitions(_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS")
+# paste from github end
+
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
 set(BINARY_NAME "flatter")
