@@ -55,6 +55,9 @@ class MyApp extends StatelessWidget {
     Size screenSize = MediaQuery.of(context).size;
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic,ColorScheme? darkDynamic) {
+        if (lightDynamic != null && darkDynamic != null) {
+          settingsControl.changeSetting('isAutomaticColorAvailable', true);
+        }
         final int seedColorARGB = settingsControl.loadSetting('accentSeedColor');
         final Color seedColor = Color(seedColorARGB);
         //final ColorScheme lightScheme = lightDynamic ?? ColorScheme.fromSeed(seedColor: seedColor);//package zum farben auswählen ist schon drin
