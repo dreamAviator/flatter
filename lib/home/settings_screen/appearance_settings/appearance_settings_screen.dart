@@ -1,6 +1,10 @@
 import 'package:flatter/home/settings_screen/appearance_settings/accent_color_setting.dart';
+import 'package:flatter/home/settings_screen/appearance_settings/automatic_rotation_override_setting.dart';
+import 'package:flatter/home/settings_screen/appearance_settings/landscape_mode_setting.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:s_packages/s_disabled/s_disabled.dart';
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class AppearanceSettingsScreen extends StatelessWidget {
   const AppearanceSettingsScreen({super.key});
@@ -21,10 +25,32 @@ class AppearanceSettingsScreen extends StatelessWidget {
       body: ListView(
         shrinkWrap: true,
         children: [
+          SDisabled(
+            isDisabled: true,
+            child: ListTile(
+              title: Text("Automatic rotation override"),
+              subtitle: Text("Changes the look and layout of some things. Needs a restart to take full effect"),
+              trailing: AutomaticRotationOverrideSetting(valueNotifier: automaticRotationOverride),
+            ),
+          ),
+          SDisabled(
+            isDisabled: true,
+            child: ListTile(
+              title: Text("Landscape"),
+              subtitle: Text("Changes the look and layout of some things. Needs a restart to take full effect"),
+              trailing: LandscapeModeSetting(valueNotifier: automaticRotationOverride),
+            ),
+          ),
           ListTile(
-            title: Text("Landscape"),
-            subtitle: Text("Changes the look and layout of some things. Needs a restart to take full effect"),
+            title: Text("Accent Color"),
+            subtitle: Text("Changes the accent color"),
             trailing: AccentColorSetting(),
+          ),
+          MaterialColorPicker(
+            onColorChange: (Color color) {
+
+            },
+            selectedColor: Colors.red,
           ),
 //hier jtz bspw wie viele spalten das album gridview haben soll
         /*//landscape

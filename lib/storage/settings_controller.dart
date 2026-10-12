@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flatter/main.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:s_packages/s_packages_extra2.dart';
 import 'package:toml/toml.dart';
 
 import '../useful_scripts.dart';
@@ -66,6 +68,7 @@ class SettingsController {
     'persistentQueue':false,
     'syncQueueWithServer':false,
     'albumDropDownFilterSelection':"random",
+    'accentSeedColor':[Colors.pink.a.toInt(),Colors.pink.r.toInt(),Colors.pink.g.toInt(),Colors.pink.g.toInt()],
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
