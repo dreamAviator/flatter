@@ -9,8 +9,19 @@ class AccentColorSetting extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.primary,
-      child: IconButton(onPressed: () {}, icon: Icon(Icons.colorize)
-      ),
+      child: IconButton(
+        icon: Icon(Icons.color_lens_outlined,color: Theme.of(context).colorScheme.inversePrimary,),
+        onPressed: () {
+          /*
+          MaterialColorPicker(
+            onColorChange: (Color color) {
+              settingsControl.changeSetting('accentSeedColor', color.toARGB32());
+            },
+            selectedColor: Color(settingsControl.loadSetting('accentSeedColor')),
+          ),
+           */
+        },
+      )
     );
   }
 }

@@ -55,10 +55,12 @@ class MyApp extends StatelessWidget {
     Size screenSize = MediaQuery.of(context).size;
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic,ColorScheme? darkDynamic) {
-        final List<double> seedColorARGB = settingsControl.loadSetting('accentSeedColor');
-
-        final ColorScheme lightScheme = lightDynamic ?? ColorScheme.fromSeed(seedColor: Colors.pink);//package zum farben auswählen ist schon drin
-        final ColorScheme darkScheme = darkDynamic ?? ColorScheme.fromSeed(seedColor: Colors.pink,brightness: Brightness.dark);
+        final int seedColorARGB = settingsControl.loadSetting('accentSeedColor');
+        final Color seedColor = Color(seedColorARGB);
+        //final ColorScheme lightScheme = lightDynamic ?? ColorScheme.fromSeed(seedColor: seedColor);//package zum farben auswählen ist schon drin
+        //final ColorScheme darkScheme = darkDynamic ?? ColorScheme.fromSeed(seedColor: seedColor,brightness: Brightness.dark);
+        final ColorScheme lightScheme = ColorScheme.fromSeed(seedColor: seedColor);
+        final ColorScheme darkScheme = ColorScheme.fromSeed(seedColor: seedColor,brightness: Brightness.dark);
         if (settingsControl.loadSetting('automaticRotationOverride') == false) {
           if (screenSize.width >= screenSize.height) {
             settingsControl.changeSetting('landscapeMode', true);

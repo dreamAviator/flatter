@@ -68,7 +68,7 @@ class SettingsController {
     'persistentQueue':false,
     'syncQueueWithServer':false,
     'albumDropDownFilterSelection':"random",
-    'accentSeedColor':[Colors.pink.a.toInt(),Colors.pink.r.toInt(),Colors.pink.g.toInt(),Colors.pink.g.toInt()],
+    'accentSeedColor':Colors.pink.toARGB32(),
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;

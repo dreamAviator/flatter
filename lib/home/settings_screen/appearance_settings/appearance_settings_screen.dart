@@ -46,12 +46,6 @@ class AppearanceSettingsScreen extends StatelessWidget {
             subtitle: Text("Changes the accent color"),
             trailing: AccentColorSetting(),
           ),
-          MaterialColorPicker(
-            onColorChange: (Color color) {
-
-            },
-            selectedColor: Colors.red,
-          ),
 //hier jtz bspw wie viele spalten das album gridview haben soll
         /*//landscape
           ListTile(
