@@ -1,0 +1,155 @@
+import 'package:flatter/main.dart';
+import 'package:flatter/ui/settings_screen/appearance_settings/appearance_settings_screen.dart';
+import 'package:flatter/ui/settings_screen/behavior_settings/behaviour_settings_screen.dart';
+import 'package:flatter/ui/settings_screen/info_screen/info_screen.dart';
+import 'package:flatter/ui/settings_screen/server_settings/server_settings_screen.dart';
+import 'package:flatter/ui/settings_screen/settings_screen_ViewModel.dart';
+import 'package:material_ui/material_ui.dart';
+
+
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key,required this.viewModel});
+  final SettingsScreenViewmodel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.sizeOf(context);
+    if (settingsControl.loadSetting('landscapeMode') == false) {//ich glaube du solltest später einen weg finden, dass ohne dieses if ding zu machen. vlt kann da==ja der back button zum letzten tab oder so. idk. vlt dann mit pfeil nach oben. wär cool eig
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("Settings"),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
+        ),
+        body: //vlt hier anstelle der liste die karten nutzen. idk
+        /*GridView.count(
+        shrinkWrap: true,
+        crossAxisCount: (screenSize.width / 100).toInt(),
+        children: [
+          Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
+              },
+              child: Column(
+                children: [
+                  Icon(Icons.storage),
+                  Text("Server"),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      */
+        ListView(
+          shrinkWrap: true,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.storage),
+              title: const Text("Server"),
+              trailing: const Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.dashboard),
+              title: const Text("Behaviour"),
+              trailing: const Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => BehaviourSettingsScreen()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.color_lens),
+              title: const Text("Appearance"),
+              trailing: const Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppearanceSettingsScreen()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text("About"),
+              trailing: const Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen()));
+              },
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("Settings"),
+        ),
+        body: //vlt hier anstelle der liste die karten nutzen. idk
+        /*GridView.count(
+        shrinkWrap: true,
+        crossAxisCount: (screenSize.width / 100).toInt(),
+        children: [
+          Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
+              },
+              child: Column(
+                children: [
+                  Icon(Icons.storage),
+                  Text("Server"),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      */
+        ListView(
+          shrinkWrap: true,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.storage),
+              title: const Text("Server"),
+              trailing: const Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.dashboard),
+              title: const Text("Behaviour"),
+              trailing: const Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => BehaviourSettingsScreen()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.color_lens),
+              title: const Text("Appearance"),
+              trailing: const Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppearanceSettingsScreen()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text("About"),
+              trailing: const Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen()));
+              },
+            ),
+          ],
+        ),
+      );
+    }
+  }
+}

@@ -2,8 +2,8 @@ import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flatter/Services/subsonic_service.dart';
-import 'package:flatter/home/home_navigation_bar.dart';
-import 'package:flatter/home/home_navigation_rail.dart';
+import 'package:flatter/ui/home_navigation_bar.dart';
+import 'package:flatter/ui/home_navigation_rail.dart';
 import 'package:flatter/player_related/player_controls.dart';
 import 'package:flatter/storage/database/database_controller.dart';
 import 'package:flatter/storage/settings_controller.dart';
@@ -145,7 +145,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: true,//in die settings packen
                     colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
                   ),
-                  home: const HomeNavigationRail(),
+                  ui: const HomeNavigationRail(),
                 );
               } else {
                 settingsControl.changeSetting('landscapeMode', false);
@@ -155,7 +155,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: true,
                     colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
                   ),
-                  home: const HomeNavigationBar(),
+                  ui: const HomeNavigationBar(),
                 );
               }
             } else {
@@ -166,7 +166,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: true,//in die settings packen
                     colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
                   ),
-                  home: const HomeNavigationRail(),
+                  ui: const HomeNavigationRail(),
                 );
               } else {
                 return MaterialApp(
@@ -175,7 +175,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: true,
                     colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
                   ),
-                  home: const HomeNavigationBar(),
+                  ui: const HomeNavigationBar(),
                 );
               }
             }

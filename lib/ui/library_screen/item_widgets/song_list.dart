@@ -1,0 +1,380 @@
+import 'package:flatter/ui/library_screen/item_widgets/song_tile.dart';
+import 'package:flatter/useful_scripts.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
+
+
+class SongList extends StatelessWidget {
+  const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver, this.filterNotifier,required this.playlistID});
+  final List<dynamic>? songListNullable;
+  final bool listView;
+  final bool sliver;
+  final ValueNotifier<String>? filterNotifier;
+  final String? playlistID;
+
+  @override
+  Widget build(BuildContext context) {
+    final SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
+    List<dynamic> songList = [];
+    if (songListNullable != null && songListNullable?.isEmpty == false) {
+      songList.addAll(songListNullable!);
+    } else {
+      if (sliver == true) {
+        return const SliverToBoxAdapter(
+          child: Center(child: Text("No songs")),
+        );
+      } else {
+        return const Center(child: Text("No songs"));
+      }
+    }
+    print("returning a non enmpty song list");
+    if (listView == true) {
+      if (sliver == true) {
+        print("returning a sliverlist.builder");
+        if (filterNotifier != null) {
+          return ValueListenableBuilder(//vlt einstellen wo der durchsuchen darf
+            valueListenable: filterNotifier!,
+            builder: (context,String filter,child) {
+              List<dynamic> filteredSongList = List.from(songList);
+              if (filter.isNotEmpty) {
+                filter.toLowerCase();
+                filteredSongList.removeWhere((item) {
+                  if (item is Map) {
+                    for (var value in item.values) {
+                      if (value is String) {
+                        if (value.toLowerCase().contains(filter.toLowerCase())) {
+                          return false;
+                        }
+                      } else if (value is List) {
+                        for (var underValue in value) {
+                          if (underValue is Map) {
+                            for (var underUnderValue in underValue.values) {
+                              if (underUnderValue is String) {
+                                if (underUnderValue.toLowerCase().contains(filter.toLowerCase())) {
+                                  return false;
+                                }
+                              }
+                            }
+                          } else if (underValue is String) {
+                            if (underValue.toLowerCase().contains(filter.toLowerCase())) {
+                              return false;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  return true;
+                });
+              }
+              return SliverList.builder(
+                itemCount: filteredSongList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return SongTile(song: filteredSongList[index],playlistID: playlistID,usecase: null,);
+                  /*
+                  return Slidable(
+                    startActionPane: ActionPane(
+                      motion: DrawerMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (_) => (playerControl.customAction('addNext',{'addNext': {
+                            'tracks':[usefulScripts.subsonicSongToMediaItem(filteredSongList[index])]
+                          }})),
+                          icons: Icons.list,
+                          label: "Play next",
+                        ),
+                        SlidableAction(
+                          onPressed: (_) => print("add to playlist"),
+                          icons: Icons.playlist_add,
+                          label: "Add to playlist",
+                        ),
+                      ],
+                    ),
+                    endActionPane: ActionPane(
+                      motion: DrawerMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (_) => (goToAlbum(context, filteredSongList[index]['albumId'])),
+                          icons: Icons.album,
+                          label: 'Album',
+                        ),
+                        SlidableAction(
+                          onPressed: (_) => (goToArtist(context, filteredSongList[index]['artistId'])),//ehemals:wenn es mehrere artists gibt, dann hier das popup öffnen (einstellbar machen, ob popup oder zum main artist)
+                          icons: Icons.person,
+                          label: 'Artist',
+                        ),
+                      ],
+                    ),
+                    child: ListTile(//evt noch cover hinzufügen oder so idk
+                      leading: Text(filteredSongList[index]['duration'].toString()),//hier cover image
+                      title: Row(
+                        spacing: 8,
+                        children: [
+                          if (filteredSongList[index]['starred'] != null) Icon(Icons.favorite),
+                          Text(filteredSongList[index]['title']),
+                        ],
+                      ),
+                      subtitle: Text(filteredSongList[index]['artist'].toString()),
+                      trailing: ItemMenus(context).songMenu(filteredSongList[index]),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
+                      onTap: () {
+                        playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(filteredSongList[index]));
+                      },
+                    ),
+                  );
+                  
+                   */
+                },
+              );
+            },
+          );
+        } else {
+          return SliverList.builder(
+            itemCount: songList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return SongTile(song: songList[index],playlistID: playlistID,usecase: null,);
+              /*
+              return Slidable(
+                startActionPane: ActionPane(
+                  motion: DrawerMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (_) => (playerControl.customAction('addNext',{'addNext': {
+                        'tracks':[usefulScripts.subsonicSongToMediaItem(songList[index])]
+                      }})),
+                      icons: Icons.list,
+                      label: "Play next",
+                    ),
+                    SlidableAction(
+                      onPressed: (_) => print("add to playlist"),
+                      icons: Icons.playlist_add,
+                      label: "Add to playlist",
+                    ),
+                  ],
+                ),
+                endActionPane: ActionPane(
+                  motion: DrawerMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (_) => (goToAlbum(context, songList[index]['albumId'])),
+                      icons: Icons.album,
+                      label: 'Album',
+                    ),
+                    SlidableAction(
+                      onPressed: (_) => (goToArtist(context, songList[index]['artistId'])),
+                      icons: Icons.person,
+                      label: 'Artist',
+                    ),
+                  ],
+                ),
+                child: ListTile(//evt noch cover hinzufügen oder so idk
+                  leading: Text(songList[index]['duration'].toString()),//hier cover image
+                  title: Row(
+                    spacing: 8,
+                    children: [
+                      if (songList[index]['starred'] != null) Icon(Icons.favorite),
+                      Text(songList[index]['title']),
+                    ],
+                  ),
+                  subtitle: Text(songList[index]['artist'].toString()),
+                  trailing: ItemMenus(context).songMenu(songList[index]),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
+                  onTap: () {
+                    playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(songList[index]));
+                  },
+                ),
+              );
+              
+               */
+            },
+          );
+        }
+
+      } else {
+        print("returning a listview.builder");
+        return ListView.builder(
+          itemCount: songList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return SongTile(song: songList[index],playlistID: playlistID,usecase: null,);
+            /*
+            return Slidable(
+              startActionPane: ActionPane(
+                motion: DrawerMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: (_) => (playerControl.customAction('addNext',{'addNext': {
+                      'tracks':[usefulScripts.subsonicSongToMediaItem(songList[index])]
+                    }})),
+                    icons: Icons.list,
+                    label: "Play next",
+                  ),
+                  SlidableAction(
+                    onPressed: (_) => print("add to playlist"),
+                    icons: Icons.playlist_add,
+                    label: "Add to playlist",
+                  ),
+                ],
+              ),
+              endActionPane: ActionPane(
+                motion: DrawerMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: (_) => (goToAlbum(context, songList[index]['albumId'])),
+                    icons: Icons.album,
+                    label: 'Album',
+                  ),
+                  SlidableAction(
+                    onPressed: (_) => (goToArtist(context, songList[index]['artistId'])),
+                    icons: Icons.person,
+                    label: 'Artist',
+                  ),
+                ],
+              ),
+              child: ListTile(//evt noch cover hinzufügen oder so idk
+                leading: Text(songList[index]['duration'].toString()),//hier cover image
+                title: Row(
+                  spacing: 8,
+                  children: [
+                    if (songList[index]['starred'] != null) Icon(Icons.favorite),
+                    Text(songList[index]['title']),
+                  ],
+                ),
+                subtitle: Text(songList[index]['artist'].toString()),
+                trailing: ItemMenus(context).songMenu(songList[index]),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
+                onTap: () {
+                  playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(songList[index]));
+                },
+              ),
+            );
+            
+             */
+          },
+        );
+      }
+    } else {
+      if (sliver == true) {
+        print("returning a  column sliver thing");
+        List<Widget> widgetList = [];
+        for (Map song in songList) {
+          widgetList.add(
+            SongTile(song: song,playlistID: playlistID,usecase: null,)
+            /*
+              Slidable(
+                startActionPane: ActionPane(
+                  motion: DrawerMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (_) => (playerControl.customAction('addNext',{'addNext': {
+                        'tracks':usefulScripts.subsonicSongToMediaItem(song)
+                      }})),
+                      icons: Icons.list,
+                      label: "Play next",
+                    ),
+                    SlidableAction(
+                      onPressed: (_) => print("add to playlist"),
+                      icons: Icons.playlist_add,
+                      label: "Add to playlist",
+                    ),
+                  ],
+                ),
+                endActionPane: ActionPane(
+                  motion: DrawerMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (_) => (goToAlbum(context, song['albumId'])),
+                      icons: Icons.album,
+                      label: 'Album',
+                    ),
+                    SlidableAction(
+                      onPressed: (_) => (goToArtist(context, song['artistId'])),
+                      icons: Icons.person,
+                      label: 'Artist',
+                    ),
+                  ],
+                ),
+                child: ListTile(//evt noch cover hinzufügen oder so idk
+                  leading: Text(song['duration'].toString()),//hier cover image
+                  title: Row(
+                    spacing: 8,
+                    children: [
+                      if (song['starred'] != null) Icon(Icons.favorite),
+                      Text(song['title']),
+                    ],
+                  ),
+                  subtitle: Text(song['artist'].toString()),
+                  trailing: ItemMenus(context).songMenu(song),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
+                  onTap: () {
+                    playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(song));
+                  },
+                ),
+              )
+              
+             */
+          );
+        }
+        return SliverToBoxAdapter(
+          child: Column(children: widgetList,),
+        );
+      } else {
+        print("returning a column");
+        List<Widget> widgetList = [];
+        for (Map song in songList) {
+          widgetList.add(
+            SongTile(song: song,playlistID: playlistID,usecase: null,)
+            /*
+              Slidable(
+                startActionPane: ActionPane(
+                  motion: DrawerMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (_) => (playerControl.customAction('addNext',{'addNext': {
+                        'tracks':usefulScripts.subsonicSongToMediaItem(song)
+                      }})),
+                      icons: Icons.list,
+                      label: "Play next",
+                    ),
+                    SlidableAction(
+                      onPressed: (_) => print("add to playlist"),
+                      icons: Icons.playlist_add,
+                      label: "Add to playlist",
+                    ),
+                  ],
+                ),
+                endActionPane: ActionPane(
+                  motion: DrawerMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (_) => (goToAlbum(context, song['albumId'])),
+                      icons: Icons.album,
+                      label: 'Album',
+                    ),
+                    SlidableAction(
+                      onPressed: (_) => (goToArtist(context, song['artistId'])),
+                      icons: Icons.person,
+                      label: 'Artist',
+                    ),
+                  ],
+                ),
+                child: ListTile(//evt noch cover hinzufügen oder so idk
+                  leading: Text(song['duration'].toString()),//hier cover image
+                  title: Row(
+                    spacing: 8,
+                    children: [
+                      if (song['starred'] != null) Icon(Icons.favorite),
+                      Text(song['title']),
+                    ],
+                  ),
+                  subtitle: Text(song['artist'].toString()),
+                  trailing: ItemMenus(context).songMenu(song),//artist und playlist geben leider namen und keine ids zurück...👩‍🦲
+                  onTap: () {
+                    playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(song));
+                  },
+                ),
+              )
+              
+             */
+          );
+        }
+        return Column(children: widgetList,);
+      }
+    }
+  }
+}

@@ -1,0 +1,424 @@
+import 'package:flatter/Riverpod/riverpod_manager.dart';
+import 'package:flatter/ui/library_screen/item_widgets/album_grid.dart';
+import 'package:flatter/ui/library_screen/item_widgets/artist_grid.dart';
+import 'package:flatter/ui/library_screen/item_widgets/song_list.dart';
+import 'package:flatter/ui/search_screen/search_album_screen.dart';
+import 'package:flatter/ui/search_screen/search_artist_screen.dart';
+import 'package:flatter/ui/search_screen/search_song_screen.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
+import '../../main.dart';
+
+TextEditingController searchFieldController = TextEditingController();
+
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final riverpodManager = RiverpodManager();
+    final Size screenSize = MediaQuery.sizeOf(context);
+    List<dynamic> searchParams = ["",0,0,0];
+    if (searchFieldController.text != "") {
+      searchParams = [searchFieldController.text,0,0,0];
+    }
+
+
+    void search(String value,WidgetRef ref) {
+      print(value);
+      searchParams = [value,0,0,0];
+      ref.invalidate(riverpodManager.searchProvider);
+    }
+
+    Widget buildSearchResultsColumn(BuildContext context,Map<dynamic,dynamic> searchResults) {//einstellen, in welcher reihenfolge die kategorien angezeigt werden sollen//kategorien expandable machen//nur die anzahl der reihen, nicht der elemente einstellen
+      /*
+      List<Widget> widgetList = [];
+      if (searchResults['artist'] != null) {
+        widgetList.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Artists"),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchArtistScreen(query: searchFieldController.text)));
+            },
+            child: Row(
+              children: [
+                Text("Show all"),
+                Icon(Icons.arrow_forward),
+              ],
+            ),
+          )
+        ],
+      ));
+        widgetList.add(Divider());
+        List<Widget> artistWidgetList = [];
+        for (Map<dynamic,dynamic> artist in searchResults['artist']) {
+          artistWidgetList.add(
+              Card(
+                clipBehavior: Clip.hardEdge,
+                child: InkWell(
+                  splashColor: Colors.blue.withAlpha(30),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artist['id'])));
+                  },
+                  child: Column(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 1,
+                        child: CachedNetworkImage(
+                          imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${artist['coverArt']}",
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                          errorWidget: (context, url, error) => IconButton(
+                            onPressed: () {
+                              //hier retry
+                            },
+                            icons: Icon(Icons.error),
+                          ),
+                        ),
+                      ),
+                      Text(artist['name']),
+                      Text(artist['id']),
+                    ],
+                  ),
+                ),
+              )
+          );
+        }
+        widgetList.add(MasonryGrid(column: (screenSize.width / 175).toInt(),children: artistWidgetList,));
+      }
+      if (searchResults['album'] != null) {
+        widgetList.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Albums"),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchAlbumScreen(query: searchFieldController.text)));
+              },
+              child: Row(
+                children: [
+                  Text("Show all"),
+                  Icon(Icons.arrow_forward),
+                ],
+              ),
+            )
+          ],
+        ));
+        List<Widget> albumWidgetList = [];
+        for (Map<dynamic,dynamic> album in searchResults['album']) {
+          albumWidgetList.add(
+              Card(
+                clipBehavior: Clip.hardEdge,
+                child: InkWell(
+                  splashColor: Colors.blue.withAlpha(30),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: album['id'])));
+                  },
+                  child: Column(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 1,
+                        child: CachedNetworkImage(
+                          imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${album['coverArt']}",
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                          errorWidget: (context, url, error) => IconButton(
+                            onPressed: () {
+                              //hier retry
+                            },
+                            icons: Icon(Icons.error),
+                          ),
+                        ),
+                      ),
+                      Text(album['name']),
+                      Text(album['artist']),
+                    ],
+                  ),
+                ),
+              )
+          );
+        }
+        widgetList.add(MasonryGrid(column: (screenSize.width / 175).toInt(),children: albumWidgetList,));
+      }
+      if (searchResults['song'] != null) {//vlt eine einstellung machen, dass welches der suchelemente auch immer als letztes ist, dass das eine unendlich lang scrollbare liste wird
+        widgetList.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Songs"),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: searchFieldController.text)));
+              },
+              child: Row(
+                children: [
+                  Text("Show all"),
+                  Icon(Icons.arrow_forward),
+                ],
+              ),
+            )
+          ],
+        ));
+        widgetList.add(SongList(songListNullable: searchResults['song'], listView: false,sliver: false));
+      }
+      return SingleChildScrollView(child: Column(children: widgetList,),);
+      
+       */
+      return CustomScrollView(
+        slivers: [
+          if (searchResults['artist'] != null)
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Artists"),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchArtistScreen(query: searchFieldController.text)));
+                        },
+                        child: const Row(
+                          children: [
+                            Text("Show all"),
+                            Icon(Icons.arrow_forward),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const Divider(),
+                ],
+              ),
+            ),
+          ArtistGrid(artistListNullable: searchResults['artist'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: true,withIndexesGiven: false,),
+          if (searchResults['album'] != null)
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Albums"),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchAlbumScreen(query: searchFieldController.text)));
+                        },
+                        child: const Row(
+                          children: [
+                            Text("Show all"),
+                            Icon(Icons.arrow_forward),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const Divider(),
+                ],
+              ),
+            ),
+          AlbumGrid(albumListNullable: searchResults['album'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: true),
+          if (searchResults['song'] != null)
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Songs"),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: searchFieldController.text)));
+                        },
+                        child: const Row(
+                          children: [
+                            Text("Show all"),
+                            Icon(Icons.arrow_forward),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const Divider(),
+                ],
+              ),
+            ),
+          SongList(songListNullable: searchResults['song'], listView: true, sliver: true,playlistID: null,),
+        ],
+      );
+    }
+    //auch hier muss es doch eigentlich eine einfachere version geben, ohne dieses große if statement, naja egal
+    if (settingsControl.loadSetting('landscapeMode') == true) {
+      return Scaffold(//eine zweite version so machen mit dem zurück knopf
+        appBar: AppBar(
+          title: Consumer(builder: (context, ref, child) { return TextField(
+            controller: searchFieldController,
+            decoration: const InputDecoration(
+                hintText: "Search"
+            ),
+            onChanged: (String value) {
+              search(value,ref);
+            },
+            autofocus: true,
+            onSubmitted: (String value) {
+              search(value, ref);
+            },
+            //hmm
+          ); },),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.backspace),
+              onPressed: () {
+                searchFieldController.clear();
+              },
+            )
+          ],
+        ),
+        body: Consumer(
+          builder: (context,ref,child) {
+            final searchResults = ref.watch(riverpodManager.searchProvider(searchParams));
+            return Container(
+              child: switch (searchResults) {
+                AsyncValue(:final value?) => buildSearchResultsColumn(context,value),
+                AsyncValue(error: != null) => const Text("error"),
+                AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
+              },
+            );
+          },
+        )
+      );
+    } else {
+      return Scaffold(//eine zweite version so machen mit dem zurück knopf
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              if (settingsControl.loadSetting('clearSearchOnExit') == true) {
+                searchFieldController.clear();//TODO:das hier auch im landscape mode hinkriegen
+              }
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
+          title: Consumer(builder: (context, ref, child) { return TextField(
+            controller: searchFieldController,
+            decoration: const InputDecoration(
+                hintText: "Search"
+            ),
+            onChanged: (String value) {
+              search(value,ref);
+            },
+          ); },),
+          actions: [
+            Consumer(builder: (context, ref, child) { return IconButton(
+              icon: const Icon(Icons.backspace),
+              onPressed: () {
+                searchFieldController.clear();
+                search("", ref);
+              },
+            ); },)
+          ],
+        ),
+        body: Consumer(
+          builder: (context,ref,child) {
+            final searchResults = ref.watch(riverpodManager.searchProvider(searchParams));
+            return Container(
+              child: switch (searchResults) {
+                AsyncValue(:final value?) => buildSearchResultsColumn(context,value),
+              /*
+                AsyncValue(:final value?) => CustomScrollView(
+                  slivers: [
+                    if (value['artist'] != null)
+                      SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Artists"),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchArtistScreen(query: searchFieldController.text)));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text("Show all"),
+                                      Icon(Icons.arrow_forward),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      ),
+                    ArtistGrid(artistListNullable: value['artist'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: true,withIndexesGiven: false,),
+                    if (value['album'] != null)
+                      SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Albums"),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchAlbumScreen(query: searchFieldController.text)));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text("Show all"),
+                                      Icon(Icons.arrow_forward),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      ),
+                    AlbumGrid(albumListNullable: value['album'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: true),
+                    if (value['song'] != null)
+                      SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Songs"),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: searchFieldController.text)));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text("Show all"),
+                                      Icon(Icons.arrow_forward),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      ),
+                    SongList(songListNullable: value['song'], listView: true, sliver: true),
+                  ],
+                ),
+
+               */
+                AsyncValue(error: != null) => const Text("error"),
+                AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
+              },
+            );
+          },
+        )
+      );
+    }
+  }
+}

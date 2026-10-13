@@ -1,0 +1,15 @@
+import 'package:flatter/ui/library_screen/library_screen_ViewModel.dart';
+import 'package:flatter/ui/library_screen/library_tab_bar.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+
+class LibraryScreen extends StatelessWidget {
+  const LibraryScreen({super.key,required this.viewModel});
+  final LibraryScreenViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: LibraryTabBar(),
+    );
+  }
+}
