@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:toml/toml.dart';
 
 class SubsonicJustAudioCompatibility {
@@ -95,5 +95,11 @@ extension TomlDocumentSave on TomlDocument {
 class UpdateNotifier with ChangeNotifier {
   void notify() {
     notifyListeners();
+  }
+}
+
+extension ColorInverse on Color {
+  Color get inverse {
+    return withRed(255 - (r * 255).round()).withGreen(255 - (g * 255).round()).withBlue(255 - (b * 255).round());//from deepseek
   }
 }
