@@ -2,6 +2,7 @@ import 'package:flatter/home/settings_screen/appearance_settings/accent_color_se
 import 'package:flatter/home/settings_screen/appearance_settings/automatic_color_override_setting.dart';
 import 'package:flatter/home/settings_screen/appearance_settings/automatic_rotation_override_setting.dart';
 import 'package:flatter/home/settings_screen/appearance_settings/landscape_mode_setting.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/queue_settings/use_material_3_setting.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
@@ -64,6 +65,10 @@ class AppearanceSettingsScreen extends StatelessWidget {
                 ),
               );
             }
+          ),
+          ListTile(
+            title: Text("Use Material 3"),
+            trailing: UseMaterial3Setting(),
           ),
 //hier jtz bspw wie viele spalten das album gridview haben soll
         /*//landscape
