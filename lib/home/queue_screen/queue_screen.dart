@@ -210,19 +210,14 @@ class _QueueScreenState extends State<QueueScreen> {
               queueEmpty = true;
             }
             if (dontScroll == false) {
-              if (queueEmpty != true && hasRun == true) {//TODO:nicht wenn etwas gemacht wurde (wie entfernen, etc, sodass die queue dann halt nicht nach oben springt //dafür wurde jetzt die dontscroll variable hinzugefügt, noch implementieren
-                //scrollController.scrollToItem(playerControl.getCurrentIndex(),center: true);
+              if (queueEmpty != true && hasRun == true) {
                 dontScrollOverride = true;
                 observerController.animateTo(index: playerControl.getCurrentIndex(), duration: Duration(seconds: 1), curve: Curves.ease);
               }
               if (hasRun == false && queueEmpty == false) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   dontScrollOverride = true;
-
-                  //scrollController.scrollToItem(playerControl.getCurrentIndex(),animate: false,center: true);
-                  observerController.jumpTo(index: playerControl.getCurrentIndex());//TODO:das hier funktioniert nicht, wenn das nicht gefixed wird dann zum anderen package wieder zurück wechseln. das ist eigentlich schöner, weil es das item oben ranbringt und noch aktiv maintained wird
-                  //observerController.animateTo(index: playerControl.getCurrentIndex(), duration: Duration.zero, curve: Curves.ease);T//TODO:auch nicht besser
-                });
+                  observerController.jumpTo(index: playerControl.getCurrentIndex());});
               }
             }
             return Column(

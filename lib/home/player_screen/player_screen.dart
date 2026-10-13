@@ -41,13 +41,7 @@ class PlayerScreen extends StatelessWidget {
                         final List? artists = asyncSnapshot.data?.extras?['artists'];
                         return Column(
                           children: [
-                            TextButton(
-                              onPressed: () {
-                                //hier vlt noch was hinzufügen
-                                // TODO:oder das hier wegmachen
-                              },
-                              child: Text(title),
-                            ),
+                            Text(title),
                             if (albumID == null) Text(album),
                             if (albumID != null) TextButton(
                               onPressed: () {
@@ -240,14 +234,14 @@ class PlayerScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
-                        onPressed: () {
+                        onPressed: () {//TODO:loop
 
                         },
                         icon: const Icon(Icons.loop),
                       ),
                       IconButton(//hier überlegen, ob das die playlist shufflen soll oder den shuffle modus wie in anderen playern anschalten soll
                         onPressed: () {
-
+                          playerControl.customAction('shuffleQueue');
                         },
                         icon: const Icon(Icons.shuffle),
                       ),

@@ -11,7 +11,7 @@ import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class AlbumScreen extends StatefulWidget {
+class AlbumScreen extends StatefulWidget {//TODO:mehr infos anzeigen
   const AlbumScreen({super.key,required this.albumID});
   final String albumID;
 
