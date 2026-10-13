@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return DynamicColorBuilder(
           builder: (ColorScheme? lightDynamic,ColorScheme? darkDynamic) {
+            final bool useMaterial3 = settingsControl.loadSetting('useMaterial3');
             late final ColorScheme lightScheme;
             late final ColorScheme darkScheme;
             if (lightDynamic != null && darkDynamic != null) {
@@ -82,11 +83,11 @@ class MyApp extends StatelessWidget {
                 return MaterialApp(
                   title: 'flatter',
                   theme: ThemeData(
-                    useMaterial3: true,//in die settings packen
+                    useMaterial3: useMaterial3,
                     colorScheme: lightScheme,
                   ),
                   darkTheme: ThemeData(
-                    useMaterial3: true,//in die settings packen
+                    useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
                   home: const HomeNavigationRail(),
@@ -96,11 +97,11 @@ class MyApp extends StatelessWidget {
                 return MaterialApp(
                   title: 'flatter',
                   theme: ThemeData(
-                    useMaterial3: true,//in die settings packen
+                    useMaterial3: useMaterial3,
                     colorScheme: lightScheme,
                   ),
                   darkTheme: ThemeData(
-                    useMaterial3: true,//in die settings packen
+                    useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
                   home: const HomeNavigationBar(),
@@ -111,11 +112,11 @@ class MyApp extends StatelessWidget {
                 return MaterialApp(
                   title: 'flatter',
                   theme: ThemeData(
-                    useMaterial3: true,//in die settings packen
+                    useMaterial3: useMaterial3,
                     colorScheme: lightScheme,
                   ),
                   darkTheme: ThemeData(
-                    useMaterial3: true,//in die settings packen
+                    useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
                   home: const HomeNavigationRail(),
@@ -124,11 +125,11 @@ class MyApp extends StatelessWidget {
                 return MaterialApp(
                   title: 'flatter',
                   theme: ThemeData(
-                    useMaterial3: true,//in die settings packen
+                    useMaterial3: useMaterial3,
                     colorScheme: lightScheme,
                   ),
                   darkTheme: ThemeData(
-                    useMaterial3: true,//in die settings packen
+                    useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
                   home: const HomeNavigationBar(),
@@ -142,7 +143,7 @@ class MyApp extends StatelessWidget {
                 return MaterialApp(
                   title: 'flatter',
                   theme: ThemeData(
-                    useMaterial3: true,//in die settings packen
+                    useMaterial3: useMaterial3,
                     colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
                   ),
                   home: const HomeNavigationRail(),
@@ -163,7 +164,7 @@ class MyApp extends StatelessWidget {
                 return MaterialApp(
                   title: 'flatter',
                   theme: ThemeData(
-                    useMaterial3: true,//in die settings packen
+                    useMaterial3: useMaterial3,
                     colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
                   ),
                   home: const HomeNavigationRail(),
