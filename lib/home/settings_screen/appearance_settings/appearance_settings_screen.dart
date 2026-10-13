@@ -52,10 +52,18 @@ class AppearanceSettingsScreen extends StatelessWidget {
               trailing: AutomaticColorOverrideSetting(valueNotifier: automaticColorOverride),
             ),
           ),
-          ListTile(
-            title: Text("Accent Color"),
-            subtitle: Text("Changes the accent color"),
-            trailing: AccentColorSetting(valueNotifier: automaticColorOverride,),
+          ValueListenableBuilder(
+            valueListenable: automaticColorOverride,
+            builder: (context, value, child) {
+              return SDisabled(
+                isDisabled: value.opposite,
+                child: ListTile(
+                  title: Text("Accent Color"),
+                  subtitle: Text("Changes the accent color"),
+                  trailing: AccentColorSetting(),
+                ),
+              );
+            }
           ),
 //hier jtz bspw wie viele spalten das album gridview haben soll
         /*//landscape

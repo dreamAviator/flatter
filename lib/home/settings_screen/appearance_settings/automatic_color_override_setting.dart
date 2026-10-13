@@ -21,6 +21,7 @@ class _AutomaticColorOverrideSettingState extends State<AutomaticColorOverrideSe
           automaticColorOveride = value;
           widget.valueNotifier.value = value;
         });
+        themeUpdateNotifier.notify();
       },
     );
   }

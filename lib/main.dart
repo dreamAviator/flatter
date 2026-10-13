@@ -8,6 +8,7 @@ import 'package:flatter/player_related/player_controls.dart';
 import 'package:flatter/storage/database/database_controller.dart';
 import 'package:flatter/storage/settings_controller.dart';
 import 'package:flatter/storage/paths.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,6 +16,7 @@ late final PlayerControls playerControl;
 //DirectoryManager directoryControl = DirectoryManager();
 //SafUtil safutil = SafUtil();
 SubsonicService subsonicService = SubsonicService();
+final themeUpdateNotifier = UpdateNotifier();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
 late PathProvider pathProvider;
@@ -53,122 +55,134 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return DynamicColorBuilder(
-      builder: (ColorScheme? lightDynamic,ColorScheme? darkDynamic) {
-        if (lightDynamic != null && darkDynamic != null) {
-          settingsControl.changeSetting('isAutomaticColorAvailable', true);
-        }
-        final int seedColorARGB = settingsControl.loadSetting('accentSeedColor');
-        final Color seedColor = Color(seedColorARGB);
-        //final ColorScheme lightScheme = lightDynamic ?? ColorScheme.fromSeed(seedColor: seedColor);//package zum farben auswählen ist schon drin
-        //final ColorScheme darkScheme = darkDynamic ?? ColorScheme.fromSeed(seedColor: seedColor,brightness: Brightness.dark);
-        final ColorScheme lightScheme = ColorScheme.fromSeed(seedColor: seedColor);
-        final ColorScheme darkScheme = ColorScheme.fromSeed(seedColor: seedColor,brightness: Brightness.dark);
-        if (settingsControl.loadSetting('automaticRotationOverride') == false) {
-          if (screenSize.width >= screenSize.height) {
-            settingsControl.changeSetting('landscapeMode', true);
-            return MaterialApp(
-              title: 'flatter',
-              theme: ThemeData(
-                useMaterial3: true,//in die settings packen
-                colorScheme: lightScheme,
-              ),
-              darkTheme: ThemeData(
-                useMaterial3: true,//in die settings packen
-                colorScheme: darkScheme,
-              ),
-              home: const HomeNavigationRail(),
-            );
-          } else {
-            settingsControl.changeSetting('landscapeMode', false);
-            return MaterialApp(
-              title: 'flatter',
-              theme: ThemeData(
-                useMaterial3: true,//in die settings packen
-                colorScheme: lightScheme,
-              ),
-              darkTheme: ThemeData(
-                useMaterial3: true,//in die settings packen
-                colorScheme: darkScheme,
-              ),
-              home: const HomeNavigationBar(),
-            );
-          }
-        } else {
-          if (settingsControl.loadSetting('landscapeMode') == true) {
-            return MaterialApp(
-              title: 'flatter',
-              theme: ThemeData(
-                useMaterial3: true,//in die settings packen
-                colorScheme: lightScheme,
-              ),
-              darkTheme: ThemeData(
-                useMaterial3: true,//in die settings packen
-                colorScheme: darkScheme,
-              ),
-              home: const HomeNavigationRail(),
-            );
-          } else {
-            return MaterialApp(
-              title: 'flatter',
-              theme: ThemeData(
-                useMaterial3: true,//in die settings packen
-                colorScheme: lightScheme,
-              ),
-              darkTheme: ThemeData(
-                useMaterial3: true,//in die settings packen
-                colorScheme: darkScheme,
-              ),
-              home: const HomeNavigationBar(),
-            );
-          }
-        }
-        /*//altes mit festgelegter seed color
-        if (settingsControl.loadSetting('automaticRotationOverride') == false) {
-          if (screenSize.width >= screenSize.height) {
-            settingsControl.changeSetting('landscapeMode', true);
-            return MaterialApp(
-              title: 'flatter',
-              theme: ThemeData(
-                useMaterial3: true,//in die settings packen
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-              ),
-              home: const HomeNavigationRail(),
-            );
-          } else {
-            settingsControl.changeSetting('landscapeMode', false);
-            return MaterialApp(
-              title: 'flatter',
-              theme: ThemeData(
-                useMaterial3: true,
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-              ),
-              home: const HomeNavigationBar(),
-            );
-          }
-        } else {
-          if (settingsControl.loadSetting('landscapeMode') == true) {
-            return MaterialApp(
-              title: 'flatter',
-              theme: ThemeData(
-                useMaterial3: true,//in die settings packen
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-              ),
-              home: const HomeNavigationRail(),
-            );
-          } else {
-            return MaterialApp(
-              title: 'flatter',
-              theme: ThemeData(
-                useMaterial3: true,
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-              ),
-              home: const HomeNavigationBar(),
-            );
-          }
-        }
-        */
-      },
+    return ListenableBuilder(
+      listenable: themeUpdateNotifier,
+      builder: (context, child) {
+        return DynamicColorBuilder(
+          builder: (ColorScheme? lightDynamic,ColorScheme? darkDynamic) {
+            late final ColorScheme lightScheme;
+            late final ColorScheme darkScheme;
+            if (lightDynamic != null && darkDynamic != null) {
+              settingsControl.changeSetting('isAutomaticColorAvailable', true);
+            } else {
+              settingsControl.changeSetting('automaticColorOverride', true);
+            }
+            final int seedColorARGB = settingsControl.loadSetting('accentSeedColor');
+            final Color seedColor = Color(seedColorARGB);
+            if (settingsControl.loadSetting('automaticColorOverride') == false) {
+              lightScheme = lightDynamic ?? ColorScheme.fromSeed(seedColor: seedColor);//package zum farben auswählen ist schon drin
+              darkScheme = darkDynamic ?? ColorScheme.fromSeed(seedColor: seedColor,brightness: Brightness.dark);
+            } else {
+              lightScheme = ColorScheme.fromSeed(seedColor: seedColor);
+              darkScheme = ColorScheme.fromSeed(seedColor: seedColor,brightness: Brightness.dark);
+            }
+            if (settingsControl.loadSetting('automaticRotationOverride') == false) {
+              if (screenSize.width >= screenSize.height) {
+                settingsControl.changeSetting('landscapeMode', true);
+                return MaterialApp(
+                  title: 'flatter',
+                  theme: ThemeData(
+                    useMaterial3: true,//in die settings packen
+                    colorScheme: lightScheme,
+                  ),
+                  darkTheme: ThemeData(
+                    useMaterial3: true,//in die settings packen
+                    colorScheme: darkScheme,
+                  ),
+                  home: const HomeNavigationRail(),
+                );
+              } else {
+                settingsControl.changeSetting('landscapeMode', false);
+                return MaterialApp(
+                  title: 'flatter',
+                  theme: ThemeData(
+                    useMaterial3: true,//in die settings packen
+                    colorScheme: lightScheme,
+                  ),
+                  darkTheme: ThemeData(
+                    useMaterial3: true,//in die settings packen
+                    colorScheme: darkScheme,
+                  ),
+                  home: const HomeNavigationBar(),
+                );
+              }
+            } else {
+              if (settingsControl.loadSetting('landscapeMode') == true) {
+                return MaterialApp(
+                  title: 'flatter',
+                  theme: ThemeData(
+                    useMaterial3: true,//in die settings packen
+                    colorScheme: lightScheme,
+                  ),
+                  darkTheme: ThemeData(
+                    useMaterial3: true,//in die settings packen
+                    colorScheme: darkScheme,
+                  ),
+                  home: const HomeNavigationRail(),
+                );
+              } else {
+                return MaterialApp(
+                  title: 'flatter',
+                  theme: ThemeData(
+                    useMaterial3: true,//in die settings packen
+                    colorScheme: lightScheme,
+                  ),
+                  darkTheme: ThemeData(
+                    useMaterial3: true,//in die settings packen
+                    colorScheme: darkScheme,
+                  ),
+                  home: const HomeNavigationBar(),
+                );
+              }
+            }
+            /*//altes mit festgelegter seed color
+            if (settingsControl.loadSetting('automaticRotationOverride') == false) {
+              if (screenSize.width >= screenSize.height) {
+                settingsControl.changeSetting('landscapeMode', true);
+                return MaterialApp(
+                  title: 'flatter',
+                  theme: ThemeData(
+                    useMaterial3: true,//in die settings packen
+                    colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+                  ),
+                  home: const HomeNavigationRail(),
+                );
+              } else {
+                settingsControl.changeSetting('landscapeMode', false);
+                return MaterialApp(
+                  title: 'flatter',
+                  theme: ThemeData(
+                    useMaterial3: true,
+                    colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+                  ),
+                  home: const HomeNavigationBar(),
+                );
+              }
+            } else {
+              if (settingsControl.loadSetting('landscapeMode') == true) {
+                return MaterialApp(
+                  title: 'flatter',
+                  theme: ThemeData(
+                    useMaterial3: true,//in die settings packen
+                    colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+                  ),
+                  home: const HomeNavigationRail(),
+                );
+              } else {
+                return MaterialApp(
+                  title: 'flatter',
+                  theme: ThemeData(
+                    useMaterial3: true,
+                    colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+                  ),
+                  home: const HomeNavigationBar(),
+                );
+              }
+            }
+            */
+          },
+        );
+      }
     );
   }
 }

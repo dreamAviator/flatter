@@ -6,52 +6,42 @@ import 'package:flutter/material.dart';
 import 'package:s_packages/s_packages_extra1.dart';
 
 class AccentColorSetting extends StatefulWidget {
-  const AccentColorSetting({super.key,required this.valueNotifier});
-  final ValueNotifier<bool> valueNotifier;
+  const AccentColorSetting({super.key});
 
   @override
   State<AccentColorSetting> createState() => _AccentColorSettingState();
 }
 
 class _AccentColorSettingState extends State<AccentColorSetting> {
+  Color accentSeedColor = Color(settingsControl.loadSetting('accentSeedColor'));
+
   @override
   Widget build(BuildContext context) {
-
     Future<void> getPickedColor(BuildContext context) async {
       final Color pickedColor = await showColorPickerDialog(
         context,
-        Color(settingsControl.loadSetting('accentSeedColor')),
+        accentSeedColor,
+        pickersEnabled: {
+          ColorPickerType.accent:false,
+        },
         title: Text("Pick an accent color"),
         enableShadesSelection: false,
         showMaterialName: true,
-
       );
       settingsControl.changeSetting('accentSeedColor', pickedColor.toARGB32());
+      setState(() {
+        accentSeedColor = pickedColor;
+      });
+      themeUpdateNotifier.notify();
     }
-
-    return ValueListenableBuilder(
-      valueListenable: widget.valueNotifier,
-      builder: (BuildContext context,bool value, child) {
-        if (value == true) {
-          return Container(
-              color: Color(settingsControl.loadSetting('accentSeedColor')),
-              child: IconButton(
-                icon: Icon(Icons.color_lens_outlined,color: Color(settingsControl.loadSetting('accentSeedColor')).inverse,),
-                onPressed: () {
-                  getPickedColor(context);
-                },
-              )
-          );
-        } else {
-          return Container(
-              color: Color(settingsControl.loadSetting('accentSeedColor')),
-              child: IconButton(
-                icon: Icon(Icons.color_lens_outlined,color: Color(settingsControl.loadSetting('accentSeedColor')).inverse,),
-                onPressed: null,
-              )
-          );
+    return Container(
+      color: accentSeedColor,
+      child: IconButton(
+        icon: Icon(Icons.color_lens_outlined,color: accentSeedColor.inverse),
+        onPressed: () {
+          getPickedColor(context);
         }
-      }
+      )
     );
   }
 }
