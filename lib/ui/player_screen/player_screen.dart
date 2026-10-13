@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/ui/library_screen/popups/add_to_playlist_popup.dart';
+import 'package:flatter/ui/library_screen/popups/rate_popup.dart';
 import 'package:flatter/ui/library_screen/screens/album_screen.dart';
 import 'package:flatter/ui/library_screen/screens/artist_screen.dart';
 import 'package:flatter/ui/library_screen/popups/artist_select_popup.dart';
@@ -98,9 +99,11 @@ class PlayerScreen extends StatelessWidget {
                                           },
                                           icon: Icon(Icons.playlist_add),
                                         ),
-                                        IconButton(//TODO:create own rating button (fill out star if rating is present)
+                                        IconButton(
                                           onPressed: () {
-
+                                            if (id != null) {
+                                              RatePopup.showRatePopup(context, id, 3);
+                                            }
                                           },
                                           icon: Icon(Icons.thumbs_up_down_outlined),
                                         ),
@@ -230,55 +233,45 @@ class PlayerScreen extends StatelessWidget {
                     }
                 ),
                 Card.filled(//das hier expanded für die lyrics mb, sodass sie dann über dem cover sind, dass wäre tuff
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        onPressed: () {//TODO:loop
+                  child: StreamBuilder(
+                    stream: playerControl.mediaItem,
+                    builder: (context, asyncSnapshot) {
+                      String? id = asyncSnapshot.data?.id;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          IconButton(
+                            onPressed: () {//TODO:loop
 
-                        },
-                        icon: const Icon(Icons.loop),
-                      ),
-                      IconButton(//hier überlegen, ob das die playlist shufflen soll oder den shuffle modus wie in anderen playern anschalten soll
-                        onPressed: () {
-                          playerControl.customAction('shuffleQueue');
-                        },
-                        icon: const Icon(Icons.shuffle),
-                      ),
-                      StreamBuilder(
-                        stream: playerControl.mediaItem,
-                        builder: (context, asyncSnapshot) {
-                          String? id = asyncSnapshot.data?.id;
-                          return IconButton(
+                            },
+                            icon: const Icon(Icons.loop),
+                          ),
+                          IconButton(//hier überlegen, ob das die playlist shufflen soll oder den shuffle modus wie in anderen playern anschalten soll
+                            onPressed: () {
+                              playerControl.customAction('shuffleQueue');
+                            },
+                            icon: const Icon(Icons.shuffle),
+                          ),
+                          IconButton(
                             onPressed: () {
                               if (id != null) {
                                 AddToPlaylistPopup.showAddToPlaylistPopup(context, [id]);
                               }
-
                             },
                             icon: const Icon(Icons.playlist_add),
-                          );
-                        }
-                      ),
-                      StreamBuilder(
-                        stream: playerControl.mediaItem,
-                        builder: (context, asyncSnapshot) {
-                          return IconButton(//TODO:create own rating button (fill out star if rating is present)
+                          ),
+                          IconButton(
                             onPressed: () {
-                          
+                              if (id != null) {
+                                RatePopup.showRatePopup(context, id, 3);
+                              }
                             },
-                            icon: const Icon(Icons.thumbs_up_down_outlined),
-                          );
-                        }
-                      ),
-                      StreamBuilder(
-                        stream: playerControl.mediaItem,
-                        builder: (context, asyncSnapshot) {
-                          String? id = asyncSnapshot.data?.id;
-                          return FavoriteButton(songID: id, albumID: null, artistID: null);
-                        }
-                      ),
-                    ],
+                            icon: Icon(Icons.thumbs_up_down_outlined),
+                          ),
+                          FavoriteButton(songID: id, albumID: null, artistID: null),
+                        ],
+                      );
+                    }
                   ),
                 ),
                 Row(
