@@ -3,6 +3,7 @@ import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/ui/library_screen/item_widgets/album_grid.dart';
 import 'package:flatter/ui/library_screen/item_widgets/per_item/item_menus.dart';
+import 'package:flatter/ui/library_screen/popups/rate_popup.dart';
 import 'package:flatter/ui/search_screen/search_song_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
@@ -87,6 +88,12 @@ class _ArtistScreenState extends State<ArtistScreen> {
                   icon: Icon(Icons.play_arrow),
                 ),
                 FavoriteButton(songID: null, albumID: null, artistID: widget.artistID),
+                IconButton(
+                  icon: Icon(Icons.thumbs_up_down_outlined),
+                  onPressed: () {
+                    RatePopup.showRatePopup(context, widget.artistID, asyncSnapshot.data?['userRating'] ?? 0);
+                  },
+                ),
                 itemMenus.artistMenu(asyncSnapshot.data!),
               ],
             ),

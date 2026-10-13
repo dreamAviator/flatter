@@ -572,6 +572,30 @@ class SubsonicService {
     }
   }
 
+  Future<Map<dynamic,dynamic>> rate(String id,int rating) async {
+    List<String> url = getURL(null,null,null);
+    final uri = Uri.parse("${url[0]}setRating${url[1]}&id=$id&rating=$rating");
+    try {
+      final data = await http.get(uri);
+      if (data.statusCode != 200) {
+        print("error 4");
+        return {};
+      }
+      final Map responseMap = jsonDecode(data.body);
+      Map subsonicResponse = responseMap['subsonic-response'];
+      if (subsonicResponse['status'] != "ok") {
+        print(subsonicResponse);
+        print("error 3");
+        return {};
+      }
+      print('successfully rated element');
+      return subsonicResponse;
+    } catch(error) {
+      print("error 2");
+      return {};
+    }
+  }
+
   Future<Map<dynamic,dynamic>> scrobble(String? id,bool submission) async {
     if (id == null) {
       return {};
