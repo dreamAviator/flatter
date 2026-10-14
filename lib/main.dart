@@ -20,7 +20,7 @@ final themeUpdateNotifier = UpdateNotifier();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
 late PathProvider pathProvider;
-late final AudioSession session;
+late final AudioSession session;//TODO:lyrics, both pulled from the internet and from the server
 
 
 void main() async {
