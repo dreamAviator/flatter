@@ -9,6 +9,7 @@ import 'package:flatter/ui/player_screen/player_image.dart';
 import 'package:flatter/ui/player_screen/play_button.dart';
 import 'package:flatter/ui/player_screen/progess_slider.dart';
 import 'package:flatter/main.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 
 class PlayerScreen extends StatelessWidget {
@@ -18,6 +19,7 @@ class PlayerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     if (settingsControl.loadSetting('landscapeMode') == true) {
+      UpdateNotifier mediaItemDataChangedNotifier = UpdateNotifier();
       return Column(
         children: [
           Expanded(
@@ -84,31 +86,31 @@ class PlayerScreen extends StatelessWidget {
                                 ),
                               ),
                               Card.filled(//das hier expanded für die lyrics mb, sodass sie dann über dem cover sind, dass wäre tuff
-                                child: StreamBuilder(
-                                  stream: playerControl.mediaItem,
-                                  builder: (context, asyncSnapshot) {
-                                    String? id = asyncSnapshot.data?.id;
-                                    return Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            if (id != null) {
-                                              AddToPlaylistPopup.showAddToPlaylistPopup(context, [id]);
-                                            }
-                                          },
-                                          icon: Icon(Icons.playlist_add),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            if (id != null) {
-                                              RatePopup.showRatePopup(context, id, 3);
-                                            }
-                                          },
-                                          icon: Icon(Icons.thumbs_up_down_outlined),
-                                        ),
-                                        FavoriteButton(songID: id, albumID: null, artistID: null),
-                                      ],
+                                child: ListenableBuilder(
+                                  listenable: mediaItemDataChangedNotifier,
+                                  builder: (context, child) {
+                                    return StreamBuilder(
+                                      stream: playerControl.mediaItem,
+                                      builder: (context, asyncSnapshot) {
+                                        String? id = asyncSnapshot.data?.id;
+                                        String? title = asyncSnapshot.data?.title;
+                                        int? rating = asyncSnapshot.data?.extras?['userRating'];
+                                        return Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                if (id != null) {
+                                                  AddToPlaylistPopup.showAddToPlaylistPopup(context, [id]);
+                                                }
+                                              },
+                                              icon: Icon(Icons.playlist_add),
+                                            ),
+                                            RateButton(id: id, rating: rating ?? 0, name: title ?? "unknown",updateNotifier: mediaItemDataChangedNotifier,),
+                                            FavoriteButton(songID: id, albumID: null, artistID: null),
+                                          ],
+                                        );
+                                      }
                                     );
                                   }
                                 ),
@@ -237,6 +239,7 @@ class PlayerScreen extends StatelessWidget {
                     stream: playerControl.mediaItem,
                     builder: (context, asyncSnapshot) {
                       String? id = asyncSnapshot.data?.id;
+                      String? title = asyncSnapshot.data?.title;
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -262,8 +265,8 @@ class PlayerScreen extends StatelessWidget {
                           ),
                           IconButton(
                             onPressed: () {
-                              if (id != null) {
-                                RatePopup.showRatePopup(context, id, 3);
+                              if (id != null && title != null) {
+                                RateButton.showRatePopup(context, id, 3, title);
                               }
                             },
                             icon: Icon(Icons.thumbs_up_down_outlined),

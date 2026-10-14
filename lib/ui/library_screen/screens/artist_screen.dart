@@ -6,6 +6,7 @@ import 'package:flatter/ui/library_screen/item_widgets/per_item/item_menus.dart'
 import 'package:flatter/ui/library_screen/popups/rate_popup.dart';
 import 'package:flatter/ui/search_screen/search_song_screen.dart';
 import 'package:flatter/main.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -26,6 +27,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
   Widget build(BuildContext context) {
     ItemMenus itemMenus = ItemMenus(context);
     final Size screenSize = MediaQuery.sizeOf(context);
+    final UpdateNotifier artistChangedNotifier = UpdateNotifier();
 
     Widget buildArtistAppearances(BuildContext context,String name,double screenWidth) {
       return FutureBuilder(
@@ -42,103 +44,64 @@ class _ArtistScreenState extends State<ArtistScreen> {
       );
     }
 
-    return FutureBuilder(
-      future: subsonicService.getArtistDetails(widget.artistID),
-      builder: (context, asyncSnapshot) {
-        if (asyncSnapshot.hasData) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(asyncSnapshot.data!['name']),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    String action = settingsControl.loadSetting('artistPlayButtonAction');
-                    switch (action) {
-                      case "playNow":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                        }});
-                      case "playNext":
-                        playerControl.customAction('addNextByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                        }});
-                      case "enqueue":
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                        }});
-                      case "playNowShuffled":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                          'shuffled':true,
-                        }});
-                      case "playNextShuffled":
-                        playerControl.customAction('addNextByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                          'shuffled':true,
-                        }});
-                      case "enqueueShuffled":
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                          'shuffled':true,
-                        }});
-                    }
-                  },
-                  icon: Icon(Icons.play_arrow),
-                ),
-                FavoriteButton(songID: null, albumID: null, artistID: widget.artistID),
-                IconButton(
-                  icon: Icon(Icons.thumbs_up_down_outlined),
-                  onPressed: () {
-                    RatePopup.showRatePopup(context, widget.artistID, asyncSnapshot.data?['userRating'] ?? 0);
-                  },
-                ),
-                itemMenus.artistMenu(asyncSnapshot.data!),
-              ],
-            ),
-            body: CustomScrollView(
-              slivers: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
-                //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-                if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
-                  child: CachedNetworkImage(
-                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
-                    progressIndicatorBuilder: (context, url, downloadProgress) =>
-                        LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                    errorWidget: (context, url, error) => IconButton(
+    return ListenableBuilder(
+      listenable: artistChangedNotifier,
+      builder: (context, child) {
+        return FutureBuilder(
+          future: subsonicService.getArtistDetails(widget.artistID),
+          builder: (context, asyncSnapshot) {
+            if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text(asyncSnapshot.data!['name']),
+                  actions: [
+                    IconButton(
                       onPressed: () {
-                        //hier retry
+                        String action = settingsControl.loadSetting('artistPlayButtonAction');
+                        switch (action) {
+                          case "playNow":
+                            playerControl.customAction('clearQueue');
+                            playerControl.customAction('addByID', {'addByID': {
+                              'artistID':asyncSnapshot.data!['id'],
+                            }});
+                          case "playNext":
+                            playerControl.customAction('addNextByID', {'addByID': {
+                              'artistID':asyncSnapshot.data!['id'],
+                            }});
+                          case "enqueue":
+                            playerControl.customAction('addByID', {'addByID': {
+                              'artistID':asyncSnapshot.data!['id'],
+                            }});
+                          case "playNowShuffled":
+                            playerControl.customAction('clearQueue');
+                            playerControl.customAction('addByID', {'addByID': {
+                              'artistID':asyncSnapshot.data!['id'],
+                              'shuffled':true,
+                            }});
+                          case "playNextShuffled":
+                            playerControl.customAction('addNextByID', {'addByID': {
+                              'artistID':asyncSnapshot.data!['id'],
+                              'shuffled':true,
+                            }});
+                          case "enqueueShuffled":
+                            playerControl.customAction('addByID', {'addByID': {
+                              'artistID':asyncSnapshot.data!['id'],
+                              'shuffled':true,
+                            }});
+                        }
                       },
-                      icon: Icon(Icons.error),
+                      icon: Icon(Icons.play_arrow),
                     ),
-                    height: screenSize.width,
-                  ),
+                    FavoriteButton(songID: null, albumID: null, artistID: widget.artistID),
+                    RateButton(id: widget.artistID, rating: asyncSnapshot.data?['userRating'] ?? 0, name: asyncSnapshot.data?['name'] ?? "unknown",updateNotifier: artistChangedNotifier,),
+                    itemMenus.artistMenu(asyncSnapshot.data!),
+                  ],
                 ),
-                if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("hier sollen actions hin"),
-                      ElevatedButton(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text("All songs"),
-                            Icon(Icons.arrow_forward),
-                          ],
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                if (settingsControl.settingsMap['landscapeMode'] == true) SliverToBoxAdapter(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CachedNetworkImage(
+                body: CustomScrollView(
+                  slivers: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
+                    //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
+                    if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
+                      child: CachedNetworkImage(
                         imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                             LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
@@ -148,58 +111,97 @@ class _ArtistScreenState extends State<ArtistScreen> {
                           },
                           icon: Icon(Icons.error),
                         ),
-                        width: screenSize.width / 3,
-                        height: screenSize.width / 3,
+                        height: screenSize.width,
                       ),
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("hier"),
-                            Text("sollen"),
-                            Text("actions"),
-                            Text("hin"),
-                            ElevatedButton(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text("All songs"),
-                                  Icon(Icons.arrow_forward),
-                                ],
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));
-                              },
+                    ),
+                    if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("hier sollen actions hin"),
+                          ElevatedButton(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("All songs"),
+                                Icon(Icons.arrow_forward),
+                              ],
                             ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (settingsControl.settingsMap['landscapeMode'] == true) SliverToBoxAdapter(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
+                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                            errorWidget: (context, url, error) => IconButton(
+                              onPressed: () {
+                                //hier retry
+                              },
+                              icon: Icon(Icons.error),
+                            ),
+                            width: screenSize.width / 3,
+                            height: screenSize.width / 3,
+                          ),
+                          Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text("hier"),
+                                Text("sollen"),
+                                Text("actions"),
+                                Text("hin"),
+                                ElevatedButton(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text("All songs"),
+                                      Icon(Icons.arrow_forward),
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SliverToBoxAdapter(child: Text("Albums")),
+                    AlbumGrid(albumListNullable: asyncSnapshot.data!['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
+                    const SliverToBoxAdapter(child: Divider()),
+                    const SliverToBoxAdapter(child: Text("Appears in:")),
+                    buildArtistAppearances(context, asyncSnapshot.data!['name'], screenSize.width),
+                  ],
                 ),
-                const SliverToBoxAdapter(child: Text("Albums")),
-                AlbumGrid(albumListNullable: asyncSnapshot.data!['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
-                const SliverToBoxAdapter(child: Divider()),
-                const SliverToBoxAdapter(child: Text("Appears in:")),
-                buildArtistAppearances(context, asyncSnapshot.data!['name'], screenSize.width),
-              ],
-            ),
-          );
-        } else if (asyncSnapshot.hasError) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text("Error"),
-            ),
-            body: Center(child: Text("Error"),),
-          );
-        } else {
-          return Scaffold(
-            appBar: AppBar(
-              title: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-            ),
-            body: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),
-          );
-        }
+              );
+            } else if (asyncSnapshot.hasError) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text("Error"),
+                ),
+                body: Center(child: Text("Error"),),
+              );
+            } else {
+              return Scaffold(
+                appBar: AppBar(
+                  title: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                ),
+                body: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),
+              );
+            }
+          }
+        );
       }
     );
   }

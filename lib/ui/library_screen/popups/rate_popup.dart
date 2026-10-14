@@ -1,8 +1,15 @@
 import 'package:flatter/Services/subsonic_service.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 
-class RatePopup {
-  static void showRatePopup(BuildContext context, String id,int rating) {
+class RateButton extends StatelessWidget {
+  RateButton({super.key,required this.id,required this.rating,required this.name,this.updateNotifier});
+  final String? id;
+  final int rating;
+  final String name;
+  final UpdateNotifier? updateNotifier;
+
+  static void showRatePopup(BuildContext context, String id,int rating, String name,[UpdateNotifier? updateNotifier]) {
     SubsonicService subsonicService = SubsonicService();
     showDialog(
       context: context,
@@ -10,38 +17,38 @@ class RatePopup {
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context,setState) {
+            void setRating(int newRating) {
+              subsonicService.rate(id, newRating);
+              updateNotifier?.notify();
+              setState(() {
+                rating = newRating;
+              });
+              Navigator.of(context).pop();
+            }
+
             return AlertDialog(
+              title: Center(child: Text("Rate $name")),
               content: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: [
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [//i know there is a lot of duplicate not necessary stuff here, but idrc rn
                   if (rating >= 1) IconButton(
                     icon: Icon(Icons.star),
                     onPressed: () {
                       if (rating == 1) {
-                        subsonicService.rate(id, 0);
-                        setState(() {
-                          rating = 0;
-                        });
+                        setRating(0);
                       } else {
-                        subsonicService.rate(id, 1);
-                        setState(() {
-                          rating = 1;
-                        });
+                        setRating(1);
                       }
                     },
                   ) else IconButton(
                     icon: Icon(Icons.star_border),
                     onPressed: () {
                       if (rating == 1) {
-                        subsonicService.rate(id, 0);
-                        setState(() {
-                          rating = 0;
-                        });
+                        setRating(0);
                       } else {
-                        subsonicService.rate(id, 1);
-                        setState(() {
-                          rating = 1;
-                        });
+                        setRating(1);
                       }
                     },
                   ),
@@ -49,30 +56,18 @@ class RatePopup {
                     icon: Icon(Icons.star),
                     onPressed: () {
                       if (rating == 2) {
-                        subsonicService.rate(id, 0);
-                        setState(() {
-                          rating = 0;
-                        });
+                        setRating(0);
                       } else {
-                        subsonicService.rate(id, 2);
-                        setState(() {
-                          rating = 2;
-                        });
+                        setRating(2);
                       }
                     },
                   ) else IconButton(
                     icon: Icon(Icons.star_border),
                     onPressed: () {
                       if (rating == 2) {
-                        subsonicService.rate(id, 0);
-                        setState(() {
-                          rating = 0;
-                        });
+                        setRating(0);
                       } else {
-                        subsonicService.rate(id, 2);
-                        setState(() {
-                          rating = 2;
-                        });
+                        setRating(2);
                       }
                     },
                   ),
@@ -80,30 +75,18 @@ class RatePopup {
                     icon: Icon(Icons.star),
                     onPressed: () {
                       if (rating == 3) {
-                        subsonicService.rate(id, 0);
-                        setState(() {
-                          rating = 0;
-                        });
+                        setRating(0);
                       } else {
-                        subsonicService.rate(id, 3);
-                        setState(() {
-                          rating = 3;
-                        });
+                        setRating(3);
                       }
                     },
                   ) else IconButton(
                     icon: Icon(Icons.star_border),
                     onPressed: () {
                       if (rating == 3) {
-                        subsonicService.rate(id, 0);
-                        setState(() {
-                          rating = 0;
-                        });
+                        setRating(0);
                       } else {
-                        subsonicService.rate(id, 3);
-                        setState(() {
-                          rating = 3;
-                        });
+                        setRating(3);
                       }
                     },
                   ),
@@ -111,30 +94,18 @@ class RatePopup {
                     icon: Icon(Icons.star),
                     onPressed: () {
                       if (rating == 4) {
-                        subsonicService.rate(id, 0);
-                        setState(() {
-                          rating = 0;
-                        });
+                        setRating(0);
                       } else {
-                        subsonicService.rate(id, 4);
-                        setState(() {
-                          rating = 4;
-                        });
+                        setRating(4);
                       }
                     },
                   ) else IconButton(
                     icon: Icon(Icons.star_border),
                     onPressed: () {
                       if (rating == 4) {
-                        subsonicService.rate(id, 0);
-                        setState(() {
-                          rating = 0;
-                        });
+                        setRating(0);
                       } else {
-                        subsonicService.rate(id, 4);
-                        setState(() {
-                          rating = 4;
-                        });
+                        setRating(4);
                       }
                     },
                   ),
@@ -142,40 +113,60 @@ class RatePopup {
                     icon: Icon(Icons.star),
                     onPressed: () {
                       if (rating == 5) {
-                        subsonicService.rate(id, 0);
-                        setState(() {
-                          rating = 0;
-                        });
+                        setRating(0);
                       } else {
-                        subsonicService.rate(id, 5);
-                        setState(() {
-                          rating = 5;
-                        });
+                        setRating(5);
                       }
                     },
                   ) else IconButton(
                     icon: Icon(Icons.star_border),
                     onPressed: () {
                       if (rating == 5) {
-                        subsonicService.rate(id, 0);
-                        setState(() {
-                          rating = 0;
-                        });
+                        setRating(0);
                       } else {
-                        subsonicService.rate(id, 5);
-                        setState(() {
-                          rating = 5;
-                        });
+                        setRating(5);
                       }
                     },
                   ),
 
                 ],
-              )
+
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Close"),
+                )
+              ],
+              actionsAlignment: MainAxisAlignment.center,
             );
           },
         );
       }
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    if (rating == 0 || id == null) {
+      return IconButton(
+        icon: Icon(Icons.thumbs_up_down_outlined),
+        onPressed: () {
+          if (id != null) {
+            showRatePopup(context, id!, rating, name,updateNotifier);
+          }
+        },
+      );
+    } else {
+      return IconButton(
+        icon: Icon(Icons.thumbs_up_down),
+        onPressed: () {
+          showRatePopup(context, id!, rating, name,updateNotifier);
+        },
+      );
+    }
+  }
+
 }
