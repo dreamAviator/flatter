@@ -20,7 +20,7 @@ final themeUpdateNotifier = UpdateNotifier();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
 late PathProvider pathProvider;
-late final AudioSession session;
+late final AudioSession session;//TODO:not only save the queue, but also the duration of the currently playing song. make it a setting
 
 
 void main() async {
