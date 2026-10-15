@@ -14,6 +14,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final localNotDatabaseStorageController = LocalNotDatabaseStorageController();
   Stream<PlayerState> get playerState => _player.playerStateStream;
   BehaviorSubject<List<MediaItem>> get queueStream => _queueRepository.queueStream;
+  BehaviorSubject<int> loopModeStream = BehaviorSubject<int>.seeded(0);
 
   PlayerControls() {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
@@ -56,20 +57,27 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   Future<void> seek(Duration position) => _player.seek(position);
   @override
   Future<void> skipToNext() async {
-    if (_queueRepository.getCurrentIndex() != _queueRepository.getQueueLength() - 1) {
+    if (playbackState.value.repeatMode == AudioServiceRepeatMode.one) {
+      seek(Duration.zero);
+    } else if (_queueRepository.getCurrentIndex() != _queueRepository.getQueueLength() - 1) {
       skipToQueueItem(_queueRepository.getCurrentIndex() + 1);
+    } else if (playbackState.value.repeatMode == AudioServiceRepeatMode.all) {
+      skipToQueueItem(0);
     }
     localNotDatabaseStorageController.saveQueue();
   }
   @override
   Future<void> skipToPrevious() async {
-    if (_queueRepository.getCurrentIndex() != 0) {//vlt hier machen, dass es funktioniert wenn man ein looping angeschaltet hat
+    if (playbackState.value.repeatMode == AudioServiceRepeatMode.one) {
+      seek(Duration.zero);
+    } else if (_queueRepository.getCurrentIndex() != 0) {
       if (getPosition().inSeconds < settingsControl.loadSetting('timeUntilSeekToStart')) {
         skipToQueueItem(_queueRepository.getCurrentIndex() - 1);
       } else {
         seek(Duration.zero);
       }
-
+    } else if (playbackState.value.repeatMode == AudioServiceRepeatMode.all) {
+      skipToQueueItem(_queueRepository.getQueueLength() - 1);
     }
     localNotDatabaseStorageController.saveQueue();
   }
@@ -91,12 +99,15 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     localNotDatabaseStorageController.saveQueue();
     print("hello7");
   }
-  /*
+
   @override
-  Future<void> setRepeatMode(//) =>
-  @override
-  Future<void> setShuffleMode(//) =>
-   */
+  Future<void> setRepeatMode(AudioServiceRepeatMode repeatMode) async {
+    playbackState.add(playbackState.value.copyWith(
+      repeatMode: repeatMode,
+    ));//ig das muss ich machen (laut deepseek)
+  }
+
+  //shuffle mode idk?
 
   @override
   Future<void> playMediaItem(MediaItem mediaItem) async {

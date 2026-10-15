@@ -250,11 +250,47 @@ class _QueueScreenState extends State<QueueScreen> {
                           },
                           icon: const Icon(Icons.shuffle_outlined),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            //TODO:loop
-                          },
-                          icon: const Icon(Icons.loop_outlined),//hier halt single und ganze queue
+                        StreamBuilder(
+                          stream: playerControl.playbackState,
+                          builder: (context, asyncSnapshot) {//TODO:eigenen button dafür
+                            if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+                              if (asyncSnapshot.data?.repeatMode == AudioServiceRepeatMode.none) {
+                                return IconButton(
+                                  onPressed: () {
+                                    playerControl.setRepeatMode(AudioServiceRepeatMode.all);
+                                  },
+                                  icon: const Icon(Icons.start_outlined),//hier halt single und ganze queue
+                                );
+                              } else if (asyncSnapshot.data?.repeatMode == AudioServiceRepeatMode.all) {
+                                return IconButton(
+                                  onPressed: () {
+                                    playerControl.setRepeatMode(AudioServiceRepeatMode.one);
+                                  },
+                                  icon: const Icon(Icons.repeat_outlined),//hier halt single und ganze queue
+                                );
+                              } else if (asyncSnapshot.data?.repeatMode == AudioServiceRepeatMode.one) {
+                                return IconButton(
+                                  onPressed: () {
+                                    playerControl.setRepeatMode(AudioServiceRepeatMode.one);
+                                  },
+                                  icon: const Icon(Icons.repeat_one_outlined),//hier halt single und ganze queue
+                                );
+                              } else {
+                                return IconButton(
+                                  onPressed: () {
+
+                                  },
+                                  icon: const Icon(Icons.error_outline_outlined),//hier halt single und ganze queue
+                                );
+                              }
+
+                            } else {
+                              return IconButton(
+                                onPressed: null,
+                                icon: const Icon(Icons.pending_outlined),//hier halt single und ganze queue
+                              );
+                            }
+                          }
                         ),
                         IconButton(
                           onPressed: () {

@@ -8,7 +8,7 @@ import 'package:flatter/home/player_screen/player_image.dart';
 import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/home/player_screen/progess_slider.dart';
 import 'package:flatter/main.dart';
-import 'package:material_ui/material_ui.dart';
+import 'package:material_ui/material_ui.dart';//TODO:player screen schöner machen
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({super.key});
@@ -233,11 +233,16 @@ class PlayerScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      IconButton(
-                        onPressed: () {//TODO:loop
+                      StreamBuilder(
+                        stream: playerControl.playbackState,
+                        builder: (context, asyncSnapshot) {
+                          return IconButton(
+                            onPressed: () {//TODO:loop
 
-                        },
-                        icon: const Icon(Icons.loop),
+                            },
+                            icon: const Icon(Icons.loop),
+                          );
+                        }
                       ),
                       IconButton(//hier überlegen, ob das die playlist shufflen soll oder den shuffle modus wie in anderen playern anschalten soll
                         onPressed: () {
