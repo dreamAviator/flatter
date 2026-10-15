@@ -289,6 +289,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     );
   }
 
+  //TODO:vielleicht sind diese dinger daran schuld, dass das im hintergrund nicht funktioniert
   Duration? getDuration() {
     return _player.duration;
   }
