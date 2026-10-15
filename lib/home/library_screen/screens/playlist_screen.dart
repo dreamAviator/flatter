@@ -108,7 +108,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   slivers: [
                     SliverToBoxAdapter(
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                        //mainAxisSize: MainAxisSize.min,//warum war das da?
                         children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
                           //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
                           if (settingsControl.settingsMap['landscapeMode'] == false) AspectRatio(
@@ -174,26 +174,65 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                       ]
                                   )
                               ],
-
                             ),
                           ),
-                          if (settingsControl.settingsMap['landscapeMode'] == false) TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: asyncSnapshot.data!['artistId'])));
-                            },
-                            child: Text(asyncSnapshot.data!['owner']),
-                          ),
-                          if (settingsControl.settingsMap['landscapeMode'] == false) Row(
-                            children: [
-                              //also ja hier actions
-                              //diese diablen bis ergebnis da ist
-                              Text("hier sollen actions hin")
-                            ],
+                          Text("Owner: ${asyncSnapshot.data!['owner']}"),
+                          Divider(),
+                          if (settingsControl.settingsMap['landscapeMode'] == false) Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  spacing: 8,
+                                  children: [
+                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                      child: Text("Play now"),
+                                      onPressed: () {
+
+                                      },
+                                    ),
+                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                      child: Text("Play now shuffled"),
+                                      onPressed: () {
+
+                                      },
+                                    ),
+                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                      child: Text("Add next"),
+                                      onPressed: () {
+
+                                      },
+                                    ),
+                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                      child: Text("Add next shuffled"),
+                                      onPressed: () {
+
+                                      },
+                                    ),
+                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                      child: Text("Enqueue"),
+                                      onPressed: () {
+
+                                      },
+                                    ),
+                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                      child: Text("Enqueue shuffled"),
+                                      onPressed: () {
+
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                           if (settingsControl.settingsMap['landscapeMode'] == true) SizedBox(
                             height: screenSize.width / 3,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               spacing: 8,
                               children: [
                                 CachedNetworkImage(
@@ -209,20 +248,28 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   width: screenSize.width / 3,
                                   height: screenSize.width / 3,
                                 ),
-                                Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text("hier"),
-                                      Text("sollen"),
-                                      Text("actions"),
-                                      Text("hin"),
-                                    ],
-                                  ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text("hier"),
+                                    Text("sollen"),
+                                    Text("actions"),
+                                    Text("hin"),
+                                  ],
                                 ),
                                 Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Text(asyncSnapshot.data!['comment']),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Card(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Center(
+                                          child: SingleChildScrollView(
+                                            child: Text(asyncSnapshot.data!['comment']),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 )
                               ],
