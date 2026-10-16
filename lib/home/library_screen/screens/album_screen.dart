@@ -251,12 +251,32 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                                   },
                                                 ),
                                                 Divider(),
-                                                Row(
-                                                  children: [
-                                                    Text("placeholder"),
-                                                    Divider(),
-                                                    Text("placeholder")
-                                                  ],
+                                                Expanded(
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: LayoutBuilder(
+                                                          builder: (BuildContext context, BoxConstraints constraints) {
+                                                            return CachedNetworkImage(
+                                                              imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${innerAsyncSnapshot.data!['coverArt']}",
+                                                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                                              errorWidget: (context, url, error) => IconButton(
+                                                                onPressed: () {
+                                                                  //hier retry
+                                                                },
+                                                                icon: Icon(Icons.error),
+                                                              ),
+                                                              width: constraints.maxHeight,
+                                                              height: constraints.maxHeight,
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                      Divider(),
+                                                      Text("comment oder stats")
+                                                    ],
+                                                  ),
                                                 )
                                               ],
                                             );
