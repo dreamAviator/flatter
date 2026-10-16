@@ -186,38 +186,38 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   spacing: 8,
-                                  children: [
-                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                  children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                    ElevatedButton(
                                       child: Text("Play now"),
                                       onPressed: () {
 
                                       },
                                     ),
-                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                    ElevatedButton(
                                       child: Text("Play now shuffled"),
                                       onPressed: () {
 
                                       },
                                     ),
-                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                    ElevatedButton(
                                       child: Text("Add next"),
                                       onPressed: () {
 
                                       },
                                     ),
-                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                    ElevatedButton(
                                       child: Text("Add next shuffled"),
                                       onPressed: () {
 
                                       },
                                     ),
-                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                    ElevatedButton(
                                       child: Text("Enqueue"),
                                       onPressed: () {
 
                                       },
                                     ),
-                                    ElevatedButton(//TODO:einstellung um das zu iconbuttons zu machen
+                                    ElevatedButton(
                                       child: Text("Enqueue shuffled"),
                                       onPressed: () {
 
@@ -248,14 +248,55 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   width: screenSize.width / 3,
                                   height: screenSize.width / 3,
                                 ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text("hier"),
-                                    Text("sollen"),
-                                    Text("actions"),
-                                    Text("hin"),
-                                  ],
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                                    scrollDirection: Axis.vertical,
+                                    child: IntrinsicWidth(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        spacing: 8,
+                                        children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                          ElevatedButton(
+                                            child: Text("Play now"),
+                                            onPressed: () {
+                                      
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: Text("Play now shuffled"),
+                                            onPressed: () {
+                                      
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: Text("Add next"),
+                                            onPressed: () {
+                                      
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: Text("Add next shuffled"),
+                                            onPressed: () {
+                                      
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: Text("Enqueue"),
+                                            onPressed: () {
+                                      
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: Text("Enqueue shuffled"),
+                                            onPressed: () {
+                                      
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
                                 Expanded(
                                   child: Padding(
@@ -265,7 +306,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                         padding: const EdgeInsets.all(8.0),
                                         child: Center(
                                           child: SingleChildScrollView(
-                                            child: Text(asyncSnapshot.data!['comment']),
+                                            child: Text(asyncSnapshot.data?['comment'] ?? "No comment"),//TODO:no comment funktioniert nicht
                                           ),
                                         ),
                                       ),

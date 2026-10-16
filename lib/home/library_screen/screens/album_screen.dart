@@ -107,41 +107,177 @@ class _AlbumScreenState extends State<AlbumScreen> {
                         },
                         child: Text(asyncSnapshot.data!['artist']),
                       ),
-                      if (settingsControl.settingsMap['landscapeMode'] == false) Row(
-                        children: [
-                          //also ja hier actions
-                          //diese diablen bis ergebnis da ist
-                          Text("hier sollen actions hin")
-                        ],
-                      ),
-                      if (settingsControl.settingsMap['landscapeMode'] == true) Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                            errorWidget: (context, url, error) => IconButton(
-                              onPressed: () {
-                                //hier retry
-                              },
-                              icon: Icon(Icons.error),
-                            ),
-                            width: screenSize.width / 3,
-                            height: screenSize.width / 3,
-                          ),
-                          Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text("hier"),
-                                Text("sollen"),
-                                Text("actions"),
-                                Text("hin"),
+                      if (settingsControl.settingsMap['landscapeMode'] == false) Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              spacing: 8,
+                              children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                ElevatedButton(
+                                  child: Text("Play now"),
+                                  onPressed: () {
+
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: Text("Play now shuffled"),
+                                  onPressed: () {
+
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: Text("Add next"),
+                                  onPressed: () {
+
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: Text("Add next shuffled"),
+                                  onPressed: () {
+
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: Text("Enqueue"),
+                                  onPressed: () {
+
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: Text("Enqueue shuffled"),
+                                  onPressed: () {
+
+                                  },
+                                ),
                               ],
                             ),
-                          )
-                        ],
+                          ),
+                        ),
+                      ),
+                      if (settingsControl.settingsMap['landscapeMode'] == true) SizedBox(
+                        height: screenSize.width / 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          spacing: 8,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
+                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                              errorWidget: (context, url, error) => IconButton(
+                                onPressed: () {
+                                  //hier retry
+                                },
+                                icon: Icon(Icons.error),
+                              ),
+                              width: screenSize.width / 3,
+                              height: screenSize.width / 3,
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                                scrollDirection: Axis.vertical,
+                                child: IntrinsicWidth(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    spacing: 8,
+                                    children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                      ElevatedButton(
+                                        child: Text("Play now"),
+                                        onPressed: () {
+
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Play now shuffled"),
+                                        onPressed: () {
+
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Add next"),
+                                        onPressed: () {
+
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Add next shuffled"),
+                                        onPressed: () {
+
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Enqueue"),
+                                        onPressed: () {
+
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Enqueue shuffled"),
+                                        onPressed: () {
+
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: asyncSnapshot.data?['artistId'],)));
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: FutureBuilder(
+                                        future: subsonicService.getArtistDetails(asyncSnapshot.data!['artistId']),
+                                        builder: (context, innerAsyncSnapshot) {
+                                          if (innerAsyncSnapshot.hasData && innerAsyncSnapshot.connectionState == ConnectionState.done) {
+                                            return Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                TextButton(
+                                                  child: Text(innerAsyncSnapshot.data?['name'] ?? "Unknown"),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: asyncSnapshot.data?['artistId'],)));
+                                                  },
+                                                ),
+                                                Divider(),
+                                                Row(
+                                                  children: [
+                                                    Text("placeholder"),
+                                                    Divider(),
+                                                    Text("placeholder")
+                                                  ],
+                                                )
+                                              ],
+                                            );
+                                          } else if (innerAsyncSnapshot.hasError) {
+                                            return Center(
+                                              child: Text("Error"),
+                                            );
+                                          } else {
+                                            return Center(
+                                              child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                            );
+                                          }
+                                        }
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
