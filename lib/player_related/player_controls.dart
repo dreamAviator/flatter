@@ -13,6 +13,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final _player = MyPlayer();
   final localNotDatabaseStorageController = LocalNotDatabaseStorageController();
   Stream<PlayerState> get playerState => _player.playerStateStream;
+
   BehaviorSubject<List<MediaItem>> get queueStream => _queueRepository.queueStream;
   BehaviorSubject<int> loopModeStream = BehaviorSubject<int>.seeded(0);
 
