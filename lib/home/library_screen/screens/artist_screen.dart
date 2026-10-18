@@ -45,6 +45,43 @@ class _ArtistScreenState extends State<ArtistScreen> {
       future: subsonicService.getArtistDetails(widget.artistID),
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.hasData) {
+
+          void playNow() {
+            playerControl.customAction('clearQueue');
+            playerControl.customAction('addByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+            }});
+          }
+          void playNext() {
+            playerControl.customAction('addNextByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+            }});
+          }
+          void enqueue() {
+            playerControl.customAction('addByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+            }});
+          }
+          void playNowShuffled() {
+            playerControl.customAction('clearQueue');
+            playerControl.customAction('addByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+              'shuffled':true,
+            }});
+          }
+          void playNextShuffled() {
+            playerControl.customAction('addNextByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+              'shuffled':true,
+            }});
+          }
+          void enqueueShuffled() {
+            playerControl.customAction('addByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+              'shuffled':true,
+            }});
+          }
+
           return Scaffold(
             appBar: AppBar(
               title: Text(asyncSnapshot.data!['name']),
@@ -54,34 +91,17 @@ class _ArtistScreenState extends State<ArtistScreen> {
                     String action = settingsControl.loadSetting('artistPlayButtonAction');
                     switch (action) {
                       case "playNow":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                        }});
+                        playNow();
                       case "playNext":
-                        playerControl.customAction('addNextByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                        }});
+                        playNext();
                       case "enqueue":
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                        }});
+                        enqueue();
                       case "playNowShuffled":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                          'shuffled':true,
-                        }});
+                        playNowShuffled();
                       case "playNextShuffled":
-                        playerControl.customAction('addNextByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                          'shuffled':true,
-                        }});
+                        playNextShuffled();
                       case "enqueueShuffled":
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                          'shuffled':true,
-                        }});
+                        enqueueShuffled();
                     }
                   },
                   icon: Icon(Icons.play_arrow),
@@ -113,45 +133,45 @@ class _ArtistScreenState extends State<ArtistScreen> {
                         spacing: 8,
                         children: [
                           Expanded(
-                            child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                            child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
                                 spacing: 8,
-                                children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                children: [
                                   ElevatedButton(
                                     child: Text("Play now"),
                                     onPressed: () {
-
+                                      playNow();
                                     },
                                   ),
                                   ElevatedButton(
                                     child: Text("Play now shuffled"),
                                     onPressed: () {
-
+                                      playNowShuffled();
                                     },
                                   ),
                                   ElevatedButton(
                                     child: Text("Add next"),
                                     onPressed: () {
-
+                                      playNext();
                                     },
                                   ),
                                   ElevatedButton(
                                     child: Text("Add next shuffled"),
                                     onPressed: () {
-
+                                      playNextShuffled();
                                     },
                                   ),
                                   ElevatedButton(
                                     child: Text("Enqueue"),
                                     onPressed: () {
-
+                                      enqueue();
                                     },
                                   ),
                                   ElevatedButton(
                                     child: Text("Enqueue shuffled"),
                                     onPressed: () {
-
+                                      enqueueShuffled();
                                     },
                                   ),
                                 ],
@@ -204,37 +224,36 @@ class _ArtistScreenState extends State<ArtistScreen> {
                                       ElevatedButton(
                                         child: Text("Play now"),
                                         onPressed: () {
-
+                                          playNow();
                                         },
                                       ),
                                       ElevatedButton(
                                         child: Text("Play now shuffled"),
-                                        onPressed: () {
-
+                                        onPressed: () {playNowShuffled();
                                         },
                                       ),
                                       ElevatedButton(
                                         child: Text("Add next"),
                                         onPressed: () {
-
+                                          playNext();
                                         },
                                       ),
                                       ElevatedButton(
                                         child: Text("Add next shuffled"),
                                         onPressed: () {
-
+                                          playNextShuffled();
                                         },
                                       ),
                                       ElevatedButton(
                                         child: Text("Enqueue"),
                                         onPressed: () {
-
+                                          enqueue();
                                         },
                                       ),
                                       ElevatedButton(
                                         child: Text("Enqueue shuffled"),
                                         onPressed: () {
-
+                                          enqueueShuffled();
                                         },
                                       ),
                                     ],

@@ -47,6 +47,47 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           future: subsonicService.getPlaylistDetails(widget.playlistID),
           builder: (context, asyncSnapshot) {
             if (asyncSnapshot.hasData) {
+              List<dynamic>? subsonicSongList = asyncSnapshot.data!['entry'];
+              List<MediaItem> mediaItemList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList ?? []);
+              print(mediaItemList);
+              print("this was the mediaitem list");
+              void playNow() {//idk maybe it's better to put the shuffled variants inside of the other functions and not as their own
+                print("executing play now");
+                playerControl.customAction('clearQueue');
+                playerControl.customAction('addMultiple',{'addMultiple': {
+                  'tracks':mediaItemList,
+                }});
+              }
+              void playNext() {
+                playerControl.customAction('addNext',{'addNext': {
+                  'tracks':mediaItemList,
+                }});
+              }
+              void enqueue() {
+                playerControl.customAction('addMultiple',{'addMultiple': {
+                  'tracks':mediaItemList,
+                }});
+              }
+              void playNowShuffled() {
+                playerControl.customAction('clearQueue');
+                playerControl.customAction('addMultiple',{'addMultiple': {
+                  'tracks':mediaItemList,
+                  'shuffled':true,
+                }});
+              }
+              void playNextShuffled() {
+                playerControl.customAction('addNext',{'addNext': {
+                  'tracks':mediaItemList,
+                  'shuffled':true,
+                }});
+              }
+              void enqueueShuffled() {
+                playerControl.customAction('addMultiple',{'addMultiple': {
+                  'tracks':mediaItemList,
+                  'shuffled':true,
+                }});
+              }
+
               return Scaffold(
                 appBar: AppBar(
                   title: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(asyncSnapshot.data!['name']),),
@@ -54,41 +95,19 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     IconButton(
                       onPressed: () {
                         String action = settingsControl.settingsMap['playlistPlayButtonAction'];
-                        List<dynamic>? subsonicSongList = asyncSnapshot.data!['entry'];
-                        if (subsonicSongList == null) {
-                          return;
-                        }
-                        List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList);
                         switch (action) {
                           case "playNow":
-                            playerControl.customAction('clearQueue');
-                            playerControl.customAction('addMultiple',{'addMultiple': {
-                              'tracks':songList,
-                            }});
+                            playNow();
                           case "playNext":
-                            playerControl.customAction('addNext',{'addNext': {
-                              'tracks':songList,
-                            }});
+                            playNext();
                           case "enqueue":
-                            playerControl.customAction('addMultiple',{'addMultiple': {
-                              'tracks':songList,
-                            }});
+                            enqueue();
                           case "playNowShuffled":
-                            playerControl.customAction('clearQueue');
-                            playerControl.customAction('addMultiple',{'addMultiple': {
-                              'tracks':songList,
-                              'shuffled':true,
-                            }});
+                            playNowShuffled();
                           case "playNextShuffled":
-                            playerControl.customAction('addNext',{'addNext': {
-                              'tracks':songList,
-                              'shuffled':true,
-                            }});
+                            playNextShuffled();
                           case "enqueueShuffled":
-                            playerControl.customAction('addMultiple',{'addMultiple': {
-                              'tracks':songList,
-                              'shuffled':true,
-                            }});
+                            enqueueShuffled();
                         }
                       },
                       icon: const Icon(Icons.play_arrow),
@@ -182,45 +201,45 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Align(
                               alignment: Alignment.centerLeft,
-                              child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                              child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge. auch andere buttons wie zu playlist (gilt auch für die anderen gleichen screens)
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   spacing: 8,
-                                  children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                  children: [//TODO:einstellung um die zu iconbuttons zu machen natürlich auch für die anderen screens dann
                                     ElevatedButton(
                                       child: Text("Play now"),
                                       onPressed: () {
-
+                                        playNow();
                                       },
                                     ),
                                     ElevatedButton(
                                       child: Text("Play now shuffled"),
                                       onPressed: () {
-
+                                        playNowShuffled();
                                       },
                                     ),
                                     ElevatedButton(
                                       child: Text("Add next"),
                                       onPressed: () {
-
+                                        playNext();
                                       },
                                     ),
                                     ElevatedButton(
                                       child: Text("Add next shuffled"),
                                       onPressed: () {
-
+                                        playNextShuffled();
                                       },
                                     ),
                                     ElevatedButton(
                                       child: Text("Enqueue"),
                                       onPressed: () {
-
+                                        enqueue();
                                       },
                                     ),
                                     ElevatedButton(
                                       child: Text("Enqueue shuffled"),
                                       onPressed: () {
-
+                                        enqueueShuffled();
                                       },
                                     ),
                                   ],
@@ -260,37 +279,37 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                           ElevatedButton(
                                             child: Text("Play now"),
                                             onPressed: () {
-                                      
+                                              playNow();
                                             },
                                           ),
                                           ElevatedButton(
                                             child: Text("Play now shuffled"),
                                             onPressed: () {
-                                      
+                                              playNowShuffled();
                                             },
                                           ),
                                           ElevatedButton(
                                             child: Text("Add next"),
                                             onPressed: () {
-                                      
+                                              playNext();
                                             },
                                           ),
                                           ElevatedButton(
                                             child: Text("Add next shuffled"),
                                             onPressed: () {
-                                      
+                                              playNextShuffled();
                                             },
                                           ),
                                           ElevatedButton(
                                             child: Text("Enqueue"),
                                             onPressed: () {
-                                      
+                                              enqueue();
                                             },
                                           ),
                                           ElevatedButton(
                                             child: Text("Enqueue shuffled"),
                                             onPressed: () {
-                                      
+                                              enqueueShuffled();
                                             },
                                           ),
                                         ],

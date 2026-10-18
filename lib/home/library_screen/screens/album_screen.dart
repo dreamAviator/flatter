@@ -32,6 +32,45 @@ class _AlbumScreenState extends State<AlbumScreen> {
       future: subsonicService.getAlbumDetails(widget.albumID),
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.hasData) {
+          List<dynamic>? subsonicSongList = asyncSnapshot.data!['song'];
+          List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList ?? []);
+
+          void playNow() {
+            playerControl.customAction('clearQueue');
+            playerControl.customAction('addMultiple',{'addMultiple': {
+              'tracks':songList,
+            }});
+          }
+          void playNext() {
+            playerControl.customAction('addNext',{'addNext': {
+              'tracks':songList,
+            }});
+          }
+          void enqueue() {
+            playerControl.customAction('addMultiple',{'addMultiple': {
+              'tracks':songList,
+            }});
+          }
+          void playNowShuffled() {
+            playerControl.customAction('clearQueue');
+            playerControl.customAction('addMultiple',{'addMultiple': {
+              'tracks':songList,
+              'shuffled':true,
+            }});
+          }
+          void playNextShuffled() {
+            playerControl.customAction('addNext',{'addNext': {
+              'tracks':songList,
+              'shuffled':true,
+            }});
+          }
+          void enqueueShuffled() {
+            playerControl.customAction('addMultiple',{'addMultiple': {
+              'tracks':songList,
+              'shuffled':true,
+            }});
+          }
+
           return Scaffold(
             appBar: AppBar(
               title: Text(asyncSnapshot.data!['name']),
@@ -39,41 +78,19 @@ class _AlbumScreenState extends State<AlbumScreen> {
                 IconButton(
                   onPressed: () {
                     String action = settingsControl.settingsMap['albumPlayButtonAction'];
-                    List<dynamic>? subsonicSongList = asyncSnapshot.data!['song'];
-                    if (subsonicSongList == null) {
-                      return;
-                    }
-                    List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList);
                     switch (action) {
                       case "playNow":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                        }});
+                        playNow();
                       case "playNext":
-                        playerControl.customAction('addNext',{'addNext': {
-                          'tracks':songList,
-                        }});
+                        playNext();
                       case "enqueue":
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                        }});
+                        enqueue();
                       case "playNowShuffled":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                          'shuffled':true,
-                        }});
+                        playNowShuffled();
                       case "playNextShuffled":
-                        playerControl.customAction('addNext',{'addNext': {
-                          'tracks':songList,
-                          'shuffled':true,
-                        }});
+                        playNextShuffled();
                       case "enqueueShuffled":
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                          'shuffled':true,
-                        }});
+                        enqueueShuffled();
                     }
                   },
                   icon: Icon(Icons.play_arrow),
@@ -119,37 +136,36 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                 ElevatedButton(
                                   child: Text("Play now"),
                                   onPressed: () {
-
+                                    playNow();
                                   },
                                 ),
                                 ElevatedButton(
                                   child: Text("Play now shuffled"),
                                   onPressed: () {
-
+                                    playNowShuffled();
                                   },
                                 ),
                                 ElevatedButton(
                                   child: Text("Add next"),
-                                  onPressed: () {
-
+                                  onPressed: () {playNext();
                                   },
                                 ),
                                 ElevatedButton(
                                   child: Text("Add next shuffled"),
                                   onPressed: () {
-
+                                    playNextShuffled();
                                   },
                                 ),
                                 ElevatedButton(
                                   child: Text("Enqueue"),
                                   onPressed: () {
-
+                                    enqueue();
                                   },
                                 ),
                                 ElevatedButton(
                                   child: Text("Enqueue shuffled"),
                                   onPressed: () {
-
+                                    enqueueShuffled();
                                   },
                                 ),
                               ],
@@ -179,47 +195,47 @@ class _AlbumScreenState extends State<AlbumScreen> {
                             ),
                             Align(
                               alignment: Alignment.center,
-                              child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                              child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
                                 child: IntrinsicWidth(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.stretch,
                                     spacing: 8,
-                                    children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                    children: [
                                       ElevatedButton(
                                         child: Text("Play now"),
                                         onPressed: () {
-
+                                          playNow();
                                         },
                                       ),
                                       ElevatedButton(
                                         child: Text("Play now shuffled"),
                                         onPressed: () {
-
+                                          playNowShuffled();
                                         },
                                       ),
                                       ElevatedButton(
                                         child: Text("Add next"),
                                         onPressed: () {
-
+                                          playNext();
                                         },
                                       ),
                                       ElevatedButton(
                                         child: Text("Add next shuffled"),
                                         onPressed: () {
-
+                                          playNextShuffled();
                                         },
                                       ),
                                       ElevatedButton(
                                         child: Text("Enqueue"),
                                         onPressed: () {
-
+                                          enqueue();
                                         },
                                       ),
                                       ElevatedButton(
                                         child: Text("Enqueue shuffled"),
                                         onPressed: () {
-
+                                          enqueueShuffled();
                                         },
                                       ),
                                     ],
