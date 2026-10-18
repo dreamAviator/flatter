@@ -32,6 +32,45 @@ class _AlbumScreenState extends State<AlbumScreen> {
       future: subsonicService.getAlbumDetails(widget.albumID),
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.hasData) {
+          List<dynamic>? subsonicSongList = asyncSnapshot.data!['song'];
+          List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList ?? []);
+
+          void playNow() {
+            playerControl.customAction('clearQueue');
+            playerControl.customAction('addMultiple',{'addMultiple': {
+              'tracks':songList,
+            }});
+          }
+          void playNext() {
+            playerControl.customAction('addNext',{'addNext': {
+              'tracks':songList,
+            }});
+          }
+          void enqueue() {
+            playerControl.customAction('addMultiple',{'addMultiple': {
+              'tracks':songList,
+            }});
+          }
+          void playNowShuffled() {
+            playerControl.customAction('clearQueue');
+            playerControl.customAction('addMultiple',{'addMultiple': {
+              'tracks':songList,
+              'shuffled':true,
+            }});
+          }
+          void playNextShuffled() {
+            playerControl.customAction('addNext',{'addNext': {
+              'tracks':songList,
+              'shuffled':true,
+            }});
+          }
+          void enqueueShuffled() {
+            playerControl.customAction('addMultiple',{'addMultiple': {
+              'tracks':songList,
+              'shuffled':true,
+            }});
+          }
+
           return Scaffold(
             appBar: AppBar(
               title: Text(asyncSnapshot.data!['name']),
@@ -39,41 +78,19 @@ class _AlbumScreenState extends State<AlbumScreen> {
                 IconButton(
                   onPressed: () {
                     String action = settingsControl.settingsMap['albumPlayButtonAction'];
-                    List<dynamic>? subsonicSongList = asyncSnapshot.data!['song'];
-                    if (subsonicSongList == null) {
-                      return;
-                    }
-                    List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList);
                     switch (action) {
                       case "playNow":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                        }});
+                        playNow();
                       case "playNext":
-                        playerControl.customAction('addNext',{'addNext': {
-                          'tracks':songList,
-                        }});
+                        playNext();
                       case "enqueue":
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                        }});
+                        enqueue();
                       case "playNowShuffled":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                          'shuffled':true,
-                        }});
+                        playNowShuffled();
                       case "playNextShuffled":
-                        playerControl.customAction('addNext',{'addNext': {
-                          'tracks':songList,
-                          'shuffled':true,
-                        }});
+                        playNextShuffled();
                       case "enqueueShuffled":
-                        playerControl.customAction('addMultiple',{'addMultiple': {
-                          'tracks':songList,
-                          'shuffled':true,
-                        }});
+                        enqueueShuffled();
                     }
                   },
                   icon: Icon(Icons.play_arrow),
@@ -107,41 +124,196 @@ class _AlbumScreenState extends State<AlbumScreen> {
                         },
                         child: Text(asyncSnapshot.data!['artist']),
                       ),
-                      if (settingsControl.settingsMap['landscapeMode'] == false) Row(
-                        children: [
-                          //also ja hier actions
-                          //diese diablen bis ergebnis da ist
-                          Text("hier sollen actions hin")
-                        ],
-                      ),
-                      if (settingsControl.settingsMap['landscapeMode'] == true) Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                            errorWidget: (context, url, error) => IconButton(
-                              onPressed: () {
-                                //hier retry
-                              },
-                              icon: Icon(Icons.error),
-                            ),
-                            width: screenSize.width / 3,
-                            height: screenSize.width / 3,
-                          ),
-                          Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text("hier"),
-                                Text("sollen"),
-                                Text("actions"),
-                                Text("hin"),
+                      if (settingsControl.settingsMap['landscapeMode'] == false) Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              spacing: 8,
+                              children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                ElevatedButton(
+                                  child: Text("Play now"),
+                                  onPressed: () {
+                                    playNow();
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: Text("Play now shuffled"),
+                                  onPressed: () {
+                                    playNowShuffled();
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: Text("Add next"),
+                                  onPressed: () {playNext();
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: Text("Add next shuffled"),
+                                  onPressed: () {
+                                    playNextShuffled();
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: Text("Enqueue"),
+                                  onPressed: () {
+                                    enqueue();
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: Text("Enqueue shuffled"),
+                                  onPressed: () {
+                                    enqueueShuffled();
+                                  },
+                                ),
                               ],
                             ),
-                          )
-                        ],
+                          ),
+                        ),
+                      ),
+                      if (settingsControl.settingsMap['landscapeMode'] == true) SizedBox(
+                        height: screenSize.width / 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          spacing: 8,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
+                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                              errorWidget: (context, url, error) => IconButton(
+                                onPressed: () {
+                                  //hier retry
+                                },
+                                icon: Icon(Icons.error),
+                              ),
+                              width: screenSize.width / 3,
+                              height: screenSize.width / 3,
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: IntrinsicWidth(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    spacing: 8,
+                                    children: [
+                                      ElevatedButton(
+                                        child: Text("Play now"),
+                                        onPressed: () {
+                                          playNow();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Play now shuffled"),
+                                        onPressed: () {
+                                          playNowShuffled();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Add next"),
+                                        onPressed: () {
+                                          playNext();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Add next shuffled"),
+                                        onPressed: () {
+                                          playNextShuffled();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Enqueue"),
+                                        onPressed: () {
+                                          enqueue();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Enqueue shuffled"),
+                                        onPressed: () {
+                                          enqueueShuffled();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: asyncSnapshot.data?['artistId'],)));
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: FutureBuilder(
+                                        future: subsonicService.getArtistDetails(asyncSnapshot.data!['artistId']),
+                                        builder: (context, innerAsyncSnapshot) {
+                                          if (innerAsyncSnapshot.hasData && innerAsyncSnapshot.connectionState == ConnectionState.done) {
+                                            return Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                TextButton(
+                                                  child: Text(innerAsyncSnapshot.data?['name'] ?? "Unknown"),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: asyncSnapshot.data?['artistId'],)));
+                                                  },
+                                                ),
+                                                Divider(),
+                                                Expanded(
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: LayoutBuilder(
+                                                          builder: (BuildContext context, BoxConstraints constraints) {
+                                                            return CachedNetworkImage(
+                                                              imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${innerAsyncSnapshot.data!['coverArt']}",
+                                                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                                              errorWidget: (context, url, error) => IconButton(
+                                                                onPressed: () {
+                                                                  //hier retry
+                                                                },
+                                                                icon: Icon(Icons.error),
+                                                              ),
+                                                              width: constraints.maxHeight,
+                                                              height: constraints.maxHeight,
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                      Divider(),
+                                                      Text("comment oder stats")
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            );
+                                          } else if (innerAsyncSnapshot.hasError) {
+                                            return Center(
+                                              child: Text("Error"),
+                                            );
+                                          } else {
+                                            return Center(
+                                              child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                            );
+                                          }
+                                        }
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

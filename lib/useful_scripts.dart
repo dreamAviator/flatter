@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:deepcopy/deepcopy.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:toml/toml.dart';
 
@@ -14,7 +15,8 @@ class SubsonicJustAudioCompatibility {
     return mediaItemList;
   }
 
-  MediaItem subsonicSongToMediaItem(Map<dynamic,dynamic> song) {
+  MediaItem subsonicSongToMediaItem(Map<dynamic,dynamic> oldSong) {
+    Map<dynamic,dynamic> song = oldSong.deepcopy();
     String id = song['id'];
     String title = song['title'];
     String album = song['album'];

@@ -47,6 +47,47 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           future: subsonicService.getPlaylistDetails(widget.playlistID),
           builder: (context, asyncSnapshot) {
             if (asyncSnapshot.hasData) {
+              List<dynamic>? subsonicSongList = asyncSnapshot.data!['entry'];
+              List<MediaItem> mediaItemList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList ?? []);
+              print(mediaItemList);
+              print("this was the mediaitem list");
+              void playNow() {//idk maybe it's better to put the shuffled variants inside of the other functions and not as their own
+                print("executing play now");
+                playerControl.customAction('clearQueue');
+                playerControl.customAction('addMultiple',{'addMultiple': {
+                  'tracks':mediaItemList,
+                }});
+              }
+              void playNext() {
+                playerControl.customAction('addNext',{'addNext': {
+                  'tracks':mediaItemList,
+                }});
+              }
+              void enqueue() {
+                playerControl.customAction('addMultiple',{'addMultiple': {
+                  'tracks':mediaItemList,
+                }});
+              }
+              void playNowShuffled() {
+                playerControl.customAction('clearQueue');
+                playerControl.customAction('addMultiple',{'addMultiple': {
+                  'tracks':mediaItemList,
+                  'shuffled':true,
+                }});
+              }
+              void playNextShuffled() {
+                playerControl.customAction('addNext',{'addNext': {
+                  'tracks':mediaItemList,
+                  'shuffled':true,
+                }});
+              }
+              void enqueueShuffled() {
+                playerControl.customAction('addMultiple',{'addMultiple': {
+                  'tracks':mediaItemList,
+                  'shuffled':true,
+                }});
+              }
+
               return Scaffold(
                 appBar: AppBar(
                   title: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(asyncSnapshot.data!['name']),),
@@ -54,41 +95,19 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     IconButton(
                       onPressed: () {
                         String action = settingsControl.settingsMap['playlistPlayButtonAction'];
-                        List<dynamic>? subsonicSongList = asyncSnapshot.data!['entry'];
-                        if (subsonicSongList == null) {
-                          return;
-                        }
-                        List<MediaItem> songList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList);
                         switch (action) {
                           case "playNow":
-                            playerControl.customAction('clearQueue');
-                            playerControl.customAction('addMultiple',{'addMultiple': {
-                              'tracks':songList,
-                            }});
+                            playNow();
                           case "playNext":
-                            playerControl.customAction('addNext',{'addNext': {
-                              'tracks':songList,
-                            }});
+                            playNext();
                           case "enqueue":
-                            playerControl.customAction('addMultiple',{'addMultiple': {
-                              'tracks':songList,
-                            }});
+                            enqueue();
                           case "playNowShuffled":
-                            playerControl.customAction('clearQueue');
-                            playerControl.customAction('addMultiple',{'addMultiple': {
-                              'tracks':songList,
-                              'shuffled':true,
-                            }});
+                            playNowShuffled();
                           case "playNextShuffled":
-                            playerControl.customAction('addNext',{'addNext': {
-                              'tracks':songList,
-                              'shuffled':true,
-                            }});
+                            playNextShuffled();
                           case "enqueueShuffled":
-                            playerControl.customAction('addMultiple',{'addMultiple': {
-                              'tracks':songList,
-                              'shuffled':true,
-                            }});
+                            enqueueShuffled();
                         }
                       },
                       icon: const Icon(Icons.play_arrow),
@@ -108,7 +127,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   slivers: [
                     SliverToBoxAdapter(
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                        //mainAxisSize: MainAxisSize.min,//warum war das da?
                         children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
                           //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
                           if (settingsControl.settingsMap['landscapeMode'] == false) AspectRatio(
@@ -174,26 +193,65 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                       ]
                                   )
                               ],
-
                             ),
                           ),
-                          if (settingsControl.settingsMap['landscapeMode'] == false) TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: asyncSnapshot.data!['artistId'])));
-                            },
-                            child: Text(asyncSnapshot.data!['owner']),
-                          ),
-                          if (settingsControl.settingsMap['landscapeMode'] == false) Row(
-                            children: [
-                              //also ja hier actions
-                              //diese diablen bis ergebnis da ist
-                              Text("hier sollen actions hin")
-                            ],
+                          Text("Owner: ${asyncSnapshot.data!['owner']}"),
+                          Divider(),
+                          if (settingsControl.settingsMap['landscapeMode'] == false) Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge. auch andere buttons wie zu playlist (gilt auch für die anderen gleichen screens)
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  spacing: 8,
+                                  children: [//TODO:einstellung um die zu iconbuttons zu machen natürlich auch für die anderen screens dann
+                                    ElevatedButton(
+                                      child: Text("Play now"),
+                                      onPressed: () {
+                                        playNow();
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      child: Text("Play now shuffled"),
+                                      onPressed: () {
+                                        playNowShuffled();
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      child: Text("Add next"),
+                                      onPressed: () {
+                                        playNext();
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      child: Text("Add next shuffled"),
+                                      onPressed: () {
+                                        playNextShuffled();
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      child: Text("Enqueue"),
+                                      onPressed: () {
+                                        enqueue();
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      child: Text("Enqueue shuffled"),
+                                      onPressed: () {
+                                        enqueueShuffled();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                           if (settingsControl.settingsMap['landscapeMode'] == true) SizedBox(
                             height: screenSize.width / 3,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               spacing: 8,
                               children: [
                                 CachedNetworkImage(
@@ -209,22 +267,71 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   width: screenSize.width / 3,
                                   height: screenSize.width / 3,
                                 ),
-                                Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text("hier"),
-                                      Text("sollen"),
-                                      Text("actions"),
-                                      Text("hin"),
-                                    ],
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                                    scrollDirection: Axis.vertical,
+                                    child: IntrinsicWidth(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        spacing: 8,
+                                        children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                          ElevatedButton(
+                                            child: Text("Play now"),
+                                            onPressed: () {
+                                              playNow();
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: Text("Play now shuffled"),
+                                            onPressed: () {
+                                              playNowShuffled();
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: Text("Add next"),
+                                            onPressed: () {
+                                              playNext();
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: Text("Add next shuffled"),
+                                            onPressed: () {
+                                              playNextShuffled();
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: Text("Enqueue"),
+                                            onPressed: () {
+                                              enqueue();
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: Text("Enqueue shuffled"),
+                                            onPressed: () {
+                                              enqueueShuffled();
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Text(asyncSnapshot.data!['comment']),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Card(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Center(
+                                          child: SingleChildScrollView(
+                                            child: Text(asyncSnapshot.data?['comment'] ?? "No comment"),//TODO:no comment funktioniert nicht
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),

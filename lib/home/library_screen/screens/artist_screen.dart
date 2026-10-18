@@ -45,6 +45,43 @@ class _ArtistScreenState extends State<ArtistScreen> {
       future: subsonicService.getArtistDetails(widget.artistID),
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.hasData) {
+
+          void playNow() {
+            playerControl.customAction('clearQueue');
+            playerControl.customAction('addByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+            }});
+          }
+          void playNext() {
+            playerControl.customAction('addNextByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+            }});
+          }
+          void enqueue() {
+            playerControl.customAction('addByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+            }});
+          }
+          void playNowShuffled() {
+            playerControl.customAction('clearQueue');
+            playerControl.customAction('addByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+              'shuffled':true,
+            }});
+          }
+          void playNextShuffled() {
+            playerControl.customAction('addNextByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+              'shuffled':true,
+            }});
+          }
+          void enqueueShuffled() {
+            playerControl.customAction('addByID', {'addByID': {
+              'artistID':asyncSnapshot.data!['id'],
+              'shuffled':true,
+            }});
+          }
+
           return Scaffold(
             appBar: AppBar(
               title: Text(asyncSnapshot.data!['name']),
@@ -54,34 +91,17 @@ class _ArtistScreenState extends State<ArtistScreen> {
                     String action = settingsControl.loadSetting('artistPlayButtonAction');
                     switch (action) {
                       case "playNow":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                        }});
+                        playNow();
                       case "playNext":
-                        playerControl.customAction('addNextByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                        }});
+                        playNext();
                       case "enqueue":
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                        }});
+                        enqueue();
                       case "playNowShuffled":
-                        playerControl.customAction('clearQueue');
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                          'shuffled':true,
-                        }});
+                        playNowShuffled();
                       case "playNextShuffled":
-                        playerControl.customAction('addNextByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                          'shuffled':true,
-                        }});
+                        playNextShuffled();
                       case "enqueueShuffled":
-                        playerControl.customAction('addByID', {'addByID': {
-                          'artistID':asyncSnapshot.data!['id'],
-                          'shuffled':true,
-                        }});
+                        enqueueShuffled();
                     }
                   },
                   icon: Icon(Icons.play_arrow),
@@ -93,45 +113,11 @@ class _ArtistScreenState extends State<ArtistScreen> {
             body: CustomScrollView(
               slivers: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
                 //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-                if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
-                  child: CachedNetworkImage(
-                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
-                    progressIndicatorBuilder: (context, url, downloadProgress) =>
-                        LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                    errorWidget: (context, url, error) => IconButton(
-                      onPressed: () {
-                        //hier retry
-                      },
-                      icon: Icon(Icons.error),
-                    ),
-                    height: screenSize.width,
-                  ),
-                ),
-                if (settingsControl.settingsMap['landscapeMode'] == false) SliverToBoxAdapter(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                SliverToBoxAdapter(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("hier sollen actions hin"),
-                      ElevatedButton(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text("All songs"),
-                            Icon(Icons.arrow_forward),
-                          ],
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                if (settingsControl.settingsMap['landscapeMode'] == true) SliverToBoxAdapter(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CachedNetworkImage(
+                      if (settingsControl.settingsMap['landscapeMode'] == false) CachedNetworkImage(
                         imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                             LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
@@ -141,35 +127,173 @@ class _ArtistScreenState extends State<ArtistScreen> {
                           },
                           icon: Icon(Icons.error),
                         ),
-                        width: screenSize.width / 3,
-                        height: screenSize.width / 3,
+                        height: screenSize.width,
                       ),
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("hier"),
-                            Text("sollen"),
-                            Text("actions"),
-                            Text("hin"),
-                            ElevatedButton(
+                      if (settingsControl.settingsMap['landscapeMode'] == false) Row(
+                        spacing: 8,
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
                               child: Row(
-                                mainAxisSize: MainAxisSize.min,
+                                spacing: 8,
                                 children: [
-                                  Text("All songs"),
-                                  Icon(Icons.arrow_forward),
+                                  ElevatedButton(
+                                    child: Text("Play now"),
+                                    onPressed: () {
+                                      playNow();
+                                    },
+                                  ),
+                                  ElevatedButton(
+                                    child: Text("Play now shuffled"),
+                                    onPressed: () {
+                                      playNowShuffled();
+                                    },
+                                  ),
+                                  ElevatedButton(
+                                    child: Text("Add next"),
+                                    onPressed: () {
+                                      playNext();
+                                    },
+                                  ),
+                                  ElevatedButton(
+                                    child: Text("Add next shuffled"),
+                                    onPressed: () {
+                                      playNextShuffled();
+                                    },
+                                  ),
+                                  ElevatedButton(
+                                    child: Text("Enqueue"),
+                                    onPressed: () {
+                                      enqueue();
+                                    },
+                                  ),
+                                  ElevatedButton(
+                                    child: Text("Enqueue shuffled"),
+                                    onPressed: () {
+                                      enqueueShuffled();
+                                    },
+                                  ),
                                 ],
                               ),
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));
-                              },
+                            ),
+                          ),
+                          ElevatedButton(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("All songs"),
+                                Icon(Icons.arrow_forward),
+                              ],
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));
+                            },
+                          ),
+                        ],
+                      ),
+                      if (settingsControl.settingsMap['landscapeMode'] == true) SizedBox(
+                        height: screenSize.width / 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          spacing: 8,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
+                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                              errorWidget: (context, url, error) => IconButton(
+                                onPressed: () {
+                                  //hier retry
+                                },
+                                icon: Icon(Icons.error),
+                              ),
+                              width: screenSize.width / 3,
+                              height: screenSize.width / 3,
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                                scrollDirection: Axis.vertical,
+                                child: IntrinsicWidth(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    spacing: 8,
+                                    children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                      ElevatedButton(
+                                        child: Text("Play now"),
+                                        onPressed: () {
+                                          playNow();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Play now shuffled"),
+                                        onPressed: () {playNowShuffled();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Add next"),
+                                        onPressed: () {
+                                          playNext();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Add next shuffled"),
+                                        onPressed: () {
+                                          playNextShuffled();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Enqueue"),
+                                        onPressed: () {
+                                          enqueue();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Enqueue shuffled"),
+                                        onPressed: () {
+                                          enqueueShuffled();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                      child: SingleChildScrollView(
+                                        child: ElevatedButton(
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text("All songs"),
+                                              Icon(Icons.arrow_forward),
+                                            ],
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));//TODO:und stats oder comment, wie in der artist card im album screen
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
+
                 const SliverToBoxAdapter(child: Text("Albums")),
                 AlbumGrid(albumListNullable: asyncSnapshot.data!['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
                 const SliverToBoxAdapter(child: Divider()),
