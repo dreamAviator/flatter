@@ -88,7 +88,6 @@ dependencies:
   #flutter_staggered_grid_view_fix_branch:
   #  path: ./flutter_staggered_grid_view_fix_branch
 
-  cupertino_ui: any
   material_ui: any
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:flatter/home/library_screen/item_widgets/per_item/loop_button.dart';
 import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
 import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/queue_screen/confirm_delete_queue_popup.dart';
@@ -250,12 +251,7 @@ class _QueueScreenState extends State<QueueScreen> {
                           },
                           icon: const Icon(Icons.shuffle_outlined),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            //TODO:loop
-                          },
-                          icon: const Icon(Icons.loop_outlined),//hier halt single und ganze queue
-                        ),
+                        LoopButton(),
                         IconButton(
                           onPressed: () {
                             //TODO:search

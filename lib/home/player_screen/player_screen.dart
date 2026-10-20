@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:flatter/home/library_screen/item_widgets/per_item/loop_button.dart';
 import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
 import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/screens/artist_screen.dart';
@@ -8,7 +9,7 @@ import 'package:flatter/home/player_screen/player_image.dart';
 import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/home/player_screen/progess_slider.dart';
 import 'package:flatter/main.dart';
-import 'package:material_ui/material_ui.dart';
+import 'package:material_ui/material_ui.dart';//TODO:player screen schöner machen
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({super.key});
@@ -118,12 +119,7 @@ class PlayerScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [//diese knöpfe sollte man austauschen können, vlt auch auswählen wie viele
-                              IconButton(
-                                icon: Icon(Icons.repeat),
-                                onPressed: () {
-
-                                },
-                              ),
+                              LoopButton(),
                               IconButton(
                                 icon: Icon(Icons.fast_rewind),
                                 onPressed: () {
@@ -233,12 +229,7 @@ class PlayerScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      IconButton(
-                        onPressed: () {//TODO:loop
-
-                        },
-                        icon: const Icon(Icons.loop),
-                      ),
+                      LoopButton(),
                       IconButton(//hier überlegen, ob das die playlist shufflen soll oder den shuffle modus wie in anderen playern anschalten soll
                         onPressed: () {
                           playerControl.customAction('shuffleQueue');
