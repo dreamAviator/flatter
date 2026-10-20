@@ -13,9 +13,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final _player = MyPlayer();
   final localNotDatabaseStorageController = LocalNotDatabaseStorageController();
   Stream<PlayerState> get playerState => _player.playerStateStream;
+  AudioServiceRepeatMode globalRepeatMode = AudioServiceRepeatMode.none;
 
   BehaviorSubject<List<MediaItem>> get queueStream => _queueRepository.queueStream;
-  BehaviorSubject<int> loopModeStream = BehaviorSubject<int>.seeded(0);
 
   PlayerControls() {
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
@@ -103,9 +103,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   @override
   Future<void> setRepeatMode(AudioServiceRepeatMode repeatMode) async {
-    playbackState.add(playbackState.value.copyWith(
-      repeatMode: repeatMode,
-    ));//ig das muss ich machen (laut deepseek)
+    globalRepeatMode = repeatMode;
   }
 
   //shuffle mode idk?
@@ -298,6 +296,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
       bufferedPosition: _player.bufferedPosition,
       speed: _player.speed,
       queueIndex: event.currentIndex,
+      repeatMode: globalRepeatMode
     );
   }
 

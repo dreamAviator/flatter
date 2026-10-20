@@ -45,7 +45,7 @@ class _LoopButtonState extends State<LoopButton> {
             } else if (asyncSnapshot.data == AudioServiceRepeatMode.one) {
               return IconButton(
                 onPressed: () {
-                  playerControl.setRepeatMode(AudioServiceRepeatMode.one);
+                  playerControl.setRepeatMode(AudioServiceRepeatMode.none);
                 },
                 icon: const Icon(Icons.repeat_one_outlined),//hier halt single und ganze queue
               );

@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:flatter/home/library_screen/item_widgets/per_item/loop_button.dart';
 import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
 import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/screens/artist_screen.dart';
@@ -118,12 +119,7 @@ class PlayerScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [//diese knöpfe sollte man austauschen können, vlt auch auswählen wie viele
-                              IconButton(
-                                icon: Icon(Icons.repeat),
-                                onPressed: () {
-
-                                },
-                              ),
+                              LoopButton(),
                               IconButton(
                                 icon: Icon(Icons.fast_rewind),
                                 onPressed: () {
@@ -233,17 +229,7 @@ class PlayerScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      StreamBuilder(
-                        stream: playerControl.playbackState,
-                        builder: (context, asyncSnapshot) {
-                          return IconButton(
-                            onPressed: () {//TODO:loop
-
-                            },
-                            icon: const Icon(Icons.loop),
-                          );
-                        }
-                      ),
+                      LoopButton(),
                       IconButton(//hier überlegen, ob das die playlist shufflen soll oder den shuffle modus wie in anderen playern anschalten soll
                         onPressed: () {
                           playerControl.customAction('shuffleQueue');
