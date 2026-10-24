@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/main.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:material_ui/material_ui.dart';
 
 class LoopButton extends StatefulWidget {
@@ -25,7 +26,7 @@ class _LoopButtonState extends State<LoopButton> {
               onPressed: () {
 
               },
-              icon: Icon(Icons.pending_outlined),//hm, mal schauen. auf einigen screens brauche ich outlined auf anderen nicht glaube ich
+              icon: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),//hm, mal schauen. auf einigen screens brauche ich outlined auf anderen nicht glaube ich
             );
           } else {//this is an extra if thingy because of old code, and idrc rn enough to change it
             if (asyncSnapshot.data == AudioServiceRepeatMode.none) {
@@ -51,12 +52,19 @@ class _LoopButtonState extends State<LoopButton> {
               );
             }
           }
+        } else if (asyncSnapshot.hasError) {
+          return IconButton(
+            onPressed: () {
+
+            },
+            icon: Icon(Icons.error_outline),
+          );
         }
         return IconButton(
           onPressed: () {
 
           },
-          icon: Icon(Icons.pending_outlined),//hm, mal schauen. auf einigen screens brauche ich outlined auf anderen nicht glaube ich
+          icon: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),//hm, mal schauen. auf einigen screens brauche ich outlined auf anderen nicht glaube ich
         );
       },
     );

@@ -1,4 +1,7 @@
+import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/main.dart';
+import 'package:flatter/useful_scripts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,6 +24,8 @@ class FavoriteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final riverpodManager = RiverpodManager();
+    final SubsonicService subsonicService = SubsonicService();
+    final UpdateNotifier updateNotifier = UpdateNotifier();
     if (songID == null && albumID == null && artistID == null) {
       return const IconButton(
         onPressed: null,
@@ -28,6 +33,53 @@ class FavoriteButton extends StatelessWidget {
       );
     }
     List<String?> ids = [songID,albumID,artistID];
+    return ListenableBuilder(
+      listenable: updateNotifier,
+      builder: (context, child) {
+        return FutureBuilder(
+          future: subsonicService.checkStarred(songID, albumID, artistID),
+          builder: (context,asyncSnapshot) {
+            if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+              if (asyncSnapshot.data == null) {
+                return IconButton(
+                  onPressed: () {
+                    updateNotifier.notify();
+                  },
+                  icon: Icon(Icons.error_outline),
+                );
+              }
+              return IconButton(
+                onPressed: () {
+                  if (asyncSnapshot.data! == true) {
+                    print("was unstarred");
+                    subsonicService.starUnstar(false, songID, albumID, artistID);
+                  } else {
+                    print("was starred");
+                    subsonicService.starUnstar(true, songID, albumID, artistID);
+                  }
+                  updateNotifier.notify();
+                },
+                icon: decideIcon(asyncSnapshot.data!),
+              );
+            } else if (asyncSnapshot.hasError) {
+              return IconButton(
+                onPressed: () {
+                  updateNotifier.notify();
+                },
+                icon: Icon(Icons.error_outline),
+              );
+            } else {
+              return IconButton(
+                onPressed: () {
+
+                },
+                icon: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+              );
+            }
+          },
+        );
+      }
+    );
     return Consumer(
       builder: (context,ref,child) {
         final favoriteStatus = ref.watch(riverpodManager.favoriteStatusProvider(ids));
@@ -53,7 +105,7 @@ class FavoriteButton extends StatelessWidget {
           icon: switch (favoriteStatus) {
             AsyncValue(:final value?) => decideIcon(value),
             AsyncValue(error: != null) => const Icon(Icons.error),
-            AsyncValue() => const Icon(Icons.pending),
+            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
           },
         );
       },
