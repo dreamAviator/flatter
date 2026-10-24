@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:flatter/main.dart';
 
 class SubsonicService {
+  bool checkStarredBlocked = false;
+
   //authentication
   String generateRandomString(int length) {
     final random = Random();
@@ -291,6 +293,10 @@ class SubsonicService {
   }
 
   Future<bool> checkStarred(String? songID,String? albumID,String? artistID) async {
+    while (checkStarredBlocked == true) {
+      await Future.delayed(Duration(milliseconds: 200));
+      print("waiting cause blocked");
+    }
     Map<dynamic,dynamic> starred = await getStarred();
     if (albumID != null) {
       for (Map<dynamic,dynamic> album in starred['album']) {
@@ -532,6 +538,8 @@ class SubsonicService {
   }
 
   Future<Map<dynamic,dynamic>> starUnstar(bool starred,String? songID,String? albumID,String? artistID) async {
+    checkStarredBlocked = true;
+    print("check starred was blocked");
     List<String> url = getURL(null, null, null);
     List<String> request = [];
     if (starred == true) {
@@ -547,6 +555,7 @@ class SubsonicService {
       request.add("artistId=$artistID");
     } else {
       print("this should not have happened");
+      checkStarredBlocked = false;
       return {};
     }
     final uri = Uri.parse("${url[0]}${request[0]}${url[1]}&${request[1]}");
@@ -554,6 +563,7 @@ class SubsonicService {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
         print("error 1");
+        checkStarredBlocked = false;
         return {};
       }
       final Map responseMap = jsonDecode(data.body);
@@ -561,13 +571,16 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         print(subsonicResponse);
         print("status not okay");
+        checkStarredBlocked = false;
         return {};
       }
       print("successfully updated star rating");
+      checkStarredBlocked = false;
       return subsonicResponse;
     } catch(error) {
       print("error2");
       print(error);
+      checkStarredBlocked = false;
       return {};
     }
   }
