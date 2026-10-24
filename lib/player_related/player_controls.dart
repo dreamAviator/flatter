@@ -44,6 +44,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   @override
   Future<void> pause() async {
     _player.pause();
+    localNotDatabaseStorageController.saveQueue();
   }
   @override
   Future<void> stop() async {
@@ -53,7 +54,11 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     return;
   }
   @override
-  Future<void> seek(Duration position) => _player.seek(position);
+  Future<void> seek(Duration position) async {
+    print(position);
+    print("seeking now ohmagawd");
+  _player.seek(position);
+}
   @override
   Future<void> skipToNext() async {
     if (_queueRepository.getCurrentIndex() != _queueRepository.getQueueLength() - 1) {
@@ -75,21 +80,14 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
   @override
   Future<void> skipToQueueItem(int index) async {
-    print("skip to queue item");
     MediaItem item = _queueRepository.getItemAtPos(index);
-    print("hello1");
     _queueRepository.makeCurrent(index);
-    print("hello2");
-    _player.seek(Duration.zero);
-    print("hello3");
+    seek(Duration.zero);
     _player.setSource(item.id);
-    print("hello4");
     mediaItem.add(item);
-    print("hello5");
     play();
-    print("hello6");
     localNotDatabaseStorageController.saveQueue();
-    print("hello7");
+    return;
   }
   /*
   @override
@@ -226,10 +224,21 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         }
       }
     } else if (name case 'loadPersistentQueue') {
-      List<MediaItem> persistentQueue = await localNotDatabaseStorageController.loadQueue();
+      var (List<MediaItem> persistentQueue,Duration newPosition) = await localNotDatabaseStorageController.loadQueue();
       await customAction('replaceQueue',{'queue':persistentQueue});
-      skipToQueueItem(_queueRepository.getCurrentIndex());
-      pause();
+      await skipToQueueItem(_queueRepository.getCurrentIndex());
+      //await Future.delayed(Duration(seconds: 5));
+      print("waiting");
+      await playbackState.firstWhere((element) => element.processingState == AudioProcessingState.loading);
+      print("waited");
+      //seek(Duration(seconds: 30));//TODO:does not seem to work for some reason
+      //print("seeked");
+      //pause();
+      print("paused");
+      await playbackState.firstWhere((element) => element.processingState == AudioProcessingState.ready);
+      await playbackState.firstWhere((element) => element.playing == true);
+      print("should seek now");
+      seek(Duration(seconds: 30));//TODO:does not seem to work for some reason
     }
   }
   //queue controls

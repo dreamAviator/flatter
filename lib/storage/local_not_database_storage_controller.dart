@@ -12,29 +12,28 @@ class LocalNotDatabaseStorageController {
     List<dynamic> queueSubsonicSongs = usefulScripts.mediaItemListToSubsonicSongList(queue);
     String dataDirectory = pathProvider.dataDirectory;
     String path = "$dataDirectory/flatter_persistent_queue.toml";
-    int position = await playerControl.customAction('getCurrentIndex');
+    int position = playerControl.getPosition().inMilliseconds;
     Map<dynamic,dynamic> persistentQueueMap = {
       'queue':queueSubsonicSongs,
-      'position':position,//not needed, because essentially the mediaitems with the "current" attribute are saved
+      'inSongPosition':position,//not needed, because essentially the mediaitems with the "current" attribute are saved
     };
     TomlDocument persistentQueueDocument = TomlDocument.fromMap(persistentQueueMap);
     persistentQueueDocument.save(path);
-    print("hello6.1");
     return;
   }
 
-  Future<List<MediaItem>> loadQueue() async {
+  Future<(List<MediaItem>,Duration)> loadQueue() async {
     TomlDocument persistentQueueDocument;
     String dataDirectory = pathProvider.dataDirectory;
     String path = "$dataDirectory/flatter_persistent_queue.toml";
     if (await File(path).exists() == false) {
-      return [];
+      return (<MediaItem>[],Duration.zero);
     }
     persistentQueueDocument = await TomlDocument.load(path);
     Map<dynamic,dynamic> persistentQueueMap = persistentQueueDocument.toMap();
-    int position = persistentQueueMap['position'];//not needed, because essentially the mediaitems with the "current" attribute are saved
     List<dynamic> queueSubsonicSongs = persistentQueueMap['queue'];
     List<MediaItem> queue = usefulScripts.subsonicSongListToMediaItemList(queueSubsonicSongs);
-    return queue;
+    Duration position = Duration(milliseconds: persistentQueueMap['inSongPosition']);
+    return (queue,position);
   }
 }

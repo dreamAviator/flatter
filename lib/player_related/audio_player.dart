@@ -4,7 +4,6 @@ import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 
 class MyPlayer extends AudioPlayer{
 
-  @override
   MyPlayer() {
     JustAudioMediaKit.ensureInitialized();
   }
@@ -17,4 +16,14 @@ class MyPlayer extends AudioPlayer{
       await setAudioSource(AudioSource.uri(uriSource));
     }
   }
+
+  @override
+  Future<void> seek(Duration? position, {int? index}) {
+    print(position);
+    print("i am the almighty auzdio player themself");//https://github.com/ryanheise/just_audio/issues/368
+    //aha, es scheint nicht zu funktionieren mti dem seek nach dem einladen des songs, da seek ignoriert wird wenn etwas lädt
+    return super.seek(position, index: index);
+  }
+
+
 }
