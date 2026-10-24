@@ -10,7 +10,7 @@ import 'package:flatter/storage/settings_controller.dart';
 import 'package:flatter/storage/paths.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';//TODO:der favorite und der loop button, sollten einen ladekreis haben anstelle von dem weirden icon.
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 late final PlayerControls playerControl;
 //DirectoryManager directoryControl = DirectoryManager();
