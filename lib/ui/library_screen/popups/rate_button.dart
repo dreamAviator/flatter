@@ -1,16 +1,18 @@
 import 'package:flatter/Services/subsonic_service.dart';
+import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 
 class RateButton extends StatelessWidget {
-  RateButton({super.key,required this.id,required this.rating,required this.name,this.updateNotifier,this.subsonicService});
+  const RateButton({super.key,required this.id,required this.initialRating,required this.name,this.updateNotifier,this.subsonicService,this.isCurrentSong});
   final String? id;
-  final int rating;
+  final int initialRating;
   final String name;
   final UpdateNotifier? updateNotifier;
   final SubsonicService? subsonicService;
+  final bool? isCurrentSong;
 
-  static void showRatePopup(BuildContext context, String id,int rating, String name,[UpdateNotifier? updateNotifier,SubsonicService? subsonicService]) {
+  static void showRatePopup(BuildContext context, String id,int rating, String name,[UpdateNotifier? updateNotifier,SubsonicService? subsonicService,bool? isCurrentSong]) {
     subsonicService ??= SubsonicService();
     showDialog(
       context: context,
@@ -20,6 +22,12 @@ class RateButton extends StatelessWidget {
           builder: (BuildContext context,setState) {
             void setRating(int newRating) {
               subsonicService!.rate(id, newRating);
+              if (isCurrentSong == true) {
+                playerControl.mediaItem.add(playerControl.mediaItem.value?.copyWith(extras: {
+                  ...?playerControl.mediaItem.value?.extras,
+                  'userRating':newRating,
+                }));
+              }
               updateNotifier?.notify();
               setState(() {
                 rating = newRating;
@@ -151,12 +159,12 @@ class RateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (rating == 0 || id == null) {
+    if (initialRating == 0 || id == null) {
       return IconButton(
         icon: Icon(Icons.thumbs_up_down_outlined),
         onPressed: () {
           if (id != null) {
-            showRatePopup(context, id!, rating, name,updateNotifier);
+            showRatePopup(context, id!, initialRating, name,updateNotifier,subsonicService,isCurrentSong);
           }
         },
       );
@@ -164,7 +172,7 @@ class RateButton extends StatelessWidget {
       return IconButton(
         icon: Icon(Icons.thumbs_up_down),
         onPressed: () {
-          showRatePopup(context, id!, rating, name,updateNotifier);
+          showRatePopup(context, id!, initialRating, name,updateNotifier,subsonicService,isCurrentSong);
         },
       );
     }

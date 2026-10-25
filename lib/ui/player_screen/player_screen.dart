@@ -1,6 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/ui/library_screen/popups/add_to_playlist_popup.dart';
-import 'package:flatter/ui/library_screen/popups/rate_popup.dart';
+import 'package:flatter/ui/library_screen/popups/rate_button.dart';
 import 'package:flatter/ui/library_screen/screens/album_screen.dart';
 import 'package:flatter/ui/library_screen/screens/artist_screen.dart';
 import 'package:flatter/ui/library_screen/popups/artist_select_popup.dart';
@@ -19,7 +19,6 @@ class PlayerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     if (settingsControl.loadSetting('landscapeMode') == true) {
-      UpdateNotifier mediaItemDataChangedNotifier = UpdateNotifier();
       return Column(
         children: [
           Expanded(
@@ -86,31 +85,26 @@ class PlayerScreen extends StatelessWidget {
                                 ),
                               ),
                               Card.filled(//das hier expanded für die lyrics mb, sodass sie dann über dem cover sind, dass wäre tuff
-                                child: ListenableBuilder(
-                                  listenable: mediaItemDataChangedNotifier,
-                                  builder: (context, child) {
-                                    return StreamBuilder(
-                                      stream: playerControl.mediaItem,
-                                      builder: (context, asyncSnapshot) {
-                                        String? id = asyncSnapshot.data?.id;
-                                        String? title = asyncSnapshot.data?.title;
-                                        int? rating = asyncSnapshot.data?.extras?['userRating'];
-                                        return Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                          children: [
-                                            IconButton(
-                                              onPressed: () {
-                                                if (id != null) {
-                                                  AddToPlaylistPopup.showAddToPlaylistPopup(context, [id]);
-                                                }
-                                              },
-                                              icon: Icon(Icons.playlist_add),
-                                            ),
-                                            RateButton(id: id, rating: rating ?? 0, name: title ?? "unknown",updateNotifier: mediaItemDataChangedNotifier,),
-                                            FavoriteButton(songID: id, albumID: null, artistID: null),
-                                          ],
-                                        );
-                                      }
+                                child: StreamBuilder(
+                                  stream: playerControl.mediaItem,
+                                  builder: (context, asyncSnapshot) {
+                                    String? id = asyncSnapshot.data?.id;
+                                    String? title = asyncSnapshot.data?.title;
+                                    int? rating = asyncSnapshot.data?.extras?['userRating'];
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            if (id != null) {
+                                              AddToPlaylistPopup.showAddToPlaylistPopup(context, [id]);
+                                            }
+                                          },
+                                          icon: Icon(Icons.playlist_add),
+                                        ),
+                                        RateButton(id: id, initialRating: rating ?? 0, name: title ?? "unknown",isCurrentSong: true,),
+                                        FavoriteButton(songID: id, albumID: null, artistID: null),
+                                      ],
                                     );
                                   }
                                 ),
