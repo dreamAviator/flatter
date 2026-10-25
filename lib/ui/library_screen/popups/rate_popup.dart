@@ -3,14 +3,15 @@ import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 
 class RateButton extends StatelessWidget {
-  RateButton({super.key,required this.id,required this.rating,required this.name,this.updateNotifier});
+  RateButton({super.key,required this.id,required this.rating,required this.name,this.updateNotifier,this.subsonicService});
   final String? id;
   final int rating;
   final String name;
   final UpdateNotifier? updateNotifier;
+  final SubsonicService? subsonicService;
 
-  static void showRatePopup(BuildContext context, String id,int rating, String name,[UpdateNotifier? updateNotifier]) {
-    SubsonicService subsonicService = SubsonicService();
+  static void showRatePopup(BuildContext context, String id,int rating, String name,[UpdateNotifier? updateNotifier,SubsonicService? subsonicService]) {
+    subsonicService ??= SubsonicService();
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -18,7 +19,7 @@ class RateButton extends StatelessWidget {
         return StatefulBuilder(
           builder: (BuildContext context,setState) {
             void setRating(int newRating) {
-              subsonicService.rate(id, newRating);
+              subsonicService!.rate(id, newRating);
               updateNotifier?.notify();
               setState(() {
                 rating = newRating;

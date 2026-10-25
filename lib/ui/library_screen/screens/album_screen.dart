@@ -36,7 +36,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
         return FutureBuilder(
           future: subsonicService.getAlbumDetails(widget.albumID),
           builder: (context, asyncSnapshot) {
-            if (asyncSnapshot.hasData) {
+            if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
               return Scaffold(
                 appBar: AppBar(
                   title: Text(asyncSnapshot.data!['name']),
@@ -84,7 +84,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                       icon: Icon(Icons.play_arrow),
                     ),
                     FavoriteButton(songID: null, albumID: widget.albumID, artistID: null),
-                    RateButton(id: widget.albumID,rating: asyncSnapshot.data?['userRating'] ?? 0, name: asyncSnapshot.data?['name'] ?? "unknown",updateNotifier: albumChangedNotifier,),
+                    RateButton(id: widget.albumID,rating: asyncSnapshot.data?['userRating'] ?? 0, name: asyncSnapshot.data?['name'] ?? "unknown",updateNotifier: albumChangedNotifier,subsonicService: subsonicService,),
                     itemMenus.albumMenu(asyncSnapshot.data!),
                   ],
                 ),

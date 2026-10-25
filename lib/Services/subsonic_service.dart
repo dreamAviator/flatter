@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:flatter/main.dart';
 
 class SubsonicService {
+  bool rateLock = false;
+
   //authentication
   String generateRandomString(int length) {
     final random = Random();
@@ -82,6 +84,10 @@ class SubsonicService {
   }
 
   Future<Map<dynamic,dynamic>> getAlbumDetails(String id) async {
+    while (rateLock == true) {
+      await Future.delayed(Duration(milliseconds: 200));
+      print("waiting cause blocked");
+    }
     List<String> url = getURL(null, null, null);
     final uri = Uri.parse("${url[0]}getAlbum${url[1]}&id=$id");
     try {
@@ -120,6 +126,10 @@ class SubsonicService {
   }
 
   Future<Map<dynamic,dynamic>> getArtistDetails(String id) async {
+    while (rateLock == true) {
+      await Future.delayed(Duration(milliseconds: 200));
+      print("waiting cause blocked");
+    }
     List<String> url = getURL(null, null, null);
     final uri = Uri.parse("${url[0]}getArtist${url[1]}&id=$id");
     try {
@@ -207,6 +217,10 @@ class SubsonicService {
   }
 
   Future<Map<dynamic,dynamic>> getSongDetails(String id) async {
+    while (rateLock == true) {
+      await Future.delayed(Duration(milliseconds: 200));
+      print("waiting cause blocked");
+    }
     List<String> url = getURL(null, null, null);
     final uri = Uri.parse("${url[0]}getSong${url[1]}&id=$id");
     try {
@@ -573,12 +587,14 @@ class SubsonicService {
   }
 
   Future<Map<dynamic,dynamic>> rate(String id,int rating) async {
+    rateLock = true;
     List<String> url = getURL(null,null,null);
     final uri = Uri.parse("${url[0]}setRating${url[1]}&id=$id&rating=$rating");
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
         print("error 4");
+        rateLock = false;
         return {};
       }
       final Map responseMap = jsonDecode(data.body);
@@ -586,12 +602,15 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         print(subsonicResponse);
         print("error 3");
+        rateLock = false;
         return {};
       }
       print('successfully rated element');
+      rateLock = false;
       return subsonicResponse;
     } catch(error) {
       print("error 2");
+      rateLock = false;
       return {};
     }
   }
