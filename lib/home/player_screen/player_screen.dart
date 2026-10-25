@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/home/library_screen/item_widgets/per_item/loop_button.dart';
 import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
+import 'package:flatter/home/library_screen/popups/rate_button.dart';
 import 'package:flatter/home/library_screen/screens/album_screen.dart';
 import 'package:flatter/home/library_screen/screens/artist_screen.dart';
 import 'package:flatter/home/library_screen/popups/artist_select_popup.dart';
@@ -88,6 +89,8 @@ class PlayerScreen extends StatelessWidget {
                                   stream: playerControl.mediaItem,
                                   builder: (context, asyncSnapshot) {
                                     String? id = asyncSnapshot.data?.id;
+                                    String? title = asyncSnapshot.data?.title;
+                                    int? rating = asyncSnapshot.data?.extras?['userRating'];
                                     return Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
@@ -99,12 +102,7 @@ class PlayerScreen extends StatelessWidget {
                                           },
                                           icon: Icon(Icons.playlist_add),
                                         ),
-                                        IconButton(//TODO:create own rating button (fill out star if rating is present)
-                                          onPressed: () {
-
-                                          },
-                                          icon: Icon(Icons.thumbs_up_down_outlined),
-                                        ),
+                                        RateButton(id: id, initialRating: rating ?? 0, name: title ?? "unknown",isCurrentSong: true,),
                                         FavoriteButton(songID: id, albumID: null, artistID: null),
                                       ],
                                     );
@@ -254,12 +252,10 @@ class PlayerScreen extends StatelessWidget {
                       StreamBuilder(
                         stream: playerControl.mediaItem,
                         builder: (context, asyncSnapshot) {
-                          return IconButton(//TODO:create own rating button (fill out star if rating is present)
-                            onPressed: () {
-                          
-                            },
-                            icon: const Icon(Icons.thumbs_up_down_outlined),
-                          );
+                          String? id = asyncSnapshot.data?.id;
+                          String? title = asyncSnapshot.data?.title;
+                          int? rating = asyncSnapshot.data?.extras?['userRating'];
+                          return RateButton(id: id, initialRating: rating ?? 0, name: title ?? "unknown",isCurrentSong: true,);
                         }
                       ),
                       StreamBuilder(
