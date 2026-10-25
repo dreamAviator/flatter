@@ -39,3 +39,5 @@ flatter offers a **native** material design ui on all platforms. It is tailored 
 ## other stuff
 ### Notice regarding the flutter_staggered_gridview_package
 In this app, the [flutter_staggered_gridview](https://pub.dev/packages/flutter_staggered_grid_view) package is used. It contains a bug however, that was fixed in a different [branch](https://github.com/letsar/flutter_staggered_grid_view/tree/feature/masonry_cache?tab=readme-ov-file). Because this branch is not yet published on pub.dev, the whole branch is included in this project and repository (using a github url did not work for me).
+### Regarding the Material 3 Switch
+This app was made for material design 3. The option to disable material 3 is only present, because it is easy to add in flutter. The chance for me to make changes so that the app works better using the old material design, or to make changes so that the app is more in line with the old material guidelines, is low. If a new flutter version ever removes the easy version to use the old material design, then that switch will probably also be removed.
