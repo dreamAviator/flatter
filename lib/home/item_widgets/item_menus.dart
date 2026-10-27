@@ -1,13 +1,13 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:flatter/home/library_screen/screens/album_screen.dart';
-import 'package:flatter/home/library_screen/screens/artist_screen.dart';
-import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
+import 'package:flatter/home/other_screens/album_screen.dart';
+import 'package:flatter/home/other_screens/artist_screen.dart';
+import 'package:flatter/home/popups/add_to_playlist_popup.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:deepcopy/deepcopy.dart';
 
-import '../../popups/artist_select_popup.dart';
+import '../popups/artist_select_popup.dart';
 
 class ItemMenus {//man muss hier halt später einstellen können, welche aktionen hier und welche im bottom sheet angezeigt werden sollen
   ItemMenus(this.context);

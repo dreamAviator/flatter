@@ -1,38 +1,33 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+//import 'package:flutter_staggered_grid_view_fix_branch/flutter_staggered_grid_view.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../../../main.dart';
-import '../screens/artist_screen.dart';
-import 'per_item/item_menus.dart';
+import '../../main.dart';
+import '../other_screens/album_screen.dart';
+import 'item_menus.dart';
 
-class ArtistGrid extends StatelessWidget {
-  const ArtistGrid({super.key,required this.artistListNullable,required this.crossAxisCount,required this.sliver,this.filterNotifier,required this.withIndexesGiven});
-  final List<dynamic>? artistListNullable;
+class AlbumGrid extends StatelessWidget {
+  const AlbumGrid({super.key,required this.albumListNullable,required this.crossAxisCount,required this.sliver,this.filterNotifier});
+  final List<dynamic>? albumListNullable;
   final int crossAxisCount;
   final bool sliver;
   final ValueNotifier<String>? filterNotifier;
-  final bool withIndexesGiven;
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> artistList = [];
-    if (artistListNullable != null && artistListNullable?.isEmpty == false) {
-      if (withIndexesGiven == true) {
-        for (Map index in artistListNullable!) {
-          artistList.addAll(index['artist']);
-        }
-      } else {
-        artistList.addAll(artistListNullable!);
-      }
+    List<dynamic> albumList = [];
+    if (albumListNullable != null && albumListNullable?.isEmpty == false) {
+      print(albumListNullable);
+      albumList.addAll(albumListNullable!);
     } else {
       if (sliver == true) {
         return const SliverToBoxAdapter(
-          child: Center(child: Text("No artists")),
+          child: Center(child: Text("No albums")),
         );
       } else {
-        return const Center(child: Text("No artists"));
+        return const Center(child: Text("No albums"));
       }
     }
     if (sliver == true) {
@@ -40,41 +35,42 @@ class ArtistGrid extends StatelessWidget {
         return ValueListenableBuilder(
           valueListenable: filterNotifier!,
           builder: (context,String filter,child) {
-            List<dynamic> filteredArtistList = List.from(artistList);
+            List<dynamic> filteredAlbumList = List.from(albumList);
             if (filter.isNotEmpty) {
-              filteredArtistList.removeWhere((item) {
+              filteredAlbumList.removeWhere((item) {
                 if (item is Map) {
-                  if (item['name'] is String) {
-                    if (item['name'].toLowerCase().contains(filter.toLowerCase())) {
-                      return false;
+                  for (var value in item.values) {
+                    if (value is String) {
+                      if (value.toLowerCase().contains(filter.toLowerCase())) {
+                        return false;
+                      }
                     }
                   }
                 }
                 return true;
               });
             }
-            if (filteredArtistList.isEmpty) {
-              return const SliverToBoxAdapter(child: Center(child: Text("No artists")),);
+            if (filteredAlbumList.isEmpty) {
+              return const SliverToBoxAdapter(child: Center(child: Text("No albums")),);
             }
             return SliverMasonryGrid.count(
               crossAxisCount: crossAxisCount,
-              childCount: filteredArtistList.length,
+              childCount: filteredAlbumList.length,
               itemBuilder: (context, index) {
-                Map item = filteredArtistList[index];
+                Map albumOne = filteredAlbumList[index];
                 return Card(
                   clipBehavior: Clip.hardEdge,
                   child: InkWell(
                     splashColor: Colors.blue.withAlpha(30),
                     onTap: () {
-                      debugPrint('Card tapped.');
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: item['id'])));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumOne['id'])));
                     },
                     child: Column(
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
                           child: CachedNetworkImage(
-                            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${item['coverArt']}",
+                            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
                             progressIndicatorBuilder: (context, url, downloadProgress) =>
                                 LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                             errorWidget: (context, url, error) => IconButton(
@@ -86,8 +82,9 @@ class ArtistGrid extends StatelessWidget {
                           ),
                         ),
                         ListTile(
-                          title: Text((item['name'])),
-                          trailing: ItemMenus(context).artistMenuList(item),
+                          title: Text(albumOne['name']),
+                          subtitle: Text(albumOne['artist']),
+                          trailing: ItemMenus(context).albumMenuList(albumOne),
                         ),
                       ],
                     ),
@@ -100,23 +97,22 @@ class ArtistGrid extends StatelessWidget {
       } else {
         return SliverMasonryGrid.count(
           crossAxisCount: crossAxisCount,
-          childCount: artistList.length,
+          childCount: albumList.length,
           itemBuilder: (context, index) {
-            Map item = artistList[index];
+            Map albumOne = albumList[index];
             return Card(
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 splashColor: Colors.blue.withAlpha(30),
                 onTap: () {
-                  debugPrint('Card tapped.');
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: item['id'])));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumOne['id'])));
                 },
                 child: Column(
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
                       child: CachedNetworkImage(
-                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${item['coverArt']}",
+                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                             LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                         errorWidget: (context, url, error) => IconButton(
@@ -127,7 +123,11 @@ class ArtistGrid extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text(item['name']),
+                    ListTile(
+                      title: Text(albumOne['name']),
+                      subtitle: Text(albumOne['artist']),
+                      trailing: ItemMenus(context).albumMenuList(albumOne),
+                    ),
                   ],
                 ),
               ),
@@ -140,41 +140,42 @@ class ArtistGrid extends StatelessWidget {
         return ValueListenableBuilder(
           valueListenable: filterNotifier!,
           builder: (context,String filter,child) {
-            List<dynamic> filteredArtistList = List.from(artistList);
+            List<dynamic> filteredAlbumList = List.from(albumList);
             if (filter.isNotEmpty) {
-              filteredArtistList.removeWhere((item) {
+              filteredAlbumList.removeWhere((item) {
                 if (item is Map) {
-                  if (item['name'] is String) {
-                    if (item['name'].toLowerCase().contains(filter.toLowerCase())) {
-                      return false;
+                  for (var value in item.values) {
+                    if (value is String) {
+                      if (value.toLowerCase().contains(filter.toLowerCase())) {
+                        return false;
+                      }
                     }
                   }
                 }
                 return true;
               });
             }
-            if (filteredArtistList.isEmpty) {
-              return const Center(child: Text("No artists"));
+            if (filteredAlbumList.isEmpty) {
+              return const SliverToBoxAdapter(child: Center(child: Text("No albums")),);
             }
             return MasonryGridView.count(
               crossAxisCount: crossAxisCount,
-              itemCount: filteredArtistList.length,
+              itemCount: filteredAlbumList.length,
               itemBuilder: (context, index) {
-                Map item = filteredArtistList[index];
+                Map albumOne = filteredAlbumList[index];
                 return Card(
                   clipBehavior: Clip.hardEdge,
                   child: InkWell(
                     splashColor: Colors.blue.withAlpha(30),
                     onTap: () {
-                      debugPrint('Card tapped.');
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: item['id'])));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumOne['id'])));
                     },
                     child: Column(
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
                           child: CachedNetworkImage(
-                            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${item['coverArt']}",
+                            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
                             progressIndicatorBuilder: (context, url, downloadProgress) =>
                                 LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                             errorWidget: (context, url, error) => IconButton(
@@ -185,7 +186,11 @@ class ArtistGrid extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Text(item['name']),
+                        ListTile(
+                          title: Text(albumOne['name']),
+                          subtitle: Text(albumOne['artist']),
+                          trailing: ItemMenus(context).albumMenuList(albumOne),
+                        ),
                       ],
                     ),
                   ),
@@ -197,23 +202,23 @@ class ArtistGrid extends StatelessWidget {
       } else {
         return MasonryGridView.count(
           crossAxisCount: crossAxisCount,
-          itemCount: artistList.length,
+          itemCount: albumList.length,
+          shrinkWrap: true,
           itemBuilder: (context, index) {
-            Map item = artistList[index];
+            Map albumOne = albumList[index];
             return Card(
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 splashColor: Colors.blue.withAlpha(30),
                 onTap: () {
-                  debugPrint('Card tapped.');
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: item['id'])));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumOne['id'])));
                 },
                 child: Column(
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
                       child: CachedNetworkImage(
-                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${item['coverArt']}",
+                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                             LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                         errorWidget: (context, url, error) => IconButton(
@@ -224,7 +229,11 @@ class ArtistGrid extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text(item['name']),
+                    ListTile(
+                      title: Text(albumOne['name']),
+                      subtitle: Text(albumOne['artist']),
+                      trailing: ItemMenus(context).albumMenuList(albumOne),
+                    ),
                   ],
                 ),
               ),

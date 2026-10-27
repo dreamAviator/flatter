@@ -1,8 +1,8 @@
 import 'package:flatter/Services/subsonic_service.dart';
-import 'package:flatter/home/library_screen/popups/edit_playlist_popup.dart';
+import 'package:flatter/home/popups/edit_playlist_popup.dart';
 import 'package:flatter/home/library_screen/tabs/playlists_tab/playlists_tab_ViewModel.dart';
-import 'package:flatter/home/library_screen/item_widgets/playlist_grid.dart';
-import 'package:flatter/home/library_screen/filter_widgets/search_string_filter_widget.dart';
+import 'package:flatter/home/item_widgets/playlist_grid.dart';
+import 'package:flatter/home/item_widgets/search_string_filter_widget.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:intrinsic_size_builder/intrinsic_size_builder.dart';

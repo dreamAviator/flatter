@@ -1,14 +1,16 @@
 
+import 'dart:ui';
+
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
-import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
-import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
+import 'package:flatter/home/item_widgets/album_grid.dart';
+import 'package:flatter/home/item_widgets/item_menus.dart';
 import 'package:flatter/home/search_screen/search_song_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../item_widgets/per_item/favorite_button.dart';
+import '../item_widgets/favorite_button.dart';
 
 class ArtistScreen extends StatefulWidget {
   const ArtistScreen({super.key,required this.artistID});
@@ -25,6 +27,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
   Widget build(BuildContext context) {
     ItemMenus itemMenus = ItemMenus(context);
     final Size screenSize = MediaQuery.sizeOf(context);
+    final PageController pageController = PageController();
 
     Widget buildArtistAppearances(BuildContext context,String name,double screenWidth) {
       return FutureBuilder(
@@ -117,17 +120,67 @@ class _ArtistScreenState extends State<ArtistScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (settingsControl.settingsMap['landscapeMode'] == false) CachedNetworkImage(
-                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                        errorWidget: (context, url, error) => IconButton(
-                          onPressed: () {
-                            //hier retry
-                          },
-                          icon: Icon(Icons.error),
+                      if (settingsControl.settingsMap['landscapeMode'] == false) AspectRatio(
+                        aspectRatio: 1,
+                        child: PageView(
+                          scrollBehavior: MaterialScrollBehavior().copyWith(
+                            dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch, PointerDeviceKind.stylus, PointerDeviceKind.trackpad, PointerDeviceKind.unknown},
+                          ),
+                          controller: pageController,
+                          children: [
+                            Stack(
+                              alignment: Alignment.centerRight,
+                              children: [
+                                CachedNetworkImage(
+                                  imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
+                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                      LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                  errorWidget: (context, url, error) => IconButton(
+                                    onPressed: () {
+                                      //hier retry
+                                    },
+                                    icon: Icon(Icons.error),
+                                  ),
+                                  height: screenSize.width,
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    pageController.jumpToPage(1);
+                                  },
+                                  icon: const Icon(Icons.arrow_forward_ios),
+                                  color: Colors.white,
+                                )
+                              ],
+                            ),
+                            Stack(
+                              alignment: Alignment.centerLeft,
+                              children: [
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Row(//row to allow for more data in the future
+                                          children: [
+                                            Text("${asyncSnapshot.data!['albumCount']} albums")//TODO:anzahl von appears in oder so mal schauen
+                                          ],
+                                        ),
+                                        Divider(),
+                                        Expanded(child: SingleChildScrollView(child: Text(asyncSnapshot.data!['biography'] ?? "No biography"),)),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    pageController.jumpToPage(0);
+                                  },
+                                  icon: const Icon(Icons.arrow_back_ios_new),
+                                ),
+                              ]
+                            )
+                          ],
                         ),
-                        height: screenSize.width,
                       ),
                       if (settingsControl.settingsMap['landscapeMode'] == false) Row(
                         spacing: 8,
@@ -214,51 +267,71 @@ class _ArtistScreenState extends State<ArtistScreen> {
                             ),
                             Align(
                               alignment: Alignment.center,
-                              child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
-                                scrollDirection: Axis.vertical,
-                                child: IntrinsicWidth(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    spacing: 8,
-                                    children: [//TODO:einstellung um die zu iconbuttons zu machen
-                                      ElevatedButton(
-                                        child: Text("Play now"),
-                                        onPressed: () {
-                                          playNow();
-                                        },
-                                      ),
-                                      ElevatedButton(
-                                        child: Text("Play now shuffled"),
-                                        onPressed: () {playNowShuffled();
-                                        },
-                                      ),
-                                      ElevatedButton(
-                                        child: Text("Add next"),
-                                        onPressed: () {
-                                          playNext();
-                                        },
-                                      ),
-                                      ElevatedButton(
-                                        child: Text("Add next shuffled"),
-                                        onPressed: () {
-                                          playNextShuffled();
-                                        },
-                                      ),
-                                      ElevatedButton(
-                                        child: Text("Enqueue"),
-                                        onPressed: () {
-                                          enqueue();
-                                        },
-                                      ),
-                                      ElevatedButton(
-                                        child: Text("Enqueue shuffled"),
-                                        onPressed: () {
-                                          enqueueShuffled();
-                                        },
-                                      ),
-                                    ],
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                spacing: 8,
+                                children: [
+                                  ElevatedButton(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text("All songs"),
+                                        Icon(Icons.arrow_forward),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));
+                                    },
                                   ),
-                                ),
+                                  Expanded(
+                                    child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                                      scrollDirection: Axis.vertical,
+                                      child: IntrinsicWidth(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                                          spacing: 8,
+                                          children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                            ElevatedButton(
+                                              child: Text("Play now"),
+                                              onPressed: () {
+                                                playNow();
+                                              },
+                                            ),
+                                            ElevatedButton(
+                                              child: Text("Play now shuffled"),
+                                              onPressed: () {playNowShuffled();
+                                              },
+                                            ),
+                                            ElevatedButton(
+                                              child: Text("Add next"),
+                                              onPressed: () {
+                                                playNext();
+                                              },
+                                            ),
+                                            ElevatedButton(
+                                              child: Text("Add next shuffled"),
+                                              onPressed: () {
+                                                playNextShuffled();
+                                              },
+                                            ),
+                                            ElevatedButton(
+                                              child: Text("Enqueue"),
+                                              onPressed: () {
+                                                enqueue();
+                                              },
+                                            ),
+                                            ElevatedButton(
+                                              child: Text("Enqueue shuffled"),
+                                              onPressed: () {
+                                                enqueueShuffled();
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             Expanded(
@@ -268,19 +341,20 @@ class _ArtistScreenState extends State<ArtistScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Center(
-                                      child: SingleChildScrollView(
-                                        child: ElevatedButton(
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
+                                      child: Column(
+                                        children: [
+                                          Row(//row to allow for more data in the future
                                             children: [
-                                              Text("All songs"),
-                                              Icon(Icons.arrow_forward),
+                                              Text("${asyncSnapshot.data!['albumCount']} albums")//TODO:anzahl von appears in oder so mal schauen
                                             ],
                                           ),
-                                          onPressed: () {
-                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchSongScreen(query: asyncSnapshot.data!['name'])));//TODO:und stats oder comment, wie in der artist card im album screen
-                                          },
-                                        ),
+                                          Divider(),
+                                          Expanded(
+                                            child: SingleChildScrollView(
+                                              child: Text(asyncSnapshot.data!['biography'] ?? "No biography"),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -293,7 +367,6 @@ class _ArtistScreenState extends State<ArtistScreen> {
                     ],
                   ),
                 ),
-
                 const SliverToBoxAdapter(child: Text("Albums")),
                 AlbumGrid(albumListNullable: asyncSnapshot.data!['album'],crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,),
                 const SliverToBoxAdapter(child: Divider()),

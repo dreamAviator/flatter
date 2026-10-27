@@ -3,17 +3,17 @@ import 'dart:ui';
 import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
-import 'package:flatter/home/library_screen/screens/artist_screen.dart';
-import 'package:flatter/home/library_screen/popups/edit_playlist_popup.dart';
-import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
-import 'package:flatter/home/library_screen/item_widgets/song_list.dart';
+import 'package:flatter/home/other_screens/artist_screen.dart';
+import 'package:flatter/home/popups/edit_playlist_popup.dart';
+import 'package:flatter/home/item_widgets/item_menus.dart';
+import 'package:flatter/home/item_widgets/song_list.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marqueer/marqueer.dart';
 
-import '../../../useful_scripts.dart';
-import '../filter_widgets/search_string_filter_widget.dart';
+import '../../useful_scripts.dart';
+import '../item_widgets/search_string_filter_widget.dart';
 
 class PlaylistScreen extends StatefulWidget {
   const PlaylistScreen({super.key,required this.playlistID,this.playlistChangedNotifier});
@@ -49,8 +49,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             if (asyncSnapshot.hasData) {
               List<dynamic>? subsonicSongList = asyncSnapshot.data!['entry'];
               List<MediaItem> mediaItemList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList ?? []);
-              print(mediaItemList);
-              print("this was the mediaitem list");
               void playNow() {//idk maybe it's better to put the shuffled variants inside of the other functions and not as their own
                 print("executing play now");
                 playerControl.customAction('clearQueue');
@@ -114,8 +112,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     ),
                     if (asyncSnapshot.data!['owner'] == databaseControl.getCurrentUsername()) IconButton(
                       onPressed: () {
-                        //hier bearbeiten
-                        //wär babo wenn du das nur anzeigen würdest, wenn du der owner bist
                         EditPlaylistPopup.showEditPlaylistPopUp(context, false, asyncSnapshot.data!['id'], asyncSnapshot.data!['name'], asyncSnapshot.data!['comment'], asyncSnapshot.data!['public'],null,playlistChangedNotifier);
                       },
                       icon: const Icon(Icons.edit),//probably damit sich das ändert hier ein eigenes widget bauen
@@ -139,59 +135,57 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               controller: pageController,
                               children: [
                                 Stack(
-                                    alignment: Alignment.centerRight,
-                                    children: [
-                                      CachedNetworkImage(
-                                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
-                                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                                        errorWidget: (context, url, error) => IconButton(
-                                          onPressed: () {
-                                            //hier retry
-                                          },
-                                          icon: const Icon(Icons.error),
-                                        ),
-                                        height: screenSize.width,
-                                      ),
-                                      IconButton(
+                                  alignment: Alignment.centerRight,
+                                  children: [
+                                    CachedNetworkImage(
+                                      imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
+                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                          LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                      errorWidget: (context, url, error) => IconButton(
                                         onPressed: () {
-                                          pageController.jumpToPage(1);
+                                          //hier retry
                                         },
-                                        icon: const Icon(Icons.arrow_forward_ios),
-                                        color: Colors.white,//TODO:die Farbe hier dynamisch auswählen
+                                        icon: const Icon(Icons.error),
                                       ),
-                                    ]
+                                      height: screenSize.width,
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        pageController.jumpToPage(1);
+                                      },
+                                      icon: const Icon(Icons.arrow_forward_ios),
+                                      color: Colors.white,//TODO:die Farbe hier dynamisch auswählen und auf den anderen screens natürlich auch
+                                    ),
+                                  ]
                                 ),
-                                if (asyncSnapshot.data!['comment'] == "")
-                                  Stack(
-                                      alignment: Alignment.centerLeft,
-                                      children: [
-                                        Center(
-                                          child: const Text("No comment"),
+                                Stack(
+                                  alignment: Alignment.centerLeft,
+                                  children: [
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Row(//row to allow for more data in the future
+                                              children: [
+                                                Text("${asyncSnapshot.data!['songCount']} tracks")//TODO:anzahl von appears in oder so mal schauen
+                                              ],
+                                            ),
+                                            Divider(),
+                                            if (asyncSnapshot.data!['comment'] != "") Expanded(child: SingleChildScrollView(child: Text(asyncSnapshot.data!['comment']),)),
+                                            if (asyncSnapshot.data!['comment'] == "") Expanded(child: SingleChildScrollView(child: Text("No comment"),)),
+                                          ],
                                         ),
-                                        IconButton(
-                                          onPressed: () {
-                                            pageController.jumpToPage(0);
-                                          },
-                                          icon: const Icon(Icons.arrow_back_ios_new),
-                                        ),
-                                      ]
-                                  )
-                                else
-                                  Stack(
-                                      alignment: Alignment.centerLeft,
-                                      children: [
-                                        Center(
-                                          child: SingleChildScrollView(child: Text(asyncSnapshot.data!['comment']),),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            pageController.jumpToPage(0);
-                                          },
-                                          icon: const Icon(Icons.arrow_back_ios_new),
-                                        ),
-                                      ]
-                                  )
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        pageController.jumpToPage(0);
+                                      },
+                                      icon: const Icon(Icons.arrow_back_ios_new),
+                                    ),
+                                  ]
+                                ),
                               ],
                             ),
                           ),
@@ -324,8 +318,24 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Center(
-                                          child: SingleChildScrollView(
-                                            child: Text(asyncSnapshot.data?['comment'] ?? "No comment"),//TODO:no comment funktioniert nicht
+                                          child: Column(
+                                            children: [
+                                              Row(//row to allow for more data in the future
+                                                children: [
+                                                  Text("${asyncSnapshot.data!['songCount']} tracks")//TODO:anzahl von appears in oder so mal schauen
+                                                ],
+                                              ),
+                                              Divider(),
+                                              Expanded(
+                                                child: SingleChildScrollView(
+                                                  child: Text(
+                                                      asyncSnapshot.data!['comment'] == ""
+                                                        ? "No comment"
+                                                        : asyncSnapshot.data!['comment']
+                                                  ),//TODO:no comment funktioniert nicht
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),

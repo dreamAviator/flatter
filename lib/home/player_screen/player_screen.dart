@@ -1,9 +1,9 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
-import 'package:flatter/home/library_screen/screens/album_screen.dart';
-import 'package:flatter/home/library_screen/screens/artist_screen.dart';
-import 'package:flatter/home/library_screen/popups/artist_select_popup.dart';
-import 'package:flatter/home/library_screen/item_widgets/per_item/favorite_button.dart';
+import 'package:flatter/home/popups/add_to_playlist_popup.dart';
+import 'package:flatter/home/other_screens/album_screen.dart';
+import 'package:flatter/home/other_screens/artist_screen.dart';
+import 'package:flatter/home/popups/artist_select_popup.dart';
+import 'package:flatter/home/item_widgets/favorite_button.dart';
 import 'package:flatter/home/player_screen/player_image.dart';
 import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/home/player_screen/progess_slider.dart';

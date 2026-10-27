@@ -1,5 +1,5 @@
 import 'package:flatter/Services/subsonic_service.dart';
-import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
+import 'package:flatter/home/item_widgets/album_grid.dart';
 import 'package:flatter/home/library_screen/tabs/albums_tab/albums_tab_ViewModel.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
