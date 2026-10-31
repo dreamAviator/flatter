@@ -1,7 +1,7 @@
 import 'package:flatter/Riverpod/riverpod_manager.dart';
-import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
-import 'package:flatter/home/library_screen/item_widgets/artist_grid.dart';
-import 'package:flatter/home/library_screen/item_widgets/song_list.dart';
+import 'package:flatter/home/item_widgets/album_grid.dart';
+import 'package:flatter/home/item_widgets/artist_grid.dart';
+import 'package:flatter/home/item_widgets/song_list.dart';
 import 'package:flatter/home/search_screen/search_album_screen.dart';
 import 'package:flatter/home/search_screen/search_artist_screen.dart';
 import 'package:flatter/home/search_screen/search_song_screen.dart';

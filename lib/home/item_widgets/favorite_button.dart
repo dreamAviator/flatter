@@ -5,7 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../Riverpod/riverpod_manager.dart';
+import '../../Riverpod/riverpod_manager.dart';
 
 class FavoriteButton extends StatelessWidget {
   const FavoriteButton({super.key,required this.songID,required this.albumID,required this.artistID});

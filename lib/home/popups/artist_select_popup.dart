@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:masonry_grid/masonry_grid.dart';
 
-import '../../../main.dart';
-import '../screens/artist_screen.dart';
+import '../../main.dart';
+import '../other_screens/artist_screen.dart';
 
 class ArtistSelectWindow {
   static void showArtistSelectWindow(BuildContext context,List<dynamic> artistInfosLite) {

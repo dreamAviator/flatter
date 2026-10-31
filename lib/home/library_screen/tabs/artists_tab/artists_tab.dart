@@ -1,7 +1,7 @@
 import 'package:flatter/Services/subsonic_service.dart';
-import 'package:flatter/home/library_screen/item_widgets/artist_grid.dart';
+import 'package:flatter/home/item_widgets/artist_grid.dart';
 import 'package:flatter/home/library_screen/tabs/artists_tab/artists_tab_ViewModel.dart';
-import 'package:flatter/home/library_screen/filter_widgets/search_string_filter_widget.dart';
+import 'package:flatter/home/item_widgets/search_string_filter_widget.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:intrinsic_size_builder/intrinsic_size_builder.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';

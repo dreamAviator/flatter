@@ -1,13 +1,13 @@
-import 'package:flatter/home/library_screen/popups/add_to_playlist_popup.dart';
-import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
+import 'package:flatter/home/popups/add_to_playlist_popup.dart';
+import 'package:flatter/home/item_widgets/item_menus.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:marqueer/marqueer.dart';
 
-import '../../../useful_scripts.dart';
-import '../screens/album_screen.dart';
-import '../screens/artist_screen.dart';
+import '../../useful_scripts.dart';
+import '../other_screens/album_screen.dart';
+import '../other_screens/artist_screen.dart';
 import '../popups/artist_select_popup.dart';
 
 class SongTile extends StatelessWidget {

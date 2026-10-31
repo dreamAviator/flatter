@@ -3,16 +3,16 @@ import 'dart:ui';
 
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
-import 'package:flatter/home/library_screen/item_widgets/album_grid.dart';
-import 'package:flatter/home/library_screen/item_widgets/per_item/item_menus.dart';
-import 'package:flatter/home/library_screen/popups/rate_button.dart';
+import 'package:flatter/home/item_widgets/album_grid.dart';
+import 'package:flatter/home/item_widgets/item_menus.dart';
+import 'package:flatter/home/popups/rate_button.dart';
 import 'package:flatter/home/search_screen/search_song_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../item_widgets/per_item/favorite_button.dart';
+import '../item_widgets/favorite_button.dart';
 
 class ArtistScreen extends StatefulWidget {
   const ArtistScreen({super.key,required this.artistID});
