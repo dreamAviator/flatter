@@ -162,7 +162,7 @@ class PlaylistGrid extends StatelessWidget {
                         ),
                         ListTile(
                           title: Text(item['name']),
-                          subtitle: Text(item['owner']),
+                          subtitle: Text("by ${item['owner']}"),
                           trailing: ItemMenus(context).playlistMenuList(item),
                         ),
                       ],
@@ -254,7 +254,7 @@ class PlaylistGrid extends StatelessWidget {
                     ),
                     ListTile(
                       title: Text(item['name']),
-                      subtitle: Text(item['owner']),
+                      subtitle: Text("by ${item['owner']}"),
                       trailing: ItemMenus(context).playlistMenuList(item),
                     ),
                   ],
@@ -367,7 +367,7 @@ class PlaylistGrid extends StatelessWidget {
                         ),
                         ListTile(
                           title: Text(item['name']),
-                          subtitle: Text(item['owner']),
+                          subtitle: Text("by ${item['owner']}"),
                           trailing: ItemMenus(context).playlistMenuList(item),
                         ),
                       ],
@@ -418,7 +418,7 @@ class PlaylistGrid extends StatelessWidget {
                       ),
                       ListTile(
                         title: Text(item['name']),
-                        subtitle: Text(item['songCount'].toString()),
+                        subtitle: Text("${item['songCount'].toString()} tracks"),
                         trailing: ItemMenus(context).playlistMenuList(item),
                       ),
                     ],
@@ -459,7 +459,7 @@ class PlaylistGrid extends StatelessWidget {
                     ),
                     ListTile(
                       title: Text(item['name']),
-                      subtitle: Text(item['owner']),
+                      subtitle: Text("by ${item['owner']}"),
                       trailing: ItemMenus(context).playlistMenuList(item),
                     ),
                   ],

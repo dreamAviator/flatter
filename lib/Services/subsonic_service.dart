@@ -146,6 +146,33 @@ class SubsonicService {
       if (subsonicResponse['artist']['starred'] == null) {
         subsonicResponse['artist']['starred'] = "unstarred";
       }
+      final uri2 = Uri.parse("${url[0]}getArtistInfo2${url[1]}&id=$id");
+      try {
+        final data2 = await http.get(uri2);
+        if (data2.statusCode != 200) {
+          return {};
+        }
+        final Map responseMap2 = jsonDecode(data2.body);
+        Map subsonicResponse2 = responseMap2['subsonic-response'];
+        if (subsonicResponse2['status'] != "ok") {
+          return {};
+        }
+        Map artistInfo = subsonicResponse2['artistInfo2'];
+        for (dynamic key in artistInfo.keys) {
+          if (key is String) {
+            print(key);
+            print("key");
+            subsonicResponse['artist'][key] = artistInfo[key];
+            print(artistInfo[key]);
+            print(subsonicResponse['artist'][key]);
+            print("value");
+          }
+        }
+      } catch(error) {
+        return {};
+      }
+      print(subsonicResponse['artist']['biography']);
+      print("this was biography");
       return subsonicResponse['artist'];
     } catch(error) {
       return {};

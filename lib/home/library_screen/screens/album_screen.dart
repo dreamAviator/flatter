@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
@@ -29,6 +31,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
     ItemMenus itemMenus = ItemMenus(context);
     final Size screenSize = MediaQuery.sizeOf(context);
     final filterNotifier = ValueNotifier<String>('');
+    final PageController pageController = PageController();
     final UpdateNotifier albumChangedNotifier = UpdateNotifier();
     return ListenableBuilder(
       listenable: albumChangedNotifier,
@@ -112,17 +115,105 @@ class _AlbumScreenState extends State<AlbumScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [//evt einige actions von den actions hier nach oben oder so mal schauen wie du das strukturieren willst
                           //hier evt einen text von nem anderen server fetchen idk ob das bei alben geht
-                          if (settingsControl.settingsMap['landscapeMode'] == false) CachedNetworkImage(
-                            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                            errorWidget: (context, url, error) => IconButton(
-                              onPressed: () {
-                                //hier retry
-                              },
-                              icon: Icon(Icons.error),
+                          if (settingsControl.settingsMap['landscapeMode'] == false) AspectRatio(
+                            aspectRatio: 1,
+                            child: PageView(
+                              scrollBehavior: MaterialScrollBehavior().copyWith(
+                                dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch, PointerDeviceKind.stylus, PointerDeviceKind.trackpad, PointerDeviceKind.unknown},
+                              ),
+                              controller: pageController,
+                              children: [
+                                Stack(
+                                  alignment: Alignment.centerRight,
+                                  children: [
+                                    CachedNetworkImage(
+                                      imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
+                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                          LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                      errorWidget: (context, url, error) => IconButton(
+                                        onPressed: () {
+                                          //hier retry
+                                        },
+                                        icon: Icon(Icons.error),
+                                      ),
+                                      height: screenSize.width,
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        pageController.jumpToPage(1);
+                                      },
+                                      icon: const Icon(Icons.arrow_forward_ios),
+                                      color: Colors.white,
+                                    )
+                                  ],
+                                ),
+                                Stack(
+                                  alignment: Alignment.centerLeft,
+                                  children: [
+                                    Center(
+                                      child: FutureBuilder(
+                                        future: subsonicService.getArtistDetails(asyncSnapshot.data!['artistId']),
+                                        builder: (context, innerAsyncSnapshot) {
+                                          if (innerAsyncSnapshot.hasData && innerAsyncSnapshot.connectionState == ConnectionState.done) {
+                                            return Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                children: [
+                                                  Row(//row to allow for more data in the future
+                                                    children: [
+                                                      Text(innerAsyncSnapshot.data!['name'] ?? "Unknown"),
+                                                    ],
+                                                  ),
+                                                  Divider(),
+                                                  Expanded(
+                                                    child: LayoutBuilder(
+                                                      builder: (BuildContext context, BoxConstraints constraints) {
+                                                        print("building image");
+                                                        return SingleChildScrollView(
+                                                          child: Column(
+                                                            spacing: 8,
+                                                            children: [
+                                                              CachedNetworkImage(
+                                                                imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${innerAsyncSnapshot.data!['coverArt']}",
+                                                                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                                    LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                                                errorWidget: (context, url, error) => IconButton(
+                                                                  onPressed: () {
+                                                                    //hier retry
+                                                                  },
+                                                                  icon: Icon(Icons.error),
+                                                                ),
+                                                                width: (constraints.maxWidth / 3 * 2),
+                                                                height: (constraints.maxWidth / 3 * 2),
+                                                              ),
+                                                              Text(innerAsyncSnapshot.data!['biography'] ?? "No biography"),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                    )
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          } else if (innerAsyncSnapshot.hasError) {
+                                            return Text("Error");
+                                          } else {
+                                            return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                                          }
+                                        }
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        pageController.jumpToPage(0);
+                                      },
+                                      icon: const Icon(Icons.arrow_back_ios_new),
+                                    ),
+                                  ]
+                                )
+                              ],
                             ),
-                            height: screenSize.width,
                           ),
                           if (settingsControl.settingsMap['landscapeMode'] == false) TextButton(
                             onPressed: () {
@@ -295,8 +386,13 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                                               },
                                                             ),
                                                           ),
-                                                          Divider(),
-                                                          Text("comment oder stats")
+                                                          VerticalDivider(),
+                                                          Expanded(
+                                                            child: SingleChildScrollView(
+                                                              scrollDirection: Axis.vertical,
+                                                              child: Text(innerAsyncSnapshot.data!['biography'] ?? "No biography"),
+                                                            ),
+                                                          ),
                                                         ],
                                                       ),
                                                     )
@@ -318,6 +414,20 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                     ),
                                   ),
                                 ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              spacing: 24,
+                              children: [
+                                if ((asyncSnapshot.data!['song'] as List).length == 1) Text(
+                                    "${(asyncSnapshot.data!['song'] as List).length} track"
+                                ) else Text(
+                                    "${(asyncSnapshot.data!['song'] as List).length} tracks"
+                                ),
+                                Text((asyncSnapshot.data!['year'] ?? "").toString()),
                               ],
                             ),
                           ),
