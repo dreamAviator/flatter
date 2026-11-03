@@ -344,7 +344,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                                       asyncSnapshot.data!['comment'] == ""
                                                           ? "No comment"
                                                           : asyncSnapshot.data!['comment']
-                                                  ),//TODO:no comment funktioniert nicht
+                                                  ),
                                                 ),
                                               ),
                                             ],
