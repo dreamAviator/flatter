@@ -29,7 +29,7 @@ class QueueScreen extends StatefulWidget {
   State<QueueScreen> createState() => _QueueScreenState();
 }
 
-class _QueueScreenState extends State<QueueScreen> {
+class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch auf wenn die searchbar nicht offen ist
   //ScrollPosController scrollController = ScrollPosController(itemCount: 0);
   ScrollController scrollController = ScrollController();
   double scrollOffset = 0;
