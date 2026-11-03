@@ -123,6 +123,17 @@ class AddServerPopup {
           builder: (context,setState) {
             return AlertDialog(
               title: Text(title),
+              actions: [
+                TextButton(
+                  child: Text("Use demo"),
+                  onPressed: () {
+                    serverPasswordController.value =TextEditingValue(text: "demo");
+                    serverUsernameController.value = TextEditingValue(text: "demo");
+                    serverURLcontroller.value = TextEditingValue(text: "demo.navidrome.org");
+                    serverNameController.value = TextEditingValue(text: "demo");
+                  },
+                ),
+              ],
               content: SingleChildScrollView(
                 child: Form(
                   key: formKey,

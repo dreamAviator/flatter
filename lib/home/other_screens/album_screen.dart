@@ -14,7 +14,7 @@ import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class AlbumScreen extends StatefulWidget {//TODO:mehr infos anzeigen
+class AlbumScreen extends StatefulWidget {
   const AlbumScreen({super.key,required this.albumID});
   final String albumID;
 
@@ -129,7 +129,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                     CachedNetworkImage(
                                       imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
                                       progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                          LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                          Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
                                       errorWidget: (context, url, error) => IconButton(
                                         onPressed: () {
                                           //hier retry
@@ -138,12 +138,24 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                       ),
                                       height: screenSize.width,
                                     ),
-                                    IconButton(
-                                      onPressed: () {
-                                        pageController.jumpToPage(1);
-                                      },
-                                      icon: const Icon(Icons.arrow_forward_ios),
-                                      color: Colors.white,
+                                    Stack(
+                                      alignment: Alignment.centerRight,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+
+                                          },
+                                          icon: Transform.scale(scale: 1.5,child: const Icon(Icons.circle,)),
+                                          color: Colors.black.withAlpha(75),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            pageController.jumpToPage(1);
+                                          },
+                                          icon: const Icon(Icons.keyboard_arrow_right),
+                                          color: Colors.white,
+                                        ),
+                                      ],
                                     )
                                   ],
                                 ),
@@ -208,7 +220,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                       onPressed: () {
                                         pageController.jumpToPage(0);
                                       },
-                                      icon: const Icon(Icons.arrow_back_ios_new),
+                                      icon: const Icon(Icons.keyboard_arrow_left),
                                     ),
                                   ]
                                 )
