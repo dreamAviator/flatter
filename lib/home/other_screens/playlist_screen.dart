@@ -140,7 +140,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                     CachedNetworkImage(
                                       imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
                                       progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                          LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                          Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
                                       errorWidget: (context, url, error) => IconButton(
                                         onPressed: () {
                                           //hier retry
@@ -149,13 +149,25 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                       ),
                                       height: screenSize.width,
                                     ),
-                                    IconButton(
-                                      onPressed: () {
-                                        pageController.jumpToPage(1);
-                                      },
-                                      icon: const Icon(Icons.arrow_forward_ios),
-                                      color: Colors.white,//TODO:die Farbe hier dynamisch auswählen und auf den anderen screens natürlich auch
-                                    ),
+                                    Stack(
+                                      alignment: Alignment.centerRight,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+
+                                          },
+                                          icon: Transform.scale(scale: 1.5,child: const Icon(Icons.circle,)),
+                                          color: Colors.black.withAlpha(75),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            pageController.jumpToPage(1);
+                                          },
+                                          icon: const Icon(Icons.keyboard_arrow_right),
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    )
                                   ]
                                 ),
                                 Stack(
@@ -182,7 +194,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                       onPressed: () {
                                         pageController.jumpToPage(0);
                                       },
-                                      icon: const Icon(Icons.arrow_back_ios_new),
+                                      icon: const Icon(Icons.keyboard_arrow_left),
                                     ),
                                   ]
                                 ),
