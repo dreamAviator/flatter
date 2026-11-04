@@ -8,6 +8,7 @@ import 'package:flatter/home/queue_screen/confirm_delete_queue_popup.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:intrinsic_size_builder/intrinsic_size_builder.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -28,16 +29,18 @@ class QueueScreen extends StatefulWidget {
   State<QueueScreen> createState() => _QueueScreenState();
 }
 
-class _QueueScreenState extends State<QueueScreen> {
+class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch auf wenn die searchbar nicht offen ist
   //ScrollPosController scrollController = ScrollPosController(itemCount: 0);
   ScrollController scrollController = ScrollController();
   double scrollOffset = 0;
   bool hasRun = false;
   bool dontScroll = false;//soll umegelgt werden, wenn vom nutzer gescrollt wurde oder die queue irgendwie verändert wurde
   bool dontScrollOverride = false;//so that if the ui scrolls automatically, it does not count as scrolling
+  bool showSearchBar = false;
+  TextEditingController searchController = TextEditingController();
+  ValueNotifier<String> searchNotifier = ValueNotifier<String>("");
 
   Widget buildQueue(BuildContext context, List<MediaItem> queue,ListObserverController observerController) {
-
     if (queue.isNotEmpty) {
       hasRun = true;
     }
@@ -56,118 +59,231 @@ class _QueueScreenState extends State<QueueScreen> {
       children: [
         if (queue.isEmpty) const Text("Queue empty"),
         Expanded(
-          child: ListViewObserver(
-            controller: observerController,
-            child: ReorderableListView.builder(
-              scrollController: scrollController,
-              itemCount: queue.length,
-              onReorder: (int oldIndex,int newIndex) {
-                dontScroll = true;
-                if (oldIndex < newIndex) {
-                  newIndex -= 1;
-                }
-                playerControl.customAction("moveQueueItem",{'moveQueueItem':{'oldIndex':oldIndex,'newIndex':newIndex}});
-              },
-              itemBuilder: (BuildContext context,int index) {
-                if (queue[index].extras!['current'] == true) {
-                  return Card.filled(
-                    key: Key('$index'),
-                    child: Column(
-                      children: [
-                        Slidable(
-                          startActionPane: ActionPane(//farben überlegen
-                            motion: DrawerMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (_) => (goToAlbum(context, queue[index].extras!['albumID'])),
-                                icon: Icons.album,
-                                label: 'Album',
-                              ),
-                              SlidableAction(
-                                onPressed: (_) => (goToArtist(context, queue[index].extras!['artistID'])),
-                                icon: Icons.person,
-                                label: 'Artist',
-                              )
-                            ],
-                          ),
-                          endActionPane: ActionPane(
-                            motion: DrawerMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (_) => (removeFromQueue(index)),
-                                icon: Icons.delete,
-                                label: 'Delete',
-                                backgroundColor: Colors.red,
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
-                            title: Text(queue[index].title),
-                            subtitle: Text(queue[index].artist!),
-                            trailing: ItemMenus(context).songMenuQueue(queue[index]),
-                            onTap: () {
-                              playerControl.skipToQueueItem(index);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return Card(
-                    key: Key('$index'),
-                    child: Column(
-                      children: [
-                        Slidable(
-                          startActionPane: ActionPane(//farben überlegen
-                            motion: DrawerMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (_) => (goToAlbum(context, queue[index].extras!['albumID'])),
-                                icon: Icons.album,
-                                label: 'Album',
-                              ),
-                              SlidableAction(
-                                onPressed: (_) => (goToArtist(context, queue[index].extras!['artistID'])),
-                                icon: Icons.person,
-                                label: 'Artist',
-                              )
-                            ],
-                          ),
-                          endActionPane: ActionPane(
-                            motion: DrawerMotion(),
-                            /*
-                            dismissible: DismissiblePane(
-                              onDismissed: () {
-                                removeFromQueue(index);
+          child: ValueListenableBuilder(
+            valueListenable: searchNotifier,
+            builder: (context, filter, child) {
+              List<MediaItem> filteredQueue = List.from(queue);
+              if (filter.isNotEmpty) {
+                filteredQueue.removeWhere((item) {
+                  if (item.title.toLowerCase().contains(filter.toLowerCase())) {
+                    return false;
+                  } else if ((item.album ?? "").toLowerCase().contains(filter.toLowerCase())) {
+                    return false;
+                  } else if ((item.artist ?? "").toLowerCase().contains(filter.toLowerCase())) {
+                    return false;
+                  } else if (item.id.contains(filter.toLowerCase())) {
+                    return false;
+                  }
+                  return true;
+                });
+              }
+              print(showSearchBar);
+              print("printed showsearchbar");
+              return IntrinsicSizeBuilder(
+                subject: Column(
+                  spacing: 8,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                            )
+                          ]
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SearchBar(
+                              shadowColor: WidgetStateColor.transparent,
+                              leading: const Icon(Icons.search),
+                              controller: searchController,
+                              onChanged: (String value) {
+                                searchNotifier.value = value;
                               },
+                              autoFocus: showSearchBar,
+                              trailing: [
+                                IconButton(
+                                  icon: const Icon(Icons.backspace_outlined),
+                                  onPressed: () {
+                                    searchController.clear();
+                                  },
+                                )
+                              ],
                             ),
-                            benötigt einen key um dismissable zu sein
-                             */
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
                             children: [
-                              SlidableAction(
-                                onPressed: (_) => (removeFromQueue(index)),
-                                icon: Icons.delete,
-                                label: 'Delete',
-                                backgroundColor: Colors.red,
+                              IconButton(
+                                onPressed: () {
+                                  List<String> songIDlist = [];
+                                  for (MediaItem mediaItem in queue) {
+                                    songIDlist.add(mediaItem.id);
+                                  }
+                                  AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
+                                },
+                                icon: const Icon(Icons.playlist_add_outlined),
                               ),
+                              IconButton(
+                                onPressed: () {
+                                  playerControl.customAction('shuffleQueue');
+                                },
+                                icon: const Icon(Icons.shuffle_outlined),
+                              ),
+                              LoopButton(),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (showSearchBar == true) {
+                                      showSearchBar = false;
+                                    } else {
+                                      showSearchBar = true;
+                                    }
+                                  });
+                                },
+                                icon: const Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
+                                },
+                                icon: const Icon(Icons.delete_outline),
+                              )
                             ],
                           ),
-                          child: ListTile(
-                            title: Text(queue[index].title),
-                            subtitle: Text(queue[index].artist!),
-                            trailing: ItemMenus(context).songMenuQueue(queue[index]),
-                            onTap: () {
-                              playerControl.skipToQueueItem(index);
-                            },
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                builder: (context, subjectSize,subject) {
+                  return ListViewObserver(
+                    controller: observerController,
+                    child: ReorderableListView.builder(
+                      scrollController: scrollController,
+                      itemCount: filteredQueue.length,
+                      onReorder: (int oldIndex,int newIndex) {
+                        dontScroll = true;
+                        if (oldIndex < newIndex) {
+                          newIndex -= 1;
+                        }
+                        playerControl.customAction("moveQueueItem",{'moveQueueItem':{'oldIndex':oldIndex,'newIndex':newIndex}});
+                      },
+                      footer: Padding(
+                        padding: EdgeInsets.only(top: subjectSize.height / 3, bottom: subjectSize.height / 3 * 2),
+                        child: Center(child: Text("Queue end")),
+                      ),
+                      itemBuilder: (BuildContext context,int index) {
+                        if (filteredQueue[index].extras!['current'] == true) {
+                          return Card.filled(
+                            key: Key('$index'),
+                            child: Column(
+                              children: [
+                                Slidable(
+                                  startActionPane: ActionPane(//farben überlegen
+                                    motion: DrawerMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: (_) => (goToAlbum(context, filteredQueue[index].extras!['albumID'])),
+                                        icon: Icons.album,
+                                        label: 'Album',
+                                      ),
+                                      SlidableAction(
+                                        onPressed: (_) => (goToArtist(context, filteredQueue[index].extras!['artistID'])),
+                                        icon: Icons.person,
+                                        label: 'Artist',
+                                      )
+                                    ],
+                                  ),
+                                  endActionPane: ActionPane(
+                                    motion: DrawerMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: (_) => (removeFromQueue(index)),
+                                        icon: Icons.delete,
+                                        label: 'Delete',
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                    title: Text(filteredQueue[index].title),
+                                    subtitle: Text(filteredQueue[index].artist!),
+                                    trailing: ItemMenus(context).songMenuQueue(filteredQueue[index]),
+                                    onTap: () {
+                                      playerControl.skipToQueueItem(index);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return Card(
+                            key: Key('$index'),
+                            child: Column(
+                              children: [
+                                Slidable(
+                                  startActionPane: ActionPane(//farben überlegen
+                                    motion: DrawerMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: (_) => (goToAlbum(context, filteredQueue[index].extras!['albumID'])),
+                                        icon: Icons.album,
+                                        label: 'Album',
+                                      ),
+                                      SlidableAction(
+                                        onPressed: (_) => (goToArtist(context, filteredQueue[index].extras!['artistID'])),
+                                        icon: Icons.person,
+                                        label: 'Artist',
+                                      )
+                                    ],
+                                  ),
+                                  endActionPane: ActionPane(
+                                    motion: DrawerMotion(),
+                                    /*
+                                    dismissible: DismissiblePane(
+                                      onDismissed: () {
+                                        removeFromQueue(index);
+                                      },
+                                    ),
+                                    benötigt einen key um dismissable zu sein
+                                     */
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: (_) => (removeFromQueue(index)),
+                                        icon: Icons.delete,
+                                        label: 'Delete',
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                    title: Text(filteredQueue[index].title),
+                                    subtitle: Text(filteredQueue[index].artist!),
+                                    trailing: ItemMenus(context).songMenuQueue(filteredQueue[index]),
+                                    onTap: () {
+                                      playerControl.skipToQueueItem(index);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
                     ),
                   );
                 }
-              },
-            ),
+              );
+            }
           ),
         ),
       ],
@@ -221,53 +337,106 @@ class _QueueScreenState extends State<QueueScreen> {
                   observerController.jumpTo(index: playerControl.getCurrentIndex());});
               }
             }
-            return Column(
-              mainAxisSize: MainAxisSize.min,
+            return Stack(
+              alignment: Alignment.bottomCenter,
               children: [
-                Expanded(
-                  child: buildQueue(context,queue,observerController),
-                ),
-                const Divider(),
-                SDisabled(
-                  isDisabled: queueEmpty,
-                  child: Container(
-                    color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            List<String> songIDlist = [];
-                            for (MediaItem mediaItem in queue) {
-                              songIDlist.add(mediaItem.id);
-                            }
-                            AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
-                          },
-                          icon: const Icon(Icons.playlist_add_outlined),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            playerControl.customAction('shuffleQueue');
-                          },
-                          icon: const Icon(Icons.shuffle_outlined),
-                        ),
-                        LoopButton(),
-                        IconButton(
-                          onPressed: () {
-
-                          },
-                          icon: const Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
-                          },
-                          icon: const Icon(Icons.delete_outline),
-                        )
-                      ],
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: buildQueue(context,queue,observerController),
                     ),
-                  ),
+                  ],
                 ),
+                Column(
+                  spacing: 8,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SDisabled(
+                      isDisabled: queueEmpty,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                            )
+                          ]
+                        ),
+                        //color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (showSearchBar == true ) Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SearchBar(
+                                shadowColor: WidgetStateColor.transparent,
+                                leading: const Icon(Icons.search),
+                                controller: searchController,
+                                onChanged: (String value) {
+                                  searchNotifier.value = value;
+                                },
+                                autoFocus: true,
+                                trailing: [
+                                  IconButton(
+                                    icon: const Icon(Icons.backspace_outlined),
+                                    onPressed: () {
+                                      searchController.clear();
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    List<String> songIDlist = [];
+                                    for (MediaItem mediaItem in queue) {
+                                      songIDlist.add(mediaItem.id);
+                                    }
+                                    AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
+                                  },
+                                  icon: const Icon(Icons.playlist_add_outlined),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    playerControl.customAction('shuffleQueue');
+                                  },
+                                  icon: const Icon(Icons.shuffle_outlined),
+                                ),
+                                LoopButton(),
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      if (showSearchBar == true) {
+                                        showSearchBar = false;
+                                      } else {
+                                        showSearchBar = true;
+                                      }
+                                    });
+                                  },
+                                  icon: const Icon(Icons.search_outlined),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
+                                  },
+                                  icon: const Icon(Icons.delete_outline),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
             );
           }
