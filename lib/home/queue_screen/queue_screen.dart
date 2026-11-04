@@ -107,7 +107,7 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
                               onChanged: (String value) {
                                 searchNotifier.value = value;
                               },
-                              autoFocus: true,
+                              autoFocus: showSearchBar,
                               trailing: [
                                 IconButton(
                                   icon: const Icon(Icons.backspace_outlined),
