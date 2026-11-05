@@ -332,7 +332,7 @@ class SubsonicService {
     }
   }
 
-  Future<bool> checkStarred(String? songID,String? albumID,String? artistID) async {
+  Future<bool> checkStarred(String? songID,String? albumID,String? artistID,[String? playlistID]) async {
     while (checkStarredBlocked == true) {
       await Future.delayed(Duration(milliseconds: 200));
       print("waiting cause blocked");
@@ -359,6 +359,11 @@ class SubsonicService {
         }
       }
       return false;
+    } else if (playlistID != null) {
+      print("hiiii");
+      print(playlistID);
+      bool status = databaseControl.getPlaylistFavoriteStatus(playlistID);
+      return status;
     } else {
       return false;
     }
@@ -577,8 +582,13 @@ class SubsonicService {
     }
   }
 
-  Future<Map<dynamic,dynamic>> starUnstar(bool starred,String? songID,String? albumID,String? artistID) async {
+  Future<Map<dynamic,dynamic>> starUnstar(bool starred,String? songID,String? albumID,String? artistID, [String? playlistID]) async {
     checkStarredBlocked = true;
+    if (playlistID != null) {
+      databaseControl.changePlaylistFavoriteStatus(playlistID);
+      checkStarredBlocked = false;
+      return {};//sollte anders sein
+    }
     print("check starred was blocked");
     List<String> url = getURL(null, null, null);
     List<String> request = [];

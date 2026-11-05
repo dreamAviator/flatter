@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
+import 'package:flatter/home/item_widgets/favorite_button.dart';
 import 'package:flatter/home/other_screens/artist_screen.dart';
 import 'package:flatter/home/popups/edit_playlist_popup.dart';
 import 'package:flatter/home/item_widgets/item_menus.dart';
@@ -110,6 +111,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       },
                       icon: const Icon(Icons.play_arrow),
                     ),
+                    FavoriteButton(songID: null, albumID: null, artistID: null, playlistID: widget.playlistID,playlistUpdateNotifier: playlistChangedNotifier,),
                     if (asyncSnapshot.data!['owner'] == databaseControl.getCurrentUsername()) IconButton(
                       onPressed: () {
                         EditPlaylistPopup.showEditPlaylistPopUp(context, false, asyncSnapshot.data!['id'], asyncSnapshot.data!['name'], asyncSnapshot.data!['comment'], asyncSnapshot.data!['public'],null,playlistChangedNotifier);

@@ -59,6 +59,20 @@ class PlaylistGrid extends StatelessWidget {
         return Center(child: Text("No songs"));
       }
     }
+    List<Map> favoritePlaylists = [];
+    for (Map playlist in playlistList) {
+      if (databaseControl.getPlaylistFavoriteStatus(playlist['id']) == true) {
+        playlist['favorite'] = true;
+        favoritePlaylists.add(playlist);
+      }
+    }
+    playlistList.removeWhere((item) {
+      if (favoritePlaylists.contains(item)) {
+        return true;
+      }
+      return false;
+    });
+    playlistList.insertAll(0, favoritePlaylists);
     if (sliver == true) {
       if (filterNotifier != null) {
         return ValueListenableBuilder(

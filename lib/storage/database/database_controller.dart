@@ -66,8 +66,20 @@ class DatabaseController {
 
   //navidrome mode library database
 
-  void changePlaylistFavoriteStatus(int playlistID) {
+  bool getPlaylistFavoriteStatus(String playlistID) {
+    print("hi 2");
+    int serverID = settingsControl.loadSetting('selectedServer');
+    return _navidrome_mode_library_db.getPlaylistFavoriteStatus(serverID, playlistID);
+  }
 
+  void changePlaylistFavoriteStatus(String playlistID) {
+    bool isFavorite = getPlaylistFavoriteStatus(playlistID);
+    int serverID = settingsControl.loadSetting('selectedServer');
+    if (isFavorite == true) {
+      _navidrome_mode_library_db.unfavoritePlaylist(serverID, playlistID);
+    } else {
+      _navidrome_mode_library_db.favoritePlaylist(serverID, playlistID);
+    }
   }
 
   //servers database
