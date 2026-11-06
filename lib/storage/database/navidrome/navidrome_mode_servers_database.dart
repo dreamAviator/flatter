@@ -48,7 +48,7 @@ class ServersDatabase {
     ''');
   }
 
-  List<List> getServers() {
+  List<List> getServers() {//TODO:transform to map
     ResultSet serverInfosMap = db.select('''
       SELECT id,name,url FROM servers
     ''');

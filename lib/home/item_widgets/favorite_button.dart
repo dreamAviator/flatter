@@ -8,10 +8,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../Riverpod/riverpod_manager.dart';
 
 class FavoriteButton extends StatelessWidget {
-  const FavoriteButton({super.key,required this.songID,required this.albumID,required this.artistID});
+  const FavoriteButton({super.key,required this.songID,required this.albumID,required this.artistID,this.playlistID,this.playlistUpdateNotifier});
   final String? songID;
   final String? albumID;
   final String? artistID;
+  final String? playlistID;
+  final UpdateNotifier? playlistUpdateNotifier;
 
   Icon decideIcon(bool? value) {
     if (value == true) {
@@ -23,21 +25,20 @@ class FavoriteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final riverpodManager = RiverpodManager();
     final SubsonicService subsonicService = SubsonicService();
     final UpdateNotifier updateNotifier = UpdateNotifier();
-    if (songID == null && albumID == null && artistID == null) {
+    if (songID == null && albumID == null && artistID == null && playlistID == null) {
+      print("error 1 or smth");
       return const IconButton(
         onPressed: null,
         icon: Icon(Icons.error),
       );
     }
-    List<String?> ids = [songID,albumID,artistID];
     return ListenableBuilder(
       listenable: updateNotifier,
       builder: (context, child) {
         return FutureBuilder(
-          future: subsonicService.checkStarred(songID, albumID, artistID),
+          future: subsonicService.checkStarred(songID, albumID, artistID, playlistID),
           builder: (context,asyncSnapshot) {
             if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
               if (asyncSnapshot.data == null) {
@@ -52,10 +53,13 @@ class FavoriteButton extends StatelessWidget {
                 onPressed: () {
                   if (asyncSnapshot.data! == true) {
                     print("was unstarred");
-                    subsonicService.starUnstar(false, songID, albumID, artistID);
+                    subsonicService.starUnstar(false, songID, albumID, artistID, playlistID);
                   } else {
                     print("was starred");
-                    subsonicService.starUnstar(true, songID, albumID, artistID);
+                    subsonicService.starUnstar(true, songID, albumID, artistID, playlistID);
+                  }
+                  if (playlistUpdateNotifier != null) {
+                    playlistUpdateNotifier?.notify();
                   }
                   updateNotifier.notify();
                 },
@@ -80,6 +84,7 @@ class FavoriteButton extends StatelessWidget {
         );
       }
     );
+    /*
     return Consumer(
       builder: (context,ref,child) {
         final favoriteStatus = ref.watch(riverpodManager.favoriteStatusProvider(ids));
@@ -110,5 +115,7 @@ class FavoriteButton extends StatelessWidget {
         );
       },
     );
+
+     */
   }
 }

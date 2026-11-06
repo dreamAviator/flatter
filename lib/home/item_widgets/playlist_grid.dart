@@ -19,6 +19,7 @@ class PlaylistGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    OtherScripts usefulScripts = OtherScripts();
     List<dynamic> playlistList = [];
     if (playlistListNullable != null && playlistListNullable?.isEmpty == false) {
       for (Map playlist in playlistListNullable!) {
@@ -59,6 +60,7 @@ class PlaylistGrid extends StatelessWidget {
         return Center(child: Text("No songs"));
       }
     }
+    playlistList = usefulScripts.checkAndSortPlaylistList(playlistList);
     if (sliver == true) {
       if (filterNotifier != null) {
         return ValueListenableBuilder(
