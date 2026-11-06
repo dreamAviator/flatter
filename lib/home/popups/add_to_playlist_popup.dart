@@ -1,14 +1,16 @@
 import 'package:flatter/home/popups/edit_playlist_popup.dart';
 import 'package:flatter/main.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../Riverpod/riverpod_manager.dart';
 
-class AddToPlaylistPopup {
+class AddToPlaylistPopup {//TODO:hier suchen
   static void showAddToPlaylistPopup(BuildContext context,List<String> songIDs) {
     final riverpodManager = RiverpodManager();
+    OtherScripts usefulScripts = OtherScripts();
     bool skipDuplicates = settingsControl.settingsMap['addToPlaylistsSkipDuplicates'];
     bool selectMultiple = false;
     Map<dynamic,bool> selectedPlaylistsMap = {};
@@ -29,7 +31,8 @@ class AddToPlaylistPopup {
               }//hier überlegen, ob das ding offen bleiben soll, bis es hinzugefügt wurde
               Navigator.of(context).pop();
             }
-            Widget buildPlaylistColumn(context,List<dynamic> playlistList,WidgetRef ref) {//vlt einen schalter machen, dass man mehrere playlists auswählen kann
+            Widget buildPlaylistColumn(context,List<dynamic> playlistList,WidgetRef ref) {//vlt einen schalter machen, dass man mehrere playlists auswählen kann//ist glaube ich schon da
+              playlistList = usefulScripts.checkAndSortPlaylistList(playlistList);
               List<Widget> widgetList = [];
               if (selectMultiple == false) {
                 for (Map<dynamic,dynamic> playlist in playlistList) {

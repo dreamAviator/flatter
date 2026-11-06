@@ -111,7 +111,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       },
                       icon: const Icon(Icons.play_arrow),
                     ),
-                    FavoriteButton(songID: null, albumID: null, artistID: null, playlistID: widget.playlistID,playlistUpdateNotifier: playlistChangedNotifier,),
+                    FavoriteButton(songID: null, albumID: null, artistID: null, playlistID: widget.playlistID,playlistUpdateNotifier: playlistChangedNotifier,),//TODO:in anderen playlists screens müssen die favorite playlists auch oben sein
                     if (asyncSnapshot.data!['owner'] == databaseControl.getCurrentUsername()) IconButton(
                       onPressed: () {
                         EditPlaylistPopup.showEditPlaylistPopUp(context, false, asyncSnapshot.data!['id'], asyncSnapshot.data!['name'], asyncSnapshot.data!['comment'], asyncSnapshot.data!['public'],null,playlistChangedNotifier);

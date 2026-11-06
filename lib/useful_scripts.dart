@@ -5,6 +5,8 @@ import 'package:deepcopy/deepcopy.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:toml/toml.dart';
 
+import 'main.dart';
+
 class SubsonicJustAudioCompatibility {
 
   List<MediaItem> subsonicSongListToMediaItemList(List<dynamic> songList) {
@@ -68,6 +70,24 @@ class OtherScripts {
 
   Future<List<MediaItem>> idListToQueue(List<String> idList) async {
     return [];
+  }
+
+  List<dynamic> checkAndSortPlaylistList(List<dynamic> playlistList) {
+    List<Map> favoritePlaylists = [];
+    for (Map playlist in playlistList) {
+      if (databaseControl.getPlaylistFavoriteStatus(playlist['id']) == true) {
+        playlist['favorite'] = true;
+        favoritePlaylists.add(playlist);
+      }
+    }
+    playlistList.removeWhere((item) {
+      if (favoritePlaylists.contains(item)) {
+        return true;
+      }
+      return false;
+    });
+    playlistList.insertAll(0, favoritePlaylists);
+    return playlistList;
   }
 }
 
