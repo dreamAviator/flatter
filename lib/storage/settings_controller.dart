@@ -38,6 +38,7 @@ class SettingsController {
     'songSearchResultsCount':10,
     'albumSearchResultsCount':10,
     'artistSearchResultsCount':30,
+    'playlistSearchResultsCount':10,
     'mode':"navidrome",
     'songMenuActionOrder':{
       'mainMenu':['playNow','addNext','enqueue','addToPlaylist','removeFromPlaylist'],

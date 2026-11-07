@@ -32,7 +32,7 @@ class AddToPlaylistPopup {//TODO:hier suchen
               Navigator.of(context).pop();
             }
             Widget buildPlaylistColumn(context,List<dynamic> playlistList,WidgetRef ref) {//vlt einen schalter machen, dass man mehrere playlists auswählen kann//ist glaube ich schon da
-              playlistList = usefulScripts.checkAndSortPlaylistList(playlistList);
+              playlistList = usefulScripts.favoriteCheckAndSortPlaylistList(playlistList);
               List<Widget> widgetList = [];
               if (selectMultiple == false) {
                 for (Map<dynamic,dynamic> playlist in playlistList) {

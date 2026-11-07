@@ -60,7 +60,7 @@ class PlaylistGrid extends StatelessWidget {
         return Center(child: Text("No songs"));
       }
     }
-    playlistList = usefulScripts.checkAndSortPlaylistList(playlistList);
+    playlistList = usefulScripts.favoriteCheckAndSortPlaylistList(playlistList);
     if (sliver == true) {
       if (filterNotifier != null) {
         return ValueListenableBuilder(

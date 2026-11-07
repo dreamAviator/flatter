@@ -15,59 +15,9 @@ class SearchAlbumScreen extends StatelessWidget {
 
   final String query;
 
-  Widget buildAlbumGrid(BuildContext context,List<dynamic>? albumsNullable,double screenWidth) {
-    //hier halt das gridview, evt aus diesen imagecards
-    //idk ob gridview.builder der call ist oder besser gesagt wann das nicht der call ist :shrug:
-    List<dynamic> albums = [];
-    if (albumsNullable == null || albumsNullable.isEmpty) {
-      return const Text("No albums");
-    }
-    for (var value in albumsNullable) {
-      albums.add(value);
-    }
-    List<Widget> widgetList = [];
-    for (Map<dynamic,dynamic> album in albums) {
-      widgetList.add(
-        Card(
-          clipBehavior: Clip.hardEdge,
-          child: InkWell(
-            splashColor: Colors.blue.withAlpha(30),
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: album['id'])));
-            },
-            child: Column(
-              children: [
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: CachedNetworkImage(
-                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${album['coverArt']}",
-                    progressIndicatorBuilder: (context, url, downloadProgress) => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                    errorWidget: (context,url,error) => IconButton(
-                      onPressed: () {
-                        //hier retry
-                      },
-                      icon: Icon(Icons.error),
-                    ),
-                  ),
-                ),
-                ListTile(
-                  title: Text(album['name']),
-                  subtitle: Text("Song count: ${album['songCount']}"),
-                  trailing: ItemMenus(context).albumMenuList(album),
-                ),
-              ],
-            ),
-          ),
-        )
-      );
-    }
-    return MasonryGrid(column: (screenWidth / 175).toInt(),children: widgetList);
-  }
-
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.sizeOf(context);
-    RiverpodManager riverpodManager = RiverpodManager();
     return Scaffold(
       appBar: AppBar(
         title: const Text("All albums"),
@@ -78,16 +28,18 @@ class SearchAlbumScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
         ),
       ),
-      body: Consumer(
-        builder: (context,ref,child) {
-          final fullSearchResults = ref.watch(riverpodManager.fullSearchProvider(query));
-          return switch (fullSearchResults) {
-            AsyncValue(:final value?) => AlbumGrid(albumListNullable: value['album'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: false),
-            AsyncValue(error: != null) => const Text("error"),
-            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-          };
+      body: FutureBuilder(
+        future: subsonicService.fullSearch(query),
+        builder: (BuildContext context,asyncSnapshot) {
+          if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+            return AlbumGrid(albumListNullable: asyncSnapshot.data?['album'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: false);
+          } else if (asyncSnapshot.hasError && asyncSnapshot.connectionState == ConnectionState.done) {
+            return Center(child: Text("Error"));
+          } else {
+            return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+          }
         },
-      ),
+      )
     );
   }
 }
