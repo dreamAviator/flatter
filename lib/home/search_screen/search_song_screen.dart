@@ -1,5 +1,6 @@
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/item_widgets/song_list.dart';
+import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -11,7 +12,6 @@ class SearchSongScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RiverpodManager riverpodManager = RiverpodManager();
     return Scaffold(
       appBar: AppBar(
         title: const Text("All songs"),
@@ -22,16 +22,18 @@ class SearchSongScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
         ),
       ),
-      body: Consumer(
-        builder: (context,ref,child) {
-          final fullSearchResults = ref.watch(riverpodManager.fullSearchProvider(query));
-          return switch (fullSearchResults) {
-            AsyncValue(:final value?) => SongList(songListNullable: value['song'], listView: true,sliver: false,playlistID: null,),
-            AsyncValue(error: != null) => const Text("error"),
-            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-          };
+      body: FutureBuilder(
+        future: subsonicService.fullSearch(query),
+        builder: (BuildContext context,asyncSnapshot) {
+          if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+            return SongList(songListNullable: asyncSnapshot.data?['song'], sliver: false,listView: true,playlistID: null,);
+          } else if (asyncSnapshot.hasError && asyncSnapshot.connectionState == ConnectionState.done) {
+            return Center(child: Text("Error"));
+          } else {
+            return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+          }
         },
-      ),
+      )
     );
   }
 }

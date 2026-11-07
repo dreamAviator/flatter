@@ -94,7 +94,7 @@ class RiverpodManager {
   });
 
   final searchProvider = FutureProvider.family<Map<dynamic,dynamic>,List<dynamic>>((ref,List<dynamic> searchParams) async {
-    Map<dynamic,dynamic> searchResultsMap = await subsonicService.search(searchParams[0], searchParams[1], searchParams[2], searchParams[3]);
+    Map<dynamic,dynamic> searchResultsMap = await subsonicService.search(searchParams[0], searchParams[1], searchParams[2], searchParams[3],0);
     return searchResultsMap;
   });
 
