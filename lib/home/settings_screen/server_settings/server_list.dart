@@ -1,5 +1,6 @@
 import 'package:flatter/main.dart';
 import 'package:flatter/home/settings_screen/server_settings/server_menu.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -9,112 +10,102 @@ import '../../../Riverpod/riverpod_manager.dart';
 import 'add_server_popup.dart';
 
 class ServerList extends StatelessWidget {
-  const ServerList({super.key, required this.riverpodManager});
-  final RiverpodManager riverpodManager;
+  const ServerList({super.key, required this.updateNotifier});
+  final UpdateNotifier updateNotifier;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context,ref,child) {
-        final serverWidgetList = ref.watch(riverpodManager.serverListProvider);
-        return Center(
-          child: Row(
-            children: [
-              switch (serverWidgetList) {
-                AsyncValue(:final value?) => Expanded(//primary false, shrinkwrap true, scrolldirection axis.vertical
-                  child: ListView.builder(
-                    itemCount: value.length,
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      void deleteServer(int id) {
-                        databaseControl.deleteServer(id);
-                        ref.invalidate(riverpodManager.serverListProvider);
-                      }
-                      void editServer(int id) {
-                        List<String> serverInfo = databaseControl.getServerByID(id);
-                        AddServerPopup.showAddServerPopUp(context, serverInfo[3], serverInfo[0], serverInfo[1], serverInfo[2], id, riverpodManager);
-                      }
-                      int currentlySelectedServer = settingsControl.loadSetting('selectedServer');
-                      if (currentlySelectedServer == value[index][0]) {
-                        return Slidable(
-                          startActionPane: ActionPane(
-                            motion: DrawerMotion(),
-                            children: [
-                              SlidableAction(//farbe noch festlegen
-                                onPressed: (_) => (editServer(value[index][0])),
-                                icon: Icons.edit,
-                                label: 'Edit',
-                              ),
-                            ],
-                          ),
-                          endActionPane: ActionPane(
-                            motion: DrawerMotion(),
-                            children: [
-                              SlidableAction(//stattdessen vielleicht dismissible machen und nicht mit bestätigung. oder aber in den einstellungen festlegen lassen
-                                onPressed: (_) => (deleteServer(value[index][0])),
-                                icon: Icons.delete,
-                                label: 'Delete',
-                                backgroundColor: Colors.red,
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
-                            leading: const Icon(Icons.check),
-                            title: Text(value[index][1]),
-                            subtitle: Text(value[index][2]),
-                            trailing: ServerMenu(context,ref,value[index][0],riverpodManager).serverMenu(),
-                            onTap: () {
-                              databaseControl.selectServer(value[index][0]);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        );
-                      } else {
-                        return Slidable(
-                          startActionPane: ActionPane(
-                            motion: DrawerMotion(),
-                            children: [
-                              SlidableAction(//farbe noch festlegen
-                                onPressed: (_) => (editServer(value[index][0])),
-                                icon: Icons.edit,
-                                label: 'Edit',
-                              ),
-                            ],
-                          ),
-                          endActionPane: ActionPane(
-                            motion: DrawerMotion(),
-                            children: [
-                              SlidableAction(//stattdessen vielleicht dismissible machen und nicht mit bestätigung. oder aber in den einstellungen festlegen lassen
-                                onPressed: (_) => (deleteServer(value[index][0])),
-                                icon: Icons.delete,
-                                label: 'Delete',
-                                backgroundColor: Colors.red,
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
-                            leading: const Icon(Icons.storage),
-                            title: Text(value[index][1]),
-                            subtitle: Text(value[index][2]),
-                            trailing: ServerMenu(context,ref,value[index][0],riverpodManager).serverMenu(),
-                            onTap: () {
-                              databaseControl.selectServer(value[index][0]);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        );
-                      }
-                    },
-                  ),
+    return ListenableBuilder(
+      listenable: updateNotifier,
+      builder: (context, child) {
+        List<List> serverList = databaseControl.getServers();
+        return ListView.builder(
+          itemCount: serverList.length,
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          primary: false,
+          itemBuilder: (BuildContext context, int index) {
+            void deleteServer(int id) {
+              databaseControl.deleteServer(id);
+              updateNotifier.notify();
+            }
+            void editServer(int id) {
+              List<String> serverInfo = databaseControl.getServerByID(id);
+              AddServerPopup.showAddServerPopUp(context, serverInfo[3], serverInfo[0], serverInfo[1], serverInfo[2], id, updateNotifier);
+            }
+            int currentlySelectedServer = settingsControl.loadSetting('selectedServer');
+            if (currentlySelectedServer == serverList[index][0]) {
+              return Slidable(
+                startActionPane: ActionPane(
+                  motion: DrawerMotion(),
+                  children: [
+                    SlidableAction(//farbe noch festlegen
+                      onPressed: (_) => (editServer(serverList[index][0])),
+                      icon: Icons.edit,
+                      label: 'Edit',
+                    ),
+                  ],
                 ),
-                AsyncValue(error: != null) => const Text("Error"),
-                AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-              }
-            ],
-          ),
+                endActionPane: ActionPane(
+                  motion: DrawerMotion(),
+                  children: [
+                    SlidableAction(//stattdessen vielleicht dismissible machen und nicht mit bestätigung. oder aber in den einstellungen festlegen lassen
+                      onPressed: (_) => (deleteServer(serverList[index][0])),
+                      icon: Icons.delete,
+                      label: 'Delete',
+                      backgroundColor: Colors.red,
+                    ),
+                  ],
+                ),
+                child: ListTile(
+                  leading: const Icon(Icons.check),
+                  title: Text(serverList[index][1]),
+                  subtitle: Text(serverList[index][2]),
+                  trailing: ServerMenu(context,serverList[index][0],updateNotifier).serverMenu(),
+                  onTap: () {
+                    databaseControl.selectServer(serverList[index][0]);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              );
+            } else {
+              return Slidable(
+                startActionPane: ActionPane(
+                  motion: DrawerMotion(),
+                  children: [
+                    SlidableAction(//farbe noch festlegen
+                      onPressed: (_) => (editServer(serverList[index][0])),
+                      icon: Icons.edit,
+                      label: 'Edit',
+                    ),
+                  ],
+                ),
+                endActionPane: ActionPane(
+                  motion: DrawerMotion(),
+                  children: [
+                    SlidableAction(//stattdessen vielleicht dismissible machen und nicht mit bestätigung. oder aber in den einstellungen festlegen lassen
+                      onPressed: (_) => (deleteServer(serverList[index][0])),
+                      icon: Icons.delete,
+                      label: 'Delete',
+                      backgroundColor: Colors.red,
+                    ),
+                  ],
+                ),
+                child: ListTile(
+                  leading: const Icon(Icons.storage),
+                  title: Text(serverList[index][1]),
+                  subtitle: Text(serverList[index][2]),
+                  trailing: ServerMenu(context,serverList[index][0],updateNotifier).serverMenu(),
+                  onTap: () {
+                    databaseControl.selectServer(serverList[index][0]);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              );
+            }
+          },
         );
-      },
+      }
     );
   }
 }

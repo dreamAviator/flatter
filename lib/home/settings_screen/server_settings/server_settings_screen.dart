@@ -1,6 +1,7 @@
 import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/settings_screen/server_settings/add_server_popup.dart';
 import 'package:flatter/home/settings_screen/server_settings/server_list.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 
 class ServerSettingsScreen extends StatelessWidget {
@@ -8,7 +9,7 @@ class ServerSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RiverpodManager riverpodManager = RiverpodManager();
+    final UpdateNotifier updateNotifier = UpdateNotifier();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Server Settings"),
@@ -26,11 +27,11 @@ class ServerSettingsScreen extends StatelessWidget {
             leading: const Icon(Icons.add),
             title: const Text("Add Server"),
             onTap: () {
-              AddServerPopup.showAddServerPopUp(context,null,null,null,null,null,riverpodManager);
+              AddServerPopup.showAddServerPopUp(context,null,null,null,null,null,updateNotifier);
             },
           ),
           const Divider(),
-          ServerList(riverpodManager: riverpodManager,),
+          ServerList(updateNotifier: updateNotifier,),
         ],
       ),
     );

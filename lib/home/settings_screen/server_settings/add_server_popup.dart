@@ -1,4 +1,5 @@
 import 'package:flatter/main.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -8,7 +9,8 @@ import '../../../Riverpod/riverpod_manager.dart';
 
 
 class AddServerPopup {
-  static void showAddServerPopUp(BuildContext context,String? serverName,String? serverURL,String? serverUsername,String? serverPassword,int? id, RiverpodManager riverpodManager) {
+  static void showAddServerPopUp(BuildContext context,String? serverName,String? serverURL,String? serverUsername,String? serverPassword,int? id,UpdateNotifier updateNotifier) {
+    final RiverpodManager riverpodManager = RiverpodManager();
     String title = "Add Server";
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     TextEditingController serverNameController = TextEditingController();
@@ -41,8 +43,8 @@ class AddServerPopup {
                     databaseControl.deleteServer(id);
                   }
                   databaseControl.addServer(serverNameController.text, serverURLcontroller.text, serverUsernameController.text,serverPasswordController.text);
+                  updateNotifier.notify();
                   Navigator.of(context).pop();
-                  ref.invalidate(riverpodManager.serverListProvider);
                 }
               },
               child: const Text("Save"),
