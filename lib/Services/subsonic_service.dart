@@ -2,12 +2,15 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flatter/main.dart';
+import 'package:s_packages/s_packages_extra2.dart';
 
 class SubsonicService {
   bool checkStarredBlocked = false;
   bool rateLock = false;
+  OtherScripts otherScripts = OtherScripts();
 
   //authentication
   String generateRandomString(int length) {
@@ -182,7 +185,7 @@ class SubsonicService {
   Future<List<dynamic>> getArtistAppearances(String id,String artistName) async {
     List<dynamic> artistAppearances = [];
     int offset = 0;
-    Map<dynamic,dynamic> searchResults = await search(artistName, 0, offset, 0);
+    Map<dynamic,dynamic> searchResults = await search(artistName, 0, offset, 0,0);
     while (searchResults['album'] != null) {
       for (Map<dynamic,dynamic> album in searchResults['album']) {
         if (album['artistId'] != id) {
@@ -207,7 +210,7 @@ class SubsonicService {
         }
       }
       offset = offset + 1;
-      searchResults = await search(artistName, 0, offset, 0);
+      searchResults = await search(artistName, 0, offset, 0,0);
     }
     return artistAppearances;
   }
@@ -369,14 +372,16 @@ class SubsonicService {
     }
   }
 
-  Future<Map<dynamic,dynamic>> search(String query,int artistOffset,int albumOffset,int songOffset) async {//hier search2 machen wenn opensubsonic nicht verfügbar ist
+  Future<Map<dynamic,dynamic>> search(String query,int artistOffset,int albumOffset,int songOffset,int playlistOffset) async {//hier search2 machen wenn opensubsonic nicht verfügbar ist
     List<String> url = getURL(null, null, null);
     int searchArtistCount = settingsControl.loadSetting('artistSearchResultsCount');
     int searchAlbumCount = settingsControl.loadSetting('albumSearchResultsCount');
     int searchSongCount = settingsControl.loadSetting('songSearchResultsCount');
+    int searchPlaylistCount = settingsControl.loadSetting('playlistSearchResultsCount');
     artistOffset = searchArtistCount * artistOffset;
     albumOffset = searchAlbumCount * albumOffset;
     songOffset = searchSongCount * songOffset;
+    playlistOffset = searchPlaylistCount * playlistOffset;
     final uri = Uri.parse("${url[0]}search3${url[1]}&query=$query&artistOffset=$artistOffset&albumOffset=$albumOffset&songOffset=$songOffset&artistCount=$searchArtistCount&albumCount=$searchAlbumCount&songCount=$searchSongCount");
     try {
       final data = await http.get(uri);
@@ -389,6 +394,30 @@ class SubsonicService {
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
         return {};
+      }
+      //search through playlists
+      List<dynamic> playlistList = await getPlaylists();
+      List<dynamic> filteredPlaylistList = List.from(playlistList);
+      if (query.isNotEmpty) {
+        filteredPlaylistList.removeWhere((item) {
+          if (item is Map) {
+            for (var value in item.values) {
+              if (value is String) {
+                if (value.toLowerCase().contains(query.toLowerCase())) {
+                  return false;
+                }
+              }
+            }
+          }
+          return true;
+        });
+      }
+      filteredPlaylistList = otherScripts.favoriteCheckAndSortPlaylistList(filteredPlaylistList);
+      if (filteredPlaylistList.length > searchPlaylistCount) {
+        filteredPlaylistList.length = searchPlaylistCount;
+      }
+      if (filteredPlaylistList.isNotEmpty) {
+        subsonicResponse['searchResult3']['playlist'] = filteredPlaylistList;
       }
       return subsonicResponse['searchResult3'];
     } catch(error) {

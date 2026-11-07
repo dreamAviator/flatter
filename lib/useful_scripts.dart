@@ -72,7 +72,7 @@ class OtherScripts {
     return [];
   }
 
-  List<dynamic> checkAndSortPlaylistList(List<dynamic> playlistList) {
+  List<dynamic> favoriteCheckAndSortPlaylistList(List<dynamic> playlistList) {
     List<Map> favoritePlaylists = [];
     for (Map playlist in playlistList) {
       if (databaseControl.getPlaylistFavoriteStatus(playlist['id']) == true) {

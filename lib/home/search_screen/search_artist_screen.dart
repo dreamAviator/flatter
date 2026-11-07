@@ -66,7 +66,6 @@ class SearchArtistScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.sizeOf(context);
-    RiverpodManager riverpodManager = RiverpodManager();
     return Scaffold(
       appBar: AppBar(
         title: const Text("All artists"),
@@ -77,16 +76,18 @@ class SearchArtistScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
         ),
       ),
-      body: Consumer(
-        builder: (context,ref,child) {
-          final fullSearchResults = ref.watch(riverpodManager.fullSearchProvider(query));
-          return switch (fullSearchResults) {
-            AsyncValue(:final value?) => ArtistGrid(artistListNullable: value['artist'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: false,withIndexesGiven: false,),
-            AsyncValue(error: != null) => const Text("error"),
-            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-          };
+      body: FutureBuilder(
+        future: subsonicService.fullSearch(query),
+        builder: (BuildContext context,asyncSnapshot) {
+          if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
+            return ArtistGrid(artistListNullable: asyncSnapshot.data?['artist'], crossAxisCount: (screenSize.width / 175).toInt(), sliver: false,withIndexesGiven: false,);
+          } else if (asyncSnapshot.hasError && asyncSnapshot.connectionState == ConnectionState.done) {
+            return Center(child: Text("Error"));
+          } else {
+            return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+          }
         },
-      ),
+      )
     );
   }
 }
