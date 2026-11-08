@@ -11,10 +11,12 @@ import '../other_screens/artist_screen.dart';
 import '../popups/artist_select_popup.dart';
 
 class SongTile extends StatelessWidget {
-  const SongTile({super.key,required this.song,required this.playlistID, required this.usecase});
+  const SongTile({super.key,required this.song,required this.playlistID, required this.usecase,this.updateNotifier,required this.indexInPlaylist});
   final Map song;
   final String? playlistID;
   final String? usecase;//um je nach usecase verschiedene einstellungen (bspw zu item menüs bzw slidables) zu holen
+  final UpdateNotifier? updateNotifier;
+  final int? indexInPlaylist;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +74,7 @@ class SongTile extends StatelessWidget {
           ],
         ),
         subtitle: Container(child: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(song['artist'].toString()))),
-        trailing: ItemMenus(context).songMenu(song,playlistID),
+        trailing: ItemMenus(context).songMenu(song,playlistID,updateNotifier,indexInPlaylist),
         onTap: () {
           playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(song));
         },

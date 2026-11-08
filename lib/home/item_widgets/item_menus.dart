@@ -173,10 +173,12 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: const Text("Add to playlist"),
     );
   }
-  PopupMenuEntry removeFromPlaylist(String songID,String playlistID) {
+  PopupMenuEntry removeFromPlaylist(int index,String playlistID,UpdateNotifier? updateNotifier) {
     return PopupMenuItem(
       onTap: () {
-        subsonicService.updatePlaylist(playlistID, null, null, null, null, [songID]);
+        print("heyhey removing");
+        subsonicService.updatePlaylist(playlistID, null, null, null, null, [index]);
+        updateNotifier?.notify();
       },
       child: const Text("Remove from playlist"),
     );
@@ -332,17 +334,18 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       title: const Text("Add to playlist")
     );
   }
-  ListTile removeFromPlaylistMoreSheet(String songID,String playlistID) {
+  ListTile removeFromPlaylistMoreSheet(int index,String playlistID,UpdateNotifier? updateNotifier) {
     return ListTile(
       onTap: () {
-        subsonicService.updatePlaylist(playlistID, null, null, null, null, [songID]);
+        subsonicService.updatePlaylist(playlistID, null, null, null, null, [index]);
+        updateNotifier?.notify();
       },
       title: const Text("Remove from playlist"),
     );
   }
 
   //menus//TODO:favorite/unfavorite noch hinzufügen
-  Widget songMenu(Map<dynamic,dynamic> songOld, String? playlistID) {
+  Widget songMenu(Map<dynamic,dynamic> songOld, String? playlistID,UpdateNotifier? updateNotifier, [int? indexInPlaylist]) {
     Map<dynamic,dynamic> song = songOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('songMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
@@ -365,8 +368,10 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         case 'addToPlaylist':
           menuEntryList.add(addToPlaylist([songMediaItem.id]));
         case 'removeFromPlaylist':
-          if (playlistID != null) {
-            menuEntryList.add(removeFromPlaylist(songMediaItem.id, playlistID));
+          print("heyhey playlist");
+          if (playlistID != null && indexInPlaylist != null) {
+            print("heyhey playlist id not null");
+            menuEntryList.add(removeFromPlaylist(indexInPlaylist, playlistID,updateNotifier));
           }
       }
     }
@@ -387,8 +392,9 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         case 'addToPlaylist':
           moreSheetEntryList.add(addToPlaylistMoreSheet([songMediaItem.id]));
         case 'removeFromPlaylist':
-          if (playlistID != null) {
-            moreSheetEntryList.add(removeFromPlaylistMoreSheet(songMediaItem.id, playlistID));
+          if (playlistID != null && indexInPlaylist != null) {
+            print("heyhey playlist id not null");
+            moreSheetEntryList.add(removeFromPlaylistMoreSheet(indexInPlaylist, playlistID,updateNotifier));
           }
       }
     }

@@ -363,7 +363,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       ),
                     ),
                     SliverToBoxAdapter(child: SearchStringFilterWidget(filterNotifier: filterNotifier),),
-                    SongList(songListNullable: asyncSnapshot.data!['entry'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: asyncSnapshot.data!['id'],),
+                    SongList(songListNullable: asyncSnapshot.data!['entry'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: asyncSnapshot.data!['id'],updateNotifier: playlistChangedNotifier,),
                   ],
                 ),
               );

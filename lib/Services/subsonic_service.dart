@@ -532,7 +532,7 @@ class SubsonicService {
     }
   }
 
-  Future<Map<dynamic,dynamic>> updatePlaylist(String id,String? name,String? comment,String? public,List<dynamic>? songIDsToAdd,List<String>? indexesToRemove) async {
+  Future<Map<dynamic,dynamic>> updatePlaylist(String id,String? name,String? comment,String? public,List<dynamic>? songIDsToAdd,List<int>? indexesToRemove) async {
     /*
     final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
     messenger.showSnackBar(
@@ -543,6 +543,7 @@ class SubsonicService {
     );
 
      */
+    print("heyhey subsonic service removing playlist");
     List<String> url = getURL(null,null,null);
     String request = "${url[0]}updatePlaylist${url[1]}&playlistId=$id";
     if (name != null) {
@@ -561,8 +562,11 @@ class SubsonicService {
       }
     }
     if (indexesToRemove != null) {
-      for (String songID in indexesToRemove) {
-        request = "$request&songIndexToRemove=$songID";
+      print("heyhey is not null");
+      for (int index in indexesToRemove) {
+        print("heyhey song id now");
+        print(index);
+        request = "$request&songIndexToRemove=$index";
       }
     }
     final uri = Uri.parse(request);
@@ -580,6 +584,8 @@ class SubsonicService {
         return {};
       }
       //messenger.hideCurrentSnackBar();
+      print("heyhey subsonic response now");
+      print(subsonicResponse);
       return subsonicResponse;
     } catch(error) {
       print("error 2");

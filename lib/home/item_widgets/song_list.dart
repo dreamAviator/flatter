@@ -5,12 +5,13 @@ import 'package:material_ui/material_ui.dart';
 
 
 class SongList extends StatelessWidget {
-  const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver, this.filterNotifier,required this.playlistID});
+  const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver, this.filterNotifier,required this.playlistID,this.updateNotifier});
   final List<dynamic>? songListNullable;
   final bool listView;
   final bool sliver;
   final ValueNotifier<String>? filterNotifier;
   final String? playlistID;
+  final UpdateNotifier? updateNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,7 @@ class SongList extends StatelessWidget {
               return SliverList.builder(
                 itemCount: filteredSongList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return SongTile(song: filteredSongList[index],playlistID: playlistID,usecase: null,);
+                  return SongTile(song: filteredSongList[index],playlistID: playlistID,usecase: null,updateNotifier: updateNotifier,indexInPlaylist: index,);
                   /*
                   return Slidable(
                     startActionPane: ActionPane(
@@ -131,7 +132,7 @@ class SongList extends StatelessWidget {
           return SliverList.builder(
             itemCount: songList.length,
             itemBuilder: (BuildContext context, int index) {
-              return SongTile(song: songList[index],playlistID: playlistID,usecase: null,);
+              return SongTile(song: songList[index],playlistID: playlistID,usecase: null,updateNotifier: updateNotifier,indexInPlaylist: index,);
               /*
               return Slidable(
                 startActionPane: ActionPane(
@@ -193,7 +194,7 @@ class SongList extends StatelessWidget {
         return ListView.builder(
           itemCount: songList.length,
           itemBuilder: (BuildContext context, int index) {
-            return SongTile(song: songList[index],playlistID: playlistID,usecase: null,);
+            return SongTile(song: songList[index],playlistID: playlistID,usecase: null,updateNotifier: updateNotifier,indexInPlaylist: index,);
             /*
             return Slidable(
               startActionPane: ActionPane(
@@ -253,9 +254,10 @@ class SongList extends StatelessWidget {
       if (sliver == true) {
         print("returning a  column sliver thing");
         List<Widget> widgetList = [];
+        int counter = 0;
         for (Map song in songList) {
           widgetList.add(
-            SongTile(song: song,playlistID: playlistID,usecase: null,)
+            SongTile(song: song,playlistID: playlistID,usecase: null,updateNotifier: updateNotifier,indexInPlaylist: counter,)
             /*
               Slidable(
                 startActionPane: ActionPane(
@@ -309,6 +311,7 @@ class SongList extends StatelessWidget {
               
              */
           );
+          counter = counter + 1;
         }
         return SliverToBoxAdapter(
           child: Column(children: widgetList,),
@@ -316,9 +319,10 @@ class SongList extends StatelessWidget {
       } else {
         print("returning a column");
         List<Widget> widgetList = [];
+        int counter = 0;
         for (Map song in songList) {
           widgetList.add(
-            SongTile(song: song,playlistID: playlistID,usecase: null,)
+            SongTile(song: song,playlistID: playlistID,usecase: null,updateNotifier: updateNotifier,indexInPlaylist: counter,)
             /*
               Slidable(
                 startActionPane: ActionPane(
@@ -372,6 +376,7 @@ class SongList extends StatelessWidget {
               
              */
           );
+          counter = counter + 1;
         }
         return Column(children: widgetList,);
       }
