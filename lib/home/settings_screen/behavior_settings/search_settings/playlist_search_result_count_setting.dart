@@ -3,8 +3,8 @@ import 'package:flutter_number_picker/flutter_number_picker.dart';
 
 import '../../../../main.dart';
 
-class PlaylistSearchResultSetting extends StatelessWidget {
-  const PlaylistSearchResultSetting({super.key});
+class PlaylistSearchResultCountSetting extends StatelessWidget {
+  const PlaylistSearchResultCountSetting({super.key});
 
   @override
   Widget build(BuildContext context) {

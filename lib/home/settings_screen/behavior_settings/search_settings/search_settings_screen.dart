@@ -1,4 +1,5 @@
 import 'package:flatter/home/settings_screen/behavior_settings/search_settings/clear_search_setting.dart';
+import 'package:flatter/home/settings_screen/behavior_settings/search_settings/playlist_search_result_count_setting.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/search_settings/song_search_result_count_setting.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -40,6 +41,10 @@ class SearchSettingsScreen extends StatelessWidget {
           ListTile(
             title: Text("Artist search results count"),
             trailing: ArtistSearchResultCountSetting(),
+          ),
+          ListTile(
+            title: Text("Playlist search results count"),
+            trailing: PlaylistSearchResultCountSetting(),
           )
         ],
       ),
