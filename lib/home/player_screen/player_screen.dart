@@ -195,12 +195,7 @@ class PlayerScreen extends StatelessWidget {
                       final List? artists = asyncSnapshot.data?.extras?['artists'];
                       return Column(
                         children: [
-                          TextButton(
-                            onPressed: () {
-                              //hier vlt noch was hinzufügen
-                            },
-                            child: Text(title),
-                          ),
+                          Text(title),
                           if (albumID == null) Text(album),
                           if (albumID != null) TextButton(
                             onPressed: () {
