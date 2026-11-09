@@ -1,4 +1,5 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
+import 'package:flatter/home/item_widgets/subsonic_image.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 //import 'package:flutter_staggered_grid_view_fix_branch/flutter_staggered_grid_view.dart';
@@ -69,17 +70,7 @@ class AlbumGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: CachedNetworkImage(
-                            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                            errorWidget: (context, url, error) => IconButton(
-                              onPressed: () {
-                                //hier retry
-                              },
-                              icon: Icon(Icons.error),
-                            ),
-                          ),
+                          child: SubsonicImage(coverArtID: albumOne['coverArt'])
                         ),
                         ListTile(
                           title: Text(albumOne['name']),
@@ -111,17 +102,7 @@ class AlbumGrid extends StatelessWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
-                      child: CachedNetworkImage(
-                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                        errorWidget: (context, url, error) => IconButton(
-                          onPressed: () {
-                            //hier retry
-                          },
-                          icon: Icon(Icons.error),
-                        ),
-                      ),
+                      child: SubsonicImage(coverArtID: albumOne['coverArt'])
                     ),
                     ListTile(
                       title: Text(albumOne['name']),
@@ -174,17 +155,7 @@ class AlbumGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: CachedNetworkImage(
-                            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                            errorWidget: (context, url, error) => IconButton(
-                              onPressed: () {
-                                //hier retry
-                              },
-                              icon: Icon(Icons.error),
-                            ),
-                          ),
+                          child: SubsonicImage(coverArtID: albumOne['coverArt'])
                         ),
                         ListTile(
                           title: Text(albumOne['name']),
@@ -217,17 +188,7 @@ class AlbumGrid extends StatelessWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
-                      child: CachedNetworkImage(
-                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                        errorWidget: (context, url, error) => IconButton(
-                          onPressed: () {
-                            //hier retry
-                          },
-                          icon: Icon(Icons.error),
-                        ),
-                      ),
+                      child: SubsonicImage(coverArtID: albumOne['coverArt']),
                     ),
                     ListTile(
                       title: Text(albumOne['name']),

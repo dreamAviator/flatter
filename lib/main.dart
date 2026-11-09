@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/home_navigation_bar.dart';
@@ -41,6 +42,7 @@ void main() async {
   session = await AudioSession.instance;
   await session.configure(AudioSessionConfiguration.music());
   WidgetsFlutterBinding.ensureInitialized();
+  CachedNetworkImage.logLevel = CacheManagerLogLevel.verbose;
   runApp(
     const ProviderScope(
       child: MyApp(),
