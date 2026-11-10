@@ -4,6 +4,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/item_widgets/favorite_button.dart';
+import 'package:flatter/home/item_widgets/subsonic_image.dart';
 import 'package:flatter/home/other_screens/artist_screen.dart';
 import 'package:flatter/home/popups/edit_playlist_popup.dart';
 import 'package:flatter/home/item_widgets/item_menus.dart';
@@ -139,18 +140,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                 Stack(
                                   alignment: Alignment.centerRight,
                                   children: [
-                                    CachedNetworkImage(
-                                      imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
-                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                          Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
-                                      errorWidget: (context, url, error) => IconButton(
-                                        onPressed: () {
-                                          //hier retry
-                                        },
-                                        icon: const Icon(Icons.error),
-                                      ),
-                                      height: screenSize.width,
-                                    ),
+                                    SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'],height: screenSize.width,),
                                     Stack(
                                       alignment: Alignment.centerRight,
                                       children: [
@@ -262,19 +252,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               spacing: 8,
                               children: [
-                                CachedNetworkImage(
-                                  imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${asyncSnapshot.data!['coverArt']}",
-                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                      LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                                  errorWidget: (context, url, error) => IconButton(
-                                    onPressed: () {
-                                      //hier retry
-                                    },
-                                    icon: Icon(Icons.error),
-                                  ),
-                                  width: screenSize.width / 3,
-                                  height: screenSize.width / 3,
-                                ),
+                                SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'],height: screenSize.width / 3,width: screenSize.width / 3,),
                                 Align(
                                   alignment: Alignment.center,
                                   child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge

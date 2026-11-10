@@ -7,7 +7,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SubsonicImage extends StatelessWidget {
   const SubsonicImage({super.key,required this.coverArtID,this.height,this.width});
-  final String coverArtID;
+  final String? coverArtID;
   final double? height;
   final double? width;
 
@@ -15,6 +15,9 @@ class SubsonicImage extends StatelessWidget {
   Widget build(BuildContext context) {
     SubsonicService subsonicService = SubsonicService();
     int serverID = settingsControl.loadSetting('selectedServer');
+    if (coverArtID == null) {
+      //show placeholder
+    }
     return CachedNetworkImage(
       imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=$coverArtID}",
       progressIndicatorBuilder: (context,url,downloadProgress) {
@@ -24,7 +27,8 @@ class SubsonicImage extends StatelessWidget {
         return Icon(Icons.error);//TODO:retry
       },
       cacheKey:"${serverID}_$coverArtID",
-      //TODO:height und width und so müssen da sein können
+      height: height,
+      width: width,
     );
   }
 }

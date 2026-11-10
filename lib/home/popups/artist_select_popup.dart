@@ -1,5 +1,6 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Riverpod/riverpod_manager.dart';
+import 'package:flatter/home/item_widgets/subsonic_image.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -37,17 +38,7 @@ class ArtistSelectWindow {
                           height: 150,
                           width: 150,
                           child: switch (artistDetails) {
-                            AsyncValue(:final value?) => CachedNetworkImage(
-                              imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
-                              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                              errorWidget: (context, url, error) => IconButton(
-                                onPressed: () {
-                                  //hier retry
-                                },
-                                icon: const Icon(Icons.error),
-                              ),
-                            ),
+                            AsyncValue(:final value?) => SubsonicImage(coverArtID: value['coverArt']),
                             AsyncValue(error: != null) => const Text("error"),
                             AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                           }

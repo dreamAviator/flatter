@@ -1,4 +1,5 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
+import 'package:flatter/home/item_widgets/subsonic_image.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -16,19 +17,7 @@ class PlayerImage extends StatelessWidget {
         if (coverID == null) {
           return Image.asset("lib/assets/images/empty_player.png",width: sidelength,);
         } else {
-          return CachedNetworkImage(
-            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=$coverID",
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-            errorWidget: (context, url, error) => IconButton(
-              onPressed: () {
-                //hier retry
-              },
-              icon: const Icon(Icons.error),
-            ),
-            height: sidelength,
-            width: sidelength,
-          );
+          return SubsonicImage(coverArtID: coverID,height: sidelength,width: sidelength,);
         }
       },
     );
