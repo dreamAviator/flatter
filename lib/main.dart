@@ -42,7 +42,7 @@ void main() async {
   session = await AudioSession.instance;
   await session.configure(AudioSessionConfiguration.music());
   WidgetsFlutterBinding.ensureInitialized();
-  CachedNetworkImage.logLevel = CacheManagerLogLevel.verbose;
+  //CachedNetworkImage.logLevel = CacheManagerLogLevel.verbose;
   runApp(
     const ProviderScope(
       child: MyApp(),

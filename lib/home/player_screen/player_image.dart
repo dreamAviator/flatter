@@ -17,7 +17,7 @@ class PlayerImage extends StatelessWidget {
         if (coverID == null) {
           return Image.asset("lib/assets/images/empty_player.png",width: sidelength,);
         } else {
-          return SubsonicImage(coverArtID: coverID,height: sidelength,width: sidelength,);
+          return SubsonicImage(coverArtID: coverID,height: sidelength,width: sidelength,type: "song",);
         }
       },
     );

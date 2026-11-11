@@ -139,7 +139,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
                                 Stack(
                                   alignment: Alignment.centerRight,
                                   children: [
-                                    SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'],height: screenSize.width,),
+                                    SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'],type: "artist",height: screenSize.width,),
                                     Stack(
                                       alignment: Alignment.centerRight,
                                       children: [
@@ -261,7 +261,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               spacing: 8,
                               children: [
-                                SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'],height: screenSize.width / 3,width: screenSize.width / 3,),
+                                SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'],type: "artist",height: screenSize.width / 3,width: screenSize.width / 3,),
                                 Align(
                                   alignment: Alignment.center,
                                   child: Column(

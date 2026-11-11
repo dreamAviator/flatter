@@ -70,7 +70,7 @@ class AlbumGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: SubsonicImage(coverArtID: albumOne['coverArt'])
+                          child: SubsonicImage(coverArtID: albumOne['coverArt'],type: "album")
                         ),
                         ListTile(
                           title: Text(albumOne['name']),
@@ -102,7 +102,7 @@ class AlbumGrid extends StatelessWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
-                      child: SubsonicImage(coverArtID: albumOne['coverArt'])
+                      child: SubsonicImage(coverArtID: albumOne['coverArt'],type: "album")
                     ),
                     ListTile(
                       title: Text(albumOne['name']),
@@ -155,7 +155,7 @@ class AlbumGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: SubsonicImage(coverArtID: albumOne['coverArt'])
+                          child: SubsonicImage(coverArtID: albumOne['coverArt'],type: "album")
                         ),
                         ListTile(
                           title: Text(albumOne['name']),
@@ -188,7 +188,7 @@ class AlbumGrid extends StatelessWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
-                      child: SubsonicImage(coverArtID: albumOne['coverArt']),
+                      child: SubsonicImage(coverArtID: albumOne['coverArt'],type: "album"),
                     ),
                     ListTile(
                       title: Text(albumOne['name']),

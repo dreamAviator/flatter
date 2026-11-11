@@ -38,7 +38,7 @@ class ArtistSelectWindow {
                           height: 150,
                           width: 150,
                           child: switch (artistDetails) {
-                            AsyncValue(:final value?) => SubsonicImage(coverArtID: value['coverArt']),
+                            AsyncValue(:final value?) => SubsonicImage(coverArtID: value['coverArt'],type: "artist",),
                             AsyncValue(error: != null) => const Text("error"),
                             AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
                           }

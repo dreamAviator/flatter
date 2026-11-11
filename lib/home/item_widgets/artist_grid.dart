@@ -76,7 +76,7 @@ class ArtistGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: SubsonicImage(coverArtID: item['coverArt']),
+                          child: SubsonicImage(coverArtID: item['coverArt'],type: "artist",),
                         ),
                         ListTile(
                           title: Text((item['name'])),
@@ -108,7 +108,7 @@ class ArtistGrid extends StatelessWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
-                      child: SubsonicImage(coverArtID: item['coverArt']),
+                      child: SubsonicImage(coverArtID: item['coverArt'],type: "artist",),
                     ),
                     Text(item['name']),
                   ],
@@ -156,7 +156,7 @@ class ArtistGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: SubsonicImage(coverArtID: item['coverArt']),
+                          child: SubsonicImage(coverArtID: item['coverArt'],type: "artist",),
                         ),
                         Text(item['name']),
                       ],

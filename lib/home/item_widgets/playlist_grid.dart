@@ -105,7 +105,7 @@ class PlaylistGrid extends StatelessWidget {
                         children: [
                           AspectRatio(
                             aspectRatio: 1,
-                            child: SubsonicImage(coverArtID: item['coverArt']),
+                            child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
                           ),
                           ListTile(
                             title: Text(item['name']),
@@ -131,7 +131,7 @@ class PlaylistGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: SubsonicImage(coverArtID: item['coverArt']),
+                          child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
                         ),
                         ListTile(
                           title: Text(item['name']),
@@ -167,7 +167,7 @@ class PlaylistGrid extends StatelessWidget {
                     children: [
                       AspectRatio(
                         aspectRatio: 1,
-                        child: SubsonicImage(coverArtID: item['coverArt']),
+                        child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
                       ),
                       ListTile(
                         title: Text(item['name']),
@@ -193,7 +193,7 @@ class PlaylistGrid extends StatelessWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
-                      child: SubsonicImage(coverArtID: item['coverArt']),
+                      child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
                     ),
                     ListTile(
                       title: Text(item['name']),
@@ -250,7 +250,7 @@ class PlaylistGrid extends StatelessWidget {
                         children: [
                           AspectRatio(
                             aspectRatio: 1,
-                            child: SubsonicImage(coverArtID: item['coverArt']),
+                            child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
                           ),
                           ListTile(
                             title: Text(item['name']),
@@ -276,7 +276,7 @@ class PlaylistGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: SubsonicImage(coverArtID: item['coverArt']),
+                          child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
                         ),
                         ListTile(
                           title: Text(item['name']),
@@ -312,7 +312,7 @@ class PlaylistGrid extends StatelessWidget {
                     children: [
                       AspectRatio(
                         aspectRatio: 1,
-                        child: SubsonicImage(coverArtID: item['coverArt']),
+                        child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
                       ),
                       ListTile(
                         title: Text(item['name']),
@@ -338,7 +338,7 @@ class PlaylistGrid extends StatelessWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
-                      child: SubsonicImage(coverArtID: item['coverArt']),
+                      child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
                     ),
                     ListTile(
                       title: Text(item['name']),

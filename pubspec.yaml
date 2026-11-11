@@ -119,6 +119,8 @@ flutter:
     - lib/assets/images/empty_player.png
     - lib/assets/icon/app_icon.png
     - lib/assets/images/app_logo.png
+    - lib/assets/images/navidrome-album-placeholder.webp
+    - lib/assets/images/navidrome-artist-placeholder.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

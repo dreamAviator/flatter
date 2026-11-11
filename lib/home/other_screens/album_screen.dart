@@ -127,7 +127,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                 Stack(
                                   alignment: Alignment.centerRight,
                                   children: [
-                                    SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt']),
+                                    SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'], type: "album"),
                                     Stack(
                                       alignment: Alignment.centerRight,
                                       children: [
@@ -175,7 +175,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                                           child: Column(
                                                             spacing: 8,
                                                             children: [
-                                                              SubsonicImage(coverArtID: innerAsyncSnapshot.data!['coverArt'],height: (constraints.maxWidth / 3 * 2),width: (constraints.maxWidth / 3 * 2),),
+                                                              SubsonicImage(coverArtID: innerAsyncSnapshot.data!['coverArt'],type: "artist",height: (constraints.maxWidth / 3 * 2),width: (constraints.maxWidth / 3 * 2),),
                                                               Text(innerAsyncSnapshot.data!['biography'] ?? "No biography"),
                                                             ],
                                                           ),
@@ -267,7 +267,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               spacing: 8,
                               children: [
-                                SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'],height: screenSize.width / 3,width: screenSize.width / 3,),
+                                SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'], type: "album",height: screenSize.width / 3,width: screenSize.width / 3,),
                                 Align(
                                   alignment: Alignment.center,
                                   child: SingleChildScrollView(
@@ -348,7 +348,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                                           Expanded(
                                                             child: LayoutBuilder(
                                                               builder: (BuildContext context, BoxConstraints constraints) {
-                                                                return SubsonicImage(coverArtID: innerAsyncSnapshot.data!['coverArt'],height: constraints.maxHeight,width: constraints.maxHeight,);
+                                                                return SubsonicImage(coverArtID: innerAsyncSnapshot.data!['coverArt'],type: "artist",height: constraints.maxHeight,width: constraints.maxHeight,);
                                                               },
                                                             ),
                                                           ),

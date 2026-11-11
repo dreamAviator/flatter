@@ -140,7 +140,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                 Stack(
                                   alignment: Alignment.centerRight,
                                   children: [
-                                    SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'],height: screenSize.width,),
+                                    SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'], type: "playlist",height: screenSize.width,),
                                     Stack(
                                       alignment: Alignment.centerRight,
                                       children: [
@@ -252,7 +252,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               spacing: 8,
                               children: [
-                                SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'],height: screenSize.width / 3,width: screenSize.width / 3,),
+                                SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'], type: "playlist",height: screenSize.width / 3,width: screenSize.width / 3,),
                                 Align(
                                   alignment: Alignment.center,
                                   child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
