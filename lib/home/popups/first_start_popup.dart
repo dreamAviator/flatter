@@ -10,6 +10,7 @@ class FirstStartPopup {
         return StatefulBuilder(
           builder: (context,setState) {
             return AlertDialog(
+    constraints: BoxConstraints(maxWidth: 560),
               title: const Text("First start"),
               content: Column(
                 children: [

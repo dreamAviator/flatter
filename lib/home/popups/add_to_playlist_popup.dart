@@ -31,7 +31,7 @@ class AddToPlaylistPopup {//TODO:hier suchen
               }//hier überlegen, ob das ding offen bleiben soll, bis es hinzugefügt wurde
               Navigator.of(context).pop();
             }
-            Widget buildPlaylistColumn(context,List<dynamic> playlistList,WidgetRef ref) {//vlt einen schalter machen, dass man mehrere playlists auswählen kann//ist glaube ich schon da
+            Future<Widget> buildPlaylistColumn(context,List<dynamic> playlistList) async {//vlt einen schalter machen, dass man mehrere playlists auswählen kann//ist glaube ich schon da
               playlistList = usefulScripts.favoriteCheckAndSortPlaylistList(playlistList);
               List<Widget> widgetList = [];
               if (selectMultiple == false) {
@@ -85,7 +85,8 @@ class AddToPlaylistPopup {//TODO:hier suchen
                               selectedPlaylistsMap[playlist['id']] = value!;
                             });
                             print(selectedPlaylistsMap);
-                            ref.invalidate(riverpodManager.playlistListProvider);
+                            print("heyho");
+                            //ref.invalidate(riverpodManager.playlistListProvider);
                           },
                         ),
                         title: Text(playlist['name']),
@@ -99,6 +100,7 @@ class AddToPlaylistPopup {//TODO:hier suchen
             }
 
             return AlertDialog(
+              constraints: BoxConstraints(maxWidth: 560),
               title: const Text("Add to playlist"),
               content: SingleChildScrollView(
                 child: Column(
@@ -146,16 +148,31 @@ class AddToPlaylistPopup {//TODO:hier suchen
                       },
                       child: const Text("Create new"),
                     ),
-                    Consumer(
-                      builder: (context,ref,child) {
-                        final playlistList = ref.watch(riverpodManager.playlistListProvider);
-                        return Container(
-                          child: switch (playlistList) {
-                            AsyncValue(:final value?) => buildPlaylistColumn(context, value,ref),
-                            AsyncValue(error: != null) => const Text("Error"),
-                            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                    FutureBuilder(
+                      future: subsonicService.getPlaylists(),
+                      builder: (BuildContext context,asyncSnapshot) {
+                        if (asyncSnapshot.hasData) {
+                          List<dynamic> playlistList = [];
+                          if (asyncSnapshot.data != null) {
+                            playlistList = usefulScripts.favoriteCheckAndSortPlaylistList(asyncSnapshot.data!);
                           }
-                        );
+                          return FutureBuilder(//ganzes ui mit slivern überarbeiten
+                            future: buildPlaylistColumn(context, playlistList),
+                            builder: (context, asyncSnapshot) {
+                              if (asyncSnapshot.hasData && asyncSnapshot.data != null && asyncSnapshot.connectionState == ConnectionState.done) {
+                                return asyncSnapshot.data!;
+                              } else if (asyncSnapshot.hasError) {
+                                return Text("inner error");
+                              } else {
+                                return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                              }
+                            }
+                          );
+                        } else if (asyncSnapshot.hasError) {
+                          return Text("error");
+                        } else {
+                          return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                        }
                       },
                     )
                   ]

@@ -62,6 +62,7 @@ class ArtistSelectWindow {
           );
         }
         return AlertDialog(
+    constraints: BoxConstraints(maxWidth: 560),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

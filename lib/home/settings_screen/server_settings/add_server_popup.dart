@@ -124,6 +124,7 @@ class AddServerPopup {
         return StatefulBuilder(
           builder: (context,setState) {
             return AlertDialog(
+    constraints: BoxConstraints(maxWidth: 560),
               title: Text(title),
               actions: [
                 TextButton(
