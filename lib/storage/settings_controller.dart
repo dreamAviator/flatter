@@ -73,6 +73,7 @@ class SettingsController {
     'automaticColorOverride':false,
     'isAutomaticColorAvailable':false,
     'useMaterial3':true,
+    'cacheStalePeriod':Duration(days: 7).inSeconds,
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;

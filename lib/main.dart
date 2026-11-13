@@ -16,12 +16,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 late final PlayerControls playerControl;
 //DirectoryManager directoryControl = DirectoryManager();
 //SafUtil safutil = SafUtil();
-SubsonicService subsonicService = SubsonicService();
+final SubsonicService subsonicService = SubsonicService();
 final themeUpdateNotifier = UpdateNotifier();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
 late PathProvider pathProvider;
 late final AudioSession session;
+late final DefaultCacheManager cacheManager;
+
 
 
 void main() async {
@@ -31,6 +33,11 @@ void main() async {
   await pathProvider.initialize();
   await databaseControl.initialize();
   await settingsControl.initialize();
+  cacheManager = DefaultCacheManager(
+    stalePeriod: Duration(seconds: settingsControl.loadSetting('cacheStalePeriod')),//TODO:einstellung
+    //getCacheSize für einstellung kommt in neuerer version
+    //vielleicht auch ein limit by cache size
+  );
   playerControl = await AudioService.init(
     builder: () => PlayerControls(),
     config: AudioServiceConfig(
