@@ -402,16 +402,16 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       menuEntryList.add(PopupMenuItem(
         onTap: () {
           showModalBottomSheet(
-              context: context,
-              showDragHandle: true,
-              builder: (BuildContext context) {
-                return SafeArea(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: moreSheetEntryList,
-                  ),
-                );
-              }
+            context: context,
+            showDragHandle: true,
+            builder: (BuildContext context) {
+              return SafeArea(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: moreSheetEntryList,
+                ),
+              );
+            }
           );
         },
         child: const Text("More"),

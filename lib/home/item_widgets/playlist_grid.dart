@@ -20,6 +20,11 @@ class PlaylistGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    print(MaterialLocalizations.of(context));
+    print(context.widget.runtimeType);
+    print("playlist grid 1");
+
     OtherScripts usefulScripts = OtherScripts();
     List<dynamic> playlistList = [];
     if (playlistListNullable != null && playlistListNullable?.isEmpty == false) {
@@ -67,6 +72,11 @@ class PlaylistGrid extends StatelessWidget {
         return ValueListenableBuilder(
           valueListenable: filterNotifier!,
           builder: (context,String filter,child) {
+
+            print(MaterialLocalizations.of(context));
+            print(context.widget.runtimeType);
+            print("playlist grid 2");
+
             List<dynamic> filteredPlaylistList = List.from(playlistList);
             if (filter.isNotEmpty) {
               filteredPlaylistList.removeWhere((item) {
@@ -89,6 +99,11 @@ class PlaylistGrid extends StatelessWidget {
               crossAxisCount: crossAxisCount,
               childCount: filteredPlaylistList.length,
               itemBuilder: (context, index) {
+
+                print(MaterialLocalizations.of(context));
+                print(context.widget.runtimeType);
+                print("playlist grid 3");
+
                 Map item = filteredPlaylistList[index];
                 if (onlyOwn == true) {
                   return Card(
@@ -131,7 +146,16 @@ class PlaylistGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
+                          child: Builder(
+                            builder: (context) {
+
+                              print(MaterialLocalizations.of(context));
+                              print(context.widget.runtimeType);
+                              print("playlist grid 4");
+
+                              return SubsonicImage(coverArtID: item['coverArt'], type: "playlist",);
+                            }
+                          ),
                         ),
                         ListTile(
                           title: Text(item['name']),

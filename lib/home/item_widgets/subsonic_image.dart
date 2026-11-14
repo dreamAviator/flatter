@@ -2,12 +2,11 @@ import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';//TODO:regel um überall material_ui und nicht aterila von flutter oder cupertino zu importieren
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SubsonicImage extends StatelessWidget {
-  const SubsonicImage({super.key,required this.coverArtID,this.height,this.width,this.type});
+  const SubsonicImage({super.key,required this.coverArtID,this.height,this.width,this.type,});
   final String? coverArtID;
   final double? height;
   final double? width;
@@ -15,6 +14,9 @@ class SubsonicImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(MaterialLocalizations.of(context));
+    print(context.widget.runtimeType);
+    print("subsonic image");
     UpdateNotifier updateNotifier = UpdateNotifier();
     SubsonicService subsonicService = SubsonicService();
     int serverID = settingsControl.loadSetting('selectedServer');
@@ -66,24 +68,26 @@ class SubsonicImage extends StatelessWidget {
       builder: (BuildContext context, child) {
         print(context.widget.runtimeType);
         print("context was brlp");
-        return InkWell(//gesture detector funktioniert, aber dann gibt es halt keinen inkwell
-          onLongPress: () {
-            showImageDialog(context);
-          },
-          child: CachedNetworkImage(
-            imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=$coverArtID}",
-            progressIndicatorBuilder: (context,url,downloadProgress) {
-              return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+        return Material(
+          child: InkWell(//gesture detector funktioniert, aber dann gibt es halt keinen inkwell
+            onLongPress: () {
+              showImageDialog(context);
             },
-            errorBuilder: (contetx,url,error) {
-              return Icon(Icons.error);//TODO:retry
-            },
-            cacheManager: cacheManager,
-            cacheKey:"${serverID}_$coverArtID",
-          //TODO:wie lange es gespeichert werden soll, man soll den cache leeren können, vielleicht auch für einzelne items
-            height: height,
-            width: width,
+            child: CachedNetworkImage(
+              imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=$coverArtID}",
+              progressIndicatorBuilder: (context,url,downloadProgress) {
+                return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+              },
+              errorBuilder: (contetx,url,error) {
+                return Icon(Icons.error);//TODO:retry
+              },
+              cacheManager: cacheManager,
+              cacheKey:"${serverID}_$coverArtID",
+            //TODO:wie lange es gespeichert werden soll, man soll den cache leeren können, vielleicht auch für einzelne items
+              height: height,
+              width: width,
 
+            ),
           ),
         );
       }

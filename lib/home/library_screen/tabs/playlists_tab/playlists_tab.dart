@@ -157,11 +157,17 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
     final ValueNotifier<String> filterNotifier = ValueNotifier('');
     final SubsonicService subsonicService = SubsonicService();
     final UpdateNotifier playlistChangedNotifier = UpdateNotifier();
+    print(MaterialLocalizations.of(context));
+print(context.widget.runtimeType);
+    print("playlist tab 1");
     return Stack(
       children:[
         IntrinsicSizeBuilder(
           subject: SearchStringFilterWidget(filterNotifier: filterNotifier),
           builder: (context, subjectSize,subject) {
+            print(MaterialLocalizations.of(context));
+print(context.widget.runtimeType);
+            print("playlist tab 2");
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -185,6 +191,9 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                 ListenableBuilder(
                   listenable: playlistChangedNotifier,
                   builder: (context, child) {
+                    print(MaterialLocalizations.of(context));
+print(context.widget.runtimeType);
+                    print("playlist tab 3");
                     return FutureBuilder(
                       future: subsonicService.getPlaylists(),
                       builder: (context, asyncSnapshot) {

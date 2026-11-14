@@ -37,6 +37,9 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
       currentPageIndex = 1;
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsScreen(viewModel: SettingsScreenViewmodel())));
     }
+    print(MaterialLocalizations.of(context));
+print(context.widget.runtimeType);
+    print("home navigation bar");
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {

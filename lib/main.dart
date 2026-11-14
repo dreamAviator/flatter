@@ -63,6 +63,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     Size screenSize = MediaQuery.of(context).size;
     return ListenableBuilder(
       listenable: themeUpdateNotifier,
@@ -99,7 +100,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
-                  home: const HomeNavigationRail(),
+                  home: const HomeAppLandscape(),
                 );
               } else {
                 settingsControl.changeSetting('landscapeMode', false);
@@ -113,7 +114,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
-                  home: const HomeNavigationBar(),
+                  home: const HomeAppPortrait(),
                 );
               }
             } else {
@@ -128,7 +129,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
-                  home: const HomeNavigationRail(),
+                  home: const HomeAppLandscape(),
                 );
               } else {
                 return MaterialApp(
@@ -141,7 +142,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
-                  home: const HomeNavigationBar(),
+                  home: const HomeAppPortrait(),
                 );
               }
             }
@@ -194,5 +195,23 @@ class MyApp extends StatelessWidget {
         );
       }
     );
+  }
+}
+
+class HomeAppPortrait extends StatelessWidget {
+  const HomeAppPortrait({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const HomeNavigationBar();
+  }
+}
+
+class HomeAppLandscape extends StatelessWidget {
+  const HomeAppLandscape({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const HomeNavigationRail();
   }
 }
