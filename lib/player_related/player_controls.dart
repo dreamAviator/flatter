@@ -30,7 +30,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     });
     
     if (settingsControl.loadSetting('persistentQueue') == true) {
-      print('getting queue');
+      //print('getting queue');
       customAction('loadPersistentQueue');
     }
   }
@@ -84,21 +84,21 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
   @override
   Future<void> skipToQueueItem(int index) async {
-    print("skip to queue item");
+    //print("skip to queue item");
     MediaItem item = _queueRepository.getItemAtPos(index);
-    print("hello1");
+    //print("hello1");
     _queueRepository.makeCurrent(index);
-    print("hello2");
+    //print("hello2");
     _player.seek(Duration.zero);
-    print("hello3");
+    //print("hello3");
     _player.setSource(item.id);
-    print("hello4");
+    //print("hello4");
     mediaItem.add(item);
-    print("hello5");
+    //print("hello5");
     play();
-    print("hello6");
+    //print("hello6");
     localNotDatabaseStorageController.saveQueue();
-    print("hello7");
+    //print("hello7");
   }
 
   @override
@@ -186,8 +186,8 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
           Map<dynamic,dynamic> artistDetails = await subsonicService.getArtistDetails(artistID);
           String artistName = artistDetails['name'];
           Map<dynamic,dynamic> fullSearch = await subsonicService.fullSearch(artistName);
-          print(fullSearch);
-          print("THIS WAS FULL SEARCH");
+          //print(fullSearch);
+          //print("THIS WAS FULL SEARCH");
           List<MediaItem> mediaItemList = usefulScript.subsonicSongListToMediaItemList(fullSearch['song']);
           customAction('addMultiple',{'addMultiple':{'tracks':mediaItemList,'shuffled':shuffled}});
         }

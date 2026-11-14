@@ -28,9 +28,9 @@ class LibraryTabBar extends StatelessWidget {
     final SongsTabViewModel songsTabViewModel = SongsTabViewModel();
     final AlbumsTabViewModel albumsTabViewModel = AlbumsTabViewModel();
     final ArtistsTabViewModel artistsTabViewModel = ArtistsTabViewModel();
-    print(MaterialLocalizations.of(context));
-print(context.widget.runtimeType);
-    print("tab bar");
+    ////print(MaterialLocalizations.of(context));
+////print(context.widget.runtimeType);
+    ////print("tab bar");
     return DefaultTabController(
       initialIndex: startTab,
       length: 4,

@@ -401,8 +401,8 @@ class _ArtistScreenState extends State<ArtistScreen> {
     //hier halt das gridview, evt aus diesen imagecards
     //idk ob gridview.builder der call ist oder besser gesagt wann das nicht der call ist :shrug:
     List<dynamic> albums = [];
-    print(albumsNullable);
-    print("thjs was albvumsnullable");
+    ////print(albumsNullable);
+    ////print("thjs was albvumsnullable");
     if (albumsNullable == null || albumsNullable.isEmpty) {
       return Text("No albums");
     }

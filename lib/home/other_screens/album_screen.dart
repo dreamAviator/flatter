@@ -170,7 +170,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                                   Expanded(
                                                     child: LayoutBuilder(
                                                       builder: (BuildContext context, BoxConstraints constraints) {
-                                                        print("building image");
+                                                        ////print("building image");
                                                         return SingleChildScrollView(
                                                           child: Column(
                                                             spacing: 8,

@@ -93,7 +93,7 @@ class SettingsController {
     String path = pathProvider.dataDirectory;
     path = "$path/flatter_settings.toml";
     if (await File(path).exists() == false) {
-      print("file does not exist");
+      //print("file does not exist");
       settingsDocument = TomlDocument.fromMap(defaultSettingsMap);
       File(path).writeAsString(settingsDocument.toString());
     }
@@ -101,14 +101,14 @@ class SettingsController {
     settingsMap = settingsDocument.toMap();
     defaultSettingsMap.forEach((key,value) {
       if (settingsMap[key] == null) {
-        print("key $key does not exist");
+        //print("key $key does not exist");
         settingsMap[key] = value;
       }
     });
     List keysToRemove = [];
     settingsMap.forEach((key,value) {
       if (defaultSettingsMap[key] == null) {
-        print("key $key is too much");
+        //print("key $key is too much");
         keysToRemove.add(key);
       }
     });
@@ -119,7 +119,7 @@ class SettingsController {
     if (settingsMap['firstStart'] == true) {
       firstStart();
     }
-    print(settingsMap);
+    //print(settingsMap);
   }
 
   void resetSettings() {
@@ -130,8 +130,8 @@ class SettingsController {
   }
 
   void changeSetting(String key,dynamic value) {
-    print(key);
-    print(value);
+    //print(key);
+    //print(value);
     settingsMap[key] = value;
     saveSettings();
   }

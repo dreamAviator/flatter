@@ -62,8 +62,8 @@ class ArtistGrid extends StatelessWidget {
               childCount: filteredArtistList.length,
               itemBuilder: (context, index) {
                 Map item = filteredArtistList[index];
-                print(item);
-                print("this was the item");
+                ////print(item);
+                ////print("this was the item");
                 return Card(
                   clipBehavior: Clip.hardEdge,
                   child: InkWell(
@@ -76,7 +76,7 @@ class ArtistGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: SubsonicImage(coverArtID: item['coverArt'],type: "artist",),
+                          child: SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'],type: "artist",),
                         ),
                         ListTile(
                           title: Text((item['name'])),
@@ -108,7 +108,7 @@ class ArtistGrid extends StatelessWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
-                      child: SubsonicImage(coverArtID: item['coverArt'],type: "artist",),
+                      child: SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'],type: "artist",),
                     ),
                     Text(item['name']),
                   ],
@@ -156,7 +156,7 @@ class ArtistGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: SubsonicImage(coverArtID: item['coverArt'],type: "artist",),
+                          child: SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'],type: "artist",),
                         ),
                         Text(item['name']),
                       ],

@@ -52,7 +52,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
             child: InkWell(
               splashColor: Colors.blue.withAlpha(30),
               onTap: () {
-                print("playlost tapped");
+                ////print("playlost tapped");
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
                         PlaylistScreen(playlistID: playlist['id'])));
@@ -101,7 +101,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
             child: InkWell(
               splashColor: Colors.blue.withAlpha(30),
               onTap: () {
-                print("playlist tabbed");
+                ////print("playlist tabbed");
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
                         PlaylistScreen(playlistID: playlist['id'])));
@@ -157,17 +157,17 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
     final ValueNotifier<String> filterNotifier = ValueNotifier('');
     final SubsonicService subsonicService = SubsonicService();
     final UpdateNotifier playlistChangedNotifier = UpdateNotifier();
-    print(MaterialLocalizations.of(context));
-print(context.widget.runtimeType);
-    print("playlist tab 1");
+    ////print(MaterialLocalizations.of(context));
+////print(context.widget.runtimeType);
+    ////print("playlist tab 1");
     return Stack(
       children:[
         IntrinsicSizeBuilder(
           subject: SearchStringFilterWidget(filterNotifier: filterNotifier),
           builder: (context, subjectSize,subject) {
-            print(MaterialLocalizations.of(context));
-print(context.widget.runtimeType);
-            print("playlist tab 2");
+            ////print(MaterialLocalizations.of(context));
+////print(context.widget.runtimeType);
+            ////print("playlist tab 2");
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -178,8 +178,8 @@ print(context.widget.runtimeType);
                   flexibleSpace: LayoutBuilder(
                     builder: (context, constraints) {
                       bool visible = true;
-                      print(constraints.maxHeight);
-                      print(subjectSize.height);
+                      ////print(constraints.maxHeight);
+                      ////print(subjectSize.height);
                       if (constraints.heightConstraints().maxHeight < subjectSize.height) {
                         visible = false;
                       }
@@ -191,9 +191,9 @@ print(context.widget.runtimeType);
                 ListenableBuilder(
                   listenable: playlistChangedNotifier,
                   builder: (context, child) {
-                    print(MaterialLocalizations.of(context));
-print(context.widget.runtimeType);
-                    print("playlist tab 3");
+                    ////print(MaterialLocalizations.of(context));
+////print(context.widget.runtimeType);
+                    ////print("playlist tab 3");
                     return FutureBuilder(
                       future: subsonicService.getPlaylists(),
                       builder: (context, asyncSnapshot) {

@@ -52,7 +52,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               List<dynamic>? subsonicSongList = asyncSnapshot.data!['entry'];
               List<MediaItem> mediaItemList = usefulScripts.subsonicSongListToMediaItemList(subsonicSongList ?? []);
               void playNow() {//idk maybe it's better to put the shuffled variants inside of the other functions and not as their own
-                print("executing play now");
+                ////print("executing play now");
                 playerControl.customAction('clearQueue');
                 playerControl.customAction('addMultiple',{'addMultiple': {
                   'tracks':mediaItemList,

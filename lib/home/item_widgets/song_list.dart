@@ -28,10 +28,10 @@ class SongList extends StatelessWidget {
         return const Center(child: Text("No songs"));
       }
     }
-    print("returning a non enmpty song list");
+    ////print("returning a non enmpty song list");
     if (listView == true) {
       if (sliver == true) {
-        print("returning a sliverlist.builder");
+        ////print("returning a sliverlist.builder");
         if (filterNotifier != null) {
           return ValueListenableBuilder(//vlt einstellen wo der durchsuchen darf
             valueListenable: filterNotifier!,
@@ -85,7 +85,7 @@ class SongList extends StatelessWidget {
                           label: "Play next",
                         ),
                         SlidableAction(
-                          onPressed: (_) => print("add to playlist"),
+                          onPressed: (_) => ////print("add to playlist"),
                           icon: Icons.playlist_add,
                           label: "Add to playlist",
                         ),
@@ -146,7 +146,7 @@ class SongList extends StatelessWidget {
                       label: "Play next",
                     ),
                     SlidableAction(
-                      onPressed: (_) => print("add to playlist"),
+                      onPressed: (_) => ////print("add to playlist"),
                       icon: Icons.playlist_add,
                       label: "Add to playlist",
                     ),
@@ -190,7 +190,7 @@ class SongList extends StatelessWidget {
         }
 
       } else {
-        print("returning a listview.builder");
+        ////print("returning a listview.builder");
         return ListView.builder(
           itemCount: songList.length,
           itemBuilder: (BuildContext context, int index) {
@@ -208,7 +208,7 @@ class SongList extends StatelessWidget {
                     label: "Play next",
                   ),
                   SlidableAction(
-                    onPressed: (_) => print("add to playlist"),
+                    onPressed: (_) => ////print("add to playlist"),
                     icon: Icons.playlist_add,
                     label: "Add to playlist",
                   ),
@@ -252,7 +252,7 @@ class SongList extends StatelessWidget {
       }
     } else {
       if (sliver == true) {
-        print("returning a  column sliver thing");
+        ////print("returning a  column sliver thing");
         List<Widget> widgetList = [];
         int counter = 0;
         for (Map song in songList) {
@@ -271,7 +271,7 @@ class SongList extends StatelessWidget {
                       label: "Play next",
                     ),
                     SlidableAction(
-                      onPressed: (_) => print("add to playlist"),
+                      onPressed: (_) => ////print("add to playlist"),
                       icon: Icons.playlist_add,
                       label: "Add to playlist",
                     ),
@@ -317,7 +317,7 @@ class SongList extends StatelessWidget {
           child: Column(children: widgetList,),
         );
       } else {
-        print("returning a column");
+        ////print("returning a column");
         List<Widget> widgetList = [];
         int counter = 0;
         for (Map song in songList) {
@@ -336,7 +336,7 @@ class SongList extends StatelessWidget {
                       label: "Play next",
                     ),
                     SlidableAction(
-                      onPressed: (_) => print("add to playlist"),
+                      onPressed: (_) => ////print("add to playlist"),
                       icon: Icons.playlist_add,
                       label: "Add to playlist",
                     ),

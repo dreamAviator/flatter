@@ -16,10 +16,10 @@ class _LoopButtonState extends State<LoopButton> {
     return StreamBuilder(
       stream: playerControl.playbackState.map((data) => data.repeatMode).distinct(),
       builder: (context,asyncSnapshot) {
-        print(asyncSnapshot.data);
-        print("this was data");
-        print(asyncSnapshot.hasData);
-        print(asyncSnapshot.connectionState);
+        ////print(asyncSnapshot.data);
+        ////print("this was data");
+        ////print(asyncSnapshot.hasData);
+        ////print(asyncSnapshot.connectionState);
         if (asyncSnapshot.hasData && asyncSnapshot.connectionState != ConnectionState.waiting) {
           if (asyncSnapshot.data == null) {
             return IconButton(

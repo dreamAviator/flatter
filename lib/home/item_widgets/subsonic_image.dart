@@ -3,20 +3,21 @@ import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';//TODO:regel um überall material_ui und nicht aterila von flutter oder cupertino zu importieren
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';//TODO:option um den ganzen cache zu leeren oder so irgendwo in den einstellungen. udn halt generell image cache manager einstellungen
 
 class SubsonicImage extends StatelessWidget {
-  const SubsonicImage({super.key,required this.coverArtID,this.height,this.width,this.type,});
+  const SubsonicImage({super.key,required this.coverArtID,this.height,this.width,this.type,this.prohibitLongPress});
   final String? coverArtID;
   final double? height;
   final double? width;
   final String? type;
+  final bool? prohibitLongPress;
 
   @override
   Widget build(BuildContext context) {
-    print(MaterialLocalizations.of(context));
-    print(context.widget.runtimeType);
-    print("subsonic image");
+    ////print(MaterialLocalizations.of(context));
+    ////print(context.widget.runtimeType);
+    ////print("subsonic image");
     UpdateNotifier updateNotifier = UpdateNotifier();
     SubsonicService subsonicService = SubsonicService();
     int serverID = settingsControl.loadSetting('selectedServer');
@@ -29,9 +30,9 @@ class SubsonicImage extends StatelessWidget {
             title: Text("Delete cache"),//TODO:hier auch andere actions, also zum ändern des bildes bspw
             content: SingleChildScrollView(
               child: Text('''
-            Delete the Cache for this image?
-            The image will have to be redownloaded.
-            Use this if the image is not up to date.
+Delete the Cache for this image?
+The image will have to be redownloaded.
+Use this if the image is not up to date.
           '''),
             ),
             actions: [
@@ -55,6 +56,23 @@ class SubsonicImage extends StatelessWidget {
       );
     }
 
+    Widget actualImage() {
+      return CachedNetworkImage(
+        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=$coverArtID}",
+        progressIndicatorBuilder: (context,url,downloadProgress) {
+          return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+        },
+        errorBuilder: (contetx,url,error) {
+          return Icon(Icons.error);//TODO:retry
+        },
+        cacheManager: cacheManager,
+        cacheKey:"${serverID}_$coverArtID",
+        //TODO:wie lange es gespeichert werden soll, man soll den cache leeren können, vielleicht auch für einzelne items
+        height: height,
+        width: width,
+      );
+    }
+
     if (coverArtID == null) {
       if (type == "album") {
         return Image.asset("lib/assets/images/navidrome-album-placeholder.webp",height: height,width: width,);
@@ -63,34 +81,25 @@ class SubsonicImage extends StatelessWidget {
       }
       return Image.asset("lib/assets/images/navidrome-album-placeholder.webp",height: height,width: width,);
     }
-    return ListenableBuilder(
-      listenable: updateNotifier,
-      builder: (BuildContext context, child) {
-        print(context.widget.runtimeType);
-        print("context was brlp");
-        return Material(
-          child: InkWell(//gesture detector funktioniert, aber dann gibt es halt keinen inkwell
-            onLongPress: () {
-              showImageDialog(context);
-            },
-            child: CachedNetworkImage(
-              imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=$coverArtID}",
-              progressIndicatorBuilder: (context,url,downloadProgress) {
-                return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+    if (prohibitLongPress == true) {
+      return actualImage();
+    } else {
+      return ListenableBuilder(
+        listenable: updateNotifier,
+        builder: (BuildContext context, child) {
+          ////print(context.widget.runtimeType);
+          ////print("context was brlp");
+          return Material(
+            child: InkWell(//gesture detector funktioniert, aber dann gibt es halt keinen inkwell
+              onLongPress: () {
+                showImageDialog(context);
               },
-              errorBuilder: (contetx,url,error) {
-                return Icon(Icons.error);//TODO:retry
-              },
-              cacheManager: cacheManager,
-              cacheKey:"${serverID}_$coverArtID",
-            //TODO:wie lange es gespeichert werden soll, man soll den cache leeren können, vielleicht auch für einzelne items
-              height: height,
-              width: width,
-
+              child: actualImage()
             ),
-          ),
-        );
-      }
-    );
+          );
+        }
+      );
+    }
+
   }
 }

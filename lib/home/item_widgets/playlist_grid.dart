@@ -21,17 +21,17 @@ class PlaylistGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    print(MaterialLocalizations.of(context));
-    print(context.widget.runtimeType);
-    print("playlist grid 1");
+    ////print(MaterialLocalizations.of(context));
+    ////print(context.widget.runtimeType);
+    ////print("playlist grid 1");
 
     OtherScripts usefulScripts = OtherScripts();
     List<dynamic> playlistList = [];
     if (playlistListNullable != null && playlistListNullable?.isEmpty == false) {
       for (Map playlist in playlistListNullable!) {
-        print(playlist);
+        ////print(playlist);
       }
-      print(playlistListNullable);
+      ////print(playlistListNullable);
       playlistList.addAll(playlistListNullable!);
     } else {
       if (sliver == true) {
@@ -73,9 +73,9 @@ class PlaylistGrid extends StatelessWidget {
           valueListenable: filterNotifier!,
           builder: (context,String filter,child) {
 
-            print(MaterialLocalizations.of(context));
-            print(context.widget.runtimeType);
-            print("playlist grid 2");
+            ////print(MaterialLocalizations.of(context));
+            ////print(context.widget.runtimeType);
+            ////print("playlist grid 2");
 
             List<dynamic> filteredPlaylistList = List.from(playlistList);
             if (filter.isNotEmpty) {
@@ -100,9 +100,9 @@ class PlaylistGrid extends StatelessWidget {
               childCount: filteredPlaylistList.length,
               itemBuilder: (context, index) {
 
-                print(MaterialLocalizations.of(context));
-                print(context.widget.runtimeType);
-                print("playlist grid 3");
+                ////print(MaterialLocalizations.of(context));
+                ////print(context.widget.runtimeType);
+                ////print("playlist grid 3");
 
                 Map item = filteredPlaylistList[index];
                 if (onlyOwn == true) {
@@ -111,7 +111,7 @@ class PlaylistGrid extends StatelessWidget {
                     child: InkWell(
                       splashColor: Colors.blue.withAlpha(30),
                       onTap: () {
-                        print("playlost tapped");
+                        ////print("playlost tapped");
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) =>
                                 PlaylistScreen(playlistID: item['id'],playlistChangedNotifier: playlistChangedNotifier,)));
@@ -120,7 +120,7 @@ class PlaylistGrid extends StatelessWidget {
                         children: [
                           AspectRatio(
                             aspectRatio: 1,
-                            child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
+                            child: SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'], type: "playlist",),
                           ),
                           ListTile(
                             title: Text(item['name']),
@@ -137,7 +137,7 @@ class PlaylistGrid extends StatelessWidget {
                   child: InkWell(
                     splashColor: Colors.blue.withAlpha(30),
                     onTap: () {
-                      print("playlist tabbed");
+                      ////print("playlist tabbed");
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
                               PlaylistScreen(playlistID: item['id'])));
@@ -149,11 +149,11 @@ class PlaylistGrid extends StatelessWidget {
                           child: Builder(
                             builder: (context) {
 
-                              print(MaterialLocalizations.of(context));
-                              print(context.widget.runtimeType);
-                              print("playlist grid 4");
+                              ////print(MaterialLocalizations.of(context));
+                              ////print(context.widget.runtimeType);
+                              ////print("playlist grid 4");
 
-                              return SubsonicImage(coverArtID: item['coverArt'], type: "playlist",);
+                              return SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'], type: "playlist",);
                             }
                           ),
                         ),
@@ -182,7 +182,7 @@ class PlaylistGrid extends StatelessWidget {
                 child: InkWell(
                   splashColor: Colors.blue.withAlpha(30),
                   onTap: () {
-                    print("playlost tapped");
+                    ////print("playlost tapped");
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
                             PlaylistScreen(playlistID: item['id'])));
@@ -191,7 +191,7 @@ class PlaylistGrid extends StatelessWidget {
                     children: [
                       AspectRatio(
                         aspectRatio: 1,
-                        child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
+                        child: SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'], type: "playlist",),
                       ),
                       ListTile(
                         title: Text(item['name']),
@@ -208,7 +208,7 @@ class PlaylistGrid extends StatelessWidget {
               child: InkWell(
                 splashColor: Colors.blue.withAlpha(30),
                 onTap: () {
-                  print("playlist tabbed");
+                  ////print("playlist tabbed");
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
                           PlaylistScreen(playlistID: item['id'])));
@@ -217,7 +217,7 @@ class PlaylistGrid extends StatelessWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
-                      child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
+                      child: SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'], type: "playlist",),
                     ),
                     ListTile(
                       title: Text(item['name']),
@@ -265,7 +265,7 @@ class PlaylistGrid extends StatelessWidget {
                     child: InkWell(
                       splashColor: Colors.blue.withAlpha(30),
                       onTap: () {
-                        print("playlost tapped");
+                        ////print("playlost tapped");
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) =>
                                 PlaylistScreen(playlistID: item['id'])));
@@ -274,7 +274,7 @@ class PlaylistGrid extends StatelessWidget {
                         children: [
                           AspectRatio(
                             aspectRatio: 1,
-                            child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
+                            child: SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'], type: "playlist",),
                           ),
                           ListTile(
                             title: Text(item['name']),
@@ -291,7 +291,7 @@ class PlaylistGrid extends StatelessWidget {
                   child: InkWell(
                     splashColor: Colors.blue.withAlpha(30),
                     onTap: () {
-                      print("playlist tabbed");
+                      ////print("playlist tabbed");
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
                               PlaylistScreen(playlistID: item['id'])));
@@ -300,7 +300,7 @@ class PlaylistGrid extends StatelessWidget {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
+                          child: SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'], type: "playlist",),
                         ),
                         ListTile(
                           title: Text(item['name']),
@@ -327,7 +327,7 @@ class PlaylistGrid extends StatelessWidget {
                 child: InkWell(
                   splashColor: Colors.blue.withAlpha(30),
                   onTap: () {
-                    print("playlost tapped");
+                    ////print("playlost tapped");
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
                             PlaylistScreen(playlistID: item['id'])));
@@ -336,7 +336,7 @@ class PlaylistGrid extends StatelessWidget {
                     children: [
                       AspectRatio(
                         aspectRatio: 1,
-                        child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
+                        child: SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'], type: "playlist",),
                       ),
                       ListTile(
                         title: Text(item['name']),
@@ -353,7 +353,7 @@ class PlaylistGrid extends StatelessWidget {
               child: InkWell(
                 splashColor: Colors.blue.withAlpha(30),
                 onTap: () {
-                  print("playlist tabbed");
+                  ////print("playlist tabbed");
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
                           PlaylistScreen(playlistID: item['id'])));
@@ -362,7 +362,7 @@ class PlaylistGrid extends StatelessWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
-                      child: SubsonicImage(coverArtID: item['coverArt'], type: "playlist",),
+                      child: SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'], type: "playlist",),
                     ),
                     ListTile(
                       title: Text(item['name']),

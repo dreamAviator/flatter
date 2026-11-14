@@ -176,7 +176,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
   PopupMenuEntry removeFromPlaylist(int index,String playlistID,UpdateNotifier? updateNotifier) {
     return PopupMenuItem(
       onTap: () {
-        print("heyhey removing");
+        ////print("heyhey removing");
         subsonicService.updatePlaylist(playlistID, null, null, null, null, [index]);
         updateNotifier?.notify();
       },
@@ -368,9 +368,9 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         case 'addToPlaylist':
           menuEntryList.add(addToPlaylist([songMediaItem.id]));
         case 'removeFromPlaylist':
-          print("heyhey playlist");
+          ////print("heyhey playlist");
           if (playlistID != null && indexInPlaylist != null) {
-            print("heyhey playlist id not null");
+            ////print("heyhey playlist id not null");
             menuEntryList.add(removeFromPlaylist(indexInPlaylist, playlistID,updateNotifier));
           }
       }
@@ -393,7 +393,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(addToPlaylistMoreSheet([songMediaItem.id]));
         case 'removeFromPlaylist':
           if (playlistID != null && indexInPlaylist != null) {
-            print("heyhey playlist id not null");
+            ////print("heyhey playlist id not null");
             moreSheetEntryList.add(removeFromPlaylistMoreSheet(indexInPlaylist, playlistID,updateNotifier));
           }
       }

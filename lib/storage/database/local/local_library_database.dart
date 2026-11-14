@@ -12,7 +12,7 @@ class LocalModeLibraryDatabase {
   Future<void> openDatabase() async {
     String path = pathProvider.dataDirectory;
     path = "$path/local_mode/flatter_local_mode_library.sqlite";
-    print(path);
+    ////print(path);
     db = sqlite3.open(path);
     createTables();
     return;
