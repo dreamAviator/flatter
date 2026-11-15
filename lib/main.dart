@@ -34,8 +34,8 @@ void main() async {
   await databaseControl.initialize();
   await settingsControl.initialize();
   cacheManager = DefaultCacheManager(
-    stalePeriod: Duration(seconds: settingsControl.loadSetting('cacheStalePeriod')),//TODO:einstellung
-    //getCacheSize für einstellung kommt in neuerer version
+    stalePeriod: Duration(seconds: settingsControl.loadSetting('cacheStalePeriod')),//TODO:löschen funktioniert nicht, sowohl kompletter als auch nur einzelne items
+    //TODO:getCacheSize für einstellung kommt in neuerer version (das dann in den einstellungen auch anzeigen)
     //vielleicht auch ein limit by cache size
   );
   playerControl = await AudioService.init(

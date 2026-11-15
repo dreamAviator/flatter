@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/main.dart';
@@ -15,6 +17,7 @@ class SubsonicImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //log("building for the firstv tie");
     ////print(MaterialLocalizations.of(context));
     ////print(context.widget.runtimeType);
     ////print("subsonic image");
@@ -41,6 +44,7 @@ Use this if the image is not up to date.
                 onPressed: () {
                   cacheManager.removeFile("${serverID}_$coverArtID");
                   updateNotifier.notify();
+                  //log("should have rebuilt");
                   Navigator.of(context).pop();
                 },
               ),
@@ -87,6 +91,7 @@ Use this if the image is not up to date.
       return ListenableBuilder(
         listenable: updateNotifier,
         builder: (BuildContext context, child) {
+          //log("being rebuilt");
           ////print(context.widget.runtimeType);
           ////print("context was brlp");
           return Material(

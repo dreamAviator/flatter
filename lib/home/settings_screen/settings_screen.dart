@@ -1,3 +1,4 @@
+import 'package:flatter/home/settings_screen/storage_settings/storage_settings_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/home/settings_screen/appearance_settings/appearance_settings_screen.dart';
 import 'package:flatter/home/settings_screen/behavior_settings/behaviour_settings_screen.dart';
@@ -47,43 +48,7 @@ class SettingsScreen extends StatelessWidget {
         ],
       ),
       */
-        ListView(
-          shrinkWrap: true,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.storage),
-              title: const Text("Server"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.dashboard),
-              title: const Text("Behaviour"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => BehaviourSettingsScreen()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.color_lens),
-              title: const Text("Appearance"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppearanceSettingsScreen()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text("About"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen()));
-              },
-            ),
-          ],
-        ),
+        SettingsList(),
       );
     } else {
       return Scaffold(
@@ -112,44 +77,61 @@ class SettingsScreen extends StatelessWidget {
         ],
       ),
       */
-        ListView(
-          shrinkWrap: true,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.storage),
-              title: const Text("Server"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.dashboard),
-              title: const Text("Behaviour"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => BehaviourSettingsScreen()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.color_lens),
-              title: const Text("Appearance"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppearanceSettingsScreen()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text("About"),
-              trailing: const Icon(Icons.arrow_forward),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen()));
-              },
-            ),
-          ],
-        ),
+        SettingsList(),
       );
     }
+  }
+}
+
+class SettingsList extends StatelessWidget {
+  const SettingsList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        ListTile(
+          leading: const Icon(Icons.storage),
+          title: const Text("Server"),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServerSettingsScreen()));
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.dashboard),
+          title: const Text("Behaviour"),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BehaviourSettingsScreen()));
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.color_lens),
+          title: const Text("Appearance"),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppearanceSettingsScreen()));
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.data_usage),
+          title: const Text("Storage"),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => StorageSettingsScreen()));
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.info),
+          title: const Text("About"),
+          trailing: const Icon(Icons.arrow_forward),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoScreen()));
+          },
+        ),
+      ],
+    );
   }
 }
