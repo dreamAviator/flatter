@@ -21,11 +21,11 @@ class AddToPlaylistPopup {//TODO:hier suchen
         return StatefulBuilder(
           builder: (context,setState) {
             void updatePlaylists(List<String> playlistIDs) {
-              print("updating playlist uwu");
-              print(playlistIDs);
-              print(songIDs);
-              print(skipDuplicates);
-              print("no for each the subsonic service is called");
+              //print("updating playlist uwu");
+              //print(playlistIDs);
+              //print(songIDs);
+              //print(skipDuplicates);
+              //print("no for each the subsonic service is called");
               for (String playlistID in playlistIDs) {
                 subsonicService.updatePlaylist(playlistID, null, null, null, songIDs, null);
               }//hier überlegen, ob das ding offen bleiben soll, bis es hinzugefügt wurde
@@ -56,7 +56,7 @@ class AddToPlaylistPopup {//TODO:hier suchen
                 widgetList.add(FilledButton(
                   child: const Text("Add to playlist(s)"),
                   onPressed: () {
-                    print("addging to playlists now or smth idj bleh");
+                    //print("addging to playlists now or smth idj bleh");
                     List<String> playlistIDs = [];
                     selectedPlaylistsMap.forEach((key,value) {
                       if (value == true) {
@@ -84,7 +84,7 @@ class AddToPlaylistPopup {//TODO:hier suchen
                               value ??= false;
                               selectedPlaylistsMap[playlist['id']] = value!;
                             });
-                            print(selectedPlaylistsMap);
+                            //print(selectedPlaylistsMap);
                             ref.invalidate(riverpodManager.playlistListProvider);
                           },
                         ),
@@ -127,8 +127,8 @@ class AddToPlaylistPopup {//TODO:hier suchen
                             return Switch(
                               value: selectMultiple,
                               onChanged: (bool value) {
-                                print("hehehehehe");
-                                print(value);
+                                //print("hehehehehe");
+                                //print(value);
                                 setState(() {
                                   selectMultiple = value;
                                 });

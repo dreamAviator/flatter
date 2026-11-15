@@ -7,7 +7,7 @@ class EditPlaylistPopup {
     if (newCreate == false && id == null) {
       return;
     }
-    print("builder executed");
+    //print("builder executed");
     String title = "Create playlist";
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     TextEditingController playlistNameController = TextEditingController();

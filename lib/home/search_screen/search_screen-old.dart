@@ -32,7 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
 
     void search(String value,WidgetRef ref) {
-      print(value);
+      //print(value);
       searchParams = [value,0,0,0];
       ref.invalidate(riverpodManager.searchProvider);
     }

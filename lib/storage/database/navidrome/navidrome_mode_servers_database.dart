@@ -52,7 +52,7 @@ class ServersDatabase {
     ResultSet serverInfosMap = db.select('''
       SELECT id,name,url FROM servers
     ''');
-    print(serverInfosMap);
+    ////print(serverInfosMap);
     List<List> returnList = [];
     for (Map server in serverInfosMap) {
       returnList.add([server['id'],server['name'],server['url']]);

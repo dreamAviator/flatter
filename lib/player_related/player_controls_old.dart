@@ -40,7 +40,7 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
         setSource(0);
         player.play();
       } else {
-        print("can't play lol idk sucks ig");
+        //print("can't play lol idk sucks ig");
       }
     } else {
       player.play();
@@ -115,9 +115,9 @@ class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
     List<dynamic> item = await getMetadata(file);
     item.add(current);
-    print("adding now");
-    print(position);
-    print(file);
+    //print("adding now");
+    //print(position);
+    //print(file);
     queueRepository.insertItem(item, position);
   }
 

@@ -99,7 +99,7 @@ class QueueRepository {
   void replaceQueue(List<MediaItem> newQueue) {
     _queue.clear();
     _queue.addAll(newQueue);
-    print('queue is now the old one');
+    //print('queue is now the old one');
     queueStream.add(_queue);
   }
 }

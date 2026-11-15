@@ -1,5 +1,6 @@
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/item_widgets/artist_grid.dart';
+import 'package:flatter/home/item_widgets/subsonic_image.dart';
 import 'package:flatter/home/other_screens/artist_screen.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,16 +40,7 @@ class SearchArtistScreen extends StatelessWidget {
               children: [
                 AspectRatio(
                   aspectRatio: 1,
-                  child: CachedNetworkImage(
-                    imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${artist['coverArt']}",
-                    progressIndicatorBuilder: (context, url, downloadProgress) => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                    errorWidget: (context,url,error) => IconButton(
-                      onPressed: () {
-                        //hier retry
-                      },
-                      icon: const Icon(Icons.error),
-                    ),
-                  ),
+                  child: SubsonicImage(coverArtID: artist['coverArt']),
                 ),
                 ListTile(
                   title: Text(artist['name']),
