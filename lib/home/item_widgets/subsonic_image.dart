@@ -23,7 +23,9 @@ class SubsonicImage extends StatelessWidget {
     ////print("subsonic image");
     UpdateNotifier updateNotifier = UpdateNotifier();
     SubsonicService subsonicService = SubsonicService();
-    int serverID = settingsControl.loadSetting('selectedServer');
+    final int serverID = settingsControl.loadSetting('selectedServer');
+    final String url = "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=$coverArtID}";
+    final String cacheKey = "${serverID}_$coverArtID";
 
     Future<void> showImageDialog(BuildContext context) {
       return showDialog(
@@ -43,7 +45,8 @@ Use this if the image is not up to date.
                 child: Text("Delete cache"),
                 onPressed: () {
                   cacheManager.removeFile("${serverID}_$coverArtID");
-                  updateNotifier.notify();
+                  CachedNetworkImage.evictFromCache(url,cacheKey: cacheKey);
+                  updateNotifier.notify();//does not work, vlt kompletter page rebuild? auch wenn das eigentlich unnötig viel arbeit ist
                   //log("should have rebuilt");
                   Navigator.of(context).pop();
                 },
@@ -62,7 +65,7 @@ Use this if the image is not up to date.
 
     Widget actualImage() {
       return CachedNetworkImage(
-        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=$coverArtID}",
+        imageUrl: url,
         progressIndicatorBuilder: (context,url,downloadProgress) {
           return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
         },
@@ -70,7 +73,7 @@ Use this if the image is not up to date.
           return Icon(Icons.error);//TODO:retry
         },
         cacheManager: cacheManager,
-        cacheKey:"${serverID}_$coverArtID",
+        cacheKey:cacheKey,
         //TODO:wie lange es gespeichert werden soll, man soll den cache leeren können, vielleicht auch für einzelne items
         height: height,
         width: width,

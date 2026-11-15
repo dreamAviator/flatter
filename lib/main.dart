@@ -34,7 +34,7 @@ void main() async {
   await databaseControl.initialize();
   await settingsControl.initialize();
   cacheManager = DefaultCacheManager(
-    stalePeriod: Duration(seconds: settingsControl.loadSetting('cacheStalePeriod')),//TODO:löschen funktioniert nicht, sowohl kompletter als auch nur einzelne items
+    stalePeriod: Duration(seconds: settingsControl.loadSetting('cacheStalePeriod')),
     //TODO:getCacheSize für einstellung kommt in neuerer version (das dann in den einstellungen auch anzeigen)
     //vielleicht auch ein limit by cache size
   );

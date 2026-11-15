@@ -19,6 +19,7 @@ class DeleteImageCacheSetting extends StatelessWidget {
 Delete the image cache?
 All images currently cached will have to be redownloaded.
 Affects all servers.
+Needs a restart to take effect.
           '''),
             ),
             actions: [
