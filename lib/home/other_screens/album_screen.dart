@@ -12,6 +12,7 @@ import 'package:flatter/home/item_widgets/item_menus.dart';
 import 'package:flatter/home/item_widgets/song_list.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
+import 'package:marqueer/marqueer.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -82,7 +83,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
 
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(asyncSnapshot.data!['name']),
+                  title: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(asyncSnapshot.data!['name'])),
                   actions: [//TODO:(bei den anderen screens auch) evt einige von den actions hier nach unten oder so mal schauen wie du das strukturieren willst
                     IconButton(
                       onPressed: () {

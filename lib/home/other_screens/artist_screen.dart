@@ -10,6 +10,7 @@ import 'package:flatter/home/popups/rate_button.dart';
 import 'package:flatter/home/search_screen/search_song_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
+import 'package:marqueer/marqueer.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -94,7 +95,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
 
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(asyncSnapshot.data!['name']),
+                  title: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(asyncSnapshot.data!['name'])),
                   actions: [
                     IconButton(
                       onPressed: () {
