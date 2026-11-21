@@ -18,7 +18,7 @@ extension on TomlDocument {
 
 class SettingsController {
   Map defaultSettingsMap = {
-    'startTab':1,
+    'startTab':0,
     'lastTab':1,
     'selectedServer':-1,
     'albumSortBy':'random',
@@ -35,9 +35,9 @@ class SettingsController {
     'landscapeMode':true,
     'automaticRotationOverride':false,//wrong name, it only stops the app from changing its layout, not the rotation
     'firstStart':true,//einstellung für stern oder herz für das favouriten der songs vlt
-    'songSearchResultsCount':10,
+    'songSearchResultsCount':30,
     'albumSearchResultsCount':10,
-    'artistSearchResultsCount':30,
+    'artistSearchResultsCount':10,
     'playlistSearchResultsCount':10,
     'mode':"navidrome",
     'songMenuActionOrder':{
@@ -83,11 +83,6 @@ class SettingsController {
     return;
   }
 
-  void firstStart() {
-    changeSetting('firstStart', false);
-    //sets some settings for the first start
-  }
-
   Future<void> loadSettings() async {
     TomlDocument settingsDocument;
     String path = pathProvider.dataDirectory;
@@ -116,9 +111,6 @@ class SettingsController {
       settingsMap.remove(key);
     }
     _checkAndCorrectMenuActions();
-    if (settingsMap['firstStart'] == true) {
-      firstStart();
-    }
     //print(settingsMap);
   }
 
