@@ -1,59 +1,19 @@
-import 'package:cached_network_image_ce/cached_network_image.dart';
-import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/item_widgets/subsonic_image.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:masonry_grid/masonry_grid.dart';
 
 import '../../main.dart';
 import '../other_screens/artist_screen.dart';
 
 class ArtistSelectWindow {
   static void showArtistSelectWindow(BuildContext context,List<dynamic> artistInfosLite) {
-    final riverpodManager = RiverpodManager();
-    Size screenSize = MediaQuery.of(context).size;
     showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        List<Widget> widgetList = [];
-        for (Map artist in artistInfosLite) {
-          widgetList.add(
-            Card(
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                splashColor: Colors.blue.withAlpha(30),
-                onTap: () {
-                  debugPrint('Card tapped.');
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: artist['id'])));
-                },
-                child: Column(
-                  children: [
-                    Consumer(
-                      builder: (context, ref, child) {
-                        final artistDetails = ref.watch(riverpodManager.artistDetailsProvider(artist['id']));
-                        return SizedBox(
-                          height: 150,
-                          width: 150,
-                          child: switch (artistDetails) {
-                            AsyncValue(:final value?) => SubsonicImage(coverArtID: value['coverArt'],type: "artist",),
-                            AsyncValue(error: != null) => const Text("error"),
-                            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                          }
-                        );
-                      },
-                    ),
-                    Text(artist['name']),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }
         return AlertDialog(
-    constraints: BoxConstraints(maxWidth: 560),
+          constraints: BoxConstraints(maxWidth: 560),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -66,10 +26,57 @@ class ArtistSelectWindow {
               )
             ],
           ),
-          content: MasonryGrid(
-            column: (screenSize.width / 200).toInt(),
-            children: widgetList,
-          ),
+          content: SizedBox(
+            width: double.maxFinite,
+            height: double.maxFinite,
+            child: LayoutBuilder(
+              builder: (context, BoxConstraints constraints) {
+                return MasonryGridView.count(
+                  crossAxisCount: (constraints.maxWidth / 150).toInt(),
+                  itemCount: artistInfosLite.length,
+                  itemBuilder: (context,index) {
+                    Map item = artistInfosLite[index];
+                    return Card(
+                      clipBehavior: Clip.hardEdge,
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          debugPrint('Card tapped.');
+                          Navigator.of(context).pop();
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: item['id'])));
+                        },
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: 150,
+                              height: 150,
+                              child: FutureBuilder(
+                                future: subsonicService.getArtistDetails(item['id']),
+                                builder: (context, asyncSnapshot) {
+                                  if (asyncSnapshot.hasData) {
+                                    if (asyncSnapshot.data != null) {
+                                      return SubsonicImage(coverArtID: asyncSnapshot.data!['coverArt'],type: "artist",prohibitLongPress: true,);
+                                    } else {
+                                      return Text("Error");
+                                    }
+                                  } else if (asyncSnapshot.hasError) {
+                                    return Text("Error");
+                                  } else {
+                                    return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                                  }
+                                }
+                              ),
+                            ),
+                            Text(item['name']),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
+            ),
+          )
           /*
           content: MasonryGridView.count(
             crossAxisCount: (screenSize.width / 200).toInt(),
