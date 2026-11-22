@@ -36,6 +36,7 @@ class RateButton extends StatelessWidget {
               }
 
               return AlertDialog(
+    constraints: BoxConstraints(maxWidth: 560),
                 title: Center(child: Text("Rate $name")),
                 content: Row(
                   mainAxisSize: MainAxisSize.min,

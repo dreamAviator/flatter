@@ -1,18 +1,17 @@
+import 'package:flatter/home/item_widgets/search_string_filter_widget.dart';
 import 'package:flatter/home/popups/edit_playlist_popup.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../../Riverpod/riverpod_manager.dart';
-
-class AddToPlaylistPopup {//TODO:hier suchen
+class AddToPlaylistPopup {
   static void showAddToPlaylistPopup(BuildContext context,List<String> songIDs) {
-    final riverpodManager = RiverpodManager();
     OtherScripts usefulScripts = OtherScripts();
-    bool skipDuplicates = settingsControl.settingsMap['addToPlaylistsSkipDuplicates'];
-    bool selectMultiple = false;
+    bool skipDuplicates = settingsControl.loadSetting('addToPlaylistsSkipDuplicates');//TODO: noch implementieren
+    bool selectMultiple = settingsControl.loadSetting('addToPlaylistSelectMultiple');
+    ValueNotifier<String> filterNotifier = ValueNotifier("");
+    List<dynamic>? playlistList;
     Map<dynamic,bool> selectedPlaylistsMap = {};
     showDialog(
       context: context,
@@ -20,149 +19,181 @@ class AddToPlaylistPopup {//TODO:hier suchen
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context,setState) {
+
             void updatePlaylists(List<String> playlistIDs) {
-              //print("updating playlist uwu");
-              //print(playlistIDs);
-              //print(songIDs);
-              //print(skipDuplicates);
-              //print("no for each the subsonic service is called");
               for (String playlistID in playlistIDs) {
                 subsonicService.updatePlaylist(playlistID, null, null, null, songIDs, null);
-              }//hier überlegen, ob das ding offen bleiben soll, bis es hinzugefügt wurde
-              Navigator.of(context).pop();
-            }
-            Widget buildPlaylistColumn(context,List<dynamic> playlistList,WidgetRef ref) {//vlt einen schalter machen, dass man mehrere playlists auswählen kann//ist glaube ich schon da
-              playlistList = usefulScripts.favoriteCheckAndSortPlaylistList(playlistList);
-              List<Widget> widgetList = [];
-              if (selectMultiple == false) {
-                for (Map<dynamic,dynamic> playlist in playlistList) {
-                  if (playlist['owner'] == databaseControl.getCurrentUsername()) {
-                    String public = "private";
-                    if (playlist['public'] == true) {
-                      public = "public";
-                    }
-                    widgetList.add(
-                      ListTile(
-                        title: Text(playlist['name']),
-                        subtitle: Text(public),
-                        onTap: () {
-                          updatePlaylists([playlist['id']]);
-                        },
-                      ),
-                    );
-                  }
-                }
-              } else {
-                widgetList.add(FilledButton(
-                  child: const Text("Add to playlist(s)"),
-                  onPressed: () {
-                    //print("addging to playlists now or smth idj bleh");
-                    List<String> playlistIDs = [];
-                    selectedPlaylistsMap.forEach((key,value) {
-                      if (value == true) {
-                        playlistIDs.add(key);
-                      }
-                    });
-                    updatePlaylists(playlistIDs);
-                  },
-                ));
-                for (Map<dynamic,dynamic> playlist in playlistList) {
-                  if (selectedPlaylistsMap[playlist['id']] == null) {
-                    selectedPlaylistsMap[playlist['id']] = false;
-                  }
-                  if (playlist['owner'] == databaseControl.getCurrentUsername()) {
-                    String public = "private";
-                    if (playlist['public'] == true) {
-                      public = "public";
-                    }
-                    widgetList.add(
-                      ListTile(
-                        leading: Checkbox(
-                          value: selectedPlaylistsMap[playlist['id']],
-                          onChanged: (bool? value) {
-                            setState(() {
-                              value ??= false;
-                              selectedPlaylistsMap[playlist['id']] = value!;
-                            });
-                            //print(selectedPlaylistsMap);
-                            ref.invalidate(riverpodManager.playlistListProvider);
-                          },
-                        ),
-                        title: Text(playlist['name']),
-                        subtitle: Text(public),
-                      ),
-                    );
-                  }
-                }
               }
-              return Column(children: widgetList,);
+              Navigator.of(context).pop();
             }
 
             return AlertDialog(
-              title: const Text("Add to playlist"),
-              content: SingleChildScrollView(
-                child: Column(
-                  spacing: 8,
+              constraints: BoxConstraints(maxWidth: 560),
+              title: const Text("Add to playlist(s)"),
+              content: SizedBox(
+                width: double.maxFinite,
+                height: double.maxFinite,
+                child: Stack(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
                       children: [
-                        const Text("Skip duplicates"),
-                        Switch(
-                          value: skipDuplicates,
-                          onChanged: (bool value) {
-                            setState(() {
-                              skipDuplicates = value;
-                            });
-                          },
+                        ListTile(
+                          title: const Text("Skip duplicates"),
+                          trailing: Switch(
+                            value: skipDuplicates,
+                            onChanged: (bool value) {
+                              settingsControl.changeSetting('addToPlaylistsSkipDuplicates', value);
+                              setState(() {
+                                skipDuplicates = value;
+                              });
+                            },
+                          ),
+                        ),
+                        ListTile(
+                          title: const Text("Select multiple"),
+                          trailing: Switch(
+                            value: selectMultiple,
+                            onChanged: (bool value) {
+                              settingsControl.changeSetting('addToPlaylistSelectMultiple', value);
+                              setState(() {
+                                selectMultiple = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: FutureBuilder(
+                            future: subsonicService.getPlaylists(),
+                            builder: (BuildContext context,asyncSnapshot) {
+                              if (asyncSnapshot.hasData || playlistList != null) {
+                                if (asyncSnapshot.data != null) {
+                                  playlistList = usefulScripts.favoriteCheckAndSortPlaylistList(asyncSnapshot.data!);
+                                } else {
+                                  playlistList = [];
+                                }
+                                if (playlistList != null) {
+                                  if (playlistList!.isNotEmpty) {
+                                    String owner = databaseControl.getCurrentUsername();
+                                    playlistList!.removeWhere((item) {
+                                      if (item['owner'] == owner) {
+                                        return false;
+                                      }
+                                      return true;
+                                    });
+                                    return Column(
+                                      children: [
+                                        SearchStringFilterWidget(filterNotifier: filterNotifier),
+                                        ValueListenableBuilder(
+                                          valueListenable: filterNotifier,
+                                          builder: (context, String filter, child) {
+                                            List<dynamic> filteredPlaylistList = List.from(playlistList!);
+                                            if (filter.isNotEmpty) {
+                                              filteredPlaylistList.removeWhere((item) {
+                                                if (item is Map) {
+                                                  for (var value in item.values) {
+                                                    if (value is String) {
+                                                      if (value.toLowerCase().contains(filter.toLowerCase())) {
+                                                        return false;
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                return true;
+                                              });
+                                            }
+                                            if (filteredPlaylistList.isEmpty) {
+                                              return Center(child: Text("No playlists"));
+                                            }
+                                            return Expanded(
+                                              child: ListView.builder(
+                                                itemCount: filteredPlaylistList.length,
+                                                itemBuilder: (BuildContext context,int index) {
+                                                  String publicStatus = "private";
+                                                  if (filteredPlaylistList[index]['public'] == true) {
+                                                    publicStatus = "public";
+                                                  }
+                                                  if (selectMultiple == false) {
+                                                    return ListTile(
+                                                      title: Text(filteredPlaylistList[index]['name']),
+                                                      subtitle: Text("${filteredPlaylistList[index]['songCount']} | $publicStatus"),
+                                                      onTap: () {
+                                                        updatePlaylists([filteredPlaylistList[index]['id']]);
+                                                      },
+                                                    );
+                                                  } else {
+                                                    return ListTile(
+                                                      title: Text(filteredPlaylistList[index]['name']),
+                                                      subtitle: Text("${filteredPlaylistList[index]['songCount']} | $publicStatus"),
+                                                      trailing: Checkbox(
+                                                        value: selectedPlaylistsMap[filteredPlaylistList[index]['id']] ?? false,
+                                                        onChanged: (bool? value) {
+                                                          setState(() {
+                                                            value ??= false;
+                                                            selectedPlaylistsMap[filteredPlaylistList[index]['id']] = value!;
+                                                          });
+                                                        },
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                              ),
+                                            );
+                                          }
+                                        )
+                                      ],
+                                    );
+                                  } else {
+                                    return const Text("No playlists, create a new one");
+                                  }
+                                } else {
+                                  return Text("No playlists, create a new one");
+                                }
+                              } else if (asyncSnapshot.hasError) {
+                                return const Text("Error");
+                              } else {
+                                return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                              }
+                            },
+                          ),
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text("Select multiple"),
-                        Consumer(
-                          builder: (context,ref,child) {
-                            return Switch(
-                              value: selectMultiple,
-                              onChanged: (bool value) {
-                                //print("hehehehehe");
-                                //print(value);
-                                setState(() {
-                                  selectMultiple = value;
-                                });
-                                ref.invalidate(riverpodManager.playlistListProvider);
-                              },
-                            );
+                    if (selectMultiple == false) Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FloatingActionButton(
+                          child: const Icon(Icons.add),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            EditPlaylistPopup.showEditPlaylistPopUp(context, true, null, null, null, null, songIDs);
                           },
-                        )
-                      ],
+                        ),
+                      ),
                     ),
-                    FilledButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        EditPlaylistPopup.showEditPlaylistPopUp(context, true, null, null, null, null, songIDs);
-                      },
-                      child: const Text("Create new"),
+                    if (selectMultiple == true) Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FloatingActionButton(
+                          child: const Icon(Icons.check),
+                          onPressed: () {
+                            List<String> playlistIDs = [];
+                            selectedPlaylistsMap.forEach((key,value) {
+                              if (value == true) {
+                                playlistIDs.add(key);
+                              }
+                            });
+                            updatePlaylists(playlistIDs);
+                          },
+                        ),
+                      ),
                     ),
-                    Consumer(
-                      builder: (context,ref,child) {
-                        final playlistList = ref.watch(riverpodManager.playlistListProvider);
-                        return Container(
-                          child: switch (playlistList) {
-                            AsyncValue(:final value?) => buildPlaylistColumn(context, value,ref),
-                            AsyncValue(error: != null) => const Text("Error"),
-                            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                          }
-                        );
-                      },
-                    )
-                  ]
+                  ],
                 ),
               ),
             );
-          },
+          }
         );
       }
     );

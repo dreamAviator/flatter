@@ -8,6 +8,7 @@ class ConfirmDeleteQueuePopup {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
+    constraints: BoxConstraints(maxWidth: 560),
           title: const Text("Clear queue?"),
           actions: [
             TextButton(

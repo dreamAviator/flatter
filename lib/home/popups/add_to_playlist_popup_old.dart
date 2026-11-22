@@ -1,0 +1,189 @@
+
+import 'package:flatter/home/popups/edit_playlist_popup.dart';
+import 'package:flatter/main.dart';
+import 'package:flatter/useful_scripts.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
+import '../../Riverpod/riverpod_manager.dart';
+
+class AddToPlaylistPopupOld {//TODO:hier suchen
+  static void showAddToPlaylistPopup(BuildContext context,List<String> songIDs) {
+    final riverpodManager = RiverpodManager();
+    OtherScripts usefulScripts = OtherScripts();
+    bool skipDuplicates = settingsControl.settingsMap['addToPlaylistsSkipDuplicates'];
+    bool selectMultiple = false;
+    Map<dynamic,bool> selectedPlaylistsMap = {};
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context,setState) {
+            void updatePlaylists(List<String> playlistIDs) {
+              print("updating playlist uwu");
+              print(playlistIDs);
+              print(songIDs);
+              print(skipDuplicates);
+              print("no for each the subsonic service is called");
+              for (String playlistID in playlistIDs) {
+                subsonicService.updatePlaylist(playlistID, null, null, null, songIDs, null);
+              }//hier überlegen, ob das ding offen bleiben soll, bis es hinzugefügt wurde
+              Navigator.of(context).pop();
+            }
+            Future<Widget> buildPlaylistColumn(context,List<dynamic> playlistList) async {//vlt einen schalter machen, dass man mehrere playlists auswählen kann//ist glaube ich schon da
+              playlistList = usefulScripts.favoriteCheckAndSortPlaylistList(playlistList);
+              List<Widget> widgetList = [];
+              if (selectMultiple == false) {
+                for (Map<dynamic,dynamic> playlist in playlistList) {
+                  if (playlist['owner'] == databaseControl.getCurrentUsername()) {
+                    String public = "private";
+                    if (playlist['public'] == true) {
+                      public = "public";
+                    }
+                    widgetList.add(
+                      ListTile(
+                        title: Text(playlist['name']),
+                        subtitle: Text(public),
+                        onTap: () {
+                          updatePlaylists([playlist['id']]);
+                        },
+                      ),
+                    );
+                  }
+                }
+              } else {
+                widgetList.add(FilledButton(
+                  child: const Text("Add to playlist(s)"),
+                  onPressed: () {
+                    print("addging to playlists now or smth idj bleh");
+                    List<String> playlistIDs = [];
+                    selectedPlaylistsMap.forEach((key,value) {
+                      if (value == true) {
+                        playlistIDs.add(key);
+                      }
+                    });
+                    updatePlaylists(playlistIDs);
+                  },
+                ));
+                for (Map<dynamic,dynamic> playlist in playlistList) {
+                  if (selectedPlaylistsMap[playlist['id']] == null) {
+                    selectedPlaylistsMap[playlist['id']] = false;
+                  }
+                  if (playlist['owner'] == databaseControl.getCurrentUsername()) {
+                    String public = "private";
+                    if (playlist['public'] == true) {
+                      public = "public";
+                    }
+                    widgetList.add(
+                      ListTile(
+                        leading: Checkbox(
+                          value: selectedPlaylistsMap[playlist['id']],
+                          onChanged: (bool? value) {
+                            setState(() {
+                              value ??= false;
+                              selectedPlaylistsMap[playlist['id']] = value!;
+                            });
+                            print(selectedPlaylistsMap);
+                            print("heyho");
+                            //ref.invalidate(riverpodManager.playlistListProvider);
+                          },
+                        ),
+                        title: Text(playlist['name']),
+                        subtitle: Text(public),
+                      ),
+                    );
+                  }
+                }
+              }
+              return Column(children: widgetList,);
+            }
+
+            return AlertDialog(
+              constraints: BoxConstraints(maxWidth: 560),
+              title: const Text("Add to playlist"),
+              content: SingleChildScrollView(
+                child: Column(
+                  spacing: 8,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Skip duplicates"),
+                        Switch(
+                          value: skipDuplicates,
+                          onChanged: (bool value) {
+                            setState(() {
+                              skipDuplicates = value;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Select multiple"),
+                        Consumer(
+                          builder: (context,ref,child) {
+                            return Switch(
+                              value: selectMultiple,
+                              onChanged: (bool value) {
+                                print("hehehehehe");
+                                print(value);
+                                setState(() {
+                                  selectMultiple = value;
+                                });
+                                ref.invalidate(riverpodManager.playlistListProvider);
+                              },
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                    FilledButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        EditPlaylistPopup.showEditPlaylistPopUp(context, true, null, null, null, null, songIDs);
+                      },
+                      child: const Text("Create new"),
+                    ),
+                    FutureBuilder(
+                      future: subsonicService.getPlaylists(),
+                      builder: (BuildContext context,asyncSnapshot) {
+                        if (asyncSnapshot.hasData) {
+                          List<dynamic> playlistList = [];
+                          if (asyncSnapshot.data != null) {
+                            playlistList = usefulScripts.favoriteCheckAndSortPlaylistList(asyncSnapshot.data!);
+                          }
+                          return FutureBuilder(//ganzes ui mit slivern überarbeiten
+                            future: buildPlaylistColumn(context, playlistList),
+                            builder: (context, asyncSnapshot) {
+                              if (asyncSnapshot.hasData && asyncSnapshot.data != null && asyncSnapshot.connectionState == ConnectionState.done) {
+                                return asyncSnapshot.data!;
+                              } else if (asyncSnapshot.hasError) {
+                                return Text("inner error");
+                              } else {
+                                return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                              }
+                            }
+                          );
+                        } else if (asyncSnapshot.hasError) {
+                          return Text("error");
+                        } else {
+                          return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                        }
+                      },
+                    )
+                  ]
+                ),
+              ),
+            );
+          },
+        );
+      }
+    );
+  }
+}
+
