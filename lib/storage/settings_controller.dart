@@ -32,6 +32,7 @@ class SettingsController {
     'libraryTab':0,
     'lastLibraryTab':0,
     'addToPlaylistsSkipDuplicates':true,
+    'addToPlaylistSelectMultiple':false,
     'landscapeMode':true,
     'automaticRotationOverride':false,//wrong name, it only stops the app from changing its layout, not the rotation
     'firstStart':true,//einstellung für stern oder herz für das favouriten der songs vlt

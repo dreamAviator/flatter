@@ -1,4 +1,4 @@
-/*
+
 import 'package:flatter/home/popups/edit_playlist_popup.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
@@ -8,7 +8,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../Riverpod/riverpod_manager.dart';
 
-class AddToPlaylistPopup {//TODO:hier suchen
+class AddToPlaylistPopupOld {//TODO:hier suchen
   static void showAddToPlaylistPopup(BuildContext context,List<String> songIDs) {
     final riverpodManager = RiverpodManager();
     OtherScripts usefulScripts = OtherScripts();
@@ -187,4 +187,3 @@ class AddToPlaylistPopup {//TODO:hier suchen
   }
 }
 
- */
