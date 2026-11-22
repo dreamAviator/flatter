@@ -214,7 +214,7 @@ class AddServerPopup {
                               AsyncValue(error: != null) => const Text("Error"),
                               AsyncValue() => Column(
                                 children: [
-                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                  LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                                   ElevatedButton(
                                     onPressed: null,
                                     child: const Text("Test connection"),

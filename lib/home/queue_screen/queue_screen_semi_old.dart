@@ -164,7 +164,7 @@ class _QueueScreenState extends State<QueueScreen> {
             child: switch (queue) {
               AsyncValue(:final value?) => buildQueue(ref,context,value),
               AsyncValue(error: != null) => const Text("error"),
-              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
             },
           ),
           Divider(),
@@ -188,7 +188,7 @@ class _QueueScreenState extends State<QueueScreen> {
                     onPressed: null,
                     icon: Icon(Icons.playlist_add),
                   ),
-                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                  AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                 },
                 IconButton(
                   onPressed: () {

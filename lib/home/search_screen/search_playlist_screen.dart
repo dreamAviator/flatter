@@ -52,7 +52,7 @@ class SearchPlaylistScreen extends StatelessWidget {
           } else if (asyncSnapshot.hasError && asyncSnapshot.connectionState == ConnectionState.done) {
             return Center(child: Text("Error"));
           } else {
-            return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+            return LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25);
           }
         },
       ),

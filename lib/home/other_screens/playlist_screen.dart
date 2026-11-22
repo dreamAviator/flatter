@@ -355,9 +355,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             } else {
               return Scaffold(
                 appBar: AppBar(
-                  title: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                  title: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                 ),
-                body: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),
+                body: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),),
               );
             }
           }
@@ -379,7 +379,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       AsyncValue(:final value?) => CachedNetworkImage(
                         imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                            LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                         errorWidget: (context, url, error) => IconButton(
                           onPressed: () {
                             //hier retry
@@ -389,7 +389,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         height: screenSize.width,
                       ),
                       AsyncValue(error: != null) => Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                     },
                     if (settingsControl.settingsMap['landscapeMode'] == false) switch (playlistDetails) {
                       AsyncValue(:final value?) => TextButton(
@@ -399,7 +399,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         child: Text(value['owner']),
                       ),
                       AsyncValue(error: != null) => Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                     },
                     if (settingsControl.settingsMap['landscapeMode'] == false) Row(
                       children: [
@@ -418,7 +418,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                             AsyncValue(:final value?) => CachedNetworkImage(
                               imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                               progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                  LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                  LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                               errorWidget: (context, url, error) => IconButton(
                                 onPressed: () {
                                   //hier retry
@@ -429,7 +429,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               height: screenSize.width / 3,
                             ),
                             AsyncValue(error: != null) => Text("Error"),
-                            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                           },
                           Center(
                             child: Column(
@@ -447,7 +447,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               child: switch (playlistDetails) {
                                 AsyncValue(:final value?) => Text(value['comment']),
                                 AsyncValue(error: != null) => Text("error"),
-                                AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                               },
                             ),
                           )
@@ -457,7 +457,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     switch (playlistDetails) {
                       AsyncValue(:final value?) => SongList(songListNullable: value['entry'],listView: false,sliver: false,),
                       AsyncValue(error: != null) => Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                     },
                   ],
                 ),

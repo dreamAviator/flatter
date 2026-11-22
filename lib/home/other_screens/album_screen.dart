@@ -190,7 +190,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                           } else if (innerAsyncSnapshot.hasError) {
                                             return Text("Error");
                                           } else {
-                                            return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                                            return LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25);
                                           }
                                         }
                                       ),
@@ -371,7 +371,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                                                 );
                                               } else {
                                                 return Center(
-                                                  child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                                  child: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                                                 );
                                               }
                                             }
@@ -415,9 +415,9 @@ class _AlbumScreenState extends State<AlbumScreen> {
             } else {
               return Scaffold(
                 appBar: AppBar(
-                  title: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                  title: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                 ),
-                body: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),
+                body: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),),
               );
             }
           }
@@ -439,7 +439,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                       AsyncValue(:final value?) => CachedNetworkImage(
                         imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                            LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                         errorWidget: (context, url, error) => IconButton(
                           onPressed: () {
                             //hier retry
@@ -449,7 +449,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                         height: screenSize.width,
                       ),
                       AsyncValue(error: != null) => Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                     },
                     if (settingsControl.settingsMap['landscapeMode'] == false) switch (albumDetails) {
                       AsyncValue(:final value?) => TextButton(
@@ -459,7 +459,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                         child: Text(value['artist']),
                       ),
                       AsyncValue(error: != null) => Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                     },
                     if (settingsControl.settingsMap['landscapeMode'] == false) Row(
                       children: [
@@ -475,7 +475,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                           AsyncValue(:final value?) => CachedNetworkImage(
                             imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                             progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                             errorWidget: (context, url, error) => IconButton(
                               onPressed: () {
                                 //hier retry
@@ -486,7 +486,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                             height: screenSize.width / 3,
                           ),
                           AsyncValue(error: != null) => Text("Error"),
-                          AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                          AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                         },
                         Center(
                           child: Column(
@@ -504,7 +504,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                     switch (albumDetails) {
                       AsyncValue(:final value?) => SongList(songListNullable: value['song'],listView: false,),
                       AsyncValue(error: != null) => Text("Error"),
-                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                      AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                     },
                   ],
                 ),

@@ -67,7 +67,7 @@ Use this if the image is not up to date.
       return CachedNetworkImage(
         imageUrl: url,
         progressIndicatorBuilder: (context,url,downloadProgress) {
-          return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+          return LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25);
         },
         errorBuilder: (contetx,url,error) {
           return Icon(Icons.error);//TODO:retry

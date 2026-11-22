@@ -165,14 +165,14 @@ class AddToPlaylistPopupOld {//TODO:hier suchen
                               } else if (asyncSnapshot.hasError) {
                                 return Text("inner error");
                               } else {
-                                return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                                return LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25);
                               }
                             }
                           );
                         } else if (asyncSnapshot.hasError) {
                           return Text("error");
                         } else {
-                          return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                          return LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25);
                         }
                       },
                     )

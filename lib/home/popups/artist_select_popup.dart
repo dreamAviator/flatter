@@ -62,7 +62,7 @@ class ArtistSelectWindow {
                                   } else if (asyncSnapshot.hasError) {
                                     return Text("Error");
                                   } else {
-                                    return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                                    return LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25);
                                   }
                                 }
                               ),
@@ -101,7 +101,7 @@ class ArtistSelectWindow {
                               AsyncValue(:final value?) => CachedNetworkImage(
                                 imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${value['coverArt']}",
                                 progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                    LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                                    LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                                 errorWidget: (context, url, error) => IconButton(
                                   onPressed: () {
                                     //hier retry
@@ -110,7 +110,7 @@ class ArtistSelectWindow {
                                 ),
                               ),
                               AsyncValue(error: != null) => const Text("error"),
-                              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                              AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                             }
                           );
                         },

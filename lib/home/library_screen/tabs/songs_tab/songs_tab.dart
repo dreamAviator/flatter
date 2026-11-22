@@ -173,7 +173,7 @@ class _SongsTabState extends State<SongsTab> {
                   } else if (asyncSnapshot.hasError) {
                     return Text("Error");
                   } else {
-                    return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                    return LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25);
                   }
                 }
             ),
@@ -208,7 +208,7 @@ class _SongsTabState extends State<SongsTab> {
                   } else if (asyncSnapshot.hasError) {
                     return SliverToBoxAdapter(child: Text("Error"),);
                   } else {
-                    return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
+                    return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),);
                   }
                 }
             ),

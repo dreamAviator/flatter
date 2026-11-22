@@ -43,7 +43,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
           } else if (asyncSnapshot.hasError) {
             return SliverToBoxAdapter(child: Text(asyncSnapshot.error.toString()));
           } else {
-            return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25));
+            return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25));
           }
         }
       );
@@ -384,9 +384,9 @@ class _ArtistScreenState extends State<ArtistScreen> {
             } else {
               return Scaffold(
                 appBar: AppBar(
-                  title: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                  title: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                 ),
-                body: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),),
+                body: Center(child: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),),
               );
             }
           }
@@ -426,7 +426,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
                   aspectRatio: 1,
                   child: CachedNetworkImage(
                     imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${album['coverArt']}",
-                    progressIndicatorBuilder: (context, url, downloadProgress) => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                    progressIndicatorBuilder: (context, url, downloadProgress) => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                     errorWidget: (context,url,error) => IconButton(
                       onPressed: () {
                         //hier retry

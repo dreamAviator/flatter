@@ -43,7 +43,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                   child: CachedNetworkImage(
                     imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${albumOne['coverArt']}",
                     progressIndicatorBuilder: (context, url, downloadProgress) =>
-                        LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                        LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                     errorWidget: (context, url, error) => IconButton(
                       onPressed: () {
                         //hier retry
@@ -145,7 +145,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                 } else if (asyncSnapshot.hasError) {
                   return SliverToBoxAdapter(child: Text("Error"),);
                 } else {
-                  return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
+                  return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),);
                 }
               }
             ),

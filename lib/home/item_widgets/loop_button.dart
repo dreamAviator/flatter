@@ -26,7 +26,7 @@ class _LoopButtonState extends State<LoopButton> {
               onPressed: () {
 
               },
-              icon: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),//hm, mal schauen. auf einigen screens brauche ich outlined auf anderen nicht glaube ich
+              icon: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),//hm, mal schauen. auf einigen screens brauche ich outlined auf anderen nicht glaube ich
             );
           } else {//this is an extra if thingy because of old code, and idrc rn enough to change it
             if (asyncSnapshot.data == AudioServiceRepeatMode.none) {
@@ -64,7 +64,7 @@ class _LoopButtonState extends State<LoopButton> {
           onPressed: () {
 
           },
-          icon: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),//hm, mal schauen. auf einigen screens brauche ich outlined auf anderen nicht glaube ich
+          icon: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),//hm, mal schauen. auf einigen screens brauche ich outlined auf anderen nicht glaube ich
         );
       },
     );

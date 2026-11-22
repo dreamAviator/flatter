@@ -68,7 +68,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                           null, null, null)[1]}&id=${playlist['coverArt']}",
                       progressIndicatorBuilder: (context, url,
                           downloadProgress) =>
-                          LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                          LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                       errorWidget: (context, url, error) =>
                           IconButton(
                             onPressed: () {
@@ -117,7 +117,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                           null, null, null)[1]}&id=${playlist['coverArt']}",
                       progressIndicatorBuilder: (context, url,
                           downloadProgress) =>
-                          LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                          LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                       errorWidget: (context, url, error) =>
                           IconButton(
                             onPressed: () {
@@ -202,7 +202,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                         } else if (asyncSnapshot.hasError) {
                           return SliverToBoxAdapter(child: Text("Error"),);
                         } else {
-                          return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
+                          return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),);
                         }
                       }
                     );
@@ -220,7 +220,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                         } else if (asyncSnapshot.hasError) {
                           return SliverToBoxAdapter(child: Text("Error"),);
                         } else {
-                          return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),);
+                          return SliverToBoxAdapter(child: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),);
                         }
                       }
                     );

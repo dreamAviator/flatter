@@ -76,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: CachedNetworkImage(
                           imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${artist['coverArt']}",
                           progressIndicatorBuilder: (context, url, downloadProgress) =>
-                              LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                              LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                           errorWidget: (context, url, error) => IconButton(
                             onPressed: () {
                               //hier retry
@@ -130,7 +130,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: CachedNetworkImage(
                           imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${album['coverArt']}",
                           progressIndicatorBuilder: (context, url, downloadProgress) =>
-                              LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                              LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
                           errorWidget: (context, url, error) => IconButton(
                             onPressed: () {
                               //hier retry
@@ -289,7 +289,7 @@ class _SearchScreenState extends State<SearchScreen> {
               child: switch (searchResults) {
                 AsyncValue(:final value?) => buildSearchResultsColumn(context,value),
                 AsyncValue(error: != null) => const Text("error"),
-                AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
+                AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25)),
               },
             );
           },
@@ -418,7 +418,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
                */
                 AsyncValue(error: != null) => const Text("error"),
-                AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25)),
+                AsyncValue() => Center(child: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25)),
               },
             );
           },

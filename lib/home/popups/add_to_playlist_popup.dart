@@ -151,7 +151,7 @@ class AddToPlaylistPopup {
                               } else if (asyncSnapshot.hasError) {
                                 return const Text("Error");
                               } else {
-                                return LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25);
+                                return LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25);
                               }
                             },
                           ),

@@ -77,7 +77,7 @@ class FavoriteButton extends StatelessWidget {
                 onPressed: () {
 
                 },
-                icon: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+                icon: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
               );
             }
           },
@@ -110,7 +110,7 @@ class FavoriteButton extends StatelessWidget {
           icon: switch (favoriteStatus) {
             AsyncValue(:final value?) => decideIcon(value),
             AsyncValue(error: != null) => const Icon(Icons.error),
-            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
+            AsyncValue() => LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25),
           },
         );
       },

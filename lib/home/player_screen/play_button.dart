@@ -25,7 +25,7 @@ class PlayButton extends StatelessWidget {
             if (processingState == AudioProcessingState.error)
               IconButton(onPressed: null, icon: Icon(Icons.error))
             else if (processingState == AudioProcessingState.loading)//etwas für buffering hinzugügen, beim buffering kann es ja durchaus noch abspielen
-              IconButton(onPressed: null, icon: LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25))
+              IconButton(onPressed: null, icon: LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).colorScheme.primary, size: 25))
             //else if (processingState == AudioProcessingState.idle)
               //IconButton(onPressed: null, icon: Icon(Icons.stop))
             else
