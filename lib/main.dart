@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/home_navigation_bar.dart';
@@ -15,12 +16,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 late final PlayerControls playerControl;
 //DirectoryManager directoryControl = DirectoryManager();
 //SafUtil safutil = SafUtil();
-SubsonicService subsonicService = SubsonicService();
+final SubsonicService subsonicService = SubsonicService();
 final themeUpdateNotifier = UpdateNotifier();
 late DatabaseController databaseControl;
 late SettingsController settingsControl;
 late PathProvider pathProvider;
 late final AudioSession session;
+late final DefaultCacheManager cacheManager;
+
 
 
 void main() async {
@@ -30,6 +33,11 @@ void main() async {
   await pathProvider.initialize();
   await databaseControl.initialize();
   await settingsControl.initialize();
+  cacheManager = DefaultCacheManager(
+    stalePeriod: Duration(seconds: settingsControl.loadSetting('cacheStalePeriod')),
+    //TODO:getCacheSize für einstellung kommt in neuerer version (das dann in den einstellungen auch anzeigen)
+    //vielleicht auch ein limit by cache size
+  );
   playerControl = await AudioService.init(
     builder: () => PlayerControls(),
     config: AudioServiceConfig(
@@ -41,6 +49,7 @@ void main() async {
   session = await AudioSession.instance;
   await session.configure(AudioSessionConfiguration.music());
   WidgetsFlutterBinding.ensureInitialized();
+  //CachedNetworkImage.logLevel = CacheManagerLogLevel.verbose;
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -54,6 +63,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     Size screenSize = MediaQuery.of(context).size;
     return ListenableBuilder(
       listenable: themeUpdateNotifier,
@@ -90,7 +100,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
-                  home: const HomeNavigationRail(),
+                  home: const HomeAppLandscape(),
                 );
               } else {
                 settingsControl.changeSetting('landscapeMode', false);
@@ -104,7 +114,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
-                  home: const HomeNavigationBar(),
+                  home: const HomeAppPortrait(),
                 );
               }
             } else {
@@ -119,7 +129,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
-                  home: const HomeNavigationRail(),
+                  home: const HomeAppLandscape(),
                 );
               } else {
                 return MaterialApp(
@@ -132,7 +142,7 @@ class MyApp extends StatelessWidget {
                     useMaterial3: useMaterial3,
                     colorScheme: darkScheme,
                   ),
-                  home: const HomeNavigationBar(),
+                  home: const HomeAppPortrait(),
                 );
               }
             }
@@ -185,5 +195,23 @@ class MyApp extends StatelessWidget {
         );
       }
     );
+  }
+}
+
+class HomeAppPortrait extends StatelessWidget {
+  const HomeAppPortrait({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const HomeNavigationBar();
+  }
+}
+
+class HomeAppLandscape extends StatelessWidget {
+  const HomeAppLandscape({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const HomeNavigationRail();
   }
 }

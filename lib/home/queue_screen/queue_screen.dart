@@ -77,8 +77,8 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
                   return true;
                 });
               }
-              print(showSearchBar);
-              print("printed showsearchbar");
+              //print(showSearchBar);
+              //print("printed showsearchbar");
               return IntrinsicSizeBuilder(
                 subject: Column(
                   spacing: 8,
@@ -293,9 +293,9 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
   @override
   Widget build(BuildContext context) {
     ListObserverController observerController = ListObserverController(controller: scrollController);
-    print("widget build executed");
-    print(dontScroll);
-    print("this was dontScroll from start of widget build");
+    //print("widget build executed");
+    //print(dontScroll);
+    //print("this was dontScroll from start of widget build");
     return Scaffold(
       appBar: AppBar(
         title: const Text("Queue"),
@@ -320,7 +320,7 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
         child: StreamBuilder(
           stream: playerControl.queueStream,
           builder: (context, snapshot) {
-            print("streambuilder executed");
+            //print("streambuilder executed");
             bool queueEmpty = false;
             final queue = snapshot.data ?? [];
             if (queue.isEmpty) {

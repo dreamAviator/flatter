@@ -128,8 +128,8 @@ class _AlbumsTabState extends State<AlbumsTab> {
               flexibleSpace: LayoutBuilder(
                   builder: (context, constraints) {
                     bool visible = true;
-                    print(constraints.maxHeight);
-                    print(subjectSize.height);
+                    ////print(constraints.maxHeight);
+                    ////print(subjectSize.height);
                     if (constraints.heightConstraints().maxHeight < subjectSize.height) {
                       visible = false;
                     }

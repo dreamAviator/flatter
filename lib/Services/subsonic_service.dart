@@ -43,7 +43,7 @@ class SubsonicService {
   Future<Map<dynamic,dynamic>> authenticate(String baseURL,String username,String password) async {
     List<String> url = getURL(baseURL, username, password);
     if (baseURL == "" && username == "" && password == "") {
-      print("returning didn't even try");
+      //print("returning didn't even try");
       return {
         "status":"didn't even try",
       };
@@ -51,7 +51,7 @@ class SubsonicService {
     final uri = Uri.parse("${url[0]}ping${url[1]}");
     try {
       final data = await http.get(uri);
-      print(data.body);
+      //print(data.body);
       if (data.statusCode != 200) {
         return {};
       }
@@ -90,7 +90,7 @@ class SubsonicService {
   Future<Map<dynamic,dynamic>> getAlbumDetails(String id) async {
     while (rateLock == true) {
       await Future.delayed(Duration(milliseconds: 200));
-      print("waiting cause blocked");
+      //print("waiting cause blocked");
     }
     List<String> url = getURL(null, null, null);
     final uri = Uri.parse("${url[0]}getAlbum${url[1]}&id=$id");
@@ -132,7 +132,7 @@ class SubsonicService {
   Future<Map<dynamic,dynamic>> getArtistDetails(String id) async {
     while (rateLock == true) {
       await Future.delayed(Duration(milliseconds: 200));
-      print("waiting cause blocked");
+      //print("waiting cause blocked");
     }
     List<String> url = getURL(null, null, null);
     final uri = Uri.parse("${url[0]}getArtist${url[1]}&id=$id");
@@ -163,19 +163,19 @@ class SubsonicService {
         Map artistInfo = subsonicResponse2['artistInfo2'];
         for (dynamic key in artistInfo.keys) {
           if (key is String) {
-            print(key);
-            print("key");
+            //print(key);
+            //print("key");
             subsonicResponse['artist'][key] = artistInfo[key];
-            print(artistInfo[key]);
-            print(subsonicResponse['artist'][key]);
-            print("value");
+            //print(artistInfo[key]);
+            //print(subsonicResponse['artist'][key]);
+            //print("value");
           }
         }
       } catch(error) {
         return {};
       }
-      print(subsonicResponse['artist']['biography']);
-      print("this was biography");
+      //print(subsonicResponse['artist']['biography']);
+      //print("this was biography");
       return subsonicResponse['artist'];
     } catch(error) {
       return {};
@@ -250,7 +250,7 @@ class SubsonicService {
   Future<Map<dynamic,dynamic>> getSongDetails(String id) async {
     while (rateLock == true) {
       await Future.delayed(Duration(milliseconds: 200));
-      print("waiting cause blocked");
+      //print("waiting cause blocked");
     }
     List<String> url = getURL(null, null, null);
     final uri = Uri.parse("${url[0]}getSong${url[1]}&id=$id");
@@ -264,7 +264,7 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         return {};
       }
-      print(subsonicResponse);
+      //print(subsonicResponse);
       if (subsonicResponse['song']['starred'] == null) {
         subsonicResponse['song']['starred'] = "unstarred";
       }
@@ -289,7 +289,7 @@ class SubsonicService {
       }
       return subsonicResponse['playlists']['playlist'];
     } catch (error) {
-      print("an error was catched smh idfk what went wrong lolololol");
+      //print("an error was catched smh idfk what went wrong lolololol");
       return [];
     }
   }
@@ -338,7 +338,7 @@ class SubsonicService {
   Future<bool> checkStarred(String? songID,String? albumID,String? artistID,[String? playlistID]) async {
     while (checkStarredBlocked == true) {
       await Future.delayed(Duration(milliseconds: 200));
-      print("waiting cause blocked");
+      //print("waiting cause blocked");
     }
     Map<dynamic,dynamic> starred = await getStarred();
     if (albumID != null) {
@@ -363,8 +363,8 @@ class SubsonicService {
       }
       return false;
     } else if (playlistID != null) {
-      print("hiiii");
-      print(playlistID);
+      //print("hiiii");
+      //print(playlistID);
       bool status = databaseControl.getPlaylistFavoriteStatus(playlistID);
       return status;
     } else {
@@ -389,8 +389,8 @@ class SubsonicService {
         return {};
       }
       final Map responseMap = jsonDecode(data.body);
-      print("query");
-      print(query);
+      //print("query");
+      //print(query);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
         return {};
@@ -445,8 +445,8 @@ class SubsonicService {
         return {};
       }
       subsonicResponse = subsonicResponse['searchResult3'];
-      print(subsonicResponse);
-      print("this were the results for the page");
+      //print(subsonicResponse);
+      //print("this were the results for the page");
       while (subsonicResponse['album'] != null && subsonicResponse['artist'] != null && subsonicResponse['song'] != null) {
         if (subsonicResponse['album'] != null) {
           for (Map<dynamic,dynamic> album in subsonicResponse['album']) {
@@ -494,7 +494,7 @@ class SubsonicService {
       if (subsonicResponse['status'] != "ok") {
         return [];
       }
-      print("i was here");
+      //print("i was here");
       return subsonicResponse['genres']['genre'];
     } catch(error) {
       return [];
@@ -514,20 +514,20 @@ class SubsonicService {
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
-        print("error 4");
+        //print("error 4");
         return {};
       }
       final Map responseMap = jsonDecode(data.body);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
-        print(subsonicResponse);
-        print("error 3");
+        //print(subsonicResponse);
+        //print("error 3");
         return {};
       }
-      print('successfully created playlist');
+      //print('successfully created playlist');
       return subsonicResponse;
     } catch(error) {
-      print("error 2");
+      //print("error 2");
       return {};
     }
   }
@@ -543,7 +543,7 @@ class SubsonicService {
     );
 
      */
-    print("heyhey subsonic service removing playlist");
+    //print("heyhey subsonic service removing playlist");
     List<String> url = getURL(null,null,null);
     String request = "${url[0]}updatePlaylist${url[1]}&playlistId=$id";
     if (name != null) {
@@ -557,15 +557,15 @@ class SubsonicService {
     }
     if (songIDsToAdd != null) {
       for (String songID in songIDsToAdd) {
-        print("adding songid to songidtoadd");
+        //print("adding songid to songidtoadd");
         request = "$request&songIdToAdd=${songID.toString()}";
       }
     }
     if (indexesToRemove != null) {
-      print("heyhey is not null");
+      //print("heyhey is not null");
       for (int index in indexesToRemove) {
-        print("heyhey song id now");
-        print(index);
+        //print("heyhey song id now");
+        //print(index);
         request = "$request&songIndexToRemove=$index";
       }
     }
@@ -573,22 +573,22 @@ class SubsonicService {
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
-        print("error 4");
+        //print("error 4");
         return {};
       }
       final Map responseMap = jsonDecode(data.body);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
-        print(subsonicResponse);
-        print("error 3");
+        //print(subsonicResponse);
+        //print("error 3");
         return {};
       }
       //messenger.hideCurrentSnackBar();
-      print("heyhey subsonic response now");
-      print(subsonicResponse);
+      //print("heyhey subsonic response now");
+      //print(subsonicResponse);
       return subsonicResponse;
     } catch(error) {
-      print("error 2");
+      //print("error 2");
       return {};
     }
   }
@@ -599,20 +599,20 @@ class SubsonicService {
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
-        print("error 4");
+        //print("error 4");
         return {};
       }
       final Map responseMap = jsonDecode(data.body);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
-        print(subsonicResponse);
-        print("error 3");
+        //print(subsonicResponse);
+        //print("error 3");
         return {};
       }
-      print('successfully deleted playlist');
+      //print('successfully deleted playlist');
       return subsonicResponse;
     } catch(error) {
-      print("error 2");
+      //print("error 2");
       return {};
     }
   }
@@ -624,7 +624,7 @@ class SubsonicService {
       checkStarredBlocked = false;
       return {};//sollte anders sein
     }
-    print("check starred was blocked");
+    //print("check starred was blocked");
     List<String> url = getURL(null, null, null);
     List<String> request = [];
     if (starred == true) {
@@ -639,7 +639,7 @@ class SubsonicService {
     } else if (artistID != null) {
       request.add("artistId=$artistID");
     } else {
-      print("this should not have happened");
+      //print("this should not have happened");
       checkStarredBlocked = false;
       return {};
     }
@@ -647,24 +647,24 @@ class SubsonicService {
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
-        print("error 1");
+        //print("error 1");
         checkStarredBlocked = false;
         return {};
       }
       final Map responseMap = jsonDecode(data.body);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
-        print(subsonicResponse);
-        print("status not okay");
+        //print(subsonicResponse);
+        //print("status not okay");
         checkStarredBlocked = false;
         return {};
       }
-      print("successfully updated star rating");
+      //print("successfully updated star rating");
       checkStarredBlocked = false;
       return subsonicResponse;
     } catch(error) {
-      print("error2");
-      print(error);
+      //print("error2");
+      //print(error);
       checkStarredBlocked = false;
       return {};
     }
@@ -677,23 +677,23 @@ class SubsonicService {
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
-        print("error 4");
+        //print("error 4");
         rateLock = false;
         return {};
       }
       final Map responseMap = jsonDecode(data.body);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
-        print(subsonicResponse);
-        print("error 3");
+        //print(subsonicResponse);
+        //print("error 3");
         rateLock = false;
         return {};
       }
-      print('successfully rated element');
+      //print('successfully rated element');
       rateLock = false;
       return subsonicResponse;
     } catch(error) {
-      print("error 2");
+      //print("error 2");
       rateLock = false;
       return {};
     }
@@ -709,20 +709,20 @@ class SubsonicService {
     try {
       final data = await http.get(uri);
       if (data.statusCode != 200) {
-        print("error 4");
+        //print("error 4");
         return {};
       }
       final Map responseMap = jsonDecode(data.body);
       Map subsonicResponse = responseMap['subsonic-response'];
       if (subsonicResponse['status'] != "ok") {
-        print(subsonicResponse);
-        print("error 3");
+        //print(subsonicResponse);
+        //print("error 3");
         return {};
       }
-      print('successfully scrobbled');
+      //print('successfully scrobbled');
       return subsonicResponse;
     } catch(error) {
-      print("error 2");
+      //print("error 2");
       return {};
     }
   }

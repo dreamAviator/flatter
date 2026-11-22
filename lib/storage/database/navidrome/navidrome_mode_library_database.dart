@@ -45,13 +45,13 @@ class NavidromeModeLibraryDatabase {
   }
 
   int getPlaylistID(int serverID,String playlistID) {
-    print("hi 3.1");
+    ////print("hi 3.1");
     ResultSet result = db.select(
       'SELECT id FROM playlists WHERE server_id = ? AND navidrome_playlist_id = ?',
       [serverID, playlistID], // Werte werden hier sicher übergeben//thx deepseek
     );
-    print("hi 3.2");
-    print(result);
+    ////print("hi 3.2");
+    ////print(result);
     for (Map playlist in result) {//should only be one playlist tho 😭
       int id = playlist['id'];
       return id;
@@ -60,22 +60,22 @@ class NavidromeModeLibraryDatabase {
   }
 
   bool getPlaylistFavoriteStatus(int serverID,String playlistID) {
-    print("hi 3");
+    ////print("hi 3");
     int id = getPlaylistID(serverID, playlistID);
     if (id == -1) {
       return false;
     }
-    print(id);
-    print("hi 4");
+    ////print(id);
+    ////print("hi 4");
     ResultSet result = db.select(
       'SELECT is_favorite FROM playlists WHERE id = ?',
       [id],
     );
-    print("favorite status result");
-    print(result);
+    ////print("favorite status result");
+    ////print(result);
     for (Map playlist in result) {
       int isFavoriteInt = playlist['is_favorite'];
-      print("hi5");
+      ////print("hi5");
       if (isFavoriteInt == 1) {
         return true;
       }

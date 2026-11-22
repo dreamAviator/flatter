@@ -18,7 +18,7 @@ extension on TomlDocument {
 
 class SettingsController {
   Map defaultSettingsMap = {
-    'startTab':1,
+    'startTab':0,
     'lastTab':1,
     'selectedServer':-1,
     'albumSortBy':'random',
@@ -36,9 +36,9 @@ class SettingsController {
     'landscapeMode':true,
     'automaticRotationOverride':false,//wrong name, it only stops the app from changing its layout, not the rotation
     'firstStart':true,//einstellung für stern oder herz für das favouriten der songs vlt
-    'songSearchResultsCount':10,
+    'songSearchResultsCount':30,
     'albumSearchResultsCount':10,
-    'artistSearchResultsCount':30,
+    'artistSearchResultsCount':10,
     'playlistSearchResultsCount':10,
     'mode':"navidrome",
     'songMenuActionOrder':{
@@ -74,6 +74,7 @@ class SettingsController {
     'automaticColorOverride':false,
     'isAutomaticColorAvailable':false,
     'useMaterial3':true,
+    'cacheStalePeriod':Duration(days: 7).inSeconds,
     //noch die slidable actions machen. vlt auch so, dass man die anzahl machen kann. also einf ein menü, bei dem man die alle an und ausschalten kann. vlt auch die reihenfolge ändern
   };//das hier vielleicht auch zu einer datei machen
   late Map settingsMap;
@@ -83,17 +84,12 @@ class SettingsController {
     return;
   }
 
-  void firstStart() {
-    changeSetting('firstStart', false);
-    //sets some settings for the first start
-  }
-
   Future<void> loadSettings() async {
     TomlDocument settingsDocument;
     String path = pathProvider.dataDirectory;
     path = "$path/flatter_settings.toml";
     if (await File(path).exists() == false) {
-      print("file does not exist");
+      //print("file does not exist");
       settingsDocument = TomlDocument.fromMap(defaultSettingsMap);
       File(path).writeAsString(settingsDocument.toString());
     }
@@ -101,14 +97,14 @@ class SettingsController {
     settingsMap = settingsDocument.toMap();
     defaultSettingsMap.forEach((key,value) {
       if (settingsMap[key] == null) {
-        print("key $key does not exist");
+        //print("key $key does not exist");
         settingsMap[key] = value;
       }
     });
     List keysToRemove = [];
     settingsMap.forEach((key,value) {
       if (defaultSettingsMap[key] == null) {
-        print("key $key is too much");
+        //print("key $key is too much");
         keysToRemove.add(key);
       }
     });
@@ -116,10 +112,7 @@ class SettingsController {
       settingsMap.remove(key);
     }
     _checkAndCorrectMenuActions();
-    if (settingsMap['firstStart'] == true) {
-      firstStart();
-    }
-    print(settingsMap);
+    //print(settingsMap);
   }
 
   void resetSettings() {
@@ -130,8 +123,8 @@ class SettingsController {
   }
 
   void changeSetting(String key,dynamic value) {
-    print(key);
-    print(value);
+    //print(key);
+    //print(value);
     settingsMap[key] = value;
     saveSettings();
   }

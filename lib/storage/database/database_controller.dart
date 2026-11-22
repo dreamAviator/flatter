@@ -67,7 +67,7 @@ class DatabaseController {
   //navidrome mode library database
 
   bool getPlaylistFavoriteStatus(String playlistID) {
-    print("hi 2");
+    //print("hi 2");
     int serverID = settingsControl.loadSetting('selectedServer');
     return _navidrome_mode_library_db.getPlaylistFavoriteStatus(serverID, playlistID);
   }

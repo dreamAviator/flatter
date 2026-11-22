@@ -24,10 +24,10 @@ class _ArtistsTabState extends State<ArtistsTab> {
   Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
     List<Widget> outerWidgetList = [];
     List<Widget> innerWidgetList = [];
-    print(items.length);
+    ////print(items.length);
     int index = 0;
-    print(items);
-    print("this was items");
+    ////print(items);
+    ////print("this was items");
     while (index < items.length) {
       outerWidgetList.add(Text(items[index]['name']));
       outerWidgetList.add(Divider());
@@ -38,7 +38,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
             child: InkWell(
               splashColor: Colors.blue.withAlpha(30),
               onTap: () {
-                debugPrint('Card tapped.');
+                debug////print('Card tapped.');
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtistScreen(artistID: item['id'])));
               },
               child: Column(
@@ -69,7 +69,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
       innerWidgetList.clear();//irgendwie wird das masonry grid dadurch unsichtbar klein
       index = index + 1;
     }
-    print(outerWidgetList);
+    ////print(outerWidgetList);
     return Expanded(child: SingleChildScrollView(child: Column(children: outerWidgetList,)));
   }
 
@@ -116,8 +116,8 @@ class _ArtistsTabState extends State<ArtistsTab> {
               flexibleSpace: LayoutBuilder(
                 builder: (context, constraints) {
                   bool visible = true;
-                  print(constraints.maxHeight);
-                  print(subjectSize.height);
+                  ////print(constraints.maxHeight);
+                  ////print(subjectSize.height);
                   if (constraints.heightConstraints().maxHeight < subjectSize.height) {
                     visible = false;
                   }

@@ -28,7 +28,7 @@ class FavoriteButton extends StatelessWidget {
     final SubsonicService subsonicService = SubsonicService();
     final UpdateNotifier updateNotifier = UpdateNotifier();
     if (songID == null && albumID == null && artistID == null && playlistID == null) {
-      print("error 1 or smth");
+      ////print("error 1 or smth");
       return const IconButton(
         onPressed: null,
         icon: Icon(Icons.error),
@@ -52,10 +52,10 @@ class FavoriteButton extends StatelessWidget {
               return IconButton(
                 onPressed: () {
                   if (asyncSnapshot.data! == true) {
-                    print("was unstarred");
+                    ////print("was unstarred");
                     subsonicService.starUnstar(false, songID, albumID, artistID, playlistID);
                   } else {
-                    print("was starred");
+                    ////print("was starred");
                     subsonicService.starUnstar(true, songID, albumID, artistID, playlistID);
                   }
                   if (playlistUpdateNotifier != null) {
@@ -93,18 +93,18 @@ class FavoriteButton extends StatelessWidget {
             switch (favoriteStatus) {
               case(AsyncValue(:final value?)):
                 if (value == true) {
-                  print("was unstarred");
+                  ////print("was unstarred");
                   subsonicService.starUnstar(false, songID, albumID, artistID);
                 } else {
-                  print("was starred");
+                  ////print("was starred");
                   subsonicService.starUnstar(true, songID, albumID, artistID);
                 }
                 ref.invalidate(riverpodManager.favoriteStatusProvider(ids));
               case(AsyncValue(error: != null)):
-                print("hier sollte eig eine richtige fehlermeldung kommen");
+                ////print("hier sollte eig eine richtige fehlermeldung kommen");
               case(AsyncValue()):
                 //hier so eine toast notification
-                print("boah mach mal nicht so schnell, wir sind noch nicht so weit");
+                ////print("boah mach mal nicht so schnell, wir sind noch nicht so weit");
             }
           },
           icon: switch (favoriteStatus) {
