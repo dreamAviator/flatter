@@ -185,17 +185,7 @@ class ArtistGrid extends StatelessWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 1,
-                      child: CachedNetworkImage(
-                        imageUrl: "${subsonicService.getURL(null, null, null)[0]}getCoverArt${subsonicService.getURL(null, null, null)[1]}&id=${item['coverArt']}",
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            LoadingAnimationWidget.fourRotatingDots(color: Colors.purple, size: 25),
-                        errorWidget: (context, url, error) => IconButton(
-                          onPressed: () {
-                            //hier retry
-                          },
-                          icon: Icon(Icons.error),
-                        ),
-                      ),
+                      child: SubsonicImage(prohibitLongPress: true, coverArtID: item['coverArt'],type: "artist",),
                     ),
                     Text(item['name']),
                   ],
