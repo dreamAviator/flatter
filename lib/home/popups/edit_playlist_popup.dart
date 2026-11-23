@@ -1,5 +1,6 @@
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
+import 'package:marqueer/marqueer.dart';
 import 'package:material_ui/material_ui.dart';
 
 class EditPlaylistPopup {
@@ -31,6 +32,15 @@ class EditPlaylistPopup {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  /*
+                  Expanded(
+                    child: Marqueer(
+                      intrinsicCrossAxisSize: true,
+                      child: Text(title)
+                    ),
+                  ),
+
+                   */
                   Text(title),
                   if (id != null) IconButton(
                     onPressed: () {

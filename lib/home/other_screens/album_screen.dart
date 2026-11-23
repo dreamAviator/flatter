@@ -5,7 +5,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/item_widgets/subsonic_image.dart';
-import 'package:flatter/home/popups/rate_button.dart';
+import 'package:flatter/home/item_widgets/rate_button.dart';
 import 'package:flatter/home/other_screens/artist_screen.dart';
 import 'package:flatter/home/item_widgets/favorite_button.dart';
 import 'package:flatter/home/item_widgets/item_menus.dart';
@@ -35,6 +35,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
     final filterNotifier = ValueNotifier<String>('');
     final PageController pageController = PageController();
     final UpdateNotifier albumChangedNotifier = UpdateNotifier();
+    final ScrollController horizontalScrollActions = ScrollController();
     return ListenableBuilder(
       listenable: albumChangedNotifier,
       builder: (context, child) {
@@ -216,47 +217,52 @@ class _AlbumScreenState extends State<AlbumScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Align(
                               alignment: Alignment.centerLeft,
-                              child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  spacing: 8,
-                                  children: [//TODO:einstellung um die zu iconbuttons zu machen
-                                    ElevatedButton(
-                                      child: Text("Play now"),
-                                      onPressed: () {
-                                        playNow();
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: Text("Play now shuffled"),
-                                      onPressed: () {
-                                        playNowShuffled();
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: Text("Add next"),
-                                      onPressed: () {playNext();
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: Text("Add next shuffled"),
-                                      onPressed: () {
-                                        playNextShuffled();
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: Text("Enqueue"),
-                                      onPressed: () {
-                                        enqueue();
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: Text("Enqueue shuffled"),
-                                      onPressed: () {
-                                        enqueueShuffled();
-                                      },
-                                    ),
-                                  ],
+                              child: Scrollbar(
+                                controller: horizontalScrollActions,
+                                thumbVisibility: true,
+                                child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge
+                                  controller: horizontalScrollActions,
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    spacing: 8,
+                                    children: [//TODO:einstellung um die zu iconbuttons zu machen
+                                      ElevatedButton(
+                                        child: Text("Play now"),
+                                        onPressed: () {
+                                          playNow();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Play now shuffled"),
+                                        onPressed: () {
+                                          playNowShuffled();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Add next"),
+                                        onPressed: () {playNext();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Add next shuffled"),
+                                        onPressed: () {
+                                          playNextShuffled();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Enqueue"),
+                                        onPressed: () {
+                                          enqueue();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Enqueue shuffled"),
+                                        onPressed: () {
+                                          enqueueShuffled();
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

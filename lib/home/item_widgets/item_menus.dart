@@ -402,7 +402,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       menuEntryList.add(PopupMenuItem(
         onTap: () {
           showModalBottomSheet(
-            context: context,
+          isScrollControlled: true,
+  context: context,
             showDragHandle: true,
             builder: (BuildContext context) {
               return SafeArea(
@@ -466,7 +467,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       menuEntryList.add(PopupMenuItem(
         onTap: () {
           showModalBottomSheet(
-              context: context,
+          isScrollControlled: true,
+    context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
                 return SafeArea(
@@ -549,7 +551,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       menuEntryList.add(PopupMenuItem(
         onTap: () {
           showModalBottomSheet(
-              context: context,
+          isScrollControlled: true,
+    context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
                 return SafeArea(
@@ -618,7 +621,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       menuEntryList.add(PopupMenuItem(
         onTap: () {
           showModalBottomSheet(
-              context: context,
+          isScrollControlled: true,
+    context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
                 return SafeArea(
@@ -682,7 +686,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       menuEntryList.add(PopupMenuItem(
         onTap: () {
           showModalBottomSheet(
-              context: context,
+          isScrollControlled: true,
+    context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
                 return SafeArea(
@@ -747,7 +752,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       menuEntryList.add(PopupMenuItem(
         onTap: () {
           showModalBottomSheet(
-              context: context,
+          isScrollControlled: true,
+    context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
                 return SafeArea(
@@ -823,7 +829,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       menuEntryList.add(PopupMenuItem(
         onTap: () {
           showModalBottomSheet(
-              context: context,
+          isScrollControlled: true,
+    context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
                 return SafeArea(
@@ -885,7 +892,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       menuEntryList.add(PopupMenuItem(
         onTap: () {
           showModalBottomSheet(
-            context: context,
+          isScrollControlled: true,
+  context: context,
             showDragHandle: true,
             builder: (BuildContext context) {
               return SafeArea(

@@ -104,7 +104,8 @@ class _SongsTabState extends State<SongsTab> {
                       child: Text(genreName),
                       onPressed: () {
                         showModalBottomSheet(
-                            showDragHandle: true,
+          isScrollControlled: true,
+                  showDragHandle: true,
                             context: context,
                             builder: (BuildContext context) {
                               ValueNotifier<String> filterNotifier = ValueNotifier("");

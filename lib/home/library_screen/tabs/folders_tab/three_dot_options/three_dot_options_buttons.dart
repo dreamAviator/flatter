@@ -39,7 +39,8 @@ class SongOptionsButton extends StatelessWidget {
         PopupMenuItem(
           onTap: () {
             showModalBottomSheet(
-                context: context,
+          isScrollControlled: true,
+      context: context,
                 showDragHandle: true,
                 builder: (BuildContext context) {
                   return SizedBox(
@@ -86,7 +87,8 @@ class FolderOptionsButton extends StatelessWidget {
         PopupMenuItem(
           onTap: () {
             showModalBottomSheet(
-                context: context,
+          isScrollControlled: true,
+      context: context,
                 showDragHandle: true,
                 builder: (BuildContext context) {
                   return SizedBox(
@@ -199,7 +201,8 @@ class DefaultFolderOptionsButton extends StatelessWidget {
         PopupMenuItem(
           onTap: () {
             showModalBottomSheet(
-              context: context,
+          isScrollControlled: true,
+    context: context,
               showDragHandle: true,
               builder: (BuildContext context) {
                 return SizedBox(

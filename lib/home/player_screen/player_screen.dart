@@ -1,7 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/home/item_widgets/loop_button.dart';
 import 'package:flatter/home/popups/add_to_playlist_popup.dart';
-import 'package:flatter/home/popups/rate_button.dart';
+import 'package:flatter/home/item_widgets/rate_button.dart';
 import 'package:flatter/home/other_screens/album_screen.dart';
 import 'package:flatter/home/other_screens/artist_screen.dart';
 import 'package:flatter/home/popups/artist_select_popup.dart';

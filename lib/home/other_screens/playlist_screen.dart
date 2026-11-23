@@ -37,6 +37,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     final filterNotifier = ValueNotifier<String>('');
     final PageController pageController = PageController();
     late UpdateNotifier playlistChangedNotifier;
+    final ScrollController horizontalScrollActions = ScrollController();
+
     if (widget.playlistChangedNotifier != null) {
       playlistChangedNotifier = widget.playlistChangedNotifier!;
     } else {
@@ -199,48 +201,53 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Align(
                               alignment: Alignment.centerLeft,
-                              child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge. auch andere buttons wie zu playlist (gilt auch für die anderen gleichen screens)
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  spacing: 8,
-                                  children: [//TODO:einstellung um die zu iconbuttons zu machen natürlich auch für die anderen screens dann
-                                    ElevatedButton(
-                                      child: Text("Play now"),
-                                      onPressed: () {
-                                        playNow();
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: Text("Play now shuffled"),
-                                      onPressed: () {
-                                        playNowShuffled();
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: Text("Add next"),
-                                      onPressed: () {
-                                        playNext();
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: Text("Add next shuffled"),
-                                      onPressed: () {
-                                        playNextShuffled();
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: Text("Enqueue"),
-                                      onPressed: () {
-                                        enqueue();
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: Text("Enqueue shuffled"),
-                                      onPressed: () {
-                                        enqueueShuffled();
-                                      },
-                                    ),
-                                  ],
+                              child: Scrollbar(
+                                controller: horizontalScrollActions,
+                                thumbVisibility: true,
+                                child: SingleChildScrollView(//TODO:hier auch einstellen lassen was angezeigt wird und in welcher reihenfolge. auch andere buttons wie zu playlist (gilt auch für die anderen gleichen screens)
+                                  controller: horizontalScrollActions,
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    spacing: 8,
+                                    children: [//TODO:einstellung um die zu iconbuttons zu machen natürlich auch für die anderen screens dann
+                                      ElevatedButton(
+                                        child: Text("Play now"),
+                                        onPressed: () {
+                                          playNow();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Play now shuffled"),
+                                        onPressed: () {
+                                          playNowShuffled();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Add next"),
+                                        onPressed: () {
+                                          playNext();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Add next shuffled"),
+                                        onPressed: () {
+                                          playNextShuffled();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Enqueue"),
+                                        onPressed: () {
+                                          enqueue();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Enqueue shuffled"),
+                                        onPressed: () {
+                                          enqueueShuffled();
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
