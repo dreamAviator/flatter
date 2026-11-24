@@ -1,6 +1,5 @@
 import 'package:flatter/home/item_widgets/song_tile.dart';
 import 'package:flatter/useful_scripts.dart';
-import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:material_ui/material_ui.dart';
 
 
@@ -15,7 +14,6 @@ class SongList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
     List<dynamic> songList = [];
     if (songListNullable != null && songListNullable?.isEmpty == false) {
       songList.addAll(songListNullable!);

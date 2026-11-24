@@ -1,22 +1,14 @@
-import 'dart:collection';
-
 import 'package:audio_service/audio_service.dart';
 import 'package:flatter/home/item_widgets/loop_button.dart';
 import 'package:flatter/home/popups/add_to_playlist_popup.dart';
 import 'package:flatter/home/other_screens/album_screen.dart';
 import 'package:flatter/home/queue_screen/confirm_delete_queue_popup.dart';
 import 'package:flatter/main.dart';
-import 'package:flatter/useful_scripts.dart';
-import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:intrinsic_size_builder/intrinsic_size_builder.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:s_packages/s_disabled/s_disabled.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
-
-import '../../Riverpod/riverpod_manager.dart';
 import '../settings_screen/settings_screen.dart';
 import '../settings_screen/settings_screen_ViewModel.dart';
 import '../other_screens/artist_screen.dart';

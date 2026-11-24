@@ -1,11 +1,9 @@
 import 'dart:ui';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/item_widgets/favorite_button.dart';
 import 'package:flatter/home/item_widgets/subsonic_image.dart';
-import 'package:flatter/home/other_screens/artist_screen.dart';
 import 'package:flatter/home/popups/edit_playlist_popup.dart';
 import 'package:flatter/home/item_widgets/item_menus.dart';
 import 'package:flatter/home/item_widgets/song_list.dart';
@@ -14,8 +12,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:marqueer/marqueer.dart';
 
-import '../../useful_scripts.dart';
-import '../item_widgets/search_string_filter_widget.dart';
+import 'package:flatter/useful_scripts.dart';
+import 'package:flatter/home/item_widgets/search_string_filter_widget.dart';
 
 class PlaylistScreen extends StatefulWidget {
   const PlaylistScreen({super.key,required this.playlistID,this.playlistChangedNotifier});

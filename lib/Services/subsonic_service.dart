@@ -5,7 +5,6 @@ import 'package:crypto/crypto.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flatter/main.dart';
-import 'package:s_packages/s_packages_extra2.dart';
 
 class SubsonicService {
   bool checkStarredBlocked = false;

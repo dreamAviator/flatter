@@ -1,4 +1,3 @@
-import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/item_widgets/album_grid.dart';
 import 'package:flatter/home/item_widgets/artist_grid.dart';
@@ -9,10 +8,9 @@ import 'package:flatter/home/search_screen/search_artist_screen.dart';
 import 'package:flatter/home/search_screen/search_playlist_screen.dart';
 import 'package:flatter/home/search_screen/search_song_screen.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../../main.dart';
+import 'package:flatter/main.dart';
 
 TextEditingController searchFieldController = TextEditingController();
 
@@ -26,9 +24,6 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
-    final riverpodManager = RiverpodManager();
-    final Size screenSize = MediaQuery.sizeOf(context);
-    List<dynamic> searchParams = ["",0,0,0];
     String query = "";
     int artistOffset = 0;
     int albumOffset = 0;
@@ -266,7 +261,7 @@ class _SearchScreenState extends State<SearchScreen> {
     if (settingsControl.loadSetting('landscapeMode') == true) {
       return Scaffold(//eine zweite version so machen mit dem zurück knopf
         appBar: AppBar(
-          title: Consumer(builder: (context, ref, child) { return TextField(
+          title: TextField(
             controller: searchFieldController,
             decoration: const InputDecoration(
                 hintText: "Search"
@@ -283,7 +278,7 @@ class _SearchScreenState extends State<SearchScreen> {
               });
             },
             //hmm
-          ); },),
+          ),
           actions: [
             IconButton(
               icon: const Icon(Icons.backspace),
@@ -307,7 +302,7 @@ class _SearchScreenState extends State<SearchScreen> {
             },
             icon: const Icon(Icons.arrow_back),
           ),
-          title: Consumer(builder: (context, ref, child) { return TextField(
+          title: TextField(
             controller: searchFieldController,
             decoration: const InputDecoration(
                 hintText: "Search"
@@ -317,9 +312,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 query = value;
               });
             },
-          ); },),
+          ),
           actions: [
-            Consumer(builder: (context, ref, child) { return IconButton(
+            IconButton(
               icon: const Icon(Icons.backspace),
               onPressed: () {
                 searchFieldController.clear();
@@ -327,7 +322,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   query = "";
                 });
               },
-            ); },)
+            ),
           ],
         ),
         body: SearchScreenBody(query: query, artistOffset: artistOffset, albumOffset: albumOffset, songOffset: songOffset, playlistOffset: playlistOffset),

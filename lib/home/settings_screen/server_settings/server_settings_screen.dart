@@ -1,4 +1,3 @@
-import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/settings_screen/server_settings/add_server_popup.dart';
 import 'package:flatter/home/settings_screen/server_settings/server_list.dart';
 import 'package:flatter/useful_scripts.dart';

@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../main.dart';
+import 'package:flatter/main.dart';
 
 class PersistentQueueSetting extends StatefulWidget {
   const PersistentQueueSetting({super.key,this.widgetDisabledNotifier});

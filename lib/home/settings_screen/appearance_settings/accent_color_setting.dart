@@ -1,9 +1,8 @@
-import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:s_packages/s_packages_extra1.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:s_packages/s_packages_extra1.dart' hide IconButton, Icons;
 
 class AccentColorSetting extends StatefulWidget {
   const AccentColorSetting({super.key});

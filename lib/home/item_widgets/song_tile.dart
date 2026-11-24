@@ -5,10 +5,10 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:marqueer/marqueer.dart';
 
-import '../../useful_scripts.dart';
-import '../other_screens/album_screen.dart';
-import '../other_screens/artist_screen.dart';
-import '../popups/artist_select_popup.dart';
+import 'package:flatter/useful_scripts.dart';
+import 'package:flatter/home/other_screens/album_screen.dart';
+import 'package:flatter/home/other_screens/artist_screen.dart';
+import 'package:flatter/home/popups/artist_select_popup.dart';
 
 class SongTile extends StatelessWidget {
   const SongTile({super.key,required this.song,required this.playlistID, required this.usecase,this.updateNotifier,required this.indexInPlaylist});
@@ -73,7 +73,7 @@ class SongTile extends StatelessWidget {
             Expanded(child: Marqueer(intrinsicCrossAxisSize: true, infinity: false,child: Text(song['title']),)),
           ],
         ),
-        subtitle: Container(child: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(song['artist'].toString()))),
+        subtitle: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(song['artist'].toString())),
         trailing: ItemMenus(context).songMenu(song,playlistID,updateNotifier,indexInPlaylist),
         onTap: () {
           playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(song));

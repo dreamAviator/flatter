@@ -32,7 +32,7 @@ class LocalNotDatabaseStorageController {
     }
     persistentQueueDocument = await TomlDocument.load(path);
     Map<dynamic,dynamic> persistentQueueMap = persistentQueueDocument.toMap();
-    int position = persistentQueueMap['position'];//not needed, because essentially the mediaitems with the "current" attribute are saved
+    //int position = persistentQueueMap['position'];//not needed, because the mediaitems with the "current" attribute are saved, so the position can be figured out that way
     List<dynamic> queueSubsonicSongs = persistentQueueMap['queue'];
     List<MediaItem> queue = usefulScripts.subsonicSongListToMediaItemList(queueSubsonicSongs);
     return queue;

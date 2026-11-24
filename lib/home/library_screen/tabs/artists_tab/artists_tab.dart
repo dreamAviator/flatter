@@ -6,7 +6,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:intrinsic_size_builder/intrinsic_size_builder.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../../../../useful_scripts.dart';
+import 'package:flatter/useful_scripts.dart';
 
 class ArtistsTab extends StatefulWidget {
   const ArtistsTab({super.key,required this.viewModel});

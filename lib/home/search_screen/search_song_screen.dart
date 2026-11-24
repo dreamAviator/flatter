@@ -1,8 +1,6 @@
-import 'package:flatter/Riverpod/riverpod_manager.dart';
 import 'package:flatter/home/item_widgets/song_list.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SearchSongScreen extends StatelessWidget {
