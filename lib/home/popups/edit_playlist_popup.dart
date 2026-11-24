@@ -55,91 +55,94 @@ class EditPlaylistPopup {
                   ),
                 ],
               ),
-              content: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    spacing: 8,
-                    children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: "Playlist Name",
-                          border: OutlineInputBorder(),
-                        ),
-                        controller: playlistNameController,
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter a name";
-                          }
-                          return null;
-                        },
-                      ),
-                      if (newCreate == false)
+              content: SizedBox(
+                width: double.maxFinite,
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      spacing: 8,
+                      children: [
                         TextFormField(
-                          maxLines: null,
                           decoration: const InputDecoration(
-                            hintText: "Comment",
+                            hintText: "Playlist Name",
                             border: OutlineInputBorder(),
                           ),
-                          controller: playlistCommentController,
-                        )
-                      else
-                        Tooltip(
-                          message: "Not available while creating",
-                          child: TextFormField(
+                          controller: playlistNameController,
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter a name";
+                            }
+                            return null;
+                          },
+                        ),
+                        if (newCreate == false)
+                          TextFormField(
                             maxLines: null,
                             decoration: const InputDecoration(
                               hintText: "Comment",
                               border: OutlineInputBorder(),
                             ),
                             controller: playlistCommentController,
-                            enabled: false,
-
-                          ),
-                        ),
-                      if (newCreate == false)
-                        ListTile(
-                          leading: const Text("Public"),
-                          trailing: Switch(
-                            value: public!,
-                            onChanged: (bool value) {
-                              setState(() {
-                                public = value;
-                              });
-                            },
                           )
-                        )
-                      else
-                        ListTile(
-                          leading: const Text("Public"),
-                          trailing: Tooltip(
+                        else
+                          Tooltip(
                             message: "Not available while creating",
-                            child: Switch(
-                              value: public!,
-                              onChanged: null,
+                            child: TextFormField(
+                              maxLines: null,
+                              decoration: const InputDecoration(
+                                hintText: "Comment",
+                                border: OutlineInputBorder(),
+                              ),
+                              controller: playlistCommentController,
+                              enabled: false,
+
                             ),
+                          ),
+                        if (newCreate == false)
+                          ListTile(
+                            leading: const Text("Public"),
+                            trailing: Switch(
+                              value: public!,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  public = value;
+                                });
+                              },
+                            )
                           )
-                        ),
-                      FilledButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            if (newCreate == false) {
-                              subsonicService.updatePlaylist(id!, playlistNameController.text, playlistCommentController.text, public!.toString(), null, null);
-                            } else {
-                              subsonicService.createPlaylist(playlistNameController.text, songIDsToAdd);
-                              if (playlistCommentController.text != "") {
-                                //hier den kommentar updaten irgendwie, idk warum das nicht im create request geht
+                        else
+                          ListTile(
+                            leading: const Text("Public"),
+                            trailing: Tooltip(
+                              message: "Not available while creating",
+                              child: Switch(
+                                value: public!,
+                                onChanged: null,
+                              ),
+                            )
+                          ),
+                        FilledButton(
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              if (newCreate == false) {
+                                subsonicService.updatePlaylist(id!, playlistNameController.text, playlistCommentController.text, public!.toString(), null, null);
+                              } else {
+                                subsonicService.createPlaylist(playlistNameController.text, songIDsToAdd);
+                                if (playlistCommentController.text != "") {
+                                  //hier den kommentar updaten irgendwie, idk warum das nicht im create request geht
+                                }
                               }
+                              if (playlistChangedNotifier != null) {
+                                playlistChangedNotifier.notify();
+                              }
+                              Navigator.of(context).pop();
                             }
-                            if (playlistChangedNotifier != null) {
-                              playlistChangedNotifier.notify();
-                            }
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        child: const Text("Save"),
-                      ),
-                    ],
+                          },
+                          child: const Text("Save"),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

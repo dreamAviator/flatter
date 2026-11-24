@@ -1,12 +1,7 @@
-import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/item_widgets/subsonic_image.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-//import 'package:flutter_staggered_grid_view_fix_branch/flutter_staggered_grid_view.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-
-import '../../main.dart';
-import '../other_screens/album_screen.dart';
+import 'package:flatter/home/other_screens/album_screen.dart';
 import 'item_menus.dart';
 
 class AlbumGrid extends StatelessWidget {

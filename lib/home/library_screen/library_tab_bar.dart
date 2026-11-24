@@ -10,8 +10,8 @@ import 'package:flatter/home/search_screen/search_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../settings_screen/settings_screen.dart';
-import '../settings_screen/settings_screen_ViewModel.dart';
+import 'package:flatter/home/settings_screen/settings_screen.dart';
+import 'package:flatter/home/settings_screen/settings_screen_ViewModel.dart';
 
 class LibraryTabBar extends StatelessWidget {
   const LibraryTabBar({super.key});

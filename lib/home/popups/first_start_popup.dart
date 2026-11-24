@@ -2,6 +2,7 @@ import 'package:flatter/home/settings_screen/info_screen/info_screen.dart';
 import 'package:flatter/home/settings_screen/server_settings/server_settings_screen.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FirstStartPopup {
   static void showFirstStartPopup(BuildContext context) async {
@@ -15,6 +16,7 @@ class FirstStartPopup {
             IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
+                settingsControl.changeSetting('firstStart', false);
                 Navigator.of(context).pop();
               },
             )
@@ -46,7 +48,24 @@ class FirstStartPopup {
                         settingsControl.changeSetting('firstStart', false);
                         Navigator.of(context).pop();
                       },
-                    )
+                    ),
+                    Container(
+                      color: Colors.red,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsGeometry.all(8),
+                            child: Text("Keep Android Open, Please"),
+                          ),
+                          ElevatedButton(
+                            child: Text("https://keepandroidopen.org/"),
+                            onPressed: () {
+                              launchUrl(Uri.https("keepandroidopen.org"));
+                            },
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

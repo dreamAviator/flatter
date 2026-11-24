@@ -1,12 +1,10 @@
-import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/item_widgets/subsonic_image.dart';
 import 'package:flatter/home/other_screens/playlist_screen.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../../main.dart';
-import '../../useful_scripts.dart';
+import 'package:flatter/main.dart';
+import 'package:flatter/useful_scripts.dart';
 import 'item_menus.dart';
 
 class PlaylistGrid extends StatelessWidget {
@@ -28,10 +26,6 @@ class PlaylistGrid extends StatelessWidget {
     OtherScripts usefulScripts = OtherScripts();
     List<dynamic> playlistList = [];
     if (playlistListNullable != null && playlistListNullable?.isEmpty == false) {
-      for (Map playlist in playlistListNullable!) {
-        ////print(playlist);
-      }
-      ////print(playlistListNullable);
       playlistList.addAll(playlistListNullable!);
     } else {
       if (sliver == true) {

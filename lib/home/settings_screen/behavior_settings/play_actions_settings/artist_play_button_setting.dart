@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../main.dart';
+import 'package:flatter/main.dart';
 
 class ArtistPlayButtonSetting extends StatefulWidget {
   const ArtistPlayButtonSetting({super.key});

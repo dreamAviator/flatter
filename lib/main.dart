@@ -11,7 +11,6 @@ import 'package:flatter/storage/settings_controller.dart';
 import 'package:flatter/storage/paths.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 late final PlayerControls playerControl;
 //DirectoryManager directoryControl = DirectoryManager();
@@ -51,9 +50,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //CachedNetworkImage.logLevel = CacheManagerLogLevel.verbose;
   runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
+    const MyApp(),
   );
 }
 

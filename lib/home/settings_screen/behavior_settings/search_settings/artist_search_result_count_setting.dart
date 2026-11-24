@@ -1,6 +1,6 @@
 import 'package:flatter/main.dart';
-import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ArtistSearchResultCountSetting extends StatelessWidget {
   const ArtistSearchResultCountSetting({super.key});

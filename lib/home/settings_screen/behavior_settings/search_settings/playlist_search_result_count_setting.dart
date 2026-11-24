@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
+import 'package:material_ui/material_ui.dart';
 
-import '../../../../main.dart';
+import 'package:flatter/main.dart';
 
 class PlaylistSearchResultCountSetting extends StatelessWidget {
   const PlaylistSearchResultCountSetting({super.key});

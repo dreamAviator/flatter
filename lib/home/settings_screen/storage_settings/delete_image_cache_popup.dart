@@ -1,5 +1,4 @@
 import 'package:flatter/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:material_ui/material_ui.dart';
 
 class DeleteImageCacheSetting extends StatelessWidget {

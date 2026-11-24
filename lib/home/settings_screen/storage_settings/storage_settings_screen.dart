@@ -1,7 +1,5 @@
 import 'package:flatter/home/settings_screen/storage_settings/delete_image_cache_popup.dart';
 import 'package:flatter/home/settings_screen/storage_settings/image_cache_stale_period_setting.dart';
-import 'package:flatter/main.dart';
-import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 
 class StorageSettingsScreen extends StatelessWidget {

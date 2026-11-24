@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/main.dart';

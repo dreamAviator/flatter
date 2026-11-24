@@ -10,7 +10,7 @@ import 'package:flatter/home/player_screen/player_image.dart';
 import 'package:flatter/home/player_screen/play_button.dart';
 import 'package:flatter/home/player_screen/progess_slider.dart';
 import 'package:flatter/main.dart';
-import 'package:material_ui/material_ui.dart';//TODO:player screen schöner machen
+import 'package:material_ui/material_ui.dart';
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({super.key});

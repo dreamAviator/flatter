@@ -1,8 +1,6 @@
-
 import 'dart:ui';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/Services/subsonic_service.dart';
 import 'package:flatter/home/item_widgets/subsonic_image.dart';
 import 'package:flatter/home/item_widgets/rate_button.dart';

@@ -4,7 +4,6 @@ import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 
 class MyPlayer extends AudioPlayer{
 
-  @override
   MyPlayer() {
     JustAudioMediaKit.ensureInitialized();
   }

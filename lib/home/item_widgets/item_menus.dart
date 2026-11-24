@@ -8,8 +8,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deepcopy/deepcopy.dart';
 
 import '../popups/artist_select_popup.dart';
-
-class ItemMenus {//man muss hier halt später einstellen können, welche aktionen hier und welche im bottom sheet angezeigt werden sollen
+class ItemMenus {//man muss hier halt später einstellen können, welche aktionen hier und welche im bottom sheet angezeigt werden sollen, divider wären auch gut, die kann ich genauso hinzufügen wie die anderen items
   ItemMenus(this.context);
   final BuildContext context;
   final SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();

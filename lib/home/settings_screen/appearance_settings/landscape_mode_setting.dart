@@ -34,6 +34,7 @@ class _LandscapeModeSettingState extends State<LandscapeModeSetting> {
         }
       },
     );
+    /*
     bool landscapeMode = settingsControl.loadSetting('landscapeMode');
     if (settingsControl.loadSetting('automaticRotationOverride') == false) {
       return Switch(
@@ -51,5 +52,7 @@ class _LandscapeModeSettingState extends State<LandscapeModeSetting> {
         },
       );
     }
+
+     */
   }
 }

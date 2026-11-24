@@ -6,7 +6,7 @@ import 'package:flatter/storage/local_not_database_storage_controller.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../useful_scripts.dart';
+import 'package:flatter/useful_scripts.dart';
 
 class PlayerControls extends BaseAudioHandler with QueueHandler, SeekHandler {
   final QueueRepository _queueRepository = QueueRepository();

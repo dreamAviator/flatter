@@ -2,11 +2,7 @@ import 'package:flatter/main.dart';
 import 'package:flatter/home/settings_screen/server_settings/server_menu.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-
-import '../../../Riverpod/riverpod_manager.dart';
 import 'add_server_popup.dart';
 
 class ServerList extends StatelessWidget {

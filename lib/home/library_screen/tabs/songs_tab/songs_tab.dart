@@ -5,7 +5,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:intrinsic_size_builder/intrinsic_size_builder.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../../../item_widgets/search_string_filter_widget.dart';
+import 'package:flatter/home/item_widgets/search_string_filter_widget.dart';
 
 class SongsTab extends StatefulWidget {
   const SongsTab({super.key,required this.viewModel});

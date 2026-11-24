@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:s_packages/s_packages_extra2.dart';
 import 'package:toml/toml.dart';
 
 import '../useful_scripts.dart';

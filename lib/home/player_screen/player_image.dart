@@ -1,8 +1,7 @@
-import 'package:cached_network_image_ce/cached_network_image.dart';
 import 'package:flatter/home/item_widgets/subsonic_image.dart';
 import 'package:flatter/main.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 
 class PlayerImage extends StatelessWidget {
   const PlayerImage({super.key,required this.sidelength});
