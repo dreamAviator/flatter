@@ -7,29 +7,46 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AddServerPopup {
   static void showAddServerPopUp(BuildContext context,String? serverName,String? serverURL,String? serverUsername,String? serverPassword,int? id,UpdateNotifier serverListUpdateNotifier) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    TextEditingController serverNameController = TextEditingController();
+    TextEditingController serverURLcontroller = TextEditingController();
+    TextEditingController serverUsernameController = TextEditingController();
+    TextEditingController serverPasswordController = TextEditingController();
+    String title = "Add Server";
+    if (serverName != null && serverURL != null && serverUsername != null && serverPassword!= null && id != null) {
+      title = "Edit $serverName";
+      serverNameController.text = serverName;
+      serverURLcontroller.text = serverURL;
+      serverUsernameController.text = serverUsername;
+      serverPasswordController.text = serverPassword;
+    }
+    UpdateNotifier updateNotifier = UpdateNotifier();
+    Map currentStatus = {'status':'start'};
     showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-        TextEditingController serverNameController = TextEditingController();
-        TextEditingController serverURLcontroller = TextEditingController();
-        TextEditingController serverUsernameController = TextEditingController();
-        TextEditingController serverPasswordController = TextEditingController();
-        String title = "Add Server";
-        if (serverName != null && serverURL != null && serverUsername != null && serverPassword!= null && id != null) {
-          title = "Edit $serverName";
-          serverNameController.text = serverName;
-          serverURLcontroller.text = serverURL;
-          serverUsernameController.text = serverUsername;
-          serverPasswordController.text = serverPassword;
-        }
-        UpdateNotifier updateNotifier = UpdateNotifier();
-        Map currentStatus = {'status':'start'};
-
         void invalidateStatus() {
           currentStatus['status'] = "edited";
           updateNotifier.notify();
+        }
+
+        void checkStatus() {
+          if (formKey.currentState != null) {
+            if (formKey.currentState!.validate()) {
+              if (currentStatus['status'] == "ok") {
+                if (id != null) {
+                  databaseControl.deleteServer(id);
+                }
+                databaseControl.addServer(serverNameController.text, serverURLcontroller.text, serverUsernameController.text, serverPasswordController.text);//TODO:wenn man einen server edited (oder immer, idk, conditions überlegen) den server automatisch selecten
+                Navigator.of(context).pop();
+                serverListUpdateNotifier.notify();
+                return;
+              }
+              currentStatus['status'] = "checking";
+              updateNotifier.notify();
+            }
+          }
         }
 
         return AlertDialog(
@@ -131,21 +148,7 @@ class AddServerPopup {
                   }
                 ),
                 onPressed: () {
-                  if (formKey.currentState != null) {
-                    if (formKey.currentState!.validate()) {
-                      if (currentStatus['status'] == "ok") {
-                        if (id != null) {
-                          databaseControl.deleteServer(id);
-                        }
-                        databaseControl.addServer(serverNameController.text, serverURLcontroller.text, serverUsernameController.text, serverPasswordController.text);//TODO:wenn man einen server edited (oder immer, idk, conditions überlegen) den server automatisch selecten
-                        Navigator.of(context).pop();
-                        serverListUpdateNotifier.notify();
-                        return;
-                      }
-                      currentStatus['status'] = "checking";
-                      updateNotifier.notify();
-                    }
-                  }
+                  checkStatus();
                 },
               ),
             )
@@ -159,6 +162,8 @@ class AddServerPopup {
                   spacing: 8,
                   children: [
                     TextFormField(
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
                       controller: serverNameController,
                       decoration: const InputDecoration(
                         hintText: "Name",
@@ -173,6 +178,8 @@ class AddServerPopup {
                       },
                     ),
                     TextFormField(
+                      keyboardType: TextInputType.url,
+                      textInputAction: TextInputAction.next,
                       controller: serverURLcontroller,
                       decoration: const InputDecoration(
                         hintText: "URL",
@@ -190,6 +197,8 @@ class AddServerPopup {
                       },
                     ),
                     TextFormField(
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
                       controller: serverUsernameController,
                       decoration: const InputDecoration(
                         hintText: "Username",
@@ -222,6 +231,9 @@ class AddServerPopup {
                       },
                       onChanged: (String value) {
                         invalidateStatus();
+                      },
+                      onFieldSubmitted: (String value) {
+                        checkStatus();
                       },
                     )
                   ],
