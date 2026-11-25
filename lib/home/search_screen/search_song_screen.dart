@@ -24,7 +24,7 @@ class SearchSongScreen extends StatelessWidget {
         future: subsonicService.fullSearch(query),
         builder: (BuildContext context,asyncSnapshot) {
           if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
-            return SongList(songListNullable: asyncSnapshot.data?['song'], sliver: false,listView: true,playlistID: null,);
+            return SongList(songListNullable: asyncSnapshot.data?['song'], sliver: false,listView: true);
           } else if (asyncSnapshot.hasError && asyncSnapshot.connectionState == ConnectionState.done) {
             return Center(child: Text("Error"));
           } else {

@@ -205,7 +205,7 @@ class _SongsTabState extends State<SongsTab> {
                 future: getSongs(500, genre, null, null,onlyFavorites),
                 builder: (context, asyncSnapshot) {
                   if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
-                    return SongList(listView: true,sliver: true,songListNullable: asyncSnapshot.data,playlistID: null,);
+                    return SongList(listView: true,sliver: true,songListNullable: asyncSnapshot.data);
                   } else if (asyncSnapshot.hasError) {
                     return SliverToBoxAdapter(child: Text("Error"),);
                   } else {

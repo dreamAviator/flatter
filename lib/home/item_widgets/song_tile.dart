@@ -11,7 +11,7 @@ import 'package:flatter/home/other_screens/artist_screen.dart';
 import 'package:flatter/home/popups/artist_select_popup.dart';
 
 class SongTile extends StatelessWidget {
-  const SongTile({super.key,required this.song,required this.playlistID, required this.usecase,this.updateNotifier,required this.indexInPlaylist});
+  const SongTile({super.key,required this.song,this.playlistID, required this.usecase,this.updateNotifier,this.indexInPlaylist});
   final Map song;
   final String? playlistID;
   final String? usecase;//um je nach usecase verschiedene einstellungen (bspw zu item menüs bzw slidables) zu holen
@@ -74,7 +74,7 @@ class SongTile extends StatelessWidget {
           ],
         ),
         subtitle: Marqueer(intrinsicCrossAxisSize: true,infinity: false,child: Text(song['artist'].toString())),
-        trailing: ItemMenus(context).songMenu(song,playlistID,updateNotifier,indexInPlaylist),
+        trailing: ItemMenus(context).songMenu(song,updateNotifier,playlistID,indexInPlaylist),
         onTap: () {
           playerControl.addQueueItem(usefulScripts.subsonicSongToMediaItem(song));
         },

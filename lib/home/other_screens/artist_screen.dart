@@ -116,7 +116,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
                       },
                       icon: Icon(Icons.play_arrow),
                     ),
-                    FavoriteButton(songID: null, albumID: null, artistID: widget.artistID),
+                    FavoriteButton(artistID: widget.artistID),
                     RateButton(id: widget.artistID, initialRating: asyncSnapshot.data?['userRating'] ?? 0, name: asyncSnapshot.data?['name'] ?? "unknown",updateNotifier: artistChangedNotifier,subsonicService: subsonicService,),
                     itemMenus.artistMenu(asyncSnapshot.data!),
                   ],

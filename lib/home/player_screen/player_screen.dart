@@ -103,7 +103,7 @@ class PlayerScreen extends StatelessWidget {
                                           icon: Icon(Icons.playlist_add),
                                         ),
                                         RateButton(id: id, initialRating: rating ?? 0, name: title ?? "unknown",isCurrentSong: true,),
-                                        FavoriteButton(songID: id, albumID: null, artistID: null),
+                                        FavoriteButton(songID: id),
                                       ],
                                     );
                                   }
@@ -257,7 +257,7 @@ class PlayerScreen extends StatelessWidget {
                         stream: playerControl.mediaItem,
                         builder: (context, asyncSnapshot) {
                           String? id = asyncSnapshot.data?.id;
-                          return FavoriteButton(songID: id, albumID: null, artistID: null);
+                          return FavoriteButton(songID: id);
                         }
                       ),
                     ],

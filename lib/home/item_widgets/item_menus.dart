@@ -344,7 +344,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
   }
 
   //menus//TODO:favorite/unfavorite noch hinzufügen
-  Widget songMenu(Map<dynamic,dynamic> songOld, String? playlistID,UpdateNotifier? updateNotifier, [int? indexInPlaylist]) {
+  Widget songMenu(Map<dynamic,dynamic> songOld, UpdateNotifier? updateNotifier, [String? playlistID, int? indexInPlaylist]) {
     Map<dynamic,dynamic> song = songOld.deepcopy();
     Map actionOrder = settingsControl.loadSetting('songMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
@@ -422,7 +422,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: const Icon(Icons.more_vert),
     );
   }
-  Widget songMenuQueue(MediaItem song) {
+  Widget songMenuQueue(MediaItem song) {//TODO:remove from queue
     Map actionOrder = settingsControl.loadSetting('songMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
     List<ListTile> moreSheetEntryList = [];

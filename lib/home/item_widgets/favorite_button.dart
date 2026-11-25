@@ -4,7 +4,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:material_ui/material_ui.dart';
 
 class FavoriteButton extends StatelessWidget {
-  const FavoriteButton({super.key,required this.songID,required this.albumID,required this.artistID,this.playlistID,this.playlistUpdateNotifier});
+  const FavoriteButton({super.key,this.songID,this.albumID,this.artistID,this.playlistID,this.playlistUpdateNotifier});
   final String? songID;
   final String? albumID;
   final String? artistID;

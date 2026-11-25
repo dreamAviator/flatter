@@ -4,7 +4,7 @@ import 'package:material_ui/material_ui.dart';
 
 
 class SongList extends StatelessWidget {
-  const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver, this.filterNotifier,required this.playlistID,this.updateNotifier});
+  const SongList({super.key,required this.songListNullable,required this.listView,required this.sliver, this.filterNotifier,this.playlistID,this.updateNotifier});
   final List<dynamic>? songListNullable;
   final bool listView;
   final bool sliver;

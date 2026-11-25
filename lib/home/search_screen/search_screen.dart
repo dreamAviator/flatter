@@ -420,7 +420,7 @@ class SearchScreenBody extends StatelessWidget {
               ],
             ),
           ),
-        SongList(songListNullable: searchResults['song'], listView: true, sliver: true,playlistID: null,),
+        SongList(songListNullable: searchResults['song'], listView: true, sliver: true),
         if (searchResults['playlist'] != null)
           SliverToBoxAdapter(
             child: Column(

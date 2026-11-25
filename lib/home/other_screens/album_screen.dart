@@ -104,7 +104,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                       },
                       icon: Icon(Icons.play_arrow),
                     ),
-                    FavoriteButton(songID: null, albumID: widget.albumID, artistID: null),
+                    FavoriteButton(albumID: widget.albumID),
                     RateButton(id: widget.albumID,initialRating: asyncSnapshot.data?['userRating'] ?? 0, name: asyncSnapshot.data?['name'] ?? "unknown",updateNotifier: albumChangedNotifier,subsonicService: subsonicService,),
                     itemMenus.albumMenu(asyncSnapshot.data!),
                   ],
@@ -405,7 +405,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
                         ],
                       ),
                     ),
-                    SongList(songListNullable: asyncSnapshot.data!['song'],listView: true,sliver: true,filterNotifier: filterNotifier,playlistID: null,),
+                    SongList(songListNullable: asyncSnapshot.data!['song'],listView: true,sliver: true,filterNotifier: filterNotifier),
                   ],
                 ),
               );

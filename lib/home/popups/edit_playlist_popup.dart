@@ -4,7 +4,7 @@ import 'package:marqueer/marqueer.dart';
 import 'package:material_ui/material_ui.dart';
 
 class EditPlaylistPopup {
-  static void showEditPlaylistPopUp(BuildContext context,bool newCreate,String? id,String? name,String? comment,bool? public,List<dynamic>? songIDsToAdd, [UpdateNotifier? playlistChangedNotifier]) {
+  static void showEditPlaylistPopUp(BuildContext context,bool newCreate, [String? id,String? name,String? comment,bool? public,List<dynamic>? songIDsToAdd,UpdateNotifier? playlistChangedNotifier]) {
     if (newCreate == false && id == null) {
       return;
     }
