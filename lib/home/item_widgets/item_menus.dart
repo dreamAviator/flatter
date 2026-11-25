@@ -192,7 +192,6 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         ////print("heyhey removing");
         playerControl.removeQueueItemAt(index);
-        pop();
       },
       child: const Text("Remove from queue"),
     );

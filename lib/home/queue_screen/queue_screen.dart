@@ -360,70 +360,73 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
                           ]
                         ),
                         //color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            if (showSearchBar == true ) Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SearchBar(
-                                shadowColor: WidgetStateColor.transparent,
-                                leading: const Icon(Icons.search),
-                                controller: searchController,
-                                onChanged: (String value) {
-                                  searchNotifier.value = value;
-                                },
-                                autoFocus: true,
-                                trailing: [
+                        child: AnimatedSize(
+                          duration: Duration(milliseconds: 200),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              if (showSearchBar == true ) Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SearchBar(
+                                  shadowColor: WidgetStateColor.transparent,
+                                  leading: const Icon(Icons.search),
+                                  controller: searchController,
+                                  onChanged: (String value) {
+                                    searchNotifier.value = value;
+                                  },
+                                  autoFocus: true,
+                                  trailing: [
+                                    IconButton(
+                                      icon: const Icon(Icons.backspace_outlined),
+                                      onPressed: () {
+                                        searchController.clear();
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
+                                children: [
                                   IconButton(
-                                    icon: const Icon(Icons.backspace_outlined),
                                     onPressed: () {
-                                      searchController.clear();
+                                      List<String> songIDlist = [];
+                                      for (MediaItem mediaItem in queue) {
+                                        songIDlist.add(mediaItem.id);
+                                      }
+                                      AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
                                     },
+                                    icon: const Icon(Icons.playlist_add_outlined),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      playerControl.customAction('shuffleQueue');
+                                    },
+                                    icon: const Icon(Icons.shuffle_outlined),
+                                  ),
+                                  LoopButton(),
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        if (showSearchBar == true) {
+                                          showSearchBar = false;
+                                        } else {
+                                          showSearchBar = true;
+                                        }
+                                      });
+                                    },
+                                    icon: const Icon(Icons.search_outlined),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
+                                    },
+                                    icon: const Icon(Icons.delete_outline),
                                   )
                                 ],
                               ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    List<String> songIDlist = [];
-                                    for (MediaItem mediaItem in queue) {
-                                      songIDlist.add(mediaItem.id);
-                                    }
-                                    AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
-                                  },
-                                  icon: const Icon(Icons.playlist_add_outlined),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    playerControl.customAction('shuffleQueue');
-                                  },
-                                  icon: const Icon(Icons.shuffle_outlined),
-                                ),
-                                LoopButton(),
-                                IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      if (showSearchBar == true) {
-                                        showSearchBar = false;
-                                      } else {
-                                        showSearchBar = true;
-                                      }
-                                    });
-                                  },
-                                  icon: const Icon(Icons.search_outlined),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
-                                  },
-                                  icon: const Icon(Icons.delete_outline),
-                                )
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
