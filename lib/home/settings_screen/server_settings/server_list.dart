@@ -3,7 +3,7 @@ import 'package:flatter/home/settings_screen/server_settings/server_menu.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'add_server_popup.dart';
+import '../../popups/add_server_popup.dart';
 
 class ServerList extends StatelessWidget {
   const ServerList({super.key, required this.updateNotifier});

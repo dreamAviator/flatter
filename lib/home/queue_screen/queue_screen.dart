@@ -341,12 +341,12 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
                     ),
                   ],
                 ),
-                Column(
+                Column(//TODO:brauche ich diese column?
                   spacing: 8,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SDisabled(
+                    SDisabled(//animated size here ist blöd auf mobile mit der tastatur und funktioniert auf desktop auch nicht
                       isDisabled: queueEmpty,
                       child: Container(
                         decoration: BoxDecoration(
@@ -361,7 +361,7 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
                         ),
                         //color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
                         child: AnimatedSize(
-                          duration: Duration(milliseconds: 200),
+                          duration: Duration(seconds: 1),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [

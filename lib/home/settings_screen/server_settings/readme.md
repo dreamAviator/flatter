@@ -1,0 +1,1 @@
+the add server popup is in the popups directory

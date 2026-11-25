@@ -1,5 +1,5 @@
 import 'package:flatter/main.dart';
-import 'package:flatter/home/settings_screen/server_settings/add_server_popup.dart';
+import 'package:flatter/home/popups/add_server_popup.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 

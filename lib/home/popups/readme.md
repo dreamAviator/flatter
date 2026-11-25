@@ -1,1 +1,0 @@
-add to server popup is in the settings screen directory
