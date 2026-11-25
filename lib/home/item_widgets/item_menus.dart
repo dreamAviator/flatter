@@ -13,6 +13,10 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
   final BuildContext context;
   final SubsonicJustAudioCompatibility usefulScripts = SubsonicJustAudioCompatibility();
 
+  void pop() {
+    Navigator.of(context).pop();
+  }
+
   //Pop Up Menu Entry actions
   PopupMenuEntry playNow(List<MediaItem> items) {
     return PopupMenuItem(
@@ -182,12 +186,24 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: const Text("Remove from playlist"),
     );
   }
+
+  PopupMenuEntry removeFromQueue(int index) {
+    return PopupMenuItem(
+      onTap: () {
+        ////print("heyhey removing");
+        playerControl.removeQueueItemAt(index);
+        pop();
+      },
+      child: const Text("Remove from queue"),
+    );
+  }
   //More Sheet Menu Entry Actions
   ListTile playNowMoreSheet(List<MediaItem> items) {
     return ListTile(
       onTap: () {
         playerControl.customAction('clearQueue');
         playerControl.customAction('addMultiple',{'addMultiple':items});
+        pop();
       },
       title: const Text("Play now"),
     );
@@ -196,6 +212,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     return ListTile(
       onTap: () {
         playerControl.customAction('addNext',{'addNext':{'tracks':items}});
+        pop();
       },
       title: const Text("Add next"),
     );
@@ -204,6 +221,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     return ListTile(
       onTap: () {
         playerControl.customAction('addMultiple',{'addMultiple':{'tracks':items}});
+        pop();
       },
       title: const Text("Enqueue"),
     );
@@ -217,6 +235,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           'tracks':items,
           'shuffled':true,
         }});
+        pop();
       },
       title: const Text("Play now shuffled"),
     );
@@ -228,6 +247,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           'tracks': items,
           'shuffled':true,
         }});
+        pop();
       },
       title: const Text("Add next shuffled"),
     );
@@ -239,6 +259,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           'tracks':items,
           'shuffled':true,
         }});
+        pop();
       },
       title: const Text("Enqueue shuffled"),
     );
@@ -248,6 +269,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         playerControl.customAction('clearQueue');
         playerControl.customAction('addByID',{'addByID':id});
+        pop();
       },
       title: const Text("Play now"),
     );
@@ -256,6 +278,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     return ListTile(
       onTap: () {
         playerControl.customAction('addNextByID',{'addNextByID':id});
+        pop();
       },
       title: const Text("Add next"),
     );
@@ -264,6 +287,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     return ListTile(
       onTap: () {
         playerControl.customAction('addByID',{'addByID':id});
+        pop();
       },
       title: const Text("Enqueue"),
     );
@@ -274,6 +298,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         playerControl.customAction('clearQueue');
         id['shuffled'] = true;
         playerControl.customAction('addByID',{'addByID':id});
+        pop();
       },
       title: const Text("Play now shuffled"),
     );
@@ -283,6 +308,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         id['shuffled'] = true;
         playerControl.customAction('addNextByID',{'addNextByID':id});
+        pop();
       },
       title: const Text("Add next shuffled"),
     );
@@ -292,6 +318,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         id['shuffled'] = true;
         playerControl.customAction('addByID',{'addByID':id});
+        pop();
       },
       title: const Text("Enqueue shuffled"),
     );
@@ -300,6 +327,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     return ListTile(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumScreen(albumID: albumID)));
+        pop();
       },
       title: const Text("Album"),
     );
@@ -313,6 +341,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
         } else {
           ArtistSelectWindow.showArtistSelectWindow(context, artists);
         }
+        pop();
       },
       title: const Text("Artist"),
     );
@@ -321,6 +350,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     return ListTile(
       onTap: () {
         unFavoriteLogic(songID, albumID, artistID);
+        pop();
       },
       title: const Text("(Un)Favorite"),//TODO:das hier je nach aktuellem status evt ändern, mal schauen, je nachdem wie einfach das ist
     );
@@ -329,6 +359,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
     return ListTile(
       onTap: () {
         AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDs);
+        pop();
       },
       title: const Text("Add to playlist")
     );
@@ -338,8 +369,18 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       onTap: () {
         subsonicService.updatePlaylist(playlistID, null, null, null, null, [index]);
         updateNotifier?.notify();
+        pop();
       },
       title: const Text("Remove from playlist"),
+    );
+  }
+  ListTile removeFromQueueMoreSheet(int index) {
+    return ListTile(
+      onTap: () {
+        playerControl.removeQueueItemAt(index);
+        pop();
+      },
+      title: const Text("Remove from queue"),
     );
   }
 
@@ -422,7 +463,7 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
       child: const Icon(Icons.more_vert),
     );
   }
-  Widget songMenuQueue(MediaItem song) {//TODO:remove from queue
+  Widget songMenuQueue(MediaItem song, int index) {
     Map actionOrder = settingsControl.loadSetting('songMenuActionOrder');
     List<PopupMenuEntry> menuEntryList = [];
     List<ListTile> moreSheetEntryList = [];
@@ -442,6 +483,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           menuEntryList.add(unFavorite(song.id, null, null));
         case 'addToPlaylist':
           addToPlaylist([song.id]);
+        case 'removeFromQueue':
+          menuEntryList.add(removeFromQueue(index));
       }
     }
     for (String action in actionOrder['moreSheet']) {
@@ -460,6 +503,8 @@ class ItemMenus {//man muss hier halt später einstellen können, welche aktione
           moreSheetEntryList.add(unFavoriteMoreSheet(song.id, null, null));
         case 'addToPlaylist':
           moreSheetEntryList.add(addToPlaylistMoreSheet([song.id]));
+        case 'removeFromQueue':
+          moreSheetEntryList.add(removeFromQueueMoreSheet(index));
       }
     }
     if (actionOrder['moreSheet'].isNotEmpty) {

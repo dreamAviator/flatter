@@ -208,7 +208,7 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
                                   child: ListTile(
                                     title: Text(filteredQueue[index].title),
                                     subtitle: Text(filteredQueue[index].artist!),
-                                    trailing: ItemMenus(context).songMenuQueue(filteredQueue[index]),
+                                    trailing: ItemMenus(context).songMenuQueue(filteredQueue[index],index),
                                     onTap: () {
                                       playerControl.skipToQueueItem(index);
                                     },
@@ -260,7 +260,7 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
                                   child: ListTile(
                                     title: Text(filteredQueue[index].title),
                                     subtitle: Text(filteredQueue[index].artist!),
-                                    trailing: ItemMenus(context).songMenuQueue(filteredQueue[index]),
+                                    trailing: ItemMenus(context).songMenuQueue(filteredQueue[index],index),
                                     onTap: () {
                                       playerControl.skipToQueueItem(index);
                                     },

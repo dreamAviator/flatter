@@ -41,7 +41,7 @@ class SettingsController {
     'playlistSearchResultsCount':10,
     'mode':"navidrome",
     'songMenuActionOrder':{
-      'mainMenu':['playNow','addNext','enqueue','addToPlaylist','removeFromPlaylist'],
+      'mainMenu':['playNow','addNext','enqueue','addToPlaylist','removeFromPlaylist','removeFromQueue'],
       'moreSheet':['album','artist','unFavorite'],
       'unused':[],
     },
