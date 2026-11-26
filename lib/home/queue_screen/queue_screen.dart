@@ -21,7 +21,7 @@ class QueueScreen extends StatefulWidget {
   State<QueueScreen> createState() => _QueueScreenState();
 }
 
-class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch auf wenn die searchbar nicht offen ist
+class _QueueScreenState extends State<QueueScreen> {
   //ScrollPosController scrollController = ScrollPosController(itemCount: 0);
   ScrollController scrollController = ScrollController();
   double scrollOffset = 0;
@@ -71,87 +71,49 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
               }
               //print(showSearchBar);
               //print("printed showsearchbar");
-              return IntrinsicSizeBuilder(
+              return IntrinsicSizeBuilder(//ich könnte das hier refreshen (siehe readme auf pub.dev) wenn die searchbar geöffnet wird, dann muss es nicht immer so groß sein wie die offene searchbar
                 subject: Column(
                   spacing: 8,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                            )
-                          ]
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SearchBar(
-                              shadowColor: WidgetStateColor.transparent,
-                              leading: const Icon(Icons.search),
-                              controller: searchController,
-                              onChanged: (String value) {
-                                searchNotifier.value = value;
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SearchBar(),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
+                          children: [
+                            IconButton(
+                              onPressed: () {
+
                               },
-                              autoFocus: showSearchBar,
-                              trailing: [
-                                IconButton(
-                                  icon: const Icon(Icons.backspace_outlined),
-                                  onPressed: () {
-                                    searchController.clear();
-                                  },
-                                )
-                              ],
+                              icon: const Icon(Icons.playlist_add_outlined),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  List<String> songIDlist = [];
-                                  for (MediaItem mediaItem in queue) {
-                                    songIDlist.add(mediaItem.id);
-                                  }
-                                  AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
-                                },
-                                icon: const Icon(Icons.playlist_add_outlined),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  playerControl.customAction('shuffleQueue');
-                                },
-                                icon: const Icon(Icons.shuffle_outlined),
-                              ),
-                              LoopButton(),
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if (showSearchBar == true) {
-                                      showSearchBar = false;
-                                    } else {
-                                      showSearchBar = true;
-                                    }
-                                  });
-                                },
-                                icon: const Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
-                                },
-                                icon: const Icon(Icons.delete_outline),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
+                            IconButton(
+                              onPressed: () {
+
+                              },
+                              icon: const Icon(Icons.shuffle_outlined),
+                            ),
+                            LoopButton(),
+                            IconButton(
+                              onPressed: () {
+
+                              },
+                              icon: const Icon(Icons.search_outlined),//search und evt animation selbst bauen qwq
+                            ),
+                            IconButton(
+                              onPressed: () {
+
+                              },
+                              icon: const Icon(Icons.delete_outline),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -341,7 +303,7 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
                     ),
                   ],
                 ),
-                Column(//TODO:brauche ich diese column?
+                Column(
                   spacing: 8,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -361,6 +323,7 @@ class _QueueScreenState extends State<QueueScreen> {//TODO:tastatur geht auch au
                         ),
                         //color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
                         child: AnimatedSize(
+                          alignment: Alignment.bottomCenter,//TODO:vielleicht funktioniert das dann auch besser, aber actually wie deepseek meinte lieber einfach die searchbar size animaten (tweensizebuilder oder so) das kannst du dann auch in den sliver app bars machen 😛
                           duration: Duration(seconds: 1),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
