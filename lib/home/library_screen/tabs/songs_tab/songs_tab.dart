@@ -189,6 +189,10 @@ class _SongsTabState extends State<SongsTab> {
               floating: true,
               snap: true,
               expandedHeight: subjectSize.height,
+              flexibleSpace: ClipRect(
+                child: subject,
+              ),
+              /*
               flexibleSpace: LayoutBuilder(
                 builder: (context, constraints) {
                   bool visible = true;
@@ -200,6 +204,7 @@ class _SongsTabState extends State<SongsTab> {
                   return Visibility(visible: visible,child: subject);
                 },
               ),
+              */
             ),
             FutureBuilder(
                 future: getSongs(500, genre, null, null,onlyFavorites),

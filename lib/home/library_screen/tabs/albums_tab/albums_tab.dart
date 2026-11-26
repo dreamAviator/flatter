@@ -125,17 +125,23 @@ class _AlbumsTabState extends State<AlbumsTab> {
               floating: true,
               snap: true,
               expandedHeight: subjectSize.height,
-              flexibleSpace: LayoutBuilder(
-                  builder: (context, constraints) {
-                    bool visible = true;
-                    ////print(constraints.maxHeight);
-                    ////print(subjectSize.height);
-                    if (constraints.heightConstraints().maxHeight < subjectSize.height) {
-                      visible = false;
-                    }
-                    return Visibility(visible: visible,child: subject);
-                  }
+              flexibleSpace: ClipRect(
+                child: subject,
               ),
+              /*
+              flexibleSpace: LayoutBuilder(
+                builder: (context, constraints) {
+                  bool visible = true;
+                  ////print(constraints.maxHeight);
+                  ////print(subjectSize.height);
+                  if (constraints.heightConstraints().maxHeight < subjectSize.height) {
+                    visible = false;
+                  }
+                  return Visibility(visible: visible,child: subject);
+                }
+              ),
+
+               */
             ),
             FutureBuilder(
               future: getAlbums(type,elementCount,offset),

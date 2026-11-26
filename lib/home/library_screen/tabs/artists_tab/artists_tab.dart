@@ -113,6 +113,10 @@ class _ArtistsTabState extends State<ArtistsTab> {
               floating: true,
               snap: true,
               expandedHeight: subjectSize.height,
+              flexibleSpace: ClipRect(
+                child: subject,
+              ),
+              /*
               flexibleSpace: LayoutBuilder(
                 builder: (context, constraints) {
                   bool visible = true;
@@ -124,6 +128,8 @@ class _ArtistsTabState extends State<ArtistsTab> {
                   return Visibility(visible: visible,child: subject);
                 },
               ),
+
+               */
             ),
             FutureBuilder(
               future: getArtists(),

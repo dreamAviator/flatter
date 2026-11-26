@@ -322,74 +322,79 @@ class _QueueScreenState extends State<QueueScreen> {
                           ]
                         ),
                         //color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
-                        child: AnimatedSize(
-                          alignment: Alignment.bottomCenter,//TODO:vielleicht funktioniert das dann auch besser, aber actually wie deepseek meinte lieber einfach die searchbar size animaten (tweensizebuilder oder so) das kannst du dann auch in den sliver app bars machen 😛
-                          duration: Duration(seconds: 1),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              if (showSearchBar == true ) Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SearchBar(
-                                  shadowColor: WidgetStateColor.transparent,
-                                  leading: const Icon(Icons.search),
-                                  controller: searchController,
-                                  onChanged: (String value) {
-                                    searchNotifier.value = value;
-                                  },
-                                  autoFocus: true,
-                                  trailing: [
-                                    IconButton(
-                                      icon: const Icon(Icons.backspace_outlined),
-                                      onPressed: () {
-                                        searchController.clear();
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            //this part is heavily inspired by deepseek, i couldn't find a solution because i didn't know about the heightfactor
+                            ClipRect(//TODO:schauen warum das dahin muss
+                              child: AnimatedSize(//TODO:schauen wo du das widget noch anwenden kannst, ist toll bzw generell align hat einen height factor, schauen wo du das anwenden kannst, sehr nützlich. also irgendwelche intrinsicsize huilder könnten vlt ersetzt werden durch den height factor
+                                duration: Duration(seconds: 1),
+                                child: Align(
+                                  heightFactor: showSearchBar ? 1 : 0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SearchBar(
+                                      shadowColor: WidgetStateColor.transparent,
+                                      leading: const Icon(Icons.search),
+                                      controller: searchController,
+                                      onChanged: (String value) {
+                                        searchNotifier.value = value;
                                       },
-                                    )
-                                  ],
+                                      autoFocus: true,
+                                      trailing: [
+                                        IconButton(
+                                          icon: const Icon(Icons.backspace_outlined),
+                                          onPressed: () {
+                                            searchController.clear();
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      List<String> songIDlist = [];
-                                      for (MediaItem mediaItem in queue) {
-                                        songIDlist.add(mediaItem.id);
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,//ig besser als space around
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    List<String> songIDlist = [];
+                                    for (MediaItem mediaItem in queue) {
+                                      songIDlist.add(mediaItem.id);
+                                    }
+                                    AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
+                                  },
+                                  icon: const Icon(Icons.playlist_add_outlined),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    playerControl.customAction('shuffleQueue');
+                                  },
+                                  icon: const Icon(Icons.shuffle_outlined),
+                                ),
+                                LoopButton(),
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      if (showSearchBar == true) {
+                                        showSearchBar = false;
+                                      } else {
+                                        showSearchBar = true;
                                       }
-                                      AddToPlaylistPopup.showAddToPlaylistPopup(context, songIDlist);
-                                    },
-                                    icon: const Icon(Icons.playlist_add_outlined),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      playerControl.customAction('shuffleQueue');
-                                    },
-                                    icon: const Icon(Icons.shuffle_outlined),
-                                  ),
-                                  LoopButton(),
-                                  IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        if (showSearchBar == true) {
-                                          showSearchBar = false;
-                                        } else {
-                                          showSearchBar = true;
-                                        }
-                                      });
-                                    },
-                                    icon: const Icon(Icons.search_outlined),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
-                                    },
-                                    icon: const Icon(Icons.delete_outline),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
+                                    });
+                                  },
+                                  icon: const Icon(Icons.search_outlined),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    ConfirmDeleteQueuePopup.showConfirmDeleteQueuePopup(context);
+                                  },
+                                  icon: const Icon(Icons.delete_outline),
+                                )
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),

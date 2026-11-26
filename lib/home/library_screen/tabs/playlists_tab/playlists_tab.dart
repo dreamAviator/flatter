@@ -175,6 +175,10 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                   floating: true,
                   snap: true,
                   expandedHeight: subjectSize.height,
+                  flexibleSpace: ClipRect(
+                    child: SearchStringFilterWidget(filterNotifier: filterNotifier),
+                  ),
+                  /*
                   flexibleSpace: LayoutBuilder(
                     builder: (context, constraints) {
                       bool visible = true;
@@ -186,6 +190,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                       return Visibility(visible: visible,child: subject);
                     },
                   ),
+                  */
                 ),
                 const SliverToBoxAdapter(child: Text("Own"),),
                 ListenableBuilder(
