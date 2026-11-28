@@ -321,14 +321,13 @@ class _QueueScreenState extends State<QueueScreen> {
                             )
                           ]
                         ),
-                        //color: Theme.of(context).colorScheme.surfaceContainer,//farbe auswählen (generell halt wenn du dich um die farben kümmerst
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            //this part is heavily inspired by deepseek, i couldn't find a solution because i didn't know about the heightfactor
-                            ClipRect(//TODO:schauen warum das dahin muss
-                              child: AnimatedSize(//TODO:schauen wo du das widget noch anwenden kannst, ist toll bzw generell align hat einen height factor, schauen wo du das anwenden kannst, sehr nützlich. also irgendwelche intrinsicsize huilder könnten vlt ersetzt werden durch den height factor
-                                duration: Duration(seconds: 1),
+                            //this part is heavily inspired by deepseek, i couldn't find a solution because i didn't know that the align widget has a heighfactor attribute
+                            ClipRect(
+                              child: AnimatedSize(
+                                duration: Duration(milliseconds: 200),
                                 child: Align(
                                   heightFactor: showSearchBar ? 1 : 0,
                                   child: Padding(
