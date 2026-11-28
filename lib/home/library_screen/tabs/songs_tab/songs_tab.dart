@@ -19,7 +19,17 @@ class _SongsTabState extends State<SongsTab> {
   bool onlyFavorites = false;
   bool genreFilter = false;
   String? genre;
+  int elementCount = 500;
+  int? fromYear;
+  int? toYear;
   final SubsonicService subsonicService = SubsonicService();
+  late Future<List> songs;
+
+  @override
+  void initState() {
+    super.initState();
+    songs = getSongs();
+  }
 
   DropdownMenu<String> buildGenreMenu(BuildContext context,List<dynamic> genres) {
     List<DropdownMenuEntry<String>> entryList = [];
@@ -55,13 +65,13 @@ class _SongsTabState extends State<SongsTab> {
     return entryList;
   }
 
-  Future<List> getSongs(int size, String? genre, int? fromYear, int? toYear,bool onlyFavorites) async {
+  Future<List> getSongs() async {
     List<dynamic> randomSongList = [];
     if (onlyFavorites == true) {
       Map<dynamic,dynamic> starred = await subsonicService.getStarred();
       randomSongList = starred['song'];
     } else {
-      randomSongList = await subsonicService.getRandomSongs(size, genre, fromYear, toYear);
+      randomSongList = await subsonicService.getRandomSongs(elementCount, genre, fromYear, toYear);
     }
     return randomSongList;
   }
@@ -80,6 +90,7 @@ class _SongsTabState extends State<SongsTab> {
               onSelected: (bool selected) {
                 setState(() {
                   onlyFavorites = selected;
+                  songs = getSongs();
                 });
               },
             ),
@@ -92,6 +103,7 @@ class _SongsTabState extends State<SongsTab> {
                     genre = null;
                   }
                   genreFilter = selected;
+                  songs = getSongs();
                 });
               },
             ),
@@ -157,6 +169,7 @@ class _SongsTabState extends State<SongsTab> {
                                                   Navigator.of(context).pop();
                                                   setState(() {
                                                     genre = filteredSongList[index]['value'];
+                                                    songs = getSongs();
                                                   });
                                                 },
                                               );
@@ -207,7 +220,7 @@ class _SongsTabState extends State<SongsTab> {
               */
             ),
             FutureBuilder(
-                future: getSongs(500, genre, null, null,onlyFavorites),
+                future: songs,
                 builder: (context, asyncSnapshot) {
                   if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
                     return SongList(listView: true,sliver: true,songListNullable: asyncSnapshot.data);

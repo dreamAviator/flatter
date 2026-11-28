@@ -19,6 +19,13 @@ class ArtistsTab extends StatefulWidget {
 class _ArtistsTabState extends State<ArtistsTab> {
   bool onlyFavorites = false;
   final SubsonicService subsonicService = SubsonicService();
+  late Future<List> artists;
+
+  @override
+  void initState() {
+    super.initState();
+    artists = getArtists();
+  }
 
   /*
   Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
@@ -99,6 +106,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
             onSelected: (bool selected) {
               setState(() {
                 onlyFavorites = selected;
+                artists = getArtists();
               });
             },
           ),
@@ -132,7 +140,7 @@ class _ArtistsTabState extends State<ArtistsTab> {
                */
             ),
             FutureBuilder(
-              future: getArtists(),
+              future: artists,
               builder: (context, asyncSnapshot) {
                 if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
                   return ArtistGrid(artistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true, filterNotifier: filterNotifier,withIndexesGiven: onlyFavorites.opposite);

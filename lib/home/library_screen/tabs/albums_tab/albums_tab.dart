@@ -19,8 +19,14 @@ class _AlbumsTabState extends State<AlbumsTab> {
   String type = settingsControl.loadSetting('albumDropDownFilterSelection');
   int elementCount = 50;
   int offset = 0;
-  List<String> filterSortList = ["random","50","0"];
   final SubsonicService subsonicService = SubsonicService();
+  late Future<List> albums;
+
+  @override
+  void initState() {
+    super.initState();
+    albums = getAlbums();
+  }
 
   /*
   Widget buildListView(List<dynamic> items,BuildContext context,double screenWidth) {
@@ -69,20 +75,19 @@ class _AlbumsTabState extends State<AlbumsTab> {
   
    */
   
-  Future<List> getAlbums(String type, int size, int offset) async {
+  Future<List> getAlbums() async {
     List<dynamic> albumMapList = [];
-    if (filterSortList[0] == "favorites") {
+    if (type == "favorites") {
       Map<dynamic,dynamic> starred = await subsonicService.getStarred();
       albumMapList = starred['album'];
     } else {
-      albumMapList = await subsonicService.getAlbums(type,size,offset);
+      albumMapList = await subsonicService.getAlbums(type,elementCount,offset);
     }
     return albumMapList;
   }
 
   @override
   Widget build(BuildContext context) {
-    filterSortList = [type,"$elementCount","$offset"];
     final Size screenSize = MediaQuery.sizeOf(context);
     return IntrinsicSizeBuilder(
       subject: Row(
@@ -108,9 +113,10 @@ class _AlbumsTabState extends State<AlbumsTab> {
                 if (value == null) {
                   return;
                 }
+                settingsControl.changeSetting('albumDropDownFilterSelection', value);
                 setState(() {
                   type = value;
-                  settingsControl.changeSetting('albumDropDownFilterSelection', value);
+                  albums = getAlbums();
                 });
               },
             ),
@@ -144,7 +150,7 @@ class _AlbumsTabState extends State<AlbumsTab> {
                */
             ),
             FutureBuilder(
-              future: getAlbums(type,elementCount,offset),
+              future: albums,
               builder: (context, asyncSnapshot) {
                 if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
                   return AlbumGrid(albumListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true);

@@ -3,6 +3,7 @@ import 'package:flatter/home/popups/edit_playlist_popup.dart';
 import 'package:flatter/home/library_screen/tabs/playlists_tab/playlists_tab_ViewModel.dart';
 import 'package:flatter/home/item_widgets/playlist_grid.dart';
 import 'package:flatter/home/item_widgets/search_string_filter_widget.dart';
+import 'package:flatter/main.dart';
 import 'package:flatter/useful_scripts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:intrinsic_size_builder/intrinsic_size_builder.dart';
@@ -23,6 +24,17 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
   int elementCount = 10;
   int offset = 0;
   List<String> filterSortList = ["random","50","0","ASC"];
+  late Future<List> playlists;
+
+  @override
+  void initState() {
+    super.initState();
+    playlists = getPlaylists();
+  }
+
+  Future<List> getPlaylists() {
+    return subsonicService.getPlaylists();
+  }
 
   void reverseSort() {
     if (ascending == true) {
@@ -168,7 +180,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
             ////print(MaterialLocalizations.of(context));
 ////print(context.widget.runtimeType);
             ////print("playlist tab 2");
-            return CustomScrollView(
+            return CustomScrollView(//idk warum ich zwei futurebuilder hier nehme
               slivers: [
                 SliverAppBar(
                   primary: false,
@@ -200,7 +212,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
 ////print(context.widget.runtimeType);
                     ////print("playlist tab 3");
                     return FutureBuilder(
-                      future: subsonicService.getPlaylists(),
+                      future: playlists,
                       builder: (context, asyncSnapshot) {
                         if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
                           return PlaylistGrid(playlistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: true,filterNotifier: filterNotifier,playlistChangedNotifier: playlistChangedNotifier,);
@@ -218,7 +230,7 @@ class _PlaylistsTabState extends State<PlaylistsTab> {
                   listenable: playlistChangedNotifier,
                   builder: (context, child) {
                     return FutureBuilder(
-                      future: subsonicService.getPlaylists(),
+                      future: playlists,
                       builder: (context, asyncSnapshot) {
                         if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
                           return PlaylistGrid(playlistListNullable: asyncSnapshot.data,crossAxisCount: (screenSize.width / 175).toInt(),sliver: true,onlyOwn: false,filterNotifier: filterNotifier,playlistChangedNotifier: playlistChangedNotifier,);
